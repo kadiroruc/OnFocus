@@ -7,55 +7,47 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
-    
+protocol HomeViewInterface: AnyObject, SeguePerformable {
+    func updateCountdownLabel(minutes: Int, seconds: Int)
+    func startCircularAnimation(duration: TimeInterval)
+    func pauseCircularAnimation()
+    func resumeCircularAnimation()
+    func updatePlayButton(isPaused: Bool)
+}
+
+final class HomeViewController: UIViewController {
     @IBOutlet var timeLabel: UILabel!
-    
     @IBOutlet var countdownView: UIView!
-    var countdownMinutes = 0
-    var countdownSeconds = 5
-    var splitSeconds = 59
+    @IBOutlet var listCollectionView: UICollectionView!
+    @IBOutlet var playButton: UIButton!
     
-    var circleLayer = CAShapeLayer()
-    var movingCircle = UIView() // Hareket eden daireyi burada tanımlıyoruz
-    
-    var countdownTimer: Timer?
-    var circularCountdownTimeInterval : TimeInterval?
+    private lazy var viewModel = HomeViewModel()
+    private var circleLayer = CAShapeLayer()
+    private var movingCircle = UIView()
     
     var pausedTime: CFTimeInterval = 0
-    var animationRunning = false
-    
-    @IBOutlet var listCollectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateCountdownLabel()
+        viewModel.view = self
+        viewModel.viewDidLoad()
         setupUI()
-        
     }
     
     private func setupUI() {
-        
-        // Çizgi oluştur ve animasyon ekle
         createCircularPath()
-        
-        // Hareket eden daireyi oluştur
         createMovingCircle()
     }
     
-    private func  createCircularPath() {
+    private func createCircularPath() {
         let centerPoint = timeLabel.center
-        let circularPath = UIBezierPath(arcCenter: centerPoint,
-                                        radius: 130, // Yarıçap
-                                        startAngle: -CGFloat.pi / 2, // Saat yönünde başlatmak için -pi/2
-                                        endAngle: 1.5 * CGFloat.pi,   // Saat yönünde 1.5 pi (tam daire)
-                                        clockwise: true) // Saat yönü
+        let circularPath = UIBezierPath(arcCenter: centerPoint, radius: 130, startAngle: -CGFloat.pi / 2, endAngle: 1.5 * CGFloat.pi, clockwise: true)
         
         circleLayer.path = circularPath.cgPath
         circleLayer.strokeColor = UIColor.white.cgColor
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.lineWidth = 8
-        circleLayer.strokeEnd = 1 // Başlangıçta daire tamamen dolu
+        circleLayer.strokeEnd = 1
         view.layer.addSublayer(circleLayer)
     }
     
@@ -69,9 +61,20 @@ class HomeViewController: UIViewController {
         view.addSubview(movingCircle)
     }
     
-    // Geri sayım ve animasyonu senkronize eden fonksiyon
-    private func startCircularCountdown(duration: TimeInterval) {
-        // Çizgiyi boşaltma animasyonu
+    
+    
+    @IBAction func playButtonTapped(_ sender: UIButton) {
+        viewModel.toggleCountdown()
+        
+    }
+}
+
+extension HomeViewController: HomeViewInterface{
+    func updateCountdownLabel(minutes: Int, seconds: Int) {
+        timeLabel.text = String(format: "%02d.%02d", minutes, seconds)
+    }
+    
+    func startCircularAnimation(duration: TimeInterval) {
         let animation = CABasicAnimation(keyPath: "strokeEnd")
         animation.toValue = 0
         animation.duration = duration
@@ -79,17 +82,7 @@ class HomeViewController: UIViewController {
         animation.isRemovedOnCompletion = false
         circleLayer.add(animation, forKey: "circleAnimation")
         
-        // Küçük daireyi döndürme animasyonunu başlat
-        animateMovingCircle(duration: duration)
-        
-        // Zamanlayıcıyı başlat
-        if countdownTimer == nil {  // Zamanlayıcı zaten başlatılmadıysa başlat
-            countdownTimer = Timer.scheduledTimer(timeInterval: 0.016, target: self, selector: #selector(updateCountdown), userInfo: nil, repeats: true)
-        }
-    }
-
-    // Küçük dairenin animasyonunu başlatan fonksiyon
-    private func animateMovingCircle(duration: TimeInterval) {
+        //small circle
         let centerPoint = timeLabel.center
         let circularPath = UIBezierPath(arcCenter: centerPoint,
                                         radius: 130,
@@ -104,13 +97,14 @@ class HomeViewController: UIViewController {
         moveAnimation.isRemovedOnCompletion = false
 
         movingCircle.layer.add(moveAnimation, forKey: "movingCircleAnimation")
-        animationRunning = true
-    }
-
-    // Durdurulduğunda animasyonu ve geri sayımı duraklatma fonksiyonu
-    func pauseAnimation() {
-        let pausedTime = movingCircle.layer.convertTime(CACurrentMediaTime(), from: nil)
+        viewModel.animationRunning = true
         
+    }
+    
+    func pauseCircularAnimation() {
+        
+        let pausedTime = movingCircle.layer.convertTime(CACurrentMediaTime(), from: nil)
+
         // Küçük daire için duraklat
         movingCircle.layer.speed = 0.0
         movingCircle.layer.timeOffset = pausedTime
@@ -119,12 +113,10 @@ class HomeViewController: UIViewController {
         circleLayer.speed = 0.0
         circleLayer.timeOffset = pausedTime
         
-        // Zamanlayıcıyı duraklat
-        countdownTimer?.invalidate()
     }
-
-    // Devam ettirildiğinde animasyonu ve geri sayımı yeniden başlatma fonksiyonu
-    func resumeAnimation() {
+    
+    func resumeCircularAnimation() {
+        
         let pausedTime = movingCircle.layer.timeOffset
         
         // Küçük daire için devam ettir
@@ -138,69 +130,11 @@ class HomeViewController: UIViewController {
         circleLayer.speed = 1.0
         circleLayer.timeOffset = 0.0
         circleLayer.beginTime = timeSincePause
-        
-        // Zamanlayıcıyı yeniden başlat
-        countdownTimer = Timer.scheduledTimer(timeInterval: 0.016, target: self, selector: #selector(updateCountdown), userInfo: nil, repeats: true)
-    }
 
-    @objc func updateCountdown() {
-        if countdownMinutes > 0 || countdownSeconds > 0 || splitSeconds > 0 {
-            if splitSeconds == 0 {
-                if countdownSeconds == 0 {
-                    if countdownMinutes > 0 {
-                        countdownMinutes -= 1
-                        countdownSeconds = 59
-                    }
-                } else {
-                    countdownSeconds -= 1
-                }
-                splitSeconds = 59 // Salise sıfırlanır, 60'tan 1'e kadar döner
-            } else {
-                splitSeconds -= 1
-            }
-            updateCountdownLabel()
-        } else {
-            countdownTimer?.invalidate() // Geriye sayma bitince timer'ı durdur
-        }
-    }
-
-    // Geri sayım etiketini güncelleyen fonksiyon
-    func updateCountdownLabel() {
-        // Dakikayı ve saniyeyi label'a yaz
-        timeLabel.text = String(format: "%02d.%02d", countdownMinutes, countdownSeconds)
     }
     
-   
-    
-    @IBAction func playButtonTapped(_ sender: Any) {
-        let button = sender as! UIButton
-        
-        if button.imageView?.image == UIImage(systemName: "pause") {
-            button.setImage(UIImage(systemName: "play"), for: .normal)
-            pauseButtonTapped()
-            return
-        } else {
-            button.setImage(UIImage(systemName: "pause"), for: .normal)
-        }
-
-        if animationRunning {
-            resumeAnimation() // Eğer animasyon zaten başlatılmışsa, devam ettir
-        } else {
-            countdownTimer?.invalidate() // Önceki timer'ı iptal et
-            updateCountdownLabel()
-            
-            countdownTimer = Timer.scheduledTimer(timeInterval: 0.016, target: self, selector: #selector(updateCountdown), userInfo: nil, repeats: true)
-
-            circularCountdownTimeInterval = TimeInterval(countdownMinutes * 60 + countdownSeconds)
-            startCircularCountdown(duration: circularCountdownTimeInterval!)
-        }
+    func updatePlayButton(isPaused: Bool) {
+        let buttonImage = isPaused ? UIImage(systemName: "play") : UIImage(systemName: "pause")
+        playButton.setImage(buttonImage, for: .normal)
     }
-    
-    func pauseButtonTapped(){
-        countdownTimer?.invalidate()
-        pauseAnimation()
-    }
-    
-    
 }
-

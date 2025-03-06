@@ -40,14 +40,14 @@
                                 </cells>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="25.00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kjO-sT-RH2">
-                                <rect key="frame" x="86" y="178" width="220" height="90"/>
+                                <rect key="frame" x="86" y="200" width="220" height="90"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="70"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6c7-eM-aZL">
-                                <rect key="frame" x="66" y="127" width="261" height="264"/>
+                                <rect key="frame" x="66" y="149" width="261" height="264"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="URV-Uf-ukT">
@@ -66,10 +66,20 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemIndigoColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="dcD-g7-qn2"/>
+                    <navigationItem key="navigationItem" id="dcD-g7-qn2">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="RaC-ZR-fK1">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="CNo-PW-w3U">
+                                <rect key="frame" x="225" y="0.0" width="152" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="countdownView" destination="6c7-eM-aZL" id="J53-Ka-dvb"/>
                         <outlet property="listCollectionView" destination="GVd-xi-QKs" id="DVp-9T-DXy"/>
+                        <outlet property="playButton" destination="URV-Uf-ukT" id="3qn-Lg-MdA"/>
                         <outlet property="timeLabel" destination="kjO-sT-RH2" id="bWP-8y-1uF"/>
                     </connections>
                 </viewController>

@@ -13,6 +13,9 @@
 		E98B6B652D53C807005012AB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B642D53C807005012AB /* Base */; };
 		E98B6B672D53C809005012AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B662D53C809005012AB /* Assets.xcassets */; };
 		E98B6B6A2D53C80A005012AB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B692D53C80A005012AB /* Base */; };
+		E9CF13372D79D48F00560B9C /* SeguePerformable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CF13362D79D48F00560B9C /* SeguePerformable.swift */; };
+		E9D058212D75F6390003484C /* CountdownTimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D058202D75F6390003484C /* CountdownTimerModel.swift */; };
+		E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D058232D75F76E0003484C /* HomeViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		E98B6B662D53C809005012AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E98B6B692D53C80A005012AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E98B6B6B2D53C80A005012AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E9CF13362D79D48F00560B9C /* SeguePerformable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeguePerformable.swift; sourceTree = "<group>"; };
+		E9D058202D75F6390003484C /* CountdownTimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownTimerModel.swift; sourceTree = "<group>"; };
+		E9D058232D75F76E0003484C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,9 @@
 			children = (
 				E98B6B5D2D53C807005012AB /* AppDelegate.swift */,
 				E98B6B5F2D53C807005012AB /* SceneDelegate.swift */,
+				E9CF13362D79D48F00560B9C /* SeguePerformable.swift */,
+				E9D058222D75F6410003484C /* Model */,
+				E9D058252D75F7760003484C /* ViewModel */,
 				E98B6B712D53D380005012AB /* View */,
 				E98B6B632D53C807005012AB /* Main.storyboard */,
 				E98B6B662D53C809005012AB /* Assets.xcassets */,
@@ -73,6 +82,22 @@
 				E98B6B612D53C807005012AB /* HomeViewController.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		E9D058222D75F6410003484C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E9D058202D75F6390003484C /* CountdownTimerModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E9D058252D75F7760003484C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E9D058232D75F76E0003484C /* HomeViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,8 +172,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */,
+				E9CF13372D79D48F00560B9C /* SeguePerformable.swift in Sources */,
 				E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */,
 				E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */,
+				E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */,
+				E9D058212D75F6390003484C /* CountdownTimerModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
