@@ -1,0 +1,26 @@
+# macOS sistem dosyaları
+.DS_Store
+
+# Xcode Derleme Dosyaları
+DerivedData/
+*.xcuserstate
+
+# Xcode Workspace ve Kullanıcıya Özel Veriler
+xcuserdata/
+.idea/
+.vscode/
+
+# Swift Package Manager Bağımlılıkları
+.build/
+Packages/
+
+# Carthage Bağımlılıkları
+Carthage/Build/
+
+
+# Diğer Gereksiz Dosyalar
+*.swp
+*.swo
+
+# Gizli Çevre Değişkenleri Dosyaları
+*.env

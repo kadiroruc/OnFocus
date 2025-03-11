@@ -34,6 +34,10 @@ final class HomeViewController: UIViewController {
         setupUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
+    
     private func setupUI() {
         createCircularPath()
         createMovingCircle()
@@ -44,7 +48,7 @@ final class HomeViewController: UIViewController {
         let circularPath = UIBezierPath(arcCenter: centerPoint, radius: 130, startAngle: -CGFloat.pi / 2, endAngle: 1.5 * CGFloat.pi, clockwise: true)
         
         circleLayer.path = circularPath.cgPath
-        circleLayer.strokeColor = UIColor.white.cgColor
+        circleLayer.strokeColor = UIColor.systemCyan.cgColor
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.lineWidth = 8
         circleLayer.strokeEnd = 1
@@ -55,9 +59,9 @@ final class HomeViewController: UIViewController {
         let centerPoint = timeLabel.center
         movingCircle.frame = CGRect(x: centerPoint.x - 10, y: centerPoint.y - 130 - 10, width: 20, height: 20)
         movingCircle.layer.cornerRadius = 10
-        movingCircle.backgroundColor = .systemIndigo
+        movingCircle.backgroundColor = .white
         movingCircle.layer.borderWidth = 3
-        movingCircle.layer.borderColor = UIColor.white.cgColor
+        movingCircle.layer.borderColor = UIColor.systemCyan.cgColor
         view.addSubview(movingCircle)
     }
     
@@ -67,6 +71,10 @@ final class HomeViewController: UIViewController {
         viewModel.toggleCountdown()
         
     }
+    @IBAction func settingsButtonTapped(_ sender: Any) {
+        viewModel.settingsButtonTapped()
+    }
+    
 }
 
 extension HomeViewController: HomeViewInterface{
@@ -137,4 +145,5 @@ extension HomeViewController: HomeViewInterface{
         let buttonImage = isPaused ? UIImage(systemName: "play") : UIImage(systemName: "pause")
         playButton.setImage(buttonImage, for: .normal)
     }
+    
 }

@@ -17,6 +17,7 @@ protocol HomeViewModelInterface: AnyObject {
     func pauseCountdown()
     func resumeCountdown()
     func updateCountdown()
+    func settingsButtonTapped()
 }
 
 final class HomeViewModel {
@@ -53,7 +54,6 @@ extension HomeViewModel: HomeViewModelInterface{
     
     func startCountdown() {
         countdownTimer?.invalidate()
-        //view?.updateCountdownLabel(minutes: <#T##Int#>, seconds: <#T##Int#>)
         countdownTimer = Timer.scheduledTimer(timeInterval: 0.016, target: self, selector: #selector(updateCountdown), userInfo: nil, repeats: true)
         view?.startCircularAnimation(duration: TimeInterval(countdownMinutes * 60 + countdownSeconds))
         
@@ -89,6 +89,10 @@ extension HomeViewModel: HomeViewModelInterface{
             animationRunning = false
             countdownTimer?.invalidate()
         }
+    }
+    
+    func settingsButtonTapped(){
+        view?.performSegue(identifier: Constants.SegueIdentifiers.homeToSettings)
     }
     
 }
