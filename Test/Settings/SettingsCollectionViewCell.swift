@@ -23,7 +23,7 @@ class SettingsCollectionViewCell: UICollectionViewCell {
     
     @IBAction func switchTapped(_ sender: Any) {
         
-        print("asdfas")
+        
     }
     
     

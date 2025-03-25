@@ -12,5 +12,10 @@ struct Constants {
     struct SegueIdentifiers {
         static let loginToHome = "loginToHome"
         static let homeToSettings = "homeToSettings"
+        static let signUpToFill = "signUpToFill"
+    }
+    
+    struct Icons{
+        static let eyeSlash = "eye.slash"
     }
 }
