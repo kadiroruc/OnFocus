@@ -18,4 +18,8 @@ struct Constants {
     struct Icons{
         static let eyeSlash = "eye.slash"
     }
+    
+    struct CellIdentifiers{
+        static let personCell = "personCell"
+    }
 }

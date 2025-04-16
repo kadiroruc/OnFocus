@@ -91,3 +91,7 @@ class LoginViewController: UIViewController {
 extension LoginViewController: LoginViewInterface{
     
 }
+
+#Preview("LoginViewController"){
+    LoginViewController()
+}

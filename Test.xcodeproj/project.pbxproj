@@ -32,6 +32,8 @@
 		E90D77ED2D914D4F00C9EBF9 /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E90D77D92D914D4F00C9EBF9 /* Poppins-SemiBoldItalic.ttf */; };
 		E90D77EE2D914D4F00C9EBF9 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E90D77DA2D914D4F00C9EBF9 /* Poppins-Thin.ttf */; };
 		E90D77EF2D914D4F00C9EBF9 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E90D77DB2D914D4F00C9EBF9 /* Poppins-ThinItalic.ttf */; };
+		E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92681DB2DA9842A00138259 /* ProfileViewController.swift */; };
+		E92681DF2DA984DD00138259 /* DayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92681DE2DA984DD00138259 /* DayCell.swift */; };
 		E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5D2D53C807005012AB /* AppDelegate.swift */; };
 		E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5F2D53C807005012AB /* SceneDelegate.swift */; };
 		E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B612D53C807005012AB /* HomeViewController.swift */; };
@@ -48,6 +50,8 @@
 		E9E2CF792D805CD6007ABC93 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = E9E2CF782D805CD6007ABC93 /* DGCharts */; };
 		E9E2CF7B2D805CD6007ABC93 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E9E2CF7A2D805CD6007ABC93 /* DGChartsDynamic */; };
 		E9E2CF7E2D805D00007ABC93 /* ChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2CF7D2D805D00007ABC93 /* ChartViewController.swift */; };
+		E9EA79422D94331D00533B85 /* HomePersonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9EA79412D94331D00533B85 /* HomePersonCollectionViewCell.swift */; };
+		E9FE03B42DAA932100943E91 /* ViewControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FE03B32DAA932100943E91 /* ViewControllerPreview.swift */; };
 		E9FF40692D93272400FE25F0 /* FillProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FF40682D93272400FE25F0 /* FillProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +81,8 @@
 		E90D77D92D914D4F00C9EBF9 /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		E90D77DA2D914D4F00C9EBF9 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		E90D77DB2D914D4F00C9EBF9 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
+		E92681DB2DA9842A00138259 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		E92681DE2DA984DD00138259 /* DayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCell.swift; sourceTree = "<group>"; };
 		E98B6B5A2D53C807005012AB /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E98B6B5D2D53C807005012AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E98B6B5F2D53C807005012AB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +99,8 @@
 		E9E2CF6B2D7F2C48007ABC93 /* SettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModel.swift; sourceTree = "<group>"; };
 		E9E2CF752D805175007ABC93 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E9E2CF7D2D805D00007ABC93 /* ChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartViewController.swift; sourceTree = "<group>"; };
+		E9EA79412D94331D00533B85 /* HomePersonCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePersonCollectionViewCell.swift; sourceTree = "<group>"; };
+		E9FE03B32DAA932100943E91 /* ViewControllerPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerPreview.swift; sourceTree = "<group>"; };
 		E9FF40682D93272400FE25F0 /* FillProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -143,6 +151,15 @@
 			path = FillProfile;
 			sourceTree = "<group>";
 		};
+		E92681DD2DA9842E00138259 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				E92681DB2DA9842A00138259 /* ProfileViewController.swift */,
+				E92681DE2DA984DD00138259 /* DayCell.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		E98B6B512D53C807005012AB = {
 			isa = PBXGroup;
 			children = (
@@ -162,17 +179,18 @@
 		E98B6B5C2D53C807005012AB /* Test */ = {
 			isa = PBXGroup;
 			children = (
+				E98B6B5D2D53C807005012AB /* AppDelegate.swift */,
+				E98B6B5F2D53C807005012AB /* SceneDelegate.swift */,
 				E90D77F02D918A3000C9EBF9 /* FillProfile */,
 				E90D77DC2D914D4F00C9EBF9 /* Poppins */,
 				E9E2CF7C2D805CE0007ABC93 /* Chart */,
 				E9E2CF742D80515A007ABC93 /* TabBar */,
-				E98B6B5D2D53C807005012AB /* AppDelegate.swift */,
-				E98B6B5F2D53C807005012AB /* SceneDelegate.swift */,
 				E9E2CF722D7F34EA007ABC93 /* Common */,
 				E9E2CF712D7F348E007ABC93 /* SignUp */,
 				E9E2CF702D7F3485007ABC93 /* Login */,
 				E9E2CF6F2D7F3477007ABC93 /* Settings */,
 				E9E2CF6D2D7F3460007ABC93 /* Home */,
+				E92681DD2DA9842E00138259 /* Profile */,
 				E98B6B632D53C807005012AB /* Main.storyboard */,
 				E98B6B662D53C809005012AB /* Assets.xcassets */,
 				E98B6B682D53C80A005012AB /* LaunchScreen.storyboard */,
@@ -187,6 +205,7 @@
 			children = (
 				E9D058232D75F76E0003484C /* HomeViewModel.swift */,
 				E98B6B612D53C807005012AB /* HomeViewController.swift */,
+				E9EA79412D94331D00533B85 /* HomePersonCollectionViewCell.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -225,6 +244,7 @@
 				E90741772D7DBCA700E7599C /* Constants.swift */,
 				E90741732D7DA9A200E7599C /* UIViewExtension.swift */,
 				E9CF13362D79D48F00560B9C /* SeguePerformable.swift */,
+				E9FE03B32DAA932100943E91 /* ViewControllerPreview.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -344,6 +364,7 @@
 			files = (
 				E90741702D7DA49800E7599C /* LoginViewController.swift in Sources */,
 				E90741782D7DBCA700E7599C /* Constants.swift in Sources */,
+				E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */,
 				E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */,
 				E9E2CF762D805175007ABC93 /* TabBarController.swift in Sources */,
 				E9CF13372D79D48F00560B9C /* SeguePerformable.swift in Sources */,
@@ -351,11 +372,14 @@
 				E9E2CF682D7F211F007ABC93 /* SettingsCollectionViewCell.swift in Sources */,
 				E9BFA9C02D902C980009C90C /* OnboardingPageViewController.swift in Sources */,
 				E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */,
+				E92681DF2DA984DD00138259 /* DayCell.swift in Sources */,
 				E90741762D7DB60700E7599C /* SignUpViewController.swift in Sources */,
 				E90741722D7DA5D400E7599C /* LoginViewModel.swift in Sources */,
 				E9FF40692D93272400FE25F0 /* FillProfileViewController.swift in Sources */,
 				E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */,
 				E90741742D7DA9A200E7599C /* UIViewExtension.swift in Sources */,
+				E9EA79422D94331D00533B85 /* HomePersonCollectionViewCell.swift in Sources */,
+				E9FE03B42DAA932100943E91 /* ViewControllerPreview.swift in Sources */,
 				E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */,
 				E907417A2D7DE4FF00E7599C /* SettingsViewController.swift in Sources */,
 				E9E2CF6C2D7F2C48007ABC93 /* SettingsModel.swift in Sources */,

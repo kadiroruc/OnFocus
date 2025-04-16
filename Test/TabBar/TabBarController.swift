@@ -20,7 +20,7 @@ class TabBarController: UITabBarController {
     }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        print(item.title)
+        
     }
 
 }
