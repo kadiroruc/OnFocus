@@ -295,9 +295,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.CellIdentifiers.personCell, for: indexPath) as! HomePersonCollectionViewCell
         cell.layer.cornerRadius = 25
+        cell.clipsToBounds = true
         cell.layer.borderColor = UIColor.red.cgColor
         cell.layer.borderWidth = 5
         cell.contentMode = .scaleAspectFit
+        cell.profileImageView.image = UIImage(systemName: "person")
         return cell
     }
 }

@@ -17,6 +17,12 @@ struct Constants {
     
     struct Icons{
         static let eyeSlash = "eye.slash"
+        static let person = "person"
+        static let personFill = "person.fill"
+        static let clock = "clock"
+        static let clockFill = "clock.fill"
+        static let personBadgePlus = "person.badge.plus"
+        static let ellipsis = "ellipsis"
     }
     
     struct CellIdentifiers{

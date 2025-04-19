@@ -7,30 +7,36 @@
 import UIKit
 
 class DayCell: UICollectionViewCell {
-    let circleView = UIView()
-    let fireIcon = UIImageView()
+    let circleView:UIView = {
+        let circleView = UIView()
+        circleView.layer.cornerRadius = 14
+        circleView.clipsToBounds = true
+        circleView.translatesAutoresizingMaskIntoConstraints = false
+        return circleView
+    }()
+    let fireIcon:UIImageView = {
+        let fireIcon = UIImageView()
+        fireIcon.image = UIImage(systemName: "flame.fill")
+        fireIcon.tintColor = .red
+        fireIcon.isHidden = true
+        fireIcon.translatesAutoresizingMaskIntoConstraints = false
+        return fireIcon
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        // Circle
-        circleView.layer.cornerRadius = 11
-        circleView.clipsToBounds = true
+
         contentView.addSubview(circleView)
-        circleView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             circleView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             circleView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            circleView.widthAnchor.constraint(equalToConstant: 22),
-            circleView.heightAnchor.constraint(equalToConstant: 22),
+            circleView.widthAnchor.constraint(equalToConstant: 28),
+            circleView.heightAnchor.constraint(equalToConstant: 28),
         ])
         
-        // Fire Icon
-        fireIcon.image = UIImage(systemName: "flame.fill") // veya özel emoji/icon
-        fireIcon.tintColor = .red
-        fireIcon.isHidden = true
         contentView.addSubview(fireIcon)
-        fireIcon.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             fireIcon.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             fireIcon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)

@@ -72,10 +72,6 @@
                                 <buttonConfiguration key="configuration" style="plain" title="Start">
                                     <fontDescription key="titleFontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
                                 </buttonConfiguration>
-                                <connections>
-                                    <action selector="signUpButtonTapped:" destination="tY3-yV-QpH" eventType="touchUpInside" id="AhP-rr-WEn"/>
-                                    <action selector="startButtonTapped:" destination="uhi-Du-vI8" eventType="touchUpInside" id="omU-62-7K0"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ion-LN-Zx3">
                                 <rect key="frame" x="29" y="763" width="160" height="50"/>
@@ -86,24 +82,12 @@
                                 <buttonConfiguration key="configuration" style="plain" title="Skip">
                                     <fontDescription key="titleFontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
                                 </buttonConfiguration>
-                                <connections>
-                                    <action selector="signUpButtonTapped:" destination="tY3-yV-QpH" eventType="touchUpInside" id="cu7-9H-aRi"/>
-                                    <action selector="skipButtonTapped:" destination="uhi-Du-vI8" eventType="touchUpInside" id="Czb-zG-Ais"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="siC-xw-9yV"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="Zdw-GX-2AN"/>
-                    <connections>
-                        <outlet property="changeProfileButton" destination="pp1-ec-rlw" id="uYD-dB-SlL"/>
-                        <outlet property="nameTextField" destination="bsb-o9-YMC" id="OPt-DU-rez"/>
-                        <outlet property="nicknameTextField" destination="aGk-Rg-Wo6" id="OYk-v4-RbR"/>
-                        <outlet property="profileImageView" destination="59S-w6-TZY" id="HA0-FZ-R0H"/>
-                        <outlet property="skipButton" destination="Ion-LN-Zx3" id="7zV-v8-lRI"/>
-                        <outlet property="startButton" destination="oIM-Y7-ZcK" id="q2n-F1-5E7"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T8a-ry-rHh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -166,9 +150,6 @@
                                             </subviews>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="50" height="50"/>
-                                        <connections>
-                                            <outlet property="profileImageView" destination="OF2-qh-dNW" id="Shf-yp-pKG"/>
-                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -226,10 +207,10 @@
             </objects>
             <point key="canvasLocation" x="2574.8091603053435" y="1500.7042253521126"/>
         </scene>
-        <!--Settings View Controller-->
+        <!--View Controller-->
         <scene sceneID="bBs-Se-007">
             <objects>
-                <viewController id="Ws8-D9-VRY" customClass="SettingsViewController" customModule="Test" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Ws8-D9-VRY" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YT7-F9-kej">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -270,9 +251,6 @@
                                                         <constraint firstAttribute="height" constant="31" id="E7N-3V-aj2"/>
                                                         <constraint firstAttribute="width" constant="47" id="v0b-Kg-I1R"/>
                                                     </constraints>
-                                                    <connections>
-                                                        <action selector="switchTapped:" destination="zID-fu-sIW" eventType="valueChanged" id="1AI-DT-a5P"/>
-                                                    </connections>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -289,11 +267,6 @@
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="352" height="50"/>
-                                        <connections>
-                                            <outlet property="imageView" destination="ctG-su-toI" id="lLF-mK-3l7"/>
-                                            <outlet property="label" destination="gAp-Zp-9om" id="qdB-G4-zfB"/>
-                                            <outlet property="switchButton" destination="dKq-6z-boI" id="fgU-cs-j4K"/>
-                                        </connections>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
@@ -308,9 +281,6 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="iko-2W-0O0"/>
-                    <connections>
-                        <outlet property="collectionView" destination="dfV-jD-vUh" id="NAz-r2-1br"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z5U-0m-fUZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -373,10 +343,10 @@
             </objects>
             <point key="canvasLocation" x="-430" y="-1041"/>
         </scene>
-        <!--Login View Controller-->
+        <!--View Controller-->
         <scene sceneID="k6k-Pc-I7C">
             <objects>
-                <viewController id="UXm-qr-efe" customClass="LoginViewController" customModule="Test" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="UXm-qr-efe" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cLZ-LK-Dym">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -390,7 +360,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Here? " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wSl-a4-y63">
-                                <rect key="frame" x="112" y="822" width="88.333333333333314" height="22.666666666666629"/>
+                                <rect key="frame" x="112" y="824" width="88.333333333333314" height="22.666666666666629"/>
                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
                                 <color key="textColor" red="0.62352941176470589" green="0.62352941176470589" blue="0.62352941176470589" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -414,10 +384,6 @@
                                 <buttonConfiguration key="configuration" style="plain" title="Sign Up">
                                     <fontDescription key="titleFontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
                                 </buttonConfiguration>
-                                <connections>
-                                    <action selector="registerButtonTapped:" destination="UXm-qr-efe" eventType="touchUpInside" id="KkR-9h-jij"/>
-                                    <segue destination="tY3-yV-QpH" kind="presentation" modalPresentationStyle="fullScreen" id="NT0-ZX-hET"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login to your Account" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FH1-ZF-OUm">
                                 <rect key="frame" x="29" y="90" width="335" height="117.66666666666669"/>
@@ -474,9 +440,6 @@
                                 <color key="tintColor" systemColor="systemRedColor"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="square" catalog="system"/>
-                                <connections>
-                                    <action selector="checkBoxTapped:" destination="UXm-qr-efe" eventType="touchUpInside" id="xV9-RN-iPp"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Udu-cX-HSf">
                                 <rect key="frame" x="151" y="418" width="120" height="22.666666666666686"/>
@@ -500,9 +463,6 @@
                                 <color key="tintColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="eye.slash" catalog="system" imagePadding="0.0"/>
-                                <connections>
-                                    <action selector="showPasswordButtonTapped:" destination="UXm-qr-efe" eventType="touchUpInside" id="Wpf-n9-gvC"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ONK-ZG-Oze"/>
@@ -545,30 +505,21 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="tFq-hx-4Wk"/>
-                    <connections>
-                        <outlet property="checkBox" destination="nxO-j0-Pop" id="VmW-U9-h43"/>
-                        <outlet property="emailIconView" destination="D2W-MJ-gEG" id="pDO-ab-nOQ"/>
-                        <outlet property="emailTextField" destination="aRa-W9-tLN" id="EPC-cC-Cmf"/>
-                        <outlet property="loginButton" destination="sYk-jW-npo" id="wpk-k1-fzG"/>
-                        <outlet property="passwordIconView" destination="ySN-1T-4f6" id="Hk4-Eg-t45"/>
-                        <outlet property="passwordTextField" destination="vko-ja-YRV" id="oKj-Ca-5CB"/>
-                        <outlet property="showPasswordButton" destination="fUB-lS-VOI" id="vaa-lu-ydo"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zST-YE-mfX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1489" y="-300"/>
         </scene>
-        <!--Sign Up View Controller-->
+        <!--View Controller-->
         <scene sceneID="Ynw-3A-kXB">
             <objects>
-                <viewController id="tY3-yV-QpH" customClass="SignUpViewController" customModule="Test" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="tY3-yV-QpH" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZTr-sQ-GEM">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vw8-Qv-gov">
-                                <rect key="frame" x="29" y="268" width="335" height="50"/>
+                                <rect key="frame" x="29" y="327" width="335" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="kZL-gI-RcX"/>
                                 </constraints>
@@ -576,7 +527,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jo1-qM-UyD">
-                                <rect key="frame" x="29" y="474.66666666666669" width="335" height="50.000000000000057"/>
+                                <rect key="frame" x="29" y="533.66666666666663" width="335" height="50"/>
                                 <color key="backgroundColor" systemColor="systemRedColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="slj-Ic-yEr"/>
@@ -586,23 +537,20 @@
                                 <buttonConfiguration key="configuration" style="plain" title="Sign up">
                                     <fontDescription key="titleFontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
                                 </buttonConfiguration>
-                                <connections>
-                                    <action selector="signUpButtonTapped:" destination="tY3-yV-QpH" eventType="touchUpInside" id="4ho-OK-qJd"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create your Account" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vcy-NA-s1G">
-                                <rect key="frame" x="29" y="90" width="335" height="117.66666666666669"/>
+                                <rect key="frame" x="29" y="149" width="335" height="117.66666666666669"/>
                                 <fontDescription key="fontDescription" name="Poppins-SemiBold" family="Poppins" pointSize="42"/>
                                 <color key="textColor" red="0.1333333333" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="alY-m9-d7M">
-                                <rect key="frame" x="29" y="338" width="335" height="50"/>
+                                <rect key="frame" x="29" y="397" width="335" height="50"/>
                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="whs-dh-zEs">
-                                <rect key="frame" x="29" y="272" width="40" height="40"/>
+                                <rect key="frame" x="29" y="331" width="40" height="40"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="envelope.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="eRU-1O-UTr">
                                         <rect key="frame" x="18" y="9.3333333333333339" width="22" height="22"/>
@@ -618,7 +566,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hB0-pu-Ak5">
-                                <rect key="frame" x="29" y="342" width="40" height="39.666666666666686"/>
+                                <rect key="frame" x="29" y="401" width="40" height="39.666666666666686"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="vh7-Fn-cmX">
                                         <rect key="frame" x="18" y="9.0000000000000018" width="22" height="21.666666666666671"/>
@@ -634,7 +582,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mgn-K2-pBP">
-                                <rect key="frame" x="128" y="422" width="15" height="15"/>
+                                <rect key="frame" x="128" y="481" width="15" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="15" id="Pik-fJ-QUE"/>
                                     <constraint firstAttribute="height" constant="15" id="zEI-nd-r2m"/>
@@ -642,19 +590,15 @@
                                 <color key="tintColor" systemColor="systemRedColor"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="square" catalog="system"/>
-                                <connections>
-                                    <action selector="checkBoxTapped:" destination="UXm-qr-efe" eventType="touchUpInside" id="9UC-pK-ojh"/>
-                                    <action selector="checkBoxTapped:" destination="tY3-yV-QpH" eventType="touchUpInside" id="gip-Y1-xS6"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cH1-qw-2Zl">
-                                <rect key="frame" x="151" y="418" width="120" height="22.666666666666686"/>
+                                <rect key="frame" x="151" y="477" width="120" height="22.666666666666686"/>
                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SIy-xz-SDB">
-                                <rect key="frame" x="334" y="352" width="22" height="22"/>
+                                <rect key="frame" x="334" y="411" width="22" height="22"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="22" id="2F7-nY-H3Y"/>
                                     <constraint firstAttribute="height" constant="22" id="FS2-zC-jn4"/>
@@ -662,28 +606,20 @@
                                 <color key="tintColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="eye.slash" catalog="system" imagePadding="0.0"/>
-                                <connections>
-                                    <action selector="showPasswordButtonTapped:" destination="tY3-yV-QpH" eventType="touchUpInside" id="BpT-au-Gps"/>
-                                    <action selector="showPasswordButtonTapped:" destination="UXm-qr-efe" eventType="touchUpInside" id="xR1-O7-ZM7"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Have an account?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17M-Yh-DWb">
-                                <rect key="frame" x="85.999999999999986" y="802" width="145.66666666666663" height="22.666666666666629"/>
+                                <rect key="frame" x="85.999999999999986" y="770" width="145.66666666666663" height="22.666666666666629"/>
                                 <fontDescription key="fontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
                                 <color key="textColor" red="0.62352941179999999" green="0.62352941179999999" blue="0.62352941179999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qmX-GL-MS7">
-                                <rect key="frame" x="226" y="795.33333333333337" width="80" height="36.666666666666629"/>
+                                <rect key="frame" x="226" y="761.33333333333337" width="80" height="36.666666666666629"/>
                                 <color key="tintColor" systemColor="systemRedColor"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Sign in">
                                     <fontDescription key="titleFontDescription" name="Poppins-Regular" family="Poppins" pointSize="16"/>
                                 </buttonConfiguration>
-                                <connections>
-                                    <action selector="loginButtonTapped:" destination="tY3-yV-QpH" eventType="touchUpInside" id="YN0-oP-Wt0"/>
-                                    <action selector="registerButtonTapped:" destination="UXm-qr-efe" eventType="touchUpInside" id="iPF-JO-yIh"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="V7D-4n-tnb"/>
@@ -724,16 +660,6 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="00c-OB-o2b"/>
-                    <connections>
-                        <outlet property="checkBox" destination="Mgn-K2-pBP" id="60i-Km-zdh"/>
-                        <outlet property="emailIconView" destination="whs-dh-zEs" id="xka-Sg-Y9s"/>
-                        <outlet property="emailTextField" destination="Vw8-Qv-gov" id="kdc-ne-fT9"/>
-                        <outlet property="passwordIconView" destination="hB0-pu-Ak5" id="LDq-dT-70r"/>
-                        <outlet property="passwordTextField" destination="alY-m9-d7M" id="OMr-th-AIB"/>
-                        <outlet property="showPasswordButton" destination="SIy-xz-SDB" id="fjc-ir-7U6"/>
-                        <outlet property="signUpButton" destination="jo1-qM-UyD" id="Ia9-gK-G70"/>
-                        <segue destination="uhi-Du-vI8" kind="presentation" identifier="signUpToFill" modalPresentationStyle="fullScreen" id="aBc-UQ-mS7"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xvi-AQ-vqq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -813,9 +739,6 @@
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="lessthan" catalog="system"/>
-                                        <connections>
-                                            <action selector="leftTimeButtonTapped:" destination="L9X-7v-bLz" eventType="touchUpInside" id="yUp-Vn-TnA"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zt4-0m-bLJ">
                                         <rect key="frame" x="309" y="7" width="44" height="34.333333333333336"/>
@@ -824,9 +747,6 @@
                                         </constraints>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="greaterthan" catalog="system"/>
-                                        <connections>
-                                            <action selector="rightTimeButtonTapped:" destination="L9X-7v-bLz" eventType="touchUpInside" id="WoV-rL-eFi"/>
-                                        </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wri-Ep-Yxe">
                                         <rect key="frame" x="8" y="56.333333333333371" width="345" height="1"/>
@@ -973,23 +893,8 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Points: 2634723" id="4lj-tM-3Wa">
-                        <barButtonItem key="rightBarButtonItem" image="person.badge.plus" catalog="system" id="3JC-Bz-3DT">
-                            <connections>
-                                <action selector="addFriendBarButtonTapped:" destination="L9X-7v-bLz" id="ejr-4X-Nnl"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="person.badge.plus" catalog="system" id="3JC-Bz-3DT"/>
                     </navigationItem>
-                    <connections>
-                        <outlet property="averageWorkTimeLabel" destination="uNF-rh-i2I" id="MjW-12-fgY"/>
-                        <outlet property="collectionView" destination="tsD-UQ-PgJ" id="pOa-p4-iFz"/>
-                        <outlet property="leftTimeButton" destination="UFM-ed-WOy" id="gjG-MR-nBp"/>
-                        <outlet property="nicknameLabel" destination="Wj8-I1-JjP" id="WRi-T8-gHT"/>
-                        <outlet property="profileImageView" destination="fMN-IP-U0e" id="AGu-d8-HEQ"/>
-                        <outlet property="rightTimeButton" destination="Zt4-0m-bLJ" id="fXt-pw-In0"/>
-                        <outlet property="streakDayLabel" destination="uNp-BS-Pqt" id="MzG-FX-PkE"/>
-                        <outlet property="streakView" destination="E6c-bL-bGf" id="yLk-CY-UHL"/>
-                        <outlet property="timeLabel" destination="uBd-Oi-jOG" id="rBn-xX-5Hh"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Jq-aw-Wtu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1203,13 +1108,13 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray4Color">
-            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.81960784313725488" green="0.81960784313725488" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

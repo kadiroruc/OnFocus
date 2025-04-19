@@ -182,7 +182,6 @@
 				E98B6B5D2D53C807005012AB /* AppDelegate.swift */,
 				E98B6B5F2D53C807005012AB /* SceneDelegate.swift */,
 				E90D77F02D918A3000C9EBF9 /* FillProfile */,
-				E90D77DC2D914D4F00C9EBF9 /* Poppins */,
 				E9E2CF7C2D805CE0007ABC93 /* Chart */,
 				E9E2CF742D80515A007ABC93 /* TabBar */,
 				E9E2CF722D7F34EA007ABC93 /* Common */,
@@ -241,6 +240,7 @@
 		E9E2CF722D7F34EA007ABC93 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				E90D77DC2D914D4F00C9EBF9 /* Poppins */,
 				E90741772D7DBCA700E7599C /* Constants.swift */,
 				E90741732D7DA9A200E7599C /* UIViewExtension.swift */,
 				E9CF13362D79D48F00560B9C /* SeguePerformable.swift */,

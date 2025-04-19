@@ -7,38 +7,48 @@
 
 import UIKit
 
-protocol SettingsViewInterface: AnyObject{
-    
+protocol SettingsViewInterface: AnyObject {
+    // Gerekirse buraya fonksiyonlar eklenebilir
 }
 
 class SettingsViewController: UIViewController {
-
-    @IBOutlet var collectionView: UICollectionView!
+    
     private lazy var viewModel = SettingsViewModel()
+    
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 10
+        layout.itemSize = CGSize(width: view.frame.width * 0.9, height: 50)
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = .clear
+        cv.delegate = self
+        cv.dataSource = self
+        cv.register(SettingsCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        return cv
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        view.backgroundColor = .white
         title = "Settings"
-        setupCollectionView()
-
+        
+        setupLayout()
     }
     
-    func setupCollectionView(){
-
-        collectionView.delegate = self
-        collectionView.dataSource = self
+    private func setupLayout() {
+        view.addSubview(collectionView)
         
-//        let layout = UICollectionViewFlowLayout()
-//        
-//        // itemSize'ı buradan ayarlıyoruz
-//        layout.itemSize = CGSize(width: self.view.frame.width * 0.9, height: 50)
-//        
-//        // collectionView'e layout'u atama
-//        collectionView.collectionViewLayout = layout
-        
-        //collectionView.register(SettingsCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
     }
-
 }
 
 extension SettingsViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
@@ -71,4 +81,9 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
     }
     
     
+}
+
+
+#Preview("SettingsViewController"){
+    SettingsViewController()
 }

@@ -22,17 +22,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let tabBarController = UITabBarController()
         
-        // Tab 1
+        let loginVC = LoginViewController()
+        let signUpVC = SignUpViewController()
+        
         let homeVC = HomeViewController()
         let homeNav = UINavigationController(rootViewController: homeVC)
-        homeNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: "clock"), tag: 0)
+        homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "clock"), tag: 0)
         homeNav.tabBarItem.selectedImage = UIImage(systemName: "clock.fill")
         
+        let profileNav = UINavigationController(rootViewController: ProfileViewController())
+        profileNav.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: Constants.Icons.person), tag: 1)
+        profileNav.tabBarItem.selectedImage = UIImage(systemName: Constants.Icons.personFill)
+        
+//        let statisticsNav = UINavigationController(rootViewController: UIViewController())
+//        statisticsNav.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: Constants.Icons.person), tag: 2)
+        
         // TabBarController'a navları ekle
-        tabBarController.viewControllers = [homeNav]
+        tabBarController.viewControllers = [homeNav, profileNav]
         
         // Window ayarları
-        window.rootViewController = tabBarController
+        window.rootViewController = FillProfileViewController()
         window.makeKeyAndVisible()
         self.window = window
     }
