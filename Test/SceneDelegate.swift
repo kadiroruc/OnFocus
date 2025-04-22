@@ -22,26 +22,44 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let tabBarController = UITabBarController()
         
-        let loginVC = LoginViewController()
-        let signUpVC = SignUpViewController()
+//        let loginVC = LoginViewController()
+//        let signUpVC = SignUpViewController()
         
-        let homeVC = HomeViewController()
-        let homeNav = UINavigationController(rootViewController: homeVC)
-        homeNav.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "clock"), tag: 0)
-        homeNav.tabBarItem.selectedImage = UIImage(systemName: "clock.fill")
+        let homeNav = UINavigationController(rootViewController: HomeViewController())
+        homeNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.clockArrowCirclepath), tag: 0)
         
-        let profileNav = UINavigationController(rootViewController: ProfileViewController())
-        profileNav.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: Constants.Icons.person), tag: 1)
+        let profileVC = ProfileViewController()
+        profileVC.title = "Profile"
+        let profileNav = UINavigationController(rootViewController: profileVC)
+        profileNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.person), tag: 1)
         profileNav.tabBarItem.selectedImage = UIImage(systemName: Constants.Icons.personFill)
         
-//        let statisticsNav = UINavigationController(rootViewController: UIViewController())
-//        statisticsNav.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: Constants.Icons.person), tag: 2)
+        
+        
+        let statisticsNav = UINavigationController(rootViewController: StatisticsViewController())
+        statisticsNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.chartLineUptrendXyaxis), tag: 2)
+        
+        let notificationsVC = NotificationsViewController()
+        notificationsVC.title = "Notifications"
+        let notificationsNav = UINavigationController(rootViewController: notificationsVC)
+        notificationsNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.bell), tag: 2)
+        notificationsNav.tabBarItem.selectedImage = UIImage(systemName: Constants.Icons.bellFill)
+        
+        let leaderboardVC = LeaderboardViewController()
+        leaderboardVC.title = "Leaderboard"
+        let leaderboardNav = UINavigationController(rootViewController: leaderboardVC)
+        leaderboardNav.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: Constants.Icons.person2), tag: 2)
+        leaderboardNav.tabBarItem.selectedImage = UIImage(systemName: Constants.Icons.person2Fill)
+        
         
         // TabBarController'a navları ekle
-        tabBarController.viewControllers = [homeNav, profileNav]
+        tabBarController.viewControllers = [leaderboardNav,statisticsNav,homeNav,notificationsNav, profileNav]
+        tabBarController.tabBar.tintColor = .black
+//        tabBarController.tabBar.isTranslucent = false
+//        tabBarController.tabBar.backgroundColor = .systemGray6
         
         // Window ayarları
-        window.rootViewController = FillProfileViewController()
+        window.rootViewController = tabBarController
         window.makeKeyAndVisible()
         self.window = window
     }

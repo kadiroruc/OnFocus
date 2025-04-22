@@ -19,10 +19,16 @@ struct Constants {
         static let eyeSlash = "eye.slash"
         static let person = "person"
         static let personFill = "person.fill"
-        static let clock = "clock"
+        static let clockArrowCirclepath = "clock.arrow.circlepath"
         static let clockFill = "clock.fill"
-        static let personBadgePlus = "person.badge.plus"
+        static let person2Fill = "person.2.fill"
+        static let person2 = "person.2"
+        static let chartLineUptrendXyaxis = "chart.line.uptrend.xyaxis"
+        static let chartFill = "chart.fill"
+        static let bell = "bell"
+        static let bellFill = "bell.fill"
         static let ellipsis = "ellipsis"
+        static let personBadgePlus = "person.badge.plus"
     }
     
     struct CellIdentifiers{
