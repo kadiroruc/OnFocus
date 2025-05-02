@@ -12,7 +12,7 @@
 
 import UIKit
 
-protocol HomeViewInterface: AnyObject, SeguePerformable {
+protocol HomeViewInterface: AnyObject {
     func updateCountdownLabel(minutes: Int, seconds: Int)
     func startCircularAnimation(duration: TimeInterval)
     func pauseCircularAnimation()
@@ -27,6 +27,8 @@ final class HomeViewController: UIViewController {
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 70, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor(hex: "333333", alpha: 1)
+        label.textAlignment = .center
         return label
     }()
 
@@ -37,6 +39,7 @@ final class HomeViewController: UIViewController {
         layout.itemSize = CGSize(width: 50, height: 50)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .clear
         return collectionView
     }()
 
@@ -47,7 +50,7 @@ final class HomeViewController: UIViewController {
         let config = UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)
         let image = UIImage(systemName: "play", withConfiguration: config)
         button.setImage(image, for: .normal)
-        button.tintColor = .red
+        button.tintColor = UIColor(hex: "333333", alpha: 1)
         return button
     }()
 
@@ -58,7 +61,7 @@ final class HomeViewController: UIViewController {
         button.setImage(image, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .red
+        button.tintColor = UIColor(hex: "333333", alpha: 1)
         return button
     }()
     
@@ -66,15 +69,17 @@ final class HomeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 16)
-        label.textColor = UIColor(red: 142/256, green: 142/256, blue: 142/256, alpha: 1)
+        label.textColor = UIColor(hex: "444444", alpha: 1)
+        label.textAlignment = .center
         return label
     }()
 
     private let sessionsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(red: 142/256, green: 142/256, blue: 142/256, alpha: 1)
+        label.textColor = UIColor(hex: "444444", alpha: 1)
         label.font = .systemFont(ofSize: 16)
+        label.textAlignment = .center
         return label
     }()
     
@@ -89,16 +94,10 @@ final class HomeViewController: UIViewController {
         label.layer.cornerRadius = 13
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = .red
+        label.backgroundColor = UIColor(hex: "#FF8A5C", alpha: 1)
         label.textColor = .white
         label.textAlignment = .center
         return label
-    }()
-    
-    private let settingsBarButtonItem: UIBarButtonItem = {
-        let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: HomeViewController.self, action: #selector(gearButtonTapped))
-        barButtonItem.tintColor = .black
-        return barButtonItem
     }()
     
     
@@ -109,6 +108,7 @@ final class HomeViewController: UIViewController {
     private var isCirclePathCreated = false
 
     var pausedTime: CFTimeInterval = 0
+    private var isContainerFullScreen = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -116,9 +116,8 @@ final class HomeViewController: UIViewController {
         viewModel.viewDidLoad()
         setupUI()
         setupLayout()
-        listCollectionView.delegate = self
-        listCollectionView.dataSource = self
-        listCollectionView.register(HomePersonCollectionViewCell.self, forCellWithReuseIdentifier: Constants.CellIdentifiers.personCell)
+        setupCircleContainerTapGesture()
+
         
         onlineLabel.text = "13423 Online"
         sessionsLabel.text = "1 of 4 Session"
@@ -126,7 +125,15 @@ final class HomeViewController: UIViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = .systemBackground
+        listCollectionView.delegate = self
+        listCollectionView.dataSource = self
+        listCollectionView.register(HomePersonCollectionViewCell.self, forCellWithReuseIdentifier: Constants.CellIdentifiers.personCell)
+        
+        
+        let settingsBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(gearButtonTapped))
+        settingsBarButtonItem.tintColor = .black
+        navigationItem.rightBarButtonItem = settingsBarButtonItem
+        
         view.addSubview(timeLabel)
         view.addSubview(listCollectionView)
         circleContainer.addSubview(playButton)
@@ -138,8 +145,6 @@ final class HomeViewController: UIViewController {
 
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
-        
-        navigationItem.rightBarButtonItem = settingsBarButtonItem
 
     }
     
@@ -151,22 +156,31 @@ final class HomeViewController: UIViewController {
                 createMovingCircle()
                 isCirclePathCreated = true
             }
+        
+        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
     }
 
     private func setupLayout() {
         NSLayoutConstraint.activate([
             onlineLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             onlineLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            onlineLabel.widthAnchor.constraint(equalToConstant: 120),
+            onlineLabel.heightAnchor.constraint(equalToConstant: 20),
+            
             sessionsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             sessionsLabel.topAnchor.constraint(equalTo: onlineLabel.bottomAnchor, constant: 80),
+            sessionsLabel.widthAnchor.constraint(equalToConstant: 120),
+            sessionsLabel.heightAnchor.constraint(equalToConstant: 20),
+            
+            timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            timeLabel.topAnchor.constraint(equalTo: sessionsLabel.bottomAnchor, constant: 20),
+            timeLabel.widthAnchor.constraint(equalToConstant: 210),
+            timeLabel.heightAnchor.constraint(equalToConstant: 60),
             
             circleContainer.centerXAnchor.constraint(equalTo: timeLabel.centerXAnchor),
             circleContainer.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
             circleContainer.widthAnchor.constraint(equalToConstant: 260),
             circleContainer.heightAnchor.constraint(equalTo: circleContainer.widthAnchor),
-            
-            timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            timeLabel.topAnchor.constraint(equalTo: sessionsLabel.bottomAnchor, constant: 20),
 
             playButton.centerXAnchor.constraint(equalTo: circleContainer.centerXAnchor),
             playButton.centerYAnchor.constraint(equalTo: circleContainer.centerYAnchor,constant: 75),
@@ -174,7 +188,9 @@ final class HomeViewController: UIViewController {
             playButton.heightAnchor.constraint(equalToConstant: 52),
 
             cancelButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -48),
-            cancelButton.topAnchor.constraint(equalTo: onlineLabel.safeAreaLayoutGuide.bottomAnchor, constant: 24),
+            cancelButton.topAnchor.constraint(equalTo: circleContainer.topAnchor),
+            cancelButton.widthAnchor.constraint(equalToConstant: 38),
+            cancelButton.heightAnchor.constraint(equalToConstant: 38),
 
             workingLabel.topAnchor.constraint(equalTo: circleContainer.bottomAnchor, constant: 50),
             workingLabel.centerXAnchor.constraint(equalTo:view.centerXAnchor),
@@ -198,10 +214,11 @@ final class HomeViewController: UIViewController {
         )
 
         circleLayer.path = circularPath.cgPath
-        circleLayer.strokeColor = UIColor.systemRed.cgColor
+        circleLayer.strokeColor = UIColor(hex: "#FF8A5C", alpha: 1).cgColor
         circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.lineWidth = 10
+        circleLayer.lineWidth = 12
         circleLayer.strokeEnd = 1
+
 
         circleContainer.layer.addSublayer(circleLayer)
 
@@ -209,11 +226,11 @@ final class HomeViewController: UIViewController {
 
     private func createMovingCircle() {
         let centerPoint = CGPoint(x: 130, y: 130)
-        movingCircle.frame = CGRect(x: centerPoint.x - 10, y: centerPoint.y - 130 - 10, width: 24, height: 24)
-        movingCircle.layer.cornerRadius = 12
+        movingCircle.frame = CGRect(x: centerPoint.x - 14, y: centerPoint.y - 130 - 14, width: 28, height: 28)
+        movingCircle.layer.cornerRadius = 14
         movingCircle.backgroundColor = .white
         movingCircle.layer.borderWidth = 5
-        movingCircle.layer.borderColor = UIColor.systemRed.cgColor
+        movingCircle.layer.borderColor = UIColor(hex: "#333333", alpha: 1).cgColor
         circleContainer.addSubview(movingCircle)
     }
 
@@ -227,6 +244,7 @@ final class HomeViewController: UIViewController {
     
     @objc private func gearButtonTapped() {
         //viewModel.gearButtonTapped()
+        navigationController?.pushViewController(SettingsViewController(), animated: true)
     }
 }
 
@@ -285,6 +303,77 @@ extension HomeViewController: HomeViewInterface {
         let buttonImage = isPaused ?         UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)) :         UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold))
         playButton.setImage(buttonImage, for: .normal)
     }
+    
+    private func setupCircleContainerTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(circleContainerTapped(_:)))
+        
+        circleContainer.isUserInteractionEnabled = true
+        circleContainer.addGestureRecognizer(tapGesture)
+    }
+
+    @objc private func circleContainerTapped(_ gesture: UITapGestureRecognizer) {
+        let locationInLabel = gesture.location(in: timeLabel)
+        
+        
+        if timeLabel.bounds.contains(locationInLabel) {
+            listCollectionView.isHidden.toggle()
+            if isContainerFullScreen{
+                
+                let timeLabelConstraints = timeLabel.allAttachedConstraints()
+                NSLayoutConstraint.deactivate(timeLabelConstraints)
+
+                let collectionViewConstraints = listCollectionView.allAttachedConstraints()
+                NSLayoutConstraint.deactivate(collectionViewConstraints)
+
+                let playButtonConstraints = playButton.allAttachedConstraints()
+                NSLayoutConstraint.deactivate(playButtonConstraints)
+
+                let cancelButtonConstraints = cancelButton.allAttachedConstraints()
+                NSLayoutConstraint.deactivate(cancelButtonConstraints)
+
+                let onlineLabelConstraints = onlineLabel.allAttachedConstraints()
+                NSLayoutConstraint.deactivate(onlineLabelConstraints)
+
+                let sessionsLabelConstraints = sessionsLabel.allAttachedConstraints()
+                NSLayoutConstraint.deactivate(sessionsLabelConstraints)
+
+                let circleContainerConstraints = circleContainer.allAttachedConstraints()
+                NSLayoutConstraint.deactivate(circleContainerConstraints)
+
+                let workingLabelConstraints = workingLabel.allAttachedConstraints()
+                NSLayoutConstraint.deactivate(workingLabelConstraints)
+                
+                
+                setupLayout()
+                
+            }else{
+                NSLayoutConstraint.activate([
+                    
+                    sessionsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: -60),
+                    
+                    timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                    onlineLabel.centerYAnchor.constraint(equalTo: circleContainer.centerYAnchor,constant: -170),
+                    
+                    cancelButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -48),
+                    cancelButton.topAnchor.constraint(equalTo: circleContainer.topAnchor),
+                    cancelButton.widthAnchor.constraint(equalToConstant: 38),
+                    cancelButton.heightAnchor.constraint(equalToConstant: 38),
+
+                ])
+                
+            }
+            
+            isContainerFullScreen.toggle()
+
+            
+            UIView.animate(withDuration: 0.3) {
+                print("aa")
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
 }
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -296,10 +385,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.CellIdentifiers.personCell, for: indexPath) as! HomePersonCollectionViewCell
         cell.layer.cornerRadius = 25
         cell.clipsToBounds = true
-        cell.layer.borderColor = UIColor.red.cgColor
+        cell.layer.borderColor = UIColor(hex: "#70C1B3").cgColor
         cell.layer.borderWidth = 5
         cell.contentMode = .scaleAspectFit
-        cell.profileImageView.image = UIImage(systemName: "person")
+//        cell.profileImageView.image = UIImage(systemName: "person")
         return cell
     }
 }

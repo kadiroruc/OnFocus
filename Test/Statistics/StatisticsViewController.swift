@@ -13,8 +13,8 @@ class StatisticsViewController: UIViewController {
     private let oneDayButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("1D", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(hex: "#F0D8D3")
+        button.setTitleColor(UIColor(hex: "#333333"), for: .normal)
+        button.backgroundColor = UIColor(hex: "#FEF6F0")
         button.layer.cornerRadius = 17
         button.titleLabel?.font = .systemFont(ofSize: 17)
         button.addTarget(self, action: #selector(oneDayButtonTapped), for: .touchUpInside)
@@ -72,20 +72,113 @@ class StatisticsViewController: UIViewController {
         stack.isLayoutMarginsRelativeArrangement = true
         stack.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         stack.layer.cornerRadius = 20
-        stack.backgroundColor = UIColor(hex: "d2a197")
+        stack.backgroundColor = UIColor(hex: "#FFB570")
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
 
 
-    let chartView = LineChartView()
+    private let chartView: LineChartView = {
+        let chartView =  LineChartView()
+        chartView.backgroundColor = .clear
+        chartView.xAxis.labelPosition = .bottom
+        chartView.xAxis.labelTextColor = UIColor(hex: "#70C1B3", alpha: 1)
+        chartView.leftAxis.labelTextColor = UIColor(hex: "#70C1B3", alpha: 1)
+        chartView.rightAxis.enabled = false
+        chartView.legend.enabled = true
+        chartView.xAxis.drawGridLinesEnabled = false
+        chartView.leftAxis.drawGridLinesEnabled = false
+        chartView.translatesAutoresizingMaskIntoConstraints = false
+        
+
+        let marker = BalloonMarker()
+        marker.chartView = chartView
+        chartView.marker = marker
+        
+        return chartView
+    }()
+    
+    private let statisticsContainerView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.backgroundColor = UIColor(hex: "#FBE2C8", alpha: 1)
+        stackView.layer.cornerRadius = 20
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 20
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    private let averageView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 20
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    private let progressView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 20
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let averageLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.textColor = UIColor(hex: "#333333", alpha: 1)
+        return label
+    }()
+    
+    private let averageTimeLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18)
+        label.layer.cornerRadius = 20
+        label.clipsToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.backgroundColor = UIColor(hex: "#70C1B3", alpha: 1)
+        label.textColor = .white
+        return label
+    }()
+    
+    private let progressLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private let progressPercentageLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18)
+        label.layer.cornerRadius = 20
+        label.clipsToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        label.backgroundColor = UIColor(hex: "#FF8A5C", alpha: 1)
+        label.textColor = .white
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(hex: "#FEF6F0")
         
         setupView()
-        setupChart()
+        
+        averageLabel.text = "Ortalama: "
+        averageTimeLabel.text = "8 saat"
+        progressLabel.text = "İlerleme: "
+        progressPercentageLabel.text = "-%28"
     }
     
     func setupView(){
@@ -103,31 +196,57 @@ class StatisticsViewController: UIViewController {
             toggleStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             toggleStack.heightAnchor.constraint(equalToConstant: 50)
         ])
+        
+        setupChart()
+        
+        view.addSubview(statisticsContainerView)
+        statisticsContainerView.addArrangedSubview(averageView)
+        averageView.addSubview(averageLabel)
+        averageView.addSubview(averageTimeLabel)
+        statisticsContainerView.addArrangedSubview(progressView)
+        progressView.addSubview(progressLabel)
+        progressView.addSubview(progressPercentageLabel)
+        
+        NSLayoutConstraint.activate([
+            statisticsContainerView.topAnchor.constraint(equalTo: chartView.bottomAnchor,constant: 30),
+            statisticsContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            statisticsContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            statisticsContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            averageLabel.centerYAnchor.constraint(equalTo: averageView.centerYAnchor),
+            averageLabel.leadingAnchor.constraint(equalTo: averageView.leadingAnchor, constant: 30),
+            averageLabel.widthAnchor.constraint(equalToConstant: 100),
+            
+            
+            averageTimeLabel.centerYAnchor.constraint(equalTo: averageView.centerYAnchor),
+            averageTimeLabel.trailingAnchor.constraint(equalTo: averageView.trailingAnchor, constant: -30),
+            averageTimeLabel.widthAnchor.constraint(equalToConstant: 100),
+            averageTimeLabel.heightAnchor.constraint(equalToConstant: 50),
+            
+            progressLabel.centerYAnchor.constraint(equalTo: progressView.centerYAnchor),
+            progressLabel.leadingAnchor.constraint(equalTo: progressView.leadingAnchor, constant: 30),
+            progressLabel.widthAnchor.constraint(equalToConstant: 100),
+            
+            
+            progressPercentageLabel.centerYAnchor.constraint(equalTo: progressView.centerYAnchor),
+            progressPercentageLabel.trailingAnchor.constraint(equalTo: progressView.trailingAnchor, constant: -30),
+            progressPercentageLabel.widthAnchor.constraint(equalToConstant: 100),
+            progressPercentageLabel.heightAnchor.constraint(equalToConstant: 50),
+            
+            
+        ])
+        
     }
 
     func setupChart() {
-        chartView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(chartView)
 
         NSLayoutConstraint.activate([
             chartView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             chartView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            chartView.topAnchor.constraint(equalTo: toggleStack.bottomAnchor, constant: 32),
+            chartView.topAnchor.constraint(equalTo: toggleStack.bottomAnchor, constant: 50),
             chartView.heightAnchor.constraint(equalToConstant: 300)
         ])
-
-        chartView.backgroundColor = .clear
-        chartView.xAxis.labelPosition = .bottom
-        chartView.xAxis.labelTextColor = .lightGray
-        chartView.leftAxis.labelTextColor = .lightGray
-        chartView.rightAxis.enabled = false
-        chartView.legend.enabled = false
-        chartView.xAxis.drawGridLinesEnabled = false
-        chartView.leftAxis.drawGridLinesEnabled = false
-        
-        let marker = BalloonMarker()
-        marker.chartView = chartView
-        chartView.marker = marker
         
 
         setData()
@@ -139,61 +258,88 @@ class StatisticsViewController: UIViewController {
             ChartDataEntry(x: Double(index), y: value)
         }
 
-        let set = LineChartDataSet(entries: entries, label: "Price")
+        let set = LineChartDataSet(entries: entries, label: "Work Time")
         set.mode = .cubicBezier
         set.drawCirclesEnabled = false
         set.lineWidth = 2
-        set.setColor(.systemGreen)
-        set.fillColor = .systemGreen
+        set.setColor(UIColor(hex: "#70C1B3", alpha: 1))
+        set.fillColor = UIColor(hex: "#70C1B3", alpha: 1)
         set.drawFilledEnabled = true
         set.fillAlpha = 0.2
         set.drawValuesEnabled = false
+        set.highlightEnabled = true
+        set.drawHorizontalHighlightIndicatorEnabled = false
+        set.drawVerticalHighlightIndicatorEnabled = false
 
         let data = LineChartData(dataSet: set)
         chartView.data = data
     }
     
     @objc func oneDayButtonTapped(){
-        oneDayButton.backgroundColor = UIColor(hex: "#F0D8D3")
-        oneWeekButton.backgroundColor = UIColor(hex: "d2a197")
-        oneMonthButton.backgroundColor = UIColor(hex: "d2a197")
-        oneYearButton.backgroundColor = UIColor(hex: "d2a197")
-        fiveYearsButton.backgroundColor = UIColor(hex: "d2a197")
+        oneDayButton.backgroundColor = UIColor(hex: "#FEF6F0")
+        oneDayButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
+        oneWeekButton.backgroundColor = UIColor(hex: "FFB570")
+        oneWeekButton.setTitleColor(.white, for: .normal)
+        oneMonthButton.backgroundColor = UIColor(hex: "FFB570")
+        oneMonthButton.setTitleColor(.white, for: .normal)
+        oneYearButton.backgroundColor = UIColor(hex: "FFB570")
+        oneYearButton.setTitleColor(.white, for: .normal)
+        fiveYearsButton.backgroundColor = UIColor(hex: "FFB570")
+        fiveYearsButton.setTitleColor(.white, for: .normal)
     }
     
     @objc func oneWeekButtonTapped(){
-        oneWeekButton.backgroundColor = UIColor(hex: "#F0D8D3")
-        oneDayButton.backgroundColor = UIColor(hex: "d2a197")
-        oneMonthButton.backgroundColor = UIColor(hex: "d2a197")
-        oneYearButton.backgroundColor = UIColor(hex: "d2a197")
-        fiveYearsButton.backgroundColor = UIColor(hex: "d2a197")
-        
+        oneWeekButton.backgroundColor = UIColor(hex: "#FEF6F0")
+        oneWeekButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
+        oneDayButton.backgroundColor = UIColor(hex: "FFB570")
+        oneDayButton.setTitleColor(.white, for: .normal)
+        oneMonthButton.backgroundColor = UIColor(hex: "FFB570")
+        oneMonthButton.setTitleColor(.white, for: .normal)
+        oneYearButton.backgroundColor = UIColor(hex: "FFB570")
+        oneYearButton.setTitleColor(.white, for: .normal)
+        fiveYearsButton.backgroundColor = UIColor(hex: "FFB570")
+        fiveYearsButton.setTitleColor(.white, for: .normal)
     }
     
     @objc func oneMonthButtonTapped(){
-        oneMonthButton.backgroundColor = UIColor(hex: "#F0D8D3")
-        oneWeekButton.backgroundColor = UIColor(hex: "d2a197")
-        oneDayButton.backgroundColor = UIColor(hex: "d2a197")
-        oneYearButton.backgroundColor = UIColor(hex: "d2a197")
-        fiveYearsButton.backgroundColor = UIColor(hex: "d2a197")
+        oneMonthButton.backgroundColor = UIColor(hex: "#FEF6F0")
+        oneMonthButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
+        oneWeekButton.backgroundColor = UIColor(hex: "FFB570")
+        oneWeekButton.setTitleColor(.white, for: .normal)
+        oneDayButton.backgroundColor = UIColor(hex: "FFB570")
+        oneDayButton.setTitleColor(.white, for: .normal)
+        oneYearButton.backgroundColor = UIColor(hex: "FFB570")
+        oneYearButton.setTitleColor(.white, for: .normal)
+        fiveYearsButton.backgroundColor = UIColor(hex: "FFB570")
+        fiveYearsButton.setTitleColor(.white, for: .normal)
         
     }
     
     @objc func oneYearButtonTapped(){
-        oneYearButton.backgroundColor = UIColor(hex: "#F0D8D3")
-        oneWeekButton.backgroundColor = UIColor(hex: "d2a197")
-        oneMonthButton.backgroundColor = UIColor(hex: "d2a197")
-        oneDayButton.backgroundColor = UIColor(hex: "d2a197")
-        fiveYearsButton.backgroundColor = UIColor(hex: "d2a197")
+        oneYearButton.backgroundColor = UIColor(hex: "#FEF6F0")
+        oneYearButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
+        oneWeekButton.backgroundColor = UIColor(hex: "FFB570")
+        oneWeekButton.setTitleColor(.white, for: .normal)
+        oneMonthButton.backgroundColor = UIColor(hex: "FFB570")
+        oneMonthButton.setTitleColor(.white, for: .normal)
+        oneDayButton.backgroundColor = UIColor(hex: "FFB570")
+        oneDayButton.setTitleColor(.white, for: .normal)
+        fiveYearsButton.backgroundColor = UIColor(hex: "FFB570")
+        fiveYearsButton.setTitleColor(.white, for: .normal)
         
     }
     
     @objc func fiveYearsButtonTapped(){
-        fiveYearsButton.backgroundColor = UIColor(hex: "#F0D8D3")
-        oneWeekButton.backgroundColor = UIColor(hex: "d2a197")
-        oneMonthButton.backgroundColor = UIColor(hex: "d2a197")
-        oneYearButton.backgroundColor = UIColor(hex: "d2a197")
-        oneDayButton.backgroundColor = UIColor(hex: "d2a197")
+        fiveYearsButton.backgroundColor = UIColor(hex: "#FEF6F0")
+        fiveYearsButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
+        oneWeekButton.backgroundColor = UIColor(hex: "FFB570")
+        oneWeekButton.setTitleColor(.white, for: .normal)
+        oneMonthButton.backgroundColor = UIColor(hex: "FFB570")
+        oneMonthButton.setTitleColor(.white, for: .normal)
+        oneYearButton.backgroundColor = UIColor(hex: "FFB570")
+        oneYearButton.setTitleColor(.white, for: .normal)
+        oneDayButton.backgroundColor = UIColor(hex: "FFB570")
+        oneDayButton.setTitleColor(.white, for: .normal)
         
     }
 }

@@ -12,12 +12,13 @@ class DayCell: UICollectionViewCell {
         circleView.layer.cornerRadius = 14
         circleView.clipsToBounds = true
         circleView.translatesAutoresizingMaskIntoConstraints = false
+        
         return circleView
     }()
     let fireIcon:UIImageView = {
         let fireIcon = UIImageView()
-        fireIcon.image = UIImage(systemName: "flame.fill")
-        fireIcon.tintColor = .red
+        fireIcon.image = UIImage(systemName: "flame.fill")?.withTintColor(UIColor(hex: "#FF6F61"), renderingMode: .alwaysOriginal)
+    
         fireIcon.isHidden = true
         fireIcon.translatesAutoresizingMaskIntoConstraints = false
         return fireIcon
@@ -53,10 +54,14 @@ class DayCell: UICollectionViewCell {
             circleView.backgroundColor = .clear
         } else if isActive {
             fireIcon.isHidden = true
-            circleView.backgroundColor = .systemYellow
+            circleView.backgroundColor = UIColor(hex: "#FFB570",alpha: 0.7)
         } else {
             fireIcon.isHidden = true
             circleView.backgroundColor = .systemGray5
         }
     }
+}
+
+#Preview("ProfileViewController"){
+    ProfileViewController()
 }

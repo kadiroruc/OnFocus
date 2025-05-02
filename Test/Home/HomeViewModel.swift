@@ -92,7 +92,7 @@ extension HomeViewModel: HomeViewModelInterface{
     }
     
     func settingsButtonTapped(){
-        view?.performSegue(identifier: Constants.SegueIdentifiers.homeToSettings)
+        
     }
     
 }

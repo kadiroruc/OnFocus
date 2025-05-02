@@ -7,7 +7,9 @@
 
 import UIKit
 
-protocol SignUpViewInterface: AnyObject, SeguePerformable {}
+protocol SignUpViewInterface: AnyObject{
+    
+}
 
 class SignUpViewController: UIViewController, SignUpViewInterface {
     

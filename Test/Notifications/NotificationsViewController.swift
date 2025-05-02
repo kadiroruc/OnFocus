@@ -31,7 +31,7 @@ class NotificationsViewController: UIViewController {
     }
     
     func setupView(){
-        view.backgroundColor = .systemGray6
+        view.backgroundColor = UIColor(hex: "#FEF6F0")
         
         view.addSubview(collectionView)
         
@@ -58,7 +58,7 @@ extension NotificationsViewController: UICollectionViewDelegate, UICollectionVie
         cell.layer.cornerRadius = 20
         cell.clipsToBounds = true
         
-        cell.imageView.backgroundColor = .red
+        cell.imageView.backgroundColor = UIColor(hex: "#FF8A5C")
         cell.label.text = "asudfaşşfsdfsşdsş"
         
         return cell

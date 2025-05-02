@@ -33,7 +33,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(hex: "#FEF6F0")
         title = "Settings"
         
         setupLayout()
@@ -54,17 +54,18 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SettingsCollectionViewCell
         cell.backgroundColor = .white
         cell.layer.cornerRadius = 8
-        cell.imageView.backgroundColor = .systemBlue
-        cell.imageView.tintColor = .white
+        cell.imageView.backgroundColor = .clear
+        cell.imageView.tintColor = UIColor(hex: "#FF8A5C", alpha: 1)
         cell.imageView.layer.cornerRadius = 4
         cell.imageView.contentMode = .scaleAspectFit
+        cell.label.textColor = UIColor(hex: "#333333")
         
         viewModel.configureCell(cell: cell, at: indexPath)
         

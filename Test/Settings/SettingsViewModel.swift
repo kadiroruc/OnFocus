@@ -17,7 +17,7 @@ protocol SettingsViewModelInterface{
 final class SettingsViewModel{
     weak var view: SettingsViewInterface?
     
-    private let settingsData: [SettingsModel] = [SettingsModel(image: UIImage(systemName: "deskclock")!, text: "Custom Mode", switchOn: false), SettingsModel(image: UIImage(systemName: "arrow.circlepath")!, text: "Auto Start", switchOn: false )]
+    private let settingsData: [SettingsModel] = [SettingsModel(image: UIImage(systemName: "deskclock")!, text: "Serbest Mod", switchOn: false), SettingsModel(image: UIImage(systemName: "arrow.circlepath")!, text: "Otomatik Başlatma", switchOn: false ), SettingsModel(image: UIImage(systemName: "bell")!, text: "Bildirimler", switchOn: true), SettingsModel(image: UIImage(systemName: "speaker.wave.2")!, text: "Sesli Uyarılar", switchOn: true)]
     
     func getSetting(at index: Int) -> SettingsModel {
         return settingsData[index]

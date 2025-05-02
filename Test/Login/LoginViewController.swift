@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol LoginViewInterface: AnyObject, SeguePerformable {
+protocol LoginViewInterface: AnyObject {
     // Interface methods if needed
 }
 

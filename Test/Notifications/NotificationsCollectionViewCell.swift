@@ -24,6 +24,7 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         lbl.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         lbl.textColor = .black
         lbl.translatesAutoresizingMaskIntoConstraints = false
+        lbl.textColor = UIColor(hex: "#333333")
         return lbl
     }()
     
@@ -31,7 +32,7 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .black
+        button.tintColor = UIColor(hex: "#FF8A5C")
         return button
     }()
     
@@ -39,7 +40,7 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         let button = UIButton()
         button.setImage(UIImage(systemName: "checkmark"), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = .black
+        button.tintColor = UIColor(hex: "#70C1B3")
         return button
     }()
     

@@ -11,23 +11,14 @@ class ProfileViewController: UIViewController {
     
     private let addFriendBarButtonItem : UIBarButtonItem = {
         let item = UIBarButtonItem()
-        item.image = UIImage(systemName: Constants.Icons.personBadgePlus)
+        item.image = UIImage(systemName: Constants.Icons.personBadgePlus)?.withTintColor(UIColor(hex: "#333333", alpha: 1), renderingMode: .alwaysOriginal)
         return item
     }()
     
     private let menuBarButtonItem : UIBarButtonItem = {
         let item = UIBarButtonItem()
-        item.image = UIImage(systemName: Constants.Icons.ellipsis)
+        item.image = UIImage(systemName: Constants.Icons.ellipsis)?.withTintColor(UIColor(hex: "#333333", alpha: 1), renderingMode: .alwaysOriginal)
         return item
-    }()
-    
-    private let pointsLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Points: 133423"
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 18)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }()
     
     private let profileImageView: UIImageView = {
@@ -37,7 +28,7 @@ class ProfileViewController: UIViewController {
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.image = UIImage(systemName: "person.circle")
-        iv.tintColor = .systemBlue
+        iv.tintColor = UIColor(hex: "#333333", alpha: 1)
         return iv
     }()
     
@@ -54,7 +45,7 @@ class ProfileViewController: UIViewController {
         let label = UILabel()
         label.text = "Average Work Hour: 7"
         label.textColor = .white
-        label.backgroundColor = .systemRed
+        label.backgroundColor = UIColor(hex: "#70C1B3")
         label.textAlignment = .center
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
@@ -66,7 +57,7 @@ class ProfileViewController: UIViewController {
         let label = UILabel()
         label.text = "Current Streak Day: 280"
         label.textColor = .white
-        label.backgroundColor = .systemRed
+        label.backgroundColor = UIColor(hex: "#FF8A5C")
         label.textAlignment = .center
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
@@ -77,9 +68,8 @@ class ProfileViewController: UIViewController {
     private let leftTimeButton: UIButton = {
         let button = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
-        let image = UIImage(systemName: "lessthan", withConfiguration: config)
+        let image = UIImage(systemName: "lessthan", withConfiguration: config)?.withTintColor(UIColor(hex: "#333333", alpha: 1), renderingMode: .alwaysOriginal)
         button.setImage(image, for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -87,9 +77,8 @@ class ProfileViewController: UIViewController {
     private let rightTimeButton: UIButton = {
         let button = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
-        let image = UIImage(systemName: "greaterthan", withConfiguration: config)
+        let image = UIImage(systemName: "greaterthan", withConfiguration: config)?.withTintColor(UIColor(hex: "#333333", alpha: 1), renderingMode: .alwaysOriginal)
         button.setImage(image, for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -99,12 +88,13 @@ class ProfileViewController: UIViewController {
         label.text = "JAN 2022"
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor(hex: "#333333", alpha: 1)
         return label
     }()
     
     private let streakView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
+        view.backgroundColor = .white
         view.layer.cornerRadius = 20
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -123,6 +113,7 @@ class ProfileViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .justified
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor(hex: "#333333", alpha: 1)
         return label
     }()
     
@@ -140,14 +131,13 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(hex: "#FEF6F0")
         setupViews()
         setupConstraints()
         setupCollectionView()
     }
     
     private func setupViews() {
-        view.addSubview(pointsLabel)
         view.addSubview(profileImageView)
         view.addSubview(nicknameLabel)
         view.addSubview(averageWorkTimeLabel)
@@ -166,11 +156,9 @@ class ProfileViewController: UIViewController {
     private func setupConstraints() {
         
         NSLayoutConstraint.activate([
-            pointsLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            pointsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImageView.topAnchor.constraint(equalTo: pointsLabel.bottomAnchor, constant: 10),
+            profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             profileImageView.widthAnchor.constraint(equalToConstant: 120),
             profileImageView.heightAnchor.constraint(equalToConstant: 120),
             
@@ -187,7 +175,7 @@ class ProfileViewController: UIViewController {
             streakDayLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
             streakDayLabel.heightAnchor.constraint(equalToConstant: 40),
             
-            streakView.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor, constant: 30),
+            streakView.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor, constant: 40),
             streakView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             streakView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             streakView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),

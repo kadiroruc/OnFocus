@@ -35,8 +35,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         profileNav.tabBarItem.selectedImage = UIImage(systemName: Constants.Icons.personFill)
         
         
-        
-        let statisticsNav = UINavigationController(rootViewController: StatisticsViewController())
+        let statisticsVC = StatisticsViewController()
+        statisticsVC.title = "Statistics"
+        let statisticsNav = UINavigationController(rootViewController: statisticsVC)
         statisticsNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.chartLineUptrendXyaxis), tag: 2)
         
         let notificationsVC = NotificationsViewController()
@@ -51,12 +52,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         leaderboardNav.tabBarItem = UITabBarItem(title: nil, image: UIImage(systemName: Constants.Icons.person2), tag: 2)
         leaderboardNav.tabBarItem.selectedImage = UIImage(systemName: Constants.Icons.person2Fill)
         
+        //let profileSearch = ProfileSearchViewController()
+        
         
         // TabBarController'a navları ekle
         tabBarController.viewControllers = [leaderboardNav,statisticsNav,homeNav,notificationsNav, profileNav]
         tabBarController.tabBar.tintColor = .black
-//        tabBarController.tabBar.isTranslucent = false
-//        tabBarController.tabBar.backgroundColor = .systemGray6
+        tabBarController.selectedIndex = 2
         
         // Window ayarları
         window.rootViewController = tabBarController

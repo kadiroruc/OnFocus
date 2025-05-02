@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		E90741702D7DA49800E7599C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E907416F2D7DA49800E7599C /* LoginViewController.swift */; };
 		E90741722D7DA5D400E7599C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741712D7DA5D400E7599C /* LoginViewModel.swift */; };
-		E90741742D7DA9A200E7599C /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741732D7DA9A200E7599C /* UIViewExtension.swift */; };
+		E90741742D7DA9A200E7599C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741732D7DA9A200E7599C /* Extensions.swift */; };
 		E90741762D7DB60700E7599C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741752D7DB60700E7599C /* SignUpViewController.swift */; };
 		E90741782D7DBCA700E7599C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741772D7DBCA700E7599C /* Constants.swift */; };
 		E907417A2D7DE4FF00E7599C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741792D7DE4FF00E7599C /* SettingsViewController.swift */; };
@@ -41,11 +41,11 @@
 		E98B6B672D53C809005012AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B662D53C809005012AB /* Assets.xcassets */; };
 		E98B6B6A2D53C80A005012AB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B692D53C80A005012AB /* Base */; };
 		E9BFA9C02D902C980009C90C /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9BFA9BF2D902C980009C90C /* OnboardingPageViewController.swift */; };
+		E9CBD3F92DBA642300DF9A09 /* ProfileSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */; };
 		E9CF13372D79D48F00560B9C /* SeguePerformable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CF13362D79D48F00560B9C /* SeguePerformable.swift */; };
 		E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D058232D75F76E0003484C /* HomeViewModel.swift */; };
 		E9DC7BCC2DB532AF002BFFF4 /* LeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC7BCB2DB532AF002BFFF4 /* LeaderboardViewController.swift */; };
 		E9DC7BCE2DB537A0002BFFF4 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC7BCD2DB537A0002BFFF4 /* BottomSheetViewController.swift */; };
-		E9DC7BD02DB53DAC002BFFF4 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC7BCF2DB53DAC002BFFF4 /* UIColorExtension.swift */; };
 		E9DE97862DB7D1E100832C8B /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DE97852DB7D1E100832C8B /* NotificationsViewController.swift */; };
 		E9DE97882DB7D2E600832C8B /* NotificationsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DE97872DB7D2E600832C8B /* NotificationsCollectionViewCell.swift */; };
 		E9DE978B2DB7DACA00832C8B /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DE978A2DB7DACA00832C8B /* StatisticsViewController.swift */; };
@@ -63,7 +63,7 @@
 /* Begin PBXFileReference section */
 		E907416F2D7DA49800E7599C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E90741712D7DA5D400E7599C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		E90741732D7DA9A200E7599C /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		E90741732D7DA9A200E7599C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		E90741752D7DB60700E7599C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		E90741772D7DBCA700E7599C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E90741792D7DE4FF00E7599C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -97,11 +97,11 @@
 		E98B6B692D53C80A005012AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E98B6B6B2D53C80A005012AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9BFA9BF2D902C980009C90C /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSearchViewController.swift; sourceTree = "<group>"; };
 		E9CF13362D79D48F00560B9C /* SeguePerformable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeguePerformable.swift; sourceTree = "<group>"; };
 		E9D058232D75F76E0003484C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		E9DC7BCB2DB532AF002BFFF4 /* LeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
 		E9DC7BCD2DB537A0002BFFF4 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
-		E9DC7BCF2DB53DAC002BFFF4 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		E9DE97852DB7D1E100832C8B /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		E9DE97872DB7D2E600832C8B /* NotificationsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsCollectionViewCell.swift; sourceTree = "<group>"; };
 		E9DE978A2DB7DACA00832C8B /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +189,7 @@
 		E98B6B5C2D53C807005012AB /* Test */ = {
 			isa = PBXGroup;
 			children = (
+				E9CBD3F72DBA641200DF9A09 /* Search */,
 				E9DE97892DB7DAB000832C8B /* Statistics */,
 				E9DE97842DB7D1CF00832C8B /* Notifications */,
 				E9DC7BCA2DB53282002BFFF4 /* Leaderboard */,
@@ -208,6 +209,14 @@
 				E9BFA9BF2D902C980009C90C /* OnboardingPageViewController.swift */,
 			);
 			path = Test;
+			sourceTree = "<group>";
+		};
+		E9CBD3F72DBA641200DF9A09 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */,
+			);
+			path = Search;
 			sourceTree = "<group>";
 		};
 		E9DC7BCA2DB53282002BFFF4 /* Leaderboard */ = {
@@ -280,8 +289,7 @@
 			children = (
 				E90D77DC2D914D4F00C9EBF9 /* Poppins */,
 				E90741772D7DBCA700E7599C /* Constants.swift */,
-				E90741732D7DA9A200E7599C /* UIViewExtension.swift */,
-				E9DC7BCF2DB53DAC002BFFF4 /* UIColorExtension.swift */,
+				E90741732D7DA9A200E7599C /* Extensions.swift */,
 				E9CF13362D79D48F00560B9C /* SeguePerformable.swift */,
 				E9FE03B32DAA932100943E91 /* ViewControllerPreview.swift */,
 			);
@@ -402,11 +410,11 @@
 				E9DE978B2DB7DACA00832C8B /* StatisticsViewController.swift in Sources */,
 				E9FF40692D93272400FE25F0 /* FillProfileViewController.swift in Sources */,
 				E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */,
-				E90741742D7DA9A200E7599C /* UIViewExtension.swift in Sources */,
-				E9DC7BD02DB53DAC002BFFF4 /* UIColorExtension.swift in Sources */,
+				E90741742D7DA9A200E7599C /* Extensions.swift in Sources */,
 				E9EA79422D94331D00533B85 /* HomePersonCollectionViewCell.swift in Sources */,
 				E9FE03B42DAA932100943E91 /* ViewControllerPreview.swift in Sources */,
 				E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */,
+				E9CBD3F92DBA642300DF9A09 /* ProfileSearchViewController.swift in Sources */,
 				E907417A2D7DE4FF00E7599C /* SettingsViewController.swift in Sources */,
 				E9E2CF6C2D7F2C48007ABC93 /* SettingsModel.swift in Sources */,
 				E9DC7BCC2DB532AF002BFFF4 /* LeaderboardViewController.swift in Sources */,
