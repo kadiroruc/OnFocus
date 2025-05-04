@@ -212,8 +212,12 @@ class LeaderboardViewController: UIViewController {
         thirdProfileTimeLabel.text = "07H 15M"
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
+    }
+    
     func setupView(){
-        view.backgroundColor = UIColor(hex: "#FEF6F0")
         tabBarController?.tabBar.backgroundColor = .white
         let searchBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass.circle.fill"), style: .plain, target: self, action: #selector(searchBarButtonItemTapped))
         searchBarButtonItem.tintColor = .black

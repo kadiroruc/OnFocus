@@ -17,6 +17,7 @@ class FillProfileViewController: UIViewController {
         label.font = UIFont(name: "Poppins-Bold", size: 28)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = UIColor(hex: "333333", alpha: 1)
         return label
     }()
     
@@ -26,20 +27,18 @@ class FillProfileViewController: UIViewController {
         label.font = UIFont(name: "Poppins-Regular", size: 16)
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.textColor = .darkGray
+        label.textColor = UIColor(hex: "444444", alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person.crop.circle.fill")
-        imageView.tintColor = .systemGray4
+        imageView.image = UIImage(systemName: "person.crop.circle.fill")?.withTintColor(UIColor(hex: "#FFB570"), renderingMode: .alwaysOriginal)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 50
         imageView.clipsToBounds = true
-        imageView.tintColor = UIColor(red: 244/255, green: 244/255, blue: 244/255, alpha: 1)
         return imageView
     }()
     
@@ -48,7 +47,10 @@ class FillProfileViewController: UIViewController {
         let config = UIImage.SymbolConfiguration(pointSize: 22)
         let image = UIImage(systemName: "square.and.pencil.circle.fill", withConfiguration: config)
         button.setImage(image, for: .normal)
-        button.tintColor = .systemRed
+        button.tintColor = UIColor(hex: "#333333")
+        button.backgroundColor = UIColor(hex: "#FEF6F0")
+        button.layer.cornerRadius = 15
+        button.layer.borderWidth = 0
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -56,11 +58,11 @@ class FillProfileViewController: UIViewController {
     private let nameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Full Name"
-        tf.textColor = .black
+        tf.textColor = UIColor(hex: "333333")
         tf.layer.borderWidth = 1
-        tf.layer.borderColor = UIColor.white.cgColor
+        tf.layer.borderColor = UIColor(hex: "#333333").cgColor
         tf.layer.cornerRadius = 14
-        tf.backgroundColor = UIColor(red: 249/255, green: 249/255, blue: 249/255, alpha: 1)
+        tf.backgroundColor = .white
         tf.font = UIFont(name: "Poppins-SemiBold", size: 15)
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.setLeftPadding(12)
@@ -70,11 +72,11 @@ class FillProfileViewController: UIViewController {
     private let nicknameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Nickname"
-        tf.textColor = .black
+        tf.textColor = UIColor(hex: "333333")
         tf.layer.borderWidth = 1
-        tf.layer.borderColor = UIColor.white.cgColor
+        tf.layer.borderColor = UIColor(hex: "#333333").cgColor
         tf.layer.cornerRadius = 14
-        tf.backgroundColor = UIColor(red: 249/255, green: 249/255, blue: 249/255, alpha: 1)
+        tf.backgroundColor = .white
         tf.font = UIFont(name: "Poppins-SemiBold", size: 15)
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.setLeftPadding(12)
@@ -84,8 +86,8 @@ class FillProfileViewController: UIViewController {
     private let skipButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Skip", for: .normal)
-        button.setTitleColor(.darkGray, for: .normal)
-        button.backgroundColor = UIColor.systemGray5
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(hex: "#FF8A5C")
         button.layer.cornerRadius = 25
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -95,7 +97,7 @@ class FillProfileViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Start", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(red: 234/255, green: 64/255, blue: 52/255, alpha: 1)
+        button.backgroundColor = UIColor(hex: "#70C1B3")
         button.layer.cornerRadius = 25
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -106,9 +108,13 @@ class FillProfileViewController: UIViewController {
     override func loadView() {
         super.loadView()
         view = UIView()
-        view.backgroundColor = .white
         setupUI()
         setupLayout()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
     }
     
     // MARK: - Setup

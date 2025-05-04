@@ -19,6 +19,7 @@ class LoginViewController: UIViewController, LoginViewInterface {
         label.text = "Login to your Account"
         label.font = UIFont.systemFont(ofSize: 42, weight: .bold)
         label.numberOfLines = 2
+        label.textColor = UIColor(hex: "#333333")
         return label
     }()
     
@@ -36,11 +37,11 @@ class LoginViewController: UIViewController, LoginViewInterface {
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.placeholder = "Email"
         tf.font = UIFont.systemFont(ofSize: 16)
-        tf.textColor = .black
-        tf.backgroundColor = UIColor(red: 251/255, green: 251/255, blue: 251/255, alpha: 1)
+        tf.textColor = UIColor(hex: "#333333")
+        tf.backgroundColor = .white
         tf.layer.cornerRadius = 14
         tf.layer.borderWidth = 1
-        tf.layer.borderColor = UIColor.systemGray5.cgColor
+        tf.layer.borderColor = UIColor(hex: "333333").cgColor
         tf.leftViewMode = .always
         return tf
     }()
@@ -59,11 +60,11 @@ class LoginViewController: UIViewController, LoginViewInterface {
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.placeholder = "Password"
         tf.font = UIFont.systemFont(ofSize: 16)
-        tf.textColor = .black
-        tf.backgroundColor = UIColor(red: 251/255, green: 251/255, blue: 251/255, alpha: 1)
+        tf.textColor = UIColor(hex: "#333333")
+        tf.backgroundColor = .white
         tf.layer.cornerRadius = 14
         tf.layer.borderWidth = 1
-        tf.layer.borderColor = UIColor.systemGray5.cgColor
+        tf.layer.borderColor = UIColor(hex: "333333").cgColor
         tf.isSecureTextEntry = true
         tf.leftViewMode = .always
         tf.rightViewMode = .always
@@ -75,7 +76,7 @@ class LoginViewController: UIViewController, LoginViewInterface {
         btn.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .regular)
         btn.setImage(UIImage(systemName: "eye.slash", withConfiguration: config), for: .normal)
-        btn.tintColor = .gray
+        btn.tintColor = UIColor(hex: "#444444")
         return btn
     }()
     
@@ -84,7 +85,8 @@ class LoginViewController: UIViewController, LoginViewInterface {
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(UIImage(systemName: "square"), for: .normal)
         btn.setImage(UIImage(systemName: "checkmark.square.fill"), for: .selected)
-        btn.tintColor = .red
+        btn.tintColor = UIColor(hex: "333333")
+        btn.backgroundColor = .clear
         return btn
     }()
     
@@ -93,6 +95,7 @@ class LoginViewController: UIViewController, LoginViewInterface {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Remember me"
         label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = UIColor(hex: "#333333")
         return label
     }()
     
@@ -101,8 +104,8 @@ class LoginViewController: UIViewController, LoginViewInterface {
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("Sign in", for: .normal)
         btn.setTitleColor(.white, for: .normal)
-        btn.backgroundColor = UIColor(red: 0.90, green: 0.30, blue: 0.23, alpha: 1)
-        btn.layer.cornerRadius = 8
+        btn.backgroundColor = UIColor(hex: "#70C1B3")
+        btn.layer.cornerRadius = 13
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         return btn
     }()
@@ -111,7 +114,7 @@ class LoginViewController: UIViewController, LoginViewInterface {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("Forgot the password?", for: .normal)
-        btn.setTitleColor(UIColor(red: 0.90, green: 0.30, blue: 0.23, alpha: 1), for: .normal)
+        btn.setTitleColor(UIColor(hex: "FF8A5C"), for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         return btn
     }()
@@ -121,6 +124,7 @@ class LoginViewController: UIViewController, LoginViewInterface {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "New Here?"
         label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = UIColor(hex: "#333333")
         return label
     }()
     
@@ -128,7 +132,7 @@ class LoginViewController: UIViewController, LoginViewInterface {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("Sign Up", for: .normal)
-        btn.setTitleColor(UIColor(red: 0.90, green: 0.30, blue: 0.23, alpha: 1), for: .normal)
+        btn.setTitleColor(UIColor(hex: "#FF8A5C"), for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         return btn
     }()
@@ -148,6 +152,11 @@ class LoginViewController: UIViewController, LoginViewInterface {
         super.viewDidLoad()
         viewModel.view = self
         viewModel.viewDidLoad()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
     }
     
     // MARK: - Setup
@@ -193,11 +202,11 @@ class LoginViewController: UIViewController, LoginViewInterface {
             
             // Remember Me
             rememberMeCheckbox.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 30),
-            rememberMeCheckbox.centerXAnchor.constraint(equalTo: view.centerXAnchor,constant: -60),
+            rememberMeCheckbox.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor,constant: 2),
             rememberMeCheckbox.widthAnchor.constraint(equalToConstant: 24),
             rememberMeCheckbox.heightAnchor.constraint(equalToConstant: 24),
             rememberMeLabel.centerYAnchor.constraint(equalTo: rememberMeCheckbox.centerYAnchor),
-            rememberMeLabel.leadingAnchor.constraint(equalTo: rememberMeCheckbox.trailingAnchor, constant: 6),
+            rememberMeLabel.leadingAnchor.constraint(equalTo: rememberMeCheckbox.trailingAnchor, constant: 4),
             
             // Sign In Button
             signInButton.topAnchor.constraint(equalTo: rememberMeCheckbox.bottomAnchor, constant: 30),

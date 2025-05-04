@@ -131,10 +131,14 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(hex: "#FEF6F0")
         setupViews()
         setupConstraints()
         setupCollectionView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
     }
     
     private func setupViews() {

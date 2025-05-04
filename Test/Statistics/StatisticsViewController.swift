@@ -171,14 +171,17 @@ class StatisticsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(hex: "#FEF6F0")
-        
         setupView()
         
         averageLabel.text = "Ortalama: "
         averageTimeLabel.text = "8 saat"
         progressLabel.text = "İlerleme: "
         progressPercentageLabel.text = "-%28"
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
     }
     
     func setupView(){
