@@ -204,7 +204,7 @@ class LeaderboardViewController: UIViewController {
         
         stateRankLabel.text = "#1"
         stateLabel.text = "You are doing better than 60% of your friends!"
-        firstProfileLabel.text = "Sude Kalaycı"
+        firstProfileLabel.text = "Abdulkadir Oruç"
         firstProfileTimeLabel.text = "07H 15M"
         secondProfileLabel.text = "Abdulkadir Oruç"
         secondProfileTimeLabel.text = "0H 02M"
@@ -245,15 +245,19 @@ class LeaderboardViewController: UIViewController {
         view.addSubview(podiumIconImageView)
         
         NSLayoutConstraint.activate([
+            dailyButton.heightAnchor.constraint(equalToConstant: 42),
+            weeklyButton.heightAnchor.constraint(equalToConstant: 42),
+            monthlyButton.heightAnchor.constraint(equalToConstant: 42),
+            
             toggleStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             toggleStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             toggleStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            toggleStack.heightAnchor.constraint(equalToConstant: 50),
+
             
             stateView.topAnchor.constraint(equalTo: toggleStack.bottomAnchor, constant: 15),
             stateView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20),
             stateView.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -20),
-            stateView.heightAnchor.constraint(equalToConstant: 75),
+            stateView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.1),
             
             stateRankLabel.centerYAnchor.constraint(equalTo: stateView.centerYAnchor),
             stateRankLabel.leadingAnchor.constraint(equalTo: stateView.leadingAnchor, constant: 20),
@@ -320,7 +324,7 @@ class LeaderboardViewController: UIViewController {
             podiumIconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             podiumIconImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20),
             podiumIconImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            podiumIconImageView.heightAnchor.constraint(equalToConstant: 190)
+            podiumIconImageView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.3)
             
             
             
@@ -372,8 +376,8 @@ class LeaderboardViewController: UIViewController {
         NSLayoutConstraint.activate([
             sheetVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 10),
             sheetVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -10),
-            sheetVC.view.heightAnchor.constraint(equalToConstant: 600),
-            sheetVC.view.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -216)
+            sheetVC.view.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.73),
+            sheetVC.view.topAnchor.constraint(equalTo: podiumIconImageView.bottomAnchor, constant: -30)
         ])
     }
     

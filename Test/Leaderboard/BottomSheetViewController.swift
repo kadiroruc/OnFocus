@@ -12,11 +12,10 @@ class BottomSheetViewController: UIViewController, UICollectionViewDataSource, U
     private var panGestureRecognizer: UIPanGestureRecognizer!
     private var collectionView: UICollectionView!
 
-    private let maxHeight: CGFloat = 600
-    private let minHeight: CGFloat = 216
-
 //    private var bottomConstraint: NSLayoutConstraint!
     
+    var maxHeight: CGFloat = 0
+    var minHeight: CGFloat = 0
     
 
     override func viewDidLoad() {
@@ -24,6 +23,9 @@ class BottomSheetViewController: UIViewController, UICollectionViewDataSource, U
         setupView()
         setupCollectionView()
         setupPanGesture()
+        
+        maxHeight = view.bounds.height * 0.73
+        minHeight = view.bounds.height * 0.26
         
     }
 

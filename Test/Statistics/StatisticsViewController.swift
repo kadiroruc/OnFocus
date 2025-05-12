@@ -74,6 +74,7 @@ class StatisticsViewController: UIViewController {
         stack.layer.cornerRadius = 20
         stack.backgroundColor = UIColor(hex: "#FFB570")
         stack.translatesAutoresizingMaskIntoConstraints = false
+        
         return stack
     }()
 
@@ -177,6 +178,8 @@ class StatisticsViewController: UIViewController {
         averageTimeLabel.text = "8 saat"
         progressLabel.text = "İlerleme: "
         progressPercentageLabel.text = "-%28"
+        
+        setData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -192,16 +195,7 @@ class StatisticsViewController: UIViewController {
         toggleStack.addArrangedSubview(fiveYearsButton)
 
         view.addSubview(toggleStack)
-        
-        NSLayoutConstraint.activate([
-            toggleStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 10),
-            toggleStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            toggleStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            toggleStack.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        setupChart()
-        
+        view.addSubview(chartView)
         view.addSubview(statisticsContainerView)
         statisticsContainerView.addArrangedSubview(averageView)
         averageView.addSubview(averageLabel)
@@ -210,11 +204,24 @@ class StatisticsViewController: UIViewController {
         progressView.addSubview(progressLabel)
         progressView.addSubview(progressPercentageLabel)
         
+        
         NSLayoutConstraint.activate([
-            statisticsContainerView.topAnchor.constraint(equalTo: chartView.bottomAnchor,constant: 30),
+            
+            toggleStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 16),
+            toggleStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            toggleStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            toggleStack.heightAnchor.constraint(equalToConstant: 50),
+            
+            chartView.topAnchor.constraint(equalTo: toggleStack.bottomAnchor, constant: 40),
+            chartView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            chartView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            chartView.heightAnchor.constraint(equalTo: chartView.widthAnchor),
+            
+            statisticsContainerView.topAnchor.constraint(equalTo: chartView.bottomAnchor,constant: 40),
             statisticsContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             statisticsContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             statisticsContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
             
             averageLabel.centerYAnchor.constraint(equalTo: averageView.centerYAnchor),
             averageLabel.leadingAnchor.constraint(equalTo: averageView.leadingAnchor, constant: 30),
@@ -241,19 +248,6 @@ class StatisticsViewController: UIViewController {
         
     }
 
-    func setupChart() {
-        view.addSubview(chartView)
-
-        NSLayoutConstraint.activate([
-            chartView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            chartView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            chartView.topAnchor.constraint(equalTo: toggleStack.bottomAnchor, constant: 50),
-            chartView.heightAnchor.constraint(equalToConstant: 300)
-        ])
-        
-
-        setData()
-    }
 
     func setData() {
         let values: [Double] = [8, 10, 6, 2, 7, 0, 8]

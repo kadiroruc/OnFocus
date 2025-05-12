@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import FSCalendar
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
     
     private let addFriendBarButtonItem : UIBarButtonItem = {
         let item = UIBarButtonItem()
@@ -129,11 +130,16 @@ class ProfileViewController: UIViewController {
         return cv
     }()
     
+    private let calendar: FSCalendar = {
+        let cal = FSCalendar()
+        cal.translatesAutoresizingMaskIntoConstraints = false
+        return cal
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        setupCollectionView()
     }
     
     override func viewDidLayoutSubviews() {
@@ -146,18 +152,22 @@ class ProfileViewController: UIViewController {
         view.addSubview(nicknameLabel)
         view.addSubview(averageWorkTimeLabel)
         view.addSubview(streakDayLabel)
-        view.addSubview(streakView)
-        streakView.addSubview(timeLabel)
-        streakView.addSubview(leftTimeButton)
-        streakView.addSubview(rightTimeButton)
-        streakView.addSubview(lineView)
-        streakView.addSubview(dayLabel)
-        streakView.addSubview(collectionView)
+        view.addSubview(calendar)
+        calendar.delegate = self
+        calendar.dataSource = self
         
         navigationItem.rightBarButtonItems = [menuBarButtonItem, addFriendBarButtonItem]
     }
     
     private func setupConstraints() {
+        
+        var streakViewCons = [
+            streakView.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor,constant: 40),
+            streakView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            streakView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            streakView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ]
+                              
         
         NSLayoutConstraint.activate([
             
@@ -174,86 +184,39 @@ class ProfileViewController: UIViewController {
             averageWorkTimeLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
             averageWorkTimeLabel.heightAnchor.constraint(equalToConstant: 40),
             
+            calendar.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor, constant: 40),
+            calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 16),
+            calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            calendar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
             streakDayLabel.topAnchor.constraint(equalTo: averageWorkTimeLabel.bottomAnchor, constant: 10),
             streakDayLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             streakDayLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
             streakDayLabel.heightAnchor.constraint(equalToConstant: 40),
             
-            streakView.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor, constant: 40),
-            streakView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            streakView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            streakView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            timeLabel.topAnchor.constraint(equalTo: streakView.topAnchor, constant: 10),
-            timeLabel.centerXAnchor.constraint(equalTo: streakView.centerXAnchor),
-            timeLabel.widthAnchor.constraint(equalToConstant: 100),
-            
-            leftTimeButton.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
-            leftTimeButton.leadingAnchor.constraint(equalTo: streakView.leadingAnchor, constant: 10),
-            
-            rightTimeButton.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
-            rightTimeButton.trailingAnchor.constraint(equalTo: streakView.trailingAnchor, constant: -10),
-            
-            lineView.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 10),
-            lineView.leadingAnchor.constraint(equalTo: streakView.leadingAnchor, constant: 10),
-            lineView.trailingAnchor.constraint(equalTo: streakView.trailingAnchor, constant: -10),
-            lineView.heightAnchor.constraint(equalToConstant: 2),
-            
-            dayLabel.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 5),
-            dayLabel.leadingAnchor.constraint(equalTo: streakView.leadingAnchor, constant: 5),
-            dayLabel.trailingAnchor.constraint(equalTo: streakView.trailingAnchor, constant: -5),
-        
-            
-            collectionView.topAnchor.constraint(equalTo: dayLabel.bottomAnchor, constant: 10),
-            collectionView.leadingAnchor.constraint(equalTo: streakView.leadingAnchor, constant: 10),
-            collectionView.trailingAnchor.constraint(equalTo: streakView.trailingAnchor, constant: -10),
-            
-            collectionView.bottomAnchor.constraint(equalTo: streakView.bottomAnchor, constant: -10),
+           
         ])
-    }
-    
-    private func setupCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(DayCell.self, forCellWithReuseIdentifier: "DayCell")
-    }
-    
-    @objc private func leftTimeButtonTapped() {
-        // zaman geri
-    }
-    
-    @objc private func rightTimeButtonTapped() {
-        // zaman ileri
-    }
-}
+        
+        if traitCollection.userInterfaceIdiom == .pad {
+            
+//            NSLayoutConstraint.deactivate(streakViewCons)
+//            NSLayoutConstraint.activate([
+//                streakView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//                streakView.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor,constant: 150),
+//                
+//            streakView.heightAnchor.constraint(equalToConstant: 340)
+//            
+//            ])
 
-extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 42
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DayCell", for: indexPath) as? DayCell else {
-            return UICollectionViewCell()
+        }else{
+//            NSLayoutConstraint.activate(streakViewCons)
         }
-        cell.configure(isActive: true, isStreak: indexPath.item % 5 == 0)
-        return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 17
-    }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 21
-    }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 28, height: 28)
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        print("Seçilen tarih: \(date)")
     }
 }
 

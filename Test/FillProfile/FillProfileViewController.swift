@@ -153,7 +153,7 @@ class FillProfileViewController: UIViewController {
             changeProfileButton.trailingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: -6),
             changeProfileButton.bottomAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: -6),
             
-            nameTextField.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 30),
+            nameTextField.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 50),
             nameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             nameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
             nameTextField.heightAnchor.constraint(equalToConstant: 50),

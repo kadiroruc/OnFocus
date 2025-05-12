@@ -1,5 +1,5 @@
 {
-  "originHash" : "f168ba91fd7cfdb6b1f6ad1da3c4686104bd8fd76107359d2ad8c71cf8519c44",
+  "originHash" : "1791c6100e7644e1a2f56e5b5aab886c898175bf5a9ac82516205888364a23a8",
   "pins" : [
     {
       "identity" : "charts",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "dd9c72e3d7e751e769971092a6bd72d39198ae63",
         "version" : "5.1.0"
+      }
+    },
+    {
+      "identity" : "fscalendar",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/WenchaoD/FSCalendar",
+      "state" : {
+        "revision" : "0fbdec5172fccb90f707472eeaea4ffe095278f6",
+        "version" : "2.8.4"
       }
     }
   ],

@@ -33,7 +33,7 @@
 		E90D77EE2D914D4F00C9EBF9 /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E90D77DA2D914D4F00C9EBF9 /* Poppins-Thin.ttf */; };
 		E90D77EF2D914D4F00C9EBF9 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E90D77DB2D914D4F00C9EBF9 /* Poppins-ThinItalic.ttf */; };
 		E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92681DB2DA9842A00138259 /* ProfileViewController.swift */; };
-		E92681DF2DA984DD00138259 /* DayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92681DE2DA984DD00138259 /* DayCell.swift */; };
+		E950A8CD2DD2724700928DEB /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8CC2DD2724700928DEB /* FSCalendar */; };
 		E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5D2D53C807005012AB /* AppDelegate.swift */; };
 		E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5F2D53C807005012AB /* SceneDelegate.swift */; };
 		E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B612D53C807005012AB /* HomeViewController.swift */; };
@@ -87,7 +87,6 @@
 		E90D77DA2D914D4F00C9EBF9 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		E90D77DB2D914D4F00C9EBF9 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
 		E92681DB2DA9842A00138259 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		E92681DE2DA984DD00138259 /* DayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCell.swift; sourceTree = "<group>"; };
 		E98B6B5A2D53C807005012AB /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E98B6B5D2D53C807005012AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E98B6B5F2D53C807005012AB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +119,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9E2CF7B2D805CD6007ABC93 /* DGChartsDynamic in Frameworks */,
+				E950A8CD2DD2724700928DEB /* FSCalendar in Frameworks */,
 				E9E2CF792D805CD6007ABC93 /* DGCharts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -165,7 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				E92681DB2DA9842A00138259 /* ProfileViewController.swift */,
-				E92681DE2DA984DD00138259 /* DayCell.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -315,6 +314,7 @@
 			packageProductDependencies = (
 				E9E2CF782D805CD6007ABC93 /* DGCharts */,
 				E9E2CF7A2D805CD6007ABC93 /* DGChartsDynamic */,
+				E950A8CC2DD2724700928DEB /* FSCalendar */,
 			);
 			productName = Test;
 			productReference = E98B6B5A2D53C807005012AB /* Test.app */;
@@ -346,6 +346,7 @@
 			mainGroup = E98B6B512D53C807005012AB;
 			packageReferences = (
 				E9E2CF772D805CD6007ABC93 /* XCRemoteSwiftPackageReference "Charts" */,
+				E950A8CB2DD2724700928DEB /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			productRefGroup = E98B6B5B2D53C807005012AB /* Products */;
 			projectDirPath = "";
@@ -404,7 +405,6 @@
 				E9BFA9C02D902C980009C90C /* OnboardingPageViewController.swift in Sources */,
 				E9DE97882DB7D2E600832C8B /* NotificationsCollectionViewCell.swift in Sources */,
 				E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */,
-				E92681DF2DA984DD00138259 /* DayCell.swift in Sources */,
 				E90741762D7DB60700E7599C /* SignUpViewController.swift in Sources */,
 				E90741722D7DA5D400E7599C /* LoginViewModel.swift in Sources */,
 				E9DE978B2DB7DACA00832C8B /* StatisticsViewController.swift in Sources */,
@@ -644,6 +644,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E950A8CB2DD2724700928DEB /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
 		E9E2CF772D805CD6007ABC93 /* XCRemoteSwiftPackageReference "Charts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/danielgindi/Charts";
@@ -655,6 +663,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E950A8CC2DD2724700928DEB /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E950A8CB2DD2724700928DEB /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
+		};
 		E9E2CF782D805CD6007ABC93 /* DGCharts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E9E2CF772D805CD6007ABC93 /* XCRemoteSwiftPackageReference "Charts" */;

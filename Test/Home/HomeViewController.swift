@@ -206,8 +206,8 @@ final class HomeViewController: UIViewController {
 
     private func createCircularPath() {
         let circularPath = UIBezierPath(
-            arcCenter: CGPoint(x: 130, y: 130),
-            radius: 130,
+            arcCenter: CGPoint(x: circleContainer.frame.width/2, y: circleContainer.frame.width/2),
+            radius: circleContainer.frame.width/2,
             startAngle: -CGFloat.pi / 2,
             endAngle: 1.5 * CGFloat.pi,
             clockwise: true
