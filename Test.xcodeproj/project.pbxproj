@@ -34,6 +34,7 @@
 		E90D77EF2D914D4F00C9EBF9 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E90D77DB2D914D4F00C9EBF9 /* Poppins-ThinItalic.ttf */; };
 		E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92681DB2DA9842A00138259 /* ProfileViewController.swift */; };
 		E950A8CD2DD2724700928DEB /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8CC2DD2724700928DEB /* FSCalendar */; };
+		E950A8CF2DD27DD400928DEB /* StreakCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */; };
 		E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5D2D53C807005012AB /* AppDelegate.swift */; };
 		E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5F2D53C807005012AB /* SceneDelegate.swift */; };
 		E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B612D53C807005012AB /* HomeViewController.swift */; };
@@ -87,6 +88,7 @@
 		E90D77DA2D914D4F00C9EBF9 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		E90D77DB2D914D4F00C9EBF9 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
 		E92681DB2DA9842A00138259 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalendarCell.swift; sourceTree = "<group>"; };
 		E98B6B5A2D53C807005012AB /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E98B6B5D2D53C807005012AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E98B6B5F2D53C807005012AB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				E92681DB2DA9842A00138259 /* ProfileViewController.swift */,
+				E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				E9DE97862DB7D1E100832C8B /* NotificationsViewController.swift in Sources */,
 				E9DC7BCE2DB537A0002BFFF4 /* BottomSheetViewController.swift in Sources */,
 				E9E2CF682D7F211F007ABC93 /* SettingsCollectionViewCell.swift in Sources */,
+				E950A8CF2DD27DD400928DEB /* StreakCalendarCell.swift in Sources */,
 				E9BFA9C02D902C980009C90C /* OnboardingPageViewController.swift in Sources */,
 				E9DE97882DB7D2E600832C8B /* NotificationsCollectionViewCell.swift in Sources */,
 				E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */,

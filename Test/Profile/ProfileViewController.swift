@@ -8,7 +8,7 @@
 import UIKit
 import FSCalendar
 
-class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource {
+class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
     
     private let addFriendBarButtonItem : UIBarButtonItem = {
         let item = UIBarButtonItem()
@@ -66,93 +66,57 @@ class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDat
         return label
     }()
     
-    private let leftTimeButton: UIButton = {
-        let button = UIButton(type: .system)
-        let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
-        let image = UIImage(systemName: "lessthan", withConfiguration: config)?.withTintColor(UIColor(hex: "#333333", alpha: 1), renderingMode: .alwaysOriginal)
-        button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private let rightTimeButton: UIButton = {
-        let button = UIButton(type: .system)
-        let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .bold)
-        let image = UIImage(systemName: "greaterthan", withConfiguration: config)?.withTintColor(UIColor(hex: "#333333", alpha: 1), renderingMode: .alwaysOriginal)
-        button.setImage(image, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private let timeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "JAN 2022"
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(hex: "#333333", alpha: 1)
-        return label
-    }()
-    
-    private let streakView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 20
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private let lineView : UIView = {
-        let lineView = UIView()
-        lineView.backgroundColor = .systemGray4
-        lineView.translatesAutoresizingMaskIntoConstraints = false
-        return lineView
-    }()
-    
-    private let dayLabel: UILabel = {
-        let label = UILabel()
-        label.text = "MON     TUE     WED     THU     FRI     SAT     SUN"
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textAlignment = .justified
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(hex: "#333333", alpha: 1)
-        return label
-    }()
-    
-    
-    
-    private let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .clear
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.isScrollEnabled = false
-        return cv
-    }()
-    
     private let calendar: FSCalendar = {
-        let cal = FSCalendar()
-        cal.translatesAutoresizingMaskIntoConstraints = false
-        return cal
+        let calendar = FSCalendar()
+        calendar.translatesAutoresizingMaskIntoConstraints = false
+        calendar.appearance.titleDefaultColor = UIColor(hex: "333333")
+        calendar.appearance.todayColor = .clear
+        calendar.appearance.titleTodayColor = UIColor(hex: "333333")
+        calendar.appearance.selectionColor = UIColor(hex: "#70C1B3")
+        
+        calendar.appearance.headerDateFormat = "MMMM yyyy"
+        calendar.appearance.headerTitleColor = UIColor(hex: "#333333")
+        calendar.appearance.weekdayTextColor = .gray
+        calendar.backgroundColor = UIColor(hex: "#FEF6F0")
+        calendar.layer.cornerRadius = 20
+        
+        
+        return calendar
     }()
+    
+    var streakDates: [Date] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+
+        let rawDates = [
+            "2025-05-01",
+            "2025-05-02",
+            "2025-05-04",
+            "2025-05-05",
+            "2025-05-06"
+        ].compactMap { formatter.date(from: $0) }
+
+        streakDates = getStreakDays(from: rawDates)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
     }
-    
     private func setupViews() {
         view.addSubview(profileImageView)
         view.addSubview(nicknameLabel)
         view.addSubview(averageWorkTimeLabel)
         view.addSubview(streakDayLabel)
+        
         view.addSubview(calendar)
+        calendar.register(StreakCalendarCell.self, forCellReuseIdentifier: "cell")
         calendar.delegate = self
         calendar.dataSource = self
         
@@ -161,13 +125,13 @@ class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDat
     
     private func setupConstraints() {
         
-        var streakViewCons = [
-            streakView.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor,constant: 40),
-            streakView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            streakView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            streakView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        let streakCalendarConstraints = [
+            calendar.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor, constant: 40),
+            calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 16),
+            calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            calendar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ]
-                              
+        
         
         NSLayoutConstraint.activate([
             
@@ -184,11 +148,6 @@ class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDat
             averageWorkTimeLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
             averageWorkTimeLabel.heightAnchor.constraint(equalToConstant: 40),
             
-            calendar.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor, constant: 40),
-            calendar.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 16),
-            calendar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            calendar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
             streakDayLabel.topAnchor.constraint(equalTo: averageWorkTimeLabel.bottomAnchor, constant: 10),
             streakDayLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             streakDayLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
@@ -199,25 +158,74 @@ class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDat
         
         if traitCollection.userInterfaceIdiom == .pad {
             
-//            NSLayoutConstraint.deactivate(streakViewCons)
-//            NSLayoutConstraint.activate([
-//                streakView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//                streakView.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor,constant: 150),
-//                
-//            streakView.heightAnchor.constraint(equalToConstant: 340)
-//            
-//            ])
+            NSLayoutConstraint.deactivate(streakCalendarConstraints)
+            NSLayoutConstraint.activate([
+                calendar.topAnchor.constraint(equalTo: streakDayLabel.bottomAnchor, constant: 80),
+                calendar.leadingAnchor.constraint(equalTo: streakDayLabel.leadingAnchor),
+                calendar.trailingAnchor.constraint(equalTo: streakDayLabel.trailingAnchor),
+                calendar.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4),
+                
+            ])
 
         }else{
-//            NSLayoutConstraint.activate(streakViewCons)
+            NSLayoutConstraint.activate(streakCalendarConstraints)
         }
     }
     
     
     
-    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        print("Seçilen tarih: \(date)")
+//    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+//
+//    }
+//    
+//    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
+//        
+//        if streakDates.contains(where: { Calendar.current.isDate($0, inSameDayAs: date) }) {
+//            return .systemGreen
+//        }
+//        return nil
+//    }
+    
+    func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
+        let cell = calendar.dequeueReusableCell(withIdentifier: "cell", for: date, at: position) as! StreakCalendarCell
+
+        guard position == .current else { return cell }
+        
+        let calendar = Calendar.current
+
+        cell.isStreak = streakDates.contains { calendar.isDate($0, inSameDayAs: date) }
+        
+        if cell.isStreak {
+            let previous = calendar.date(byAdding: .day, value: -1, to: date)!
+            let next = calendar.date(byAdding: .day, value: 1, to: date)!
+            
+            cell.isLeftConnected = streakDates.contains { calendar.isDate($0, inSameDayAs: previous) }
+            cell.isRightConnected = streakDates.contains { calendar.isDate($0, inSameDayAs: next) }
+        }
+
+        return cell
     }
+    
+    func getStreakDays(from dates: [Date]) -> [Date] {
+        let sortedDates = dates.sorted()
+        var streak: [Date] = []
+        
+        for i in 1..<sortedDates.count {
+            let previous = sortedDates[i - 1]
+            let current = sortedDates[i]
+            let diff = Calendar.current.dateComponents([.day], from: previous, to: current).day!
+            
+            if diff == 1 {
+                if !streak.contains(previous) {
+                    streak.append(previous)
+                }
+                streak.append(current)
+            }
+        }
+        
+        return streak
+    }
+    
 }
 
 
