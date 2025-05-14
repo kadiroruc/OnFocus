@@ -177,14 +177,6 @@ class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDat
 //    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
 //
 //    }
-//    
-//    func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {
-//        
-//        if streakDates.contains(where: { Calendar.current.isDate($0, inSameDayAs: date) }) {
-//            return .systemGreen
-//        }
-//        return nil
-//    }
     
     func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
         let cell = calendar.dequeueReusableCell(withIdentifier: "cell", for: date, at: position) as! StreakCalendarCell

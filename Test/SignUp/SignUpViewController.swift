@@ -8,10 +8,20 @@
 import UIKit
 
 protocol SignUpViewInterface: AnyObject{
+    // UI güncellemeleri
+    func showLoading(_ isLoading: Bool)
+    func showError(message: String)
     
+    // Form ile ilgili işlemler
+    func enableSignUpButton(_ isEnabled: Bool)
+    
+    // Navigasyon
+    func navigateToLogin()
+    func navigateToFillProfile()
 }
 
-class SignUpViewController: UIViewController, SignUpViewInterface {
+final class SignUpViewController: UIViewController{
+    private var viewModel : SignUpViewModelInterface
     
     // MARK: - UI Components
     private let titleLabel: UILabel = {
@@ -128,18 +138,31 @@ class SignUpViewController: UIViewController, SignUpViewInterface {
         btn.titleLabel?.font = UIFont(name: "Poppins-SemiBold", size: 14)
         return btn
     }()
-
-    // MARK: - Lifecycle
-    override func loadView() {
-        super.loadView()
-        view = UIView()
-        view.backgroundColor = .white
-        setupUI()
-        setupLayout()
+    
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        indicator.color = .gray
+        return indicator
+    }()
+    
+    //MARK: - Init Functions
+    init(viewModel : SignUpViewModelInterface) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.view = self
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
     }
     
     override func viewDidLayoutSubviews() {
@@ -162,14 +185,15 @@ class SignUpViewController: UIViewController, SignUpViewInterface {
         view.addSubview(signUpButton)
         view.addSubview(bottomLabel)
         view.addSubview(signInLinkButton)
-
+        view.addSubview(activityIndicator)
+        
+        //Setup Actions
         showPasswordButton.addTarget(self, action: #selector(showPasswordButtonTapped), for: .touchUpInside)
-        rememberMeCheckbox.addTarget(self, action: #selector(checkBoxTapped), for: .touchUpInside)
+        rememberMeCheckbox.addTarget(self, action: #selector(rememberMeCheckboxTapped), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
         signInLinkButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
-    }
-
-    private func setupLayout() {
+        
+        
         NSLayoutConstraint.activate([
             // Title
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 110),
@@ -211,7 +235,12 @@ class SignUpViewController: UIViewController, SignUpViewInterface {
             bottomLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             bottomLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -40),
             signInLinkButton.centerYAnchor.constraint(equalTo: bottomLabel.centerYAnchor),
-            signInLinkButton.leadingAnchor.constraint(equalTo: bottomLabel.trailingAnchor, constant: 4)
+            signInLinkButton.leadingAnchor.constraint(equalTo: bottomLabel.trailingAnchor, constant: 4),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 40),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 
@@ -219,24 +248,63 @@ class SignUpViewController: UIViewController, SignUpViewInterface {
     @objc private func showPasswordButtonTapped() {
         passwordTextField.isSecureTextEntry.toggle()
         let config = UIImage.SymbolConfiguration(pointSize: 13, weight: .regular)
-        let imageName = passwordTextField.isSecureTextEntry ? Constants.Icons.eyeSlash : Constants.Icons.eyeSlash
+        let imageName = passwordTextField.isSecureTextEntry ? Constants.Icons.eyeSlash : Constants.Icons.eye
         let image = UIImage(systemName: imageName, withConfiguration: config)
         showPasswordButton.setImage(image, for: .normal)
     }
 
-    @objc private func checkBoxTapped() {
+    @objc private func rememberMeCheckboxTapped() {
         rememberMeCheckbox.isSelected.toggle()
+        viewModel.rememberMeTapped(isSelected: rememberMeCheckbox.isSelected)
     }
 
     @objc private func signUpTapped() {
-        // Handle sign up logic
+        viewModel.signUpTapped(email: emailTextField.text ?? "", password: passwordTextField.text ?? "")
     }
 
     @objc private func signInTapped() {
-        dismiss(animated: true)
+        viewModel.signInTapped()
     }
 }
 
+extension SignUpViewController: SignUpViewInterface{
+    
+    func showLoading(_ isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+            view.isUserInteractionEnabled = false
+        } else {
+            activityIndicator.stopAnimating()
+            view.isUserInteractionEnabled = true
+        }
+    }
+    
+    func showError(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
+    func enableSignUpButton(_ isEnabled: Bool) {
+        signUpButton.isEnabled = isEnabled
+        signUpButton.alpha = isEnabled ? 1.0 : 0.5
+    }
+    
+    func navigateToLogin() {
+        let loginVC = LoginViewController()
+        loginVC.modalPresentationStyle = .fullScreen
+        present(loginVC, animated: true)
+    }
+    
+    func navigateToFillProfile() {
+        let fillProfileVC = FillProfileViewController()
+        fillProfileVC.modalPresentationStyle = .fullScreen
+        present(fillProfileVC, animated: true)
+    }
+    
+    
+}
+
 #Preview("SignUpViewController"){
-    SignUpViewController()
+    SignUpModuleBuilder.build()
 }

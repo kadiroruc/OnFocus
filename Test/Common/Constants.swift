@@ -29,9 +29,15 @@ struct Constants {
         static let bellFill = "bell.fill"
         static let ellipsis = "ellipsis"
         static let personBadgePlus = "person.badge.plus"
+        static let eye = "eye"
     }
     
     struct CellIdentifiers{
         static let personCell = "personCell"
+    }
+    
+    struct ValidationMessages{
+        static let invalidEmail = "Please enter a valid email address"
+        static let invalidPassword = "Please enter a valid password"
     }
 }

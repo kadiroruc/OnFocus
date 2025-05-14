@@ -23,7 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tabBarController = UITabBarController()
         
 //        let loginVC = LoginViewController()
-//        let signUpVC = SignUpViewController()
+        
+        let signUpVC = SignUpModuleBuilder.build()
         
         let homeNav = UINavigationController(rootViewController: HomeViewController())
         homeNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.clockArrowCirclepath), tag: 0)
@@ -61,7 +62,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         tabBarController.selectedIndex = 2
         
         // Window ayarları
-        window.rootViewController = tabBarController
+        window.rootViewController = signUpVC
         window.makeKeyAndVisible()
         self.window = window
     }
