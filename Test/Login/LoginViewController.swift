@@ -8,10 +8,21 @@
 import UIKit
 
 protocol LoginViewInterface: AnyObject {
-    // Interface methods if needed
+    // UI güncellemeleri
+    func showLoading(_ isLoading: Bool)
+    func showError(message: String)
+    
+    // Form ile ilgili işlemler
+    func enableLoginButton(_ isEnabled: Bool)
+    
+    // Navigasyon
+    func navigateToHome()
+    func navigateToSignUp()
 }
 
-class LoginViewController: UIViewController, LoginViewInterface {
+final class LoginViewController: UIViewController {
+    private var viewModel : LoginViewModelInterface
+    
     // MARK: - UI Components
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -24,10 +35,10 @@ class LoginViewController: UIViewController, LoginViewInterface {
     }()
     
     private let emailIconView: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 42, height: 40))
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 40))
         let imageView = UIImageView(image: UIImage(systemName: "envelope.fill"))
         imageView.tintColor = .gray
-        imageView.frame = CGRect(x: 15, y: 10, width: 22, height: 20)
+        imageView.frame = CGRect(x: 15, y: 10, width: 24, height: 20)
         view.addSubview(imageView)
         return view
     }()
@@ -43,6 +54,7 @@ class LoginViewController: UIViewController, LoginViewInterface {
         tf.layer.borderWidth = 1
         tf.layer.borderColor = UIColor(hex: "333333").cgColor
         tf.leftViewMode = .always
+        tf.autocapitalizationType = .none
         return tf
     }()
     
@@ -137,21 +149,30 @@ class LoginViewController: UIViewController, LoginViewInterface {
         return btn
     }()
     
-    // MARK: - ViewModel
-    private lazy var viewModel = LoginViewModel()
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        indicator.color = .gray
+        return indicator
+    }()
+    
+    //MARK: - Init Functions
+    init(viewModel : LoginViewModelInterface) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.view = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Lifecycle
-    override func loadView() {
-        view = UIView()
-        view.backgroundColor = .white
-        setupUI()
-        setupLayout()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.view = self
-        viewModel.viewDidLoad()
+        setupUI()
     }
     
     override func viewDidLayoutSubviews() {
@@ -163,7 +184,7 @@ class LoginViewController: UIViewController, LoginViewInterface {
     private func setupUI() {
         [titleLabel, emailTextField, passwordTextField,
          showPasswordButton, rememberMeCheckbox, rememberMeLabel,
-         signInButton, forgotPasswordButton, bottomLabel, signUpButton].forEach {
+         signInButton, forgotPasswordButton, bottomLabel, signUpButton,activityIndicator].forEach {
             view.addSubview($0)
         }
         emailTextField.leftView = emailIconView
@@ -171,13 +192,11 @@ class LoginViewController: UIViewController, LoginViewInterface {
         passwordTextField.rightView = showPasswordButton
         
         showPasswordButton.addTarget(self, action: #selector(showPasswordButtonTapped), for: .touchUpInside)
-        rememberMeCheckbox.addTarget(self, action: #selector(rememberMeTapped), for: .touchUpInside)
+        rememberMeCheckbox.addTarget(self, action: #selector(rememberMeCheckboxTapped), for: .touchUpInside)
         signInButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
-    }
-    
-    private func setupLayout() {
+        
         NSLayoutConstraint.activate([
             // Title
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 110),
@@ -222,7 +241,12 @@ class LoginViewController: UIViewController, LoginViewInterface {
             bottomLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             bottomLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: -40),
             signUpButton.centerYAnchor.constraint(equalTo: bottomLabel.centerYAnchor),
-            signUpButton.leadingAnchor.constraint(equalTo: bottomLabel.trailingAnchor, constant: 4)
+            signUpButton.leadingAnchor.constraint(equalTo: bottomLabel.trailingAnchor, constant: 4),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 40),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     
@@ -234,23 +258,62 @@ class LoginViewController: UIViewController, LoginViewInterface {
         showPasswordButton.setImage(UIImage(systemName: name, withConfiguration: config), for: .normal)
     }
     
-    @objc private func rememberMeTapped(_ sender: UIButton) {
-        sender.isSelected.toggle()
+    @objc private func rememberMeCheckboxTapped() {
+        rememberMeCheckbox.isSelected.toggle()
+        viewModel.rememberMeTapped(isSelected: rememberMeCheckbox.isSelected)
     }
-    
+
     @objc private func loginButtonTapped() {
-        //viewModel.login(email: emailTextField.text,password: passwordTextField.text)
+        viewModel.loginButtonTapped(email: emailTextField.text ?? "", password: passwordTextField.text ?? "")
+    }
+
+    @objc private func signUpTapped() {
+        viewModel.signUpTapped()
     }
     
     @objc private func forgotPasswordTapped() {
-        // Handle forgot password
-    }
-    
-    @objc private func signUpTapped() {
-        // Handle sign up
+        //viewModel.forgotPasswordTapped()
     }
 }
 
-#Preview("LoginViewController"){
-    LoginViewController()
+extension LoginViewController: LoginViewInterface{
+    func showLoading(_ isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+            view.isUserInteractionEnabled = false
+        } else {
+            activityIndicator.stopAnimating()
+            view.isUserInteractionEnabled = true
+        }
+    }
+    
+    func showError(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
+    func enableLoginButton(_ isEnabled: Bool) {
+        signInButton.isEnabled = isEnabled
+        signUpButton.alpha = isEnabled ? 1.0 : 0.5
+    }
+    
+    func navigateToHome() {
+        let tabBar = TabBarModuleBuilder.build()
+        tabBar.modalPresentationStyle = .fullScreen
+        present(tabBar, animated: true)
+    }
+    
+    func navigateToSignUp() {
+        // Navigate to sign up screen
+        let signUpVC = SignUpModuleBuilder.build()
+        signUpVC.modalPresentationStyle = .fullScreen
+        present(signUpVC, animated: true)
+    }
+
+
 }
+
+//#Preview("LoginViewController"){
+//    LoginViewController()
+//}

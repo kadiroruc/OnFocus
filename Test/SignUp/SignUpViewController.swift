@@ -35,10 +35,10 @@ final class SignUpViewController: UIViewController{
     }()
 
     private let emailIconView: UIView = {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 42, height: 40))
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 40))
         let imageView = UIImageView(image: UIImage(systemName: "envelope.fill"))
         imageView.tintColor = .gray
-        imageView.frame = CGRect(x: 15, y: 10, width: 22, height: 20)
+        imageView.frame = CGRect(x: 15, y: 10, width: 24, height: 20)
         view.addSubview(imageView)
         return view
     }()
@@ -54,6 +54,7 @@ final class SignUpViewController: UIViewController{
         tf.textColor = UIColor(hex: "333333")
         tf.layer.borderColor = UIColor(hex: "333333").cgColor
         tf.leftViewMode = .always
+        tf.autocapitalizationType = .none
         return tf
     }()
     
@@ -291,15 +292,13 @@ extension SignUpViewController: SignUpViewInterface{
     }
     
     func navigateToLogin() {
-        let loginVC = LoginViewController()
+        let loginVC = LoginModuleBuilder.build()
         loginVC.modalPresentationStyle = .fullScreen
         present(loginVC, animated: true)
     }
     
     func navigateToFillProfile() {
-        let fillProfileVC = FillProfileViewController()
-        fillProfileVC.modalPresentationStyle = .fullScreen
-        present(fillProfileVC, animated: true)
+        dismiss(animated: true)
     }
     
     

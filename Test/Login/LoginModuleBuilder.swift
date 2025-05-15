@@ -10,8 +10,8 @@ import UIKit
 struct LoginModuleBuilder {
     static func build() -> UIViewController {
         let authService = AuthService()
-        let viewModel = SignUpViewModel(authService: authService)
-        let viewController = SignUpViewController(viewModel: viewModel)
+        let viewModel = LoginViewModel(authService: authService)
+        let viewController = LoginViewController(viewModel: viewModel)
         return viewController
     }
 }

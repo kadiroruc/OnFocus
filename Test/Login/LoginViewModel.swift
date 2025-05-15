@@ -7,25 +7,65 @@
 
 import UIKit
 
-protocol LoginViewModelInterface{
+protocol LoginViewModelInterface {
     var view: LoginViewInterface? { get set }
-    func viewDidLoad()
-    func offlineButtonTapped()
     
+    func loginButtonTapped(email: String, password: String)
+    func signUpTapped()
+    func rememberMeTapped(isSelected: Bool)
+
 }
 
 final class LoginViewModel{
     weak var view: LoginViewInterface?
+    private let authService: AuthServiceProtocol
+    
+    init(authService: AuthServiceProtocol) {
+        self.authService = authService
+    }
+    
+    
     
 }
 
 extension LoginViewModel: LoginViewModelInterface{
-    func viewDidLoad() {
+    func loginButtonTapped(email: String, password: String) {
+        if email == "" || !email.contains("@") {
+            view?.showError(message: Constants.ValidationMessages.invalidEmail)
+            return
+        }
+        if password == "" {
+            view?.showError(message: Constants.ValidationMessages.invalidPassword)
+            return
+        }
+        
+        view?.enableLoginButton(false)
+        view?.showLoading(true)
+        
+        authService.signIn(email: email, password: password) { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.view?.showLoading(false)
+
+                switch result {
+                case .success:
+                    self.view?.navigateToHome()
+                case .failure(let error):
+                    self.view?.enableLoginButton(true)
+                    self.view?.showError(message: error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    func signUpTapped() {
+        view?.navigateToSignUp()
+    }
+    
+    func rememberMeTapped(isSelected: Bool) {
+        // Handle remember me action
         
     }
-    
-    func offlineButtonTapped() {
-    }
-    
+
     
 }
