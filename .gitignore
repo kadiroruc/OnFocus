@@ -1,26 +1,34 @@
-# macOS sistem dosyaları
-.DS_Store
-
-# Xcode Derleme Dosyaları
+# Xcode
 DerivedData/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
 *.xcuserstate
+*.xcworkspace
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
 
-# Xcode Workspace ve Kullanıcıya Özel Veriler
-xcuserdata/
-.idea/
-.vscode/
-
-# Swift Package Manager Bağımlılıkları
+# SwiftPM
 .build/
-Packages/
-
-# Carthage Bağımlılıkları
-Carthage/Build/
+.swiftpm/
 
 
-# Diğer Gereksiz Dosyalar
-*.swp
-*.swo
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
 
-# Gizli Çevre Değişkenleri Dosyaları
-*.env
+# Xcode Patch Version Files
+*.xccheckout
+
+# User-specific
+*.xcuserdata/
+
+# Logs
+*.log
+
+# Others
+*.DS_Store
+*.idea/
