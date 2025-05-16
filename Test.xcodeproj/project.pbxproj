@@ -45,11 +45,23 @@
 		E950A8EE2DD5EFDE00928DEB /* LoginModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8ED2DD5EFDE00928DEB /* LoginModuleBuilder.swift */; };
 		E950A8F02DD6122800928DEB /* HomeModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8EF2DD6122800928DEB /* HomeModuleBuilder.swift */; };
 		E950A8F32DD6131700928DEB /* TabBarModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8F22DD6131700928DEB /* TabBarModuleBuilder.swift */; };
+		E950A8F72DD6505300928DEB /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8F62DD6505300928DEB /* ProfileService.swift */; };
+		E950A8F92DD650B700928DEB /* FillProfileModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8F82DD650B700928DEB /* FillProfileModuleBuilder.swift */; };
+		E950A8FB2DD653D800928DEB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8FA2DD653D800928DEB /* FirebaseStorage */; };
+		E950A9002DD72A8A00928DEB /* AFNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8FF2DD72A8A00928DEB /* AFNetworkManager.swift */; };
+		E950A9032DD72F0700928DEB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E950A9022DD72F0700928DEB /* Alamofire */; };
+		E950A9052DD72F0700928DEB /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E950A9042DD72F0700928DEB /* AlamofireDynamic */; };
+		E950A90E2DD73E7300928DEB /* NetworkType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A90D2DD73E7300928DEB /* NetworkType.swift */; };
+		E950A9102DD73E8E00928DEB /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A90F2DD73E8E00928DEB /* NetworkError.swift */; };
+		E950A9152DD73F5100928DEB /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A9142DD73F5100928DEB /* NetworkConstants.swift */; };
+		E950A9172DD73F7C00928DEB /* ProfileEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A9162DD73F7C00928DEB /* ProfileEndpoint.swift */; };
+		E950A91B2DD7418B00928DEB /* UploadProfileImageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A91A2DD7418B00928DEB /* UploadProfileImageResponse.swift */; };
 		E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5D2D53C807005012AB /* AppDelegate.swift */; };
 		E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5F2D53C807005012AB /* SceneDelegate.swift */; };
 		E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B612D53C807005012AB /* HomeViewController.swift */; };
 		E98B6B672D53C809005012AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B662D53C809005012AB /* Assets.xcassets */; };
 		E98B6B6A2D53C80A005012AB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B692D53C80A005012AB /* Base */; };
+		E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */; };
 		E9CBD3F92DBA642300DF9A09 /* ProfileSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */; };
 		E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D058232D75F76E0003484C /* HomeViewModel.swift */; };
 		E9DC7BCC2DB532AF002BFFF4 /* LeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC7BCB2DB532AF002BFFF4 /* LeaderboardViewController.swift */; };
@@ -102,6 +114,14 @@
 		E950A8ED2DD5EFDE00928DEB /* LoginModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModuleBuilder.swift; sourceTree = "<group>"; };
 		E950A8EF2DD6122800928DEB /* HomeModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModuleBuilder.swift; sourceTree = "<group>"; };
 		E950A8F22DD6131700928DEB /* TabBarModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarModuleBuilder.swift; sourceTree = "<group>"; };
+		E950A8F62DD6505300928DEB /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
+		E950A8F82DD650B700928DEB /* FillProfileModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillProfileModuleBuilder.swift; sourceTree = "<group>"; };
+		E950A8FF2DD72A8A00928DEB /* AFNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AFNetworkManager.swift; sourceTree = "<group>"; };
+		E950A90D2DD73E7300928DEB /* NetworkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkType.swift; sourceTree = "<group>"; };
+		E950A90F2DD73E8E00928DEB /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		E950A9142DD73F5100928DEB /* NetworkConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
+		E950A9162DD73F7C00928DEB /* ProfileEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEndpoint.swift; sourceTree = "<group>"; };
+		E950A91A2DD7418B00928DEB /* UploadProfileImageResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProfileImageResponse.swift; sourceTree = "<group>"; };
 		E98B6B5A2D53C807005012AB /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E98B6B5D2D53C807005012AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E98B6B5F2D53C807005012AB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +129,7 @@
 		E98B6B662D53C809005012AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E98B6B692D53C80A005012AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E98B6B6B2D53C80A005012AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillProfileViewModel.swift; sourceTree = "<group>"; };
 		E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSearchViewController.swift; sourceTree = "<group>"; };
 		E9D058232D75F76E0003484C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		E9DC7BCB2DB532AF002BFFF4 /* LeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
@@ -130,10 +151,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E9E2CF7B2D805CD6007ABC93 /* DGChartsDynamic in Frameworks */,
+				E950A9032DD72F0700928DEB /* Alamofire in Frameworks */,
 				E950A8EA2DD5ED4D00928DEB /* FirebaseCore in Frameworks */,
 				E950A8CD2DD2724700928DEB /* FSCalendar in Frameworks */,
 				E9E2CF792D805CD6007ABC93 /* DGCharts in Frameworks */,
+				E950A8FB2DD653D800928DEB /* FirebaseStorage in Frameworks */,
 				E950A8E82DD5ED4D00928DEB /* FirebaseAuth in Frameworks */,
+				E950A9052DD72F0700928DEB /* AlamofireDynamic in Frameworks */,
 				E950A8EC2DD5ED4D00928DEB /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -171,6 +195,8 @@
 			isa = PBXGroup;
 			children = (
 				E9FF40682D93272400FE25F0 /* FillProfileViewController.swift */,
+				E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */,
+				E950A8F82DD650B700928DEB /* FillProfileModuleBuilder.swift */,
 			);
 			path = FillProfile;
 			sourceTree = "<group>";
@@ -188,6 +214,7 @@
 			isa = PBXGroup;
 			children = (
 				E950A8D92DD4EB3000928DEB /* AuthService.swift */,
+				E950A8F62DD6505300928DEB /* ProfileService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -198,6 +225,98 @@
 				E950A8F22DD6131700928DEB /* TabBarModuleBuilder.swift */,
 			);
 			path = TabBar;
+			sourceTree = "<group>";
+		};
+		E950A8FD2DD72A5E00928DEB /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				E950A9132DD73EF400928DEB /* Config */,
+				E950A9122DD73EEB00928DEB /* Models */,
+				E950A9112DD73E9A00928DEB /* Endpoints */,
+				E950A90C2DD73E5000928DEB /* Core */,
+				E950A8D82DD4EB1A00928DEB /* Services */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		E950A9082DD73ADC00928DEB /* App */ = {
+			isa = PBXGroup;
+			children = (
+				E98B6B5D2D53C807005012AB /* AppDelegate.swift */,
+				E98B6B5F2D53C807005012AB /* SceneDelegate.swift */,
+				E98B6B682D53C80A005012AB /* LaunchScreen.storyboard */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		E950A9092DD73AF400928DEB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E90D77DC2D914D4F00C9EBF9 /* Poppins */,
+				E98B6B662D53C809005012AB /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		E950A90A2DD73B1600928DEB /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				E92681DD2DA9842E00138259 /* Profile */,
+				E9E2CF6D2D7F3460007ABC93 /* Home */,
+				E9E2CF6F2D7F3477007ABC93 /* Settings */,
+				E9E2CF702D7F3485007ABC93 /* Login */,
+				E9E2CF712D7F348E007ABC93 /* SignUp */,
+				E90D77F02D918A3000C9EBF9 /* FillProfile */,
+				E9DC7BCA2DB53282002BFFF4 /* Leaderboard */,
+				E9DE97842DB7D1CF00832C8B /* Notifications */,
+				E9DE97892DB7DAB000832C8B /* Statistics */,
+				E9CBD3F72DBA641200DF9A09 /* Search */,
+				E950A8F12DD612F700928DEB /* TabBar */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		E950A90B2DD73DB300928DEB /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				E90741772D7DBCA700E7599C /* Constants.swift */,
+				E90741732D7DA9A200E7599C /* Extensions.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		E950A90C2DD73E5000928DEB /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E950A8FF2DD72A8A00928DEB /* AFNetworkManager.swift */,
+				E950A90D2DD73E7300928DEB /* NetworkType.swift */,
+				E950A90F2DD73E8E00928DEB /* NetworkError.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		E950A9112DD73E9A00928DEB /* Endpoints */ = {
+			isa = PBXGroup;
+			children = (
+				E950A9162DD73F7C00928DEB /* ProfileEndpoint.swift */,
+			);
+			path = Endpoints;
+			sourceTree = "<group>";
+		};
+		E950A9122DD73EEB00928DEB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E950A91A2DD7418B00928DEB /* UploadProfileImageResponse.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E950A9132DD73EF400928DEB /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				E950A9142DD73F5100928DEB /* NetworkConstants.swift */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 		E98B6B512D53C807005012AB = {
@@ -219,23 +338,11 @@
 		E98B6B5C2D53C807005012AB /* Test */ = {
 			isa = PBXGroup;
 			children = (
-				E950A8F12DD612F700928DEB /* TabBar */,
-				E98B6B5D2D53C807005012AB /* AppDelegate.swift */,
-				E98B6B5F2D53C807005012AB /* SceneDelegate.swift */,
-				E950A8D82DD4EB1A00928DEB /* Services */,
-				E9CBD3F72DBA641200DF9A09 /* Search */,
-				E9DE97892DB7DAB000832C8B /* Statistics */,
-				E9DE97842DB7D1CF00832C8B /* Notifications */,
-				E9DC7BCA2DB53282002BFFF4 /* Leaderboard */,
-				E90D77F02D918A3000C9EBF9 /* FillProfile */,
-				E9E2CF722D7F34EA007ABC93 /* Common */,
-				E9E2CF712D7F348E007ABC93 /* SignUp */,
-				E9E2CF702D7F3485007ABC93 /* Login */,
-				E9E2CF6F2D7F3477007ABC93 /* Settings */,
-				E9E2CF6D2D7F3460007ABC93 /* Home */,
-				E92681DD2DA9842E00138259 /* Profile */,
-				E98B6B662D53C809005012AB /* Assets.xcassets */,
-				E98B6B682D53C80A005012AB /* LaunchScreen.storyboard */,
+				E950A8FD2DD72A5E00928DEB /* Networking */,
+				E950A90B2DD73DB300928DEB /* Utilities */,
+				E950A90A2DD73B1600928DEB /* Modules */,
+				E950A9082DD73ADC00928DEB /* App */,
+				E950A9092DD73AF400928DEB /* Resources */,
 				E98B6B6B2D53C80A005012AB /* Info.plist */,
 				E950A8DD2DD50F4300928DEB /* GoogleService-Info.plist */,
 			);
@@ -319,16 +426,6 @@
 			path = SignUp;
 			sourceTree = "<group>";
 		};
-		E9E2CF722D7F34EA007ABC93 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				E90D77DC2D914D4F00C9EBF9 /* Poppins */,
-				E90741772D7DBCA700E7599C /* Constants.swift */,
-				E90741732D7DA9A200E7599C /* Extensions.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -352,6 +449,9 @@
 				E950A8E72DD5ED4D00928DEB /* FirebaseAuth */,
 				E950A8E92DD5ED4D00928DEB /* FirebaseCore */,
 				E950A8EB2DD5ED4D00928DEB /* FirebaseFirestore */,
+				E950A8FA2DD653D800928DEB /* FirebaseStorage */,
+				E950A9022DD72F0700928DEB /* Alamofire */,
+				E950A9042DD72F0700928DEB /* AlamofireDynamic */,
 			);
 			productName = Test;
 			productReference = E98B6B5A2D53C807005012AB /* Test.app */;
@@ -385,6 +485,7 @@
 				E9E2CF772D805CD6007ABC93 /* XCRemoteSwiftPackageReference "Charts" */,
 				E950A8CB2DD2724700928DEB /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				E950A8E62DD5ED4D00928DEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E950A9012DD72F0700928DEB /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = E98B6B5B2D53C807005012AB /* Products */;
 			projectDirPath = "";
@@ -442,15 +543,24 @@
 				E9E2CF682D7F211F007ABC93 /* SettingsCollectionViewCell.swift in Sources */,
 				E950A8CF2DD27DD400928DEB /* StreakCalendarCell.swift in Sources */,
 				E9DE97882DB7D2E600832C8B /* NotificationsCollectionViewCell.swift in Sources */,
+				E950A9152DD73F5100928DEB /* NetworkConstants.swift in Sources */,
+				E950A9002DD72A8A00928DEB /* AFNetworkManager.swift in Sources */,
 				E950A8EE2DD5EFDE00928DEB /* LoginModuleBuilder.swift in Sources */,
+				E950A9172DD73F7C00928DEB /* ProfileEndpoint.swift in Sources */,
 				E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */,
 				E90741762D7DB60700E7599C /* SignUpViewController.swift in Sources */,
 				E90741722D7DA5D400E7599C /* LoginViewModel.swift in Sources */,
+				E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */,
+				E950A9102DD73E8E00928DEB /* NetworkError.swift in Sources */,
 				E950A8DC2DD4ED5700928DEB /* SignUpModuleBuilder.swift in Sources */,
 				E950A8D72DD4E58400928DEB /* SignUpViewModel.swift in Sources */,
 				E9DE978B2DB7DACA00832C8B /* StatisticsViewController.swift in Sources */,
+				E950A91B2DD7418B00928DEB /* UploadProfileImageResponse.swift in Sources */,
+				E950A8F72DD6505300928DEB /* ProfileService.swift in Sources */,
+				E950A8F92DD650B700928DEB /* FillProfileModuleBuilder.swift in Sources */,
 				E9FF40692D93272400FE25F0 /* FillProfileViewController.swift in Sources */,
 				E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */,
+				E950A90E2DD73E7300928DEB /* NetworkType.swift in Sources */,
 				E90741742D7DA9A200E7599C /* Extensions.swift in Sources */,
 				E9EA79422D94331D00533B85 /* HomePersonCollectionViewCell.swift in Sources */,
 				E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */,
@@ -692,6 +802,14 @@
 				version = 11.11.0;
 			};
 		};
+		E950A9012DD72F0700928DEB /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
 		E9E2CF772D805CD6007ABC93 /* XCRemoteSwiftPackageReference "Charts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/danielgindi/Charts";
@@ -722,6 +840,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E950A8E62DD5ED4D00928DEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		E950A8FA2DD653D800928DEB /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E950A8E62DD5ED4D00928DEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		E950A9022DD72F0700928DEB /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E950A9012DD72F0700928DEB /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		E950A9042DD72F0700928DEB /* AlamofireDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E950A9012DD72F0700928DEB /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = AlamofireDynamic;
 		};
 		E9E2CF782D805CD6007ABC93 /* DGCharts */ = {
 			isa = XCSwiftPackageProductDependency;

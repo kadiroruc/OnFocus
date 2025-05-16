@@ -7,7 +7,16 @@
 
 import UIKit
 
-class FillProfileViewController: UIViewController {
+protocol FillProfileViewInterface: AnyObject{
+    func navigateToHome()
+    func showError(message: String)
+    func setProfileImage(_ image: UIImage)
+    func showLoading(_ isLoading: Bool)
+    func enableStartButton(_ isEnabled: Bool)
+}
+
+final class FillProfileViewController: UIViewController {
+    private var viewModel: FillProfileViewModelInterface
     
     // MARK: - UI Components
     
@@ -103,13 +112,29 @@ class FillProfileViewController: UIViewController {
         return button
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        indicator.color = .gray
+        return indicator
+    }()
+    
+    // MARK: - Initializer
+    init(viewModel: FillProfileViewModelInterface) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.view = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     // MARK: - Lifecycle
     
-    override func loadView() {
-        super.loadView()
-        view = UIView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
         setupUI()
-        setupLayout()
     }
     
     override func viewDidLayoutSubviews() {
@@ -128,13 +153,12 @@ class FillProfileViewController: UIViewController {
         view.addSubview(nicknameTextField)
         view.addSubview(skipButton)
         view.addSubview(startButton)
+        view.addSubview(activityIndicator)
         
         skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
         startButton.addTarget(self, action: #selector(startTapped), for: .touchUpInside)
         changeProfileButton.addTarget(self, action: #selector(changeProfileTapped), for: .touchUpInside)
-    }
-    
-    private func setupLayout() {
+        
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -171,25 +195,92 @@ class FillProfileViewController: UIViewController {
             startButton.bottomAnchor.constraint(equalTo: skipButton.bottomAnchor),
             startButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
             startButton.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
-            startButton.heightAnchor.constraint(equalTo: skipButton.heightAnchor)
+            startButton.heightAnchor.constraint(equalTo: skipButton.heightAnchor),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 40),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     
     // MARK: - Actions
     
     @objc private func skipTapped() {
-        print("Skip tapped")
+        viewModel.skipButtonTapped()
     }
     
     @objc private func startTapped() {
-        print("Start tapped")
+        viewModel.startButtonTapped(name: nameTextField.text, nickname: nicknameTextField.text)
     }
     
     @objc private func changeProfileTapped() {
-        print("Change profile tapped")
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true)
     }
 }
 
-#Preview("FillProfileViewController"){
-    FillProfileViewController()
+extension FillProfileViewController: FillProfileViewInterface {
+    func navigateToHome() {
+        // Ana ekran ViewController'ını göster
+        let tabBar = TabBarModuleBuilder.build()
+        tabBar.modalPresentationStyle = .fullScreen
+        present(tabBar, animated: true)
+    }
+    
+    func showError(message: String) {
+        let alert = UIAlertController(title: "Error!", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+    
+    func setProfileImage(_ image: UIImage) {
+        profileImageView.image = image
+    }
+    
+    func showLoading(_ isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+            view.isUserInteractionEnabled = false
+        } else {
+            activityIndicator.stopAnimating()
+            view.isUserInteractionEnabled = true
+        }
+    }
+    
+    func enableStartButton(_ isEnabled: Bool) {
+        startButton.isEnabled = isEnabled
+        startButton.backgroundColor = isEnabled ? UIColor(hex: "#70C1B3") : UIColor(hex: "#A5A5A5")
+        startButton.setTitleColor(isEnabled ? .white : UIColor(hex: "#333333"), for: .normal)
+        startButton.layer.borderWidth = isEnabled ? 0 : 1
+        startButton.layer.borderColor = isEnabled ? UIColor.clear.cgColor : UIColor(hex: "#333333").cgColor
+    }
 }
+
+extension  FillProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        
+        if let editedImage = info[.editedImage] as? UIImage {
+            viewModel.setSelectedImage(editedImage)
+        } else if let originalImage = info[.originalImage] as? UIImage {
+            viewModel.setSelectedImage(originalImage)
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+}
+    
+    
+
+//
+//#Preview("FillProfileViewController"){
+//    FillProfileViewController(viewModel: FillProfileViewModel(authService: AuthService()))
+//}

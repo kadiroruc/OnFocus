@@ -292,18 +292,18 @@ extension SignUpViewController: SignUpViewInterface{
     }
     
     func navigateToLogin() {
-        let loginVC = LoginModuleBuilder.build()
-        loginVC.modalPresentationStyle = .fullScreen
-        present(loginVC, animated: true)
+        dismiss(animated: true)
     }
     
     func navigateToFillProfile() {
-        dismiss(animated: true)
+        let fillProfileVC = FillProfileModuleBuilder.build()
+        fillProfileVC.modalPresentationStyle = .fullScreen
+        present(fillProfileVC, animated: true)
     }
     
     
 }
 
-#Preview("SignUpViewController"){
-    SignUpModuleBuilder.build()
-}
+//#Preview("SignUpViewController"){
+//    
+//}
