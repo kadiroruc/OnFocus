@@ -8,9 +8,8 @@
 import UIKit
 
 struct HomeModuleBuilder {
-    static func build() -> UINavigationController {
-        let homeNav = UINavigationController(rootViewController: HomeViewController())
-        
-        return homeNav
+    static func build() -> UIViewController {
+            
+        return HomeViewController(viewModel: HomeViewModel())
     }
 }

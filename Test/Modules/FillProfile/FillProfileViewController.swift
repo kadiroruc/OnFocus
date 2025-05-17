@@ -13,6 +13,7 @@ protocol FillProfileViewInterface: AnyObject{
     func setProfileImage(_ image: UIImage)
     func showLoading(_ isLoading: Bool)
     func enableStartButton(_ isEnabled: Bool)
+    func setNicknameNotAvailable()
 }
 
 final class FillProfileViewController: UIViewController {
@@ -46,7 +47,7 @@ final class FillProfileViewController: UIViewController {
         imageView.image = UIImage(systemName: "person.crop.circle.fill")?.withTintColor(UIColor(hex: "#FFB570"), renderingMode: .alwaysOriginal)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 50
+        imageView.layer.cornerRadius = 65
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -89,17 +90,8 @@ final class FillProfileViewController: UIViewController {
         tf.font = UIFont(name: "Poppins-SemiBold", size: 15)
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.setLeftPadding(12)
+        tf.autocapitalizationType = .none
         return tf
-    }()
-    
-    private let skipButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Skip", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(hex: "#FF8A5C")
-        button.layer.cornerRadius = 25
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
     }()
     
     private let startButton: UIButton = {
@@ -107,7 +99,7 @@ final class FillProfileViewController: UIViewController {
         button.setTitle("Start", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(hex: "#70C1B3")
-        button.layer.cornerRadius = 25
+        button.layer.cornerRadius = 17
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -151,11 +143,9 @@ final class FillProfileViewController: UIViewController {
         view.addSubview(changeProfileButton)
         view.addSubview(nameTextField)
         view.addSubview(nicknameTextField)
-        view.addSubview(skipButton)
         view.addSubview(startButton)
         view.addSubview(activityIndicator)
         
-        skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
         startButton.addTarget(self, action: #selector(startTapped), for: .touchUpInside)
         changeProfileButton.addTarget(self, action: #selector(changeProfileTapped), for: .touchUpInside)
         
@@ -187,15 +177,10 @@ final class FillProfileViewController: UIViewController {
             nicknameTextField.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
             nicknameTextField.heightAnchor.constraint(equalToConstant: 50),
             
-            skipButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            skipButton.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
-            skipButton.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -10),
-            skipButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            startButton.bottomAnchor.constraint(equalTo: skipButton.bottomAnchor),
-            startButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 10),
-            startButton.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
-            startButton.heightAnchor.constraint(equalTo: skipButton.heightAnchor),
+            startButton.topAnchor.constraint(equalTo: nicknameTextField.bottomAnchor,constant: 60),
+            startButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            startButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -30),
+            startButton.heightAnchor.constraint(equalToConstant: 50),
             
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -205,10 +190,6 @@ final class FillProfileViewController: UIViewController {
     }
     
     // MARK: - Actions
-    
-    @objc private func skipTapped() {
-        viewModel.skipButtonTapped()
-    }
     
     @objc private func startTapped() {
         viewModel.startButtonTapped(name: nameTextField.text, nickname: nicknameTextField.text)
@@ -224,6 +205,13 @@ final class FillProfileViewController: UIViewController {
 }
 
 extension FillProfileViewController: FillProfileViewInterface {
+    
+    func setNicknameNotAvailable() {
+        nicknameTextField.layer.borderColor = UIColor(hex: "#FF8A5C").cgColor
+        nicknameTextField.layer.borderWidth = 2
+        
+    }
+    
     func navigateToHome() {
         // Ana ekran ViewController'ını göster
         let tabBar = TabBarModuleBuilder.build()
@@ -280,7 +268,9 @@ extension  FillProfileViewController: UIImagePickerControllerDelegate, UINavigat
     
     
 
-//
-//#Preview("FillProfileViewController"){
-//    FillProfileViewController(viewModel: FillProfileViewModel(authService: AuthService()))
+
+//#Preview(""){
+//    return UINavigationController(rootViewController: FillProfileViewController(viewModel: FillProfileViewModel(service: AuthService())))
+//        
+//    
 //}

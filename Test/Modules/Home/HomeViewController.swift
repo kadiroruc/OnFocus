@@ -18,9 +18,14 @@ protocol HomeViewInterface: AnyObject {
     func pauseCircularAnimation()
     func resumeCircularAnimation()
     func updatePlayButton(isPaused: Bool)
+    func resetCircularAnimationToStart(_ isSessionCompleted: Bool)
+    func updateSessionsLabel(text: String)
+    func showMessage(_ message: String)
+    func showConfirm(_ message: String)
 }
 
 final class HomeViewController: UIViewController {
+    private let viewModel: HomeViewModelInterface
 
     private let timeLabel: UILabel = {
         let label = UILabel()
@@ -100,19 +105,28 @@ final class HomeViewController: UIViewController {
         return label
     }()
     
+    //MARK: - Initialization
+    init(viewModel: HomeViewModelInterface) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        viewModel.view = self
+    }
     
-
-    private lazy var viewModel = HomeViewModel()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     private var circleLayer = CAShapeLayer()
     private var movingCircle = UIView()
     private var isCirclePathCreated = false
 
     var pausedTime: CFTimeInterval = 0
     private var isContainerFullScreen = false
-
+    
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.view = self
         viewModel.viewDidLoad()
         setupUI()
         setupLayout()
@@ -122,6 +136,18 @@ final class HomeViewController: UIViewController {
         onlineLabel.text = "13423 Online"
         sessionsLabel.text = "1 of 4 Session"
         workingLabel.text = "10/58 Working"
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+            
+            if !isCirclePathCreated {
+                createCircularPath()
+                createMovingCircle()
+                isCirclePathCreated = true
+            }
+        
+        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
     }
 
     private func setupUI() {
@@ -140,24 +166,13 @@ final class HomeViewController: UIViewController {
         view.addSubview(cancelButton)
         view.addSubview(sessionsLabel)
         view.addSubview(circleContainer)
+        view.sendSubviewToBack(circleContainer)
         view.addSubview(workingLabel)
         view.addSubview(onlineLabel)
 
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        cancelButton.addTarget(self, action: #selector(settingsButtonTapped), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
 
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-            
-            if !isCirclePathCreated {
-                createCircularPath()
-                createMovingCircle()
-                isCirclePathCreated = true
-            }
-        
-        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
     }
 
     private func setupLayout() {
@@ -205,6 +220,7 @@ final class HomeViewController: UIViewController {
     }
 
     private func createCircularPath() {
+        print("createCircularPath")
         let circularPath = UIBezierPath(
             arcCenter: CGPoint(x: circleContainer.frame.width/2, y: circleContainer.frame.width/2),
             radius: circleContainer.frame.width/2,
@@ -238,70 +254,13 @@ final class HomeViewController: UIViewController {
         viewModel.toggleCountdown()
     }
 
-    @objc private func settingsButtonTapped() {
-        viewModel.settingsButtonTapped()
+    @objc private func cancelButtonTapped() {
+        viewModel.cancelButtonTapped()
     }
     
     @objc private func gearButtonTapped() {
         //viewModel.gearButtonTapped()
         navigationController?.pushViewController(SettingsViewController(), animated: true)
-    }
-}
-
-extension HomeViewController: HomeViewInterface {
-    func updateCountdownLabel(minutes: Int, seconds: Int) {
-        timeLabel.text = String(format: "%02d:%02d", minutes, seconds)
-    }
-
-    func startCircularAnimation(duration: TimeInterval) {
-        let animation = CABasicAnimation(keyPath: "strokeEnd")
-        animation.toValue = 0
-        animation.duration = duration
-        animation.fillMode = .forwards
-        animation.isRemovedOnCompletion = false
-        circleLayer.add(animation, forKey: "circleAnimation")
-
-        let circularPath = UIBezierPath(arcCenter: CGPoint(x: 130, y: 130),
-                                        radius: 130,
-                                        startAngle: -CGFloat.pi/2,
-                                        endAngle: -CGFloat.pi / 2 - 2 * CGFloat.pi,
-                                        clockwise: false)
-
-        let moveAnimation = CAKeyframeAnimation(keyPath: "position")
-        moveAnimation.path = circularPath.cgPath
-        moveAnimation.duration = duration
-        moveAnimation.fillMode = .forwards
-        moveAnimation.isRemovedOnCompletion = false
-
-        movingCircle.layer.add(moveAnimation, forKey: "movingCircleAnimation")
-        viewModel.animationRunning = true
-    }
-
-    func pauseCircularAnimation() {
-        let pausedTime = movingCircle.layer.convertTime(CACurrentMediaTime(), from: nil)
-        movingCircle.layer.speed = 0.0
-        movingCircle.layer.timeOffset = pausedTime
-        circleLayer.speed = 0.0
-        circleLayer.timeOffset = pausedTime
-    }
-
-    func resumeCircularAnimation() {
-        let pausedTime = movingCircle.layer.timeOffset
-        movingCircle.layer.speed = 1.0
-        movingCircle.layer.timeOffset = 0.0
-        movingCircle.layer.beginTime = 0.0
-        let timeSincePause = movingCircle.layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
-        movingCircle.layer.beginTime = timeSincePause
-
-        circleLayer.speed = 1.0
-        circleLayer.timeOffset = 0.0
-        circleLayer.beginTime = timeSincePause
-    }
-
-    func updatePlayButton(isPaused: Bool) {
-
-        let buttonImage = isPaused ?         UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)) :         UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold))
-        playButton.setImage(buttonImage, for: .normal)
     }
     
     private func setupCircleContainerTapGesture() {
@@ -312,11 +271,11 @@ extension HomeViewController: HomeViewInterface {
     }
 
     @objc private func circleContainerTapped(_ gesture: UITapGestureRecognizer) {
-        let locationInLabel = gesture.location(in: timeLabel)
+        let cancelButtonLocation = gesture.location(in: cancelButton)
         
-        
-        if timeLabel.bounds.contains(locationInLabel) {
+        if !timeLabel.bounds.contains(cancelButtonLocation) {
             listCollectionView.isHidden.toggle()
+            
             if isContainerFullScreen{
                 
                 let timeLabelConstraints = timeLabel.allAttachedConstraints()
@@ -368,7 +327,6 @@ extension HomeViewController: HomeViewInterface {
 
             
             UIView.animate(withDuration: 0.3) {
-                print("aa")
                 self.view.layoutIfNeeded()
             }
         }
@@ -376,9 +334,136 @@ extension HomeViewController: HomeViewInterface {
     
 }
 
+extension HomeViewController: HomeViewInterface {
+    func showMessage(_ message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true)
+    }
+    func showConfirm(_ message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+            self.viewModel.cancelConfirmButtonTapped()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(alert, animated: true)
+    }
+    
+    func updateSessionsLabel(text: String) {
+        sessionsLabel.text = text
+    }
+    
+    
+    func resetCircularAnimationToStart(_ isSessionCompleted: Bool) {
+        circleLayer.removeAllAnimations()
+        movingCircle.layer.removeAllAnimations()
+
+        // 2. Reset timing properties (to allow future animations to work properly)
+        circleLayer.speed = 1.0
+        circleLayer.timeOffset = 0.0
+        circleLayer.beginTime = 0.0
+
+        movingCircle.layer.speed = 1.0
+        movingCircle.layer.timeOffset = 0.0
+        movingCircle.layer.beginTime = 0.0
+
+        // 3. Reset strokeEnd to 0 (means empty arc)
+        circleLayer.strokeEnd = 0.0
+
+        // 4. Reset movingCircle's position to start point
+        let radius: CGFloat = 130
+        let center = CGPoint(x: radius, y: radius)
+        let circleSize: CGFloat = 28
+        movingCircle.frame = CGRect(
+            x: center.x - circleSize / 2,
+            y: center.y - radius - circleSize / 2,
+            width: circleSize,
+            height: circleSize
+        )
+        circleLayer.strokeEnd = 1
+        
+        let centerPoint = CGPoint(x: 130, y: 130)
+        movingCircle.frame = CGRect(x: centerPoint.x - 14, y: centerPoint.y - 130 - 14, width: 28, height: 28)
+        
+        if isSessionCompleted {
+            //break
+            circleLayer.strokeColor = UIColor(hex: "#70C1B3", alpha: 1).cgColor
+            
+        }
+        else {
+            //working
+            circleLayer.strokeColor = UIColor(hex: "#FF8A5C", alpha: 1).cgColor
+        }
+        
+    }
+    
+    func updateCountdownLabel(minutes: Int, seconds: Int) {
+        timeLabel.text = String(format: "%02d:%02d", minutes, seconds)
+    }
+
+    func startCircularAnimation(duration: TimeInterval) {
+        circleLayer.removeAnimation(forKey: "circleAnimation")
+        
+        let animation = CABasicAnimation(keyPath: "strokeEnd")
+        animation.toValue = 0
+        animation.duration = duration
+        animation.fillMode = .forwards
+        animation.isRemovedOnCompletion = false
+        circleLayer.add(animation, forKey: "circleAnimation")
+
+        let circularPath = UIBezierPath(arcCenter: CGPoint(x: 130, y: 130),
+                                        radius: 130,
+                                        startAngle: -CGFloat.pi/2,
+                                        endAngle: -CGFloat.pi / 2 - 2 * CGFloat.pi,
+                                        clockwise: false)
+
+        let moveAnimation = CAKeyframeAnimation(keyPath: "position")
+        moveAnimation.path = circularPath.cgPath
+        moveAnimation.duration = duration
+        moveAnimation.fillMode = .forwards
+        moveAnimation.isRemovedOnCompletion = false
+
+        movingCircle.layer.add(moveAnimation, forKey: "movingCircleAnimation")
+        viewModel.animationRunning = true
+    }
+
+    func pauseCircularAnimation() {
+        let pausedTime = movingCircle.layer.convertTime(CACurrentMediaTime(), from: nil)
+        movingCircle.layer.speed = 0.0
+        movingCircle.layer.timeOffset = pausedTime
+        circleLayer.speed = 0.0
+        circleLayer.timeOffset = pausedTime
+    }
+    
+    
+
+    func resumeCircularAnimation() {
+        let pausedTime = movingCircle.layer.timeOffset
+        movingCircle.layer.speed = 1.0
+        movingCircle.layer.timeOffset = 0.0
+        movingCircle.layer.beginTime = 0.0
+        let timeSincePause = movingCircle.layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        movingCircle.layer.beginTime = timeSincePause
+
+        circleLayer.speed = 1.0
+        circleLayer.timeOffset = 0.0
+        circleLayer.beginTime = timeSincePause
+    }
+
+    func updatePlayButton(isPaused: Bool) {
+
+        let buttonImage = isPaused ? UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)) : UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold))
+        playButton.setImage(buttonImage, for: .normal)
+    }
+    
+    
+    
+}
+
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 40
+//        return viewModel.numberOfPeople()
+        return 10
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -388,12 +473,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         cell.layer.borderColor = UIColor(hex: "#70C1B3").cgColor
         cell.layer.borderWidth = 5
         cell.contentMode = .scaleAspectFit
-//        cell.profileImageView.image = UIImage(systemName: "person")
+        
+//        cell.profileImageView.image = viewModel.profileImage(at: indexPath.row)
+        cell.profileImageView.image = UIImage(named: "profile")
         return cell
     }
 }
 
-#Preview("HomeViewController"){
-    HomeViewController()
-}
+//#Preview("HomeViewController"){
+//    HomeViewController()
+//}
 

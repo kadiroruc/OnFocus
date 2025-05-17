@@ -9,7 +9,6 @@ import UIKit
 
 protocol FillProfileViewModelInterface {
     var view: FillProfileViewInterface? { get set }
-    func skipButtonTapped()
     func startButtonTapped(name: String?, nickname: String?)
     func setSelectedImage(_ image: UIImage)
 }
@@ -31,29 +30,44 @@ extension FillProfileViewModel: FillProfileViewModelInterface{
         view?.setProfileImage(image)
     }
     
-    func skipButtonTapped() {
-        //view?.navigateToHome()
-    }
-    
     func startButtonTapped(name: String?, nickname: String?) {
         guard let name = name, !name.isEmpty,
               let nickname = nickname, !nickname.isEmpty else {
-            view?.showError(message: "Name and nickname must not be empty.")
+            view?.showError(message: "Please fill in all fields.")
+            return
+        }
+        guard let selectedImage = selectedImage else {
+            view?.showError(message: "Please select an image.")
             return
         }
         
         view?.enableStartButton(false)
         view?.showLoading(true)
         
-        profileService.saveProfile(name: name, nickname: nickname, image: selectedImage) { [weak self] result in
+        profileService.isNicknameAvailable(nickname) { [weak self] isAvailable in
             guard let self = self else { return }
-            self.view?.showLoading(false)
-            switch result {
-            case .success:
-                self.view?.navigateToHome()
-            case .failure(let error):
-                self.view?.showError(message: error.localizedDescription)
-                self.view?.enableStartButton(true)
+            
+            DispatchQueue.main.async {
+                if isAvailable {
+                    
+                    self.profileService.saveProfile(name: name, nickname: nickname, image: selectedImage) { result in
+                        DispatchQueue.main.async {
+                            self.view?.showLoading(false)
+                            switch result {
+                            case .success:
+                                self.view?.navigateToHome()
+                            case .failure(let error):
+                                self.view?.showError(message: error.localizedDescription)
+                                self.view?.enableStartButton(true)
+                            }
+                        }
+                    }
+                } else {
+                    self.view?.showLoading(false)
+                    self.view?.showError(message: "Nickname is already taken. Please choose another one.")
+                    self.view?.setNicknameNotAvailable()
+                    self.view?.enableStartButton(true)
+                }
             }
         }
     }

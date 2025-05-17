@@ -8,9 +8,6 @@ import UIKit
 
 struct SignUpModuleBuilder {
     static func build() -> UIViewController {
-        let authService = AuthService()
-        let viewModel = SignUpViewModel(authService: authService)
-        let viewController = SignUpViewController(viewModel: viewModel)
-        return viewController
+        return SignUpViewController(viewModel: SignUpViewModel(authService: AuthService()))
     }
 }

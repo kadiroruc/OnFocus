@@ -8,7 +8,17 @@
 import UIKit
 import FSCalendar
 
-class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
+protocol ProfileViewInterface: AnyObject {
+    func updateProfileImage(with image: UIImage)
+    func showError(_ message: String)
+    func updateStreakCalendar()
+    func updateNickname(_ nickname: String)
+    func updateAverageWorkTime(_ time: String)
+    func updateStreakDay(_ count: Int)
+}
+
+class ProfileViewController: UIViewController {
+    private let viewModel: ProfileViewModelInterface
     
     private let addFriendBarButtonItem : UIBarButtonItem = {
         let item = UIBarButtonItem()
@@ -84,25 +94,22 @@ class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDat
         return calendar
     }()
     
-    var streakDates: [Date] = []
+    //MARK: - Initialization
+    init(viewModel: ProfileViewModelInterface) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.view = self
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
+    //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-
-        let rawDates = [
-            "2025-05-01",
-            "2025-05-02",
-            "2025-05-04",
-            "2025-05-05",
-            "2025-05-06"
-        ].compactMap { formatter.date(from: $0) }
-
-        streakDates = getStreakDays(from: rawDates)
+        viewModel.viewDidLoad()
     }
     
     override func viewDidLayoutSubviews() {
@@ -171,57 +178,50 @@ class ProfileViewController: UIViewController, FSCalendarDelegate, FSCalendarDat
             NSLayoutConstraint.activate(streakCalendarConstraints)
         }
     }
-    
-    
-    
-//    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-//
-//    }
-    
+
+}
+
+// MARK: - ProfileViewInterface
+extension ProfileViewController: ProfileViewInterface {
+    func updateProfileImage(with image: UIImage) {
+        profileImageView.image = image
+    }
+
+    func showError(_ message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
+    func updateStreakCalendar() {
+        calendar.reloadData()
+    }
+
+    func updateNickname(_ nickname: String) {
+        nicknameLabel.text = nickname
+    }
+
+    func updateAverageWorkTime(_ time: String) {
+        averageWorkTimeLabel.text = time
+    }
+
+    func updateStreakDay(_ count: Int) {
+        streakDayLabel.text = "Current Streak Day: \(count)"
+    }
+}
+
+// MARK: - FSCalendar
+extension ProfileViewController: FSCalendarDataSource, FSCalendarDelegate, FSCalendarDelegateAppearance {
     func calendar(_ calendar: FSCalendar, cellFor date: Date, at position: FSCalendarMonthPosition) -> FSCalendarCell {
         let cell = calendar.dequeueReusableCell(withIdentifier: "cell", for: date, at: position) as! StreakCalendarCell
-
         guard position == .current else { return cell }
-        
-        let calendar = Calendar.current
 
-        cell.isStreak = streakDates.contains { calendar.isDate($0, inSameDayAs: date) }
         
-        if cell.isStreak {
-            let previous = calendar.date(byAdding: .day, value: -1, to: date)!
-            let next = calendar.date(byAdding: .day, value: 1, to: date)!
-            
-            cell.isLeftConnected = streakDates.contains { calendar.isDate($0, inSameDayAs: previous) }
-            cell.isRightConnected = streakDates.contains { calendar.isDate($0, inSameDayAs: next) }
-        }
+        cell.isStreak = viewModel.isDatePartOfStreak(date)
+        cell.isLeftConnected = viewModel.isDateConnectedLeft(date)
+        cell.isRightConnected = viewModel.isDateConnectedRight(date)
+
 
         return cell
     }
-    
-    func getStreakDays(from dates: [Date]) -> [Date] {
-        let sortedDates = dates.sorted()
-        var streak: [Date] = []
-        
-        for i in 1..<sortedDates.count {
-            let previous = sortedDates[i - 1]
-            let current = sortedDates[i]
-            let diff = Calendar.current.dateComponents([.day], from: previous, to: current).day!
-            
-            if diff == 1 {
-                if !streak.contains(previous) {
-                    streak.append(previous)
-                }
-                streak.append(current)
-            }
-        }
-        
-        return streak
-    }
-    
 }
-
-
-#Preview("ProfileViewController"){
-    ProfileViewController()
-}
-

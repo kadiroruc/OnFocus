@@ -11,10 +11,11 @@ struct TabBarModuleBuilder {
     static func build() -> UITabBarController {
         let tabBarController = UITabBarController()
         
-        let homeNav = HomeModuleBuilder.build()
+        let homeVC = HomeModuleBuilder.build()
+        let homeNav = UINavigationController(rootViewController: homeVC)
         homeNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.clockArrowCirclepath), tag: 0)
         
-        let profileVC = ProfileViewController()
+        let profileVC = ProfileModuleBuilder.build()
         profileVC.title = "Profile"
         let profileNav = UINavigationController(rootViewController: profileVC)
         profileNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.person), tag: 1)

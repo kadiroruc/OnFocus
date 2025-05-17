@@ -9,7 +9,7 @@ import UIKit
 
 protocol HomeViewModelInterface: AnyObject {
     var view: HomeViewInterface? { get set }
-    var isPaused: Bool { get set }
+    
     var animationRunning: Bool { get set}
     func toggleCountdown()
     func viewDidLoad()
@@ -17,25 +17,74 @@ protocol HomeViewModelInterface: AnyObject {
     func pauseCountdown()
     func resumeCountdown()
     func updateCountdown()
-    func settingsButtonTapped()
+    func cancelButtonTapped()
+    func cancelConfirmButtonTapped()
 }
 
 final class HomeViewModel {
     weak var view: HomeViewInterface?
+//    private let timerService: TimerServiceProtocol
+//    
+//    init(timerService: TimerServiceProtocol) {
+//        self.timerService = timerService
+//    }
+    
     var animationRunning = false
-    var isPaused: Bool = true
     
     private var countdownMinutes = 0
-    private var countdownSeconds = 5
+    private var countdownSeconds = 2
     private var splitSeconds = 59
+    
+    private var isPaused: Bool = true
     private var countdownTimer: Timer?
+    private var sessionCount = 1
+    private var isSessionCompleted = true
+    private var isBreak = false
+    
+    
+    func resetTimer() {
+        countdownTimer?.invalidate()
+        isPaused = true
+        animationRunning = false
+        view?.updatePlayButton(isPaused: true)
+        view?.resetCircularAnimationToStart(isSessionCompleted)
+        
+        if isSessionCompleted {
+            sessionCount += 1
+            view?.updateSessionsLabel(text: "Break")
+            if sessionCount == 5 {
+                countdownMinutes = 0
+                countdownSeconds = 3
+                splitSeconds = 59
+                
+                sessionCount = 1
+                view?.updateSessionsLabel(text: "Break")
+            }else{
+                countdownMinutes = 0
+                countdownSeconds = 1
+                splitSeconds = 59
+            }
+            isSessionCompleted = false
+            isBreak = true
+                
+        }else{
+            
+            view?.updateSessionsLabel(text: "\(sessionCount) of 4 Sessions")
+            countdownMinutes = 0
+            countdownSeconds = 2
+            splitSeconds = 59
+            isSessionCompleted = true
+            isBreak = false
+        }
+
+        view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
+    }
     
 }
 
 extension HomeViewModel: HomeViewModelInterface{
     func viewDidLoad() {
         view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
-
     }
     
     func toggleCountdown() {
@@ -43,13 +92,16 @@ extension HomeViewModel: HomeViewModelInterface{
             if animationRunning{
                 resumeCountdown()
             }else{
+                print("sadfasf")
                 startCountdown()
             }
+            print("a")
         } else {
             pauseCountdown()
         }
         isPaused.toggle()
-        view?.updatePlayButton(isPaused: isPaused) // View'a butonu değiştirmesi gerektiğini söylüyoruz
+
+        view?.updatePlayButton(isPaused: isPaused)
     }
     
     func startCountdown() {
@@ -70,6 +122,9 @@ extension HomeViewModel: HomeViewModelInterface{
     }
     
     @objc func updateCountdown() {
+        if countdownMinutes == 0 && countdownSeconds == 0 {
+            splitSeconds = 0
+        }
         if countdownMinutes > 0 || countdownSeconds > 0 || splitSeconds > 0 {
             if splitSeconds == 0 {
                 if countdownSeconds == 0 {
@@ -86,13 +141,27 @@ extension HomeViewModel: HomeViewModelInterface{
             }
             view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
         } else {
-            animationRunning = false
-            countdownTimer?.invalidate()
+            resetTimer()
         }
     }
     
-    func settingsButtonTapped(){
+    func cancelButtonTapped(){
+        if !isBreak{
+            if !animationRunning{
+                view?.showMessage("Plese first start the timer.")
+                return
+            }else{
+                view?.showConfirm("Are you sure you want to skip the current session?")
+            }
+        }else{
+            resetTimer()
+        }
         
     }
+    
+    func cancelConfirmButtonTapped() {
+        resetTimer()
+    }
+        
     
 }

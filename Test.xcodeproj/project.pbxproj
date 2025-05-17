@@ -62,6 +62,8 @@
 		E98B6B672D53C809005012AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B662D53C809005012AB /* Assets.xcassets */; };
 		E98B6B6A2D53C80A005012AB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B692D53C80A005012AB /* Base */; };
 		E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */; };
+		E9A6F1862DD7ECA400016F4C /* ProfileVewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */; };
+		E9A6F1882DD882FE00016F4C /* ProfileModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1872DD882FE00016F4C /* ProfileModuleBuilder.swift */; };
 		E9CBD3F92DBA642300DF9A09 /* ProfileSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */; };
 		E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D058232D75F76E0003484C /* HomeViewModel.swift */; };
 		E9DC7BCC2DB532AF002BFFF4 /* LeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC7BCB2DB532AF002BFFF4 /* LeaderboardViewController.swift */; };
@@ -130,6 +132,8 @@
 		E98B6B692D53C80A005012AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E98B6B6B2D53C80A005012AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillProfileViewModel.swift; sourceTree = "<group>"; };
+		E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVewModel.swift; sourceTree = "<group>"; };
+		E9A6F1872DD882FE00016F4C /* ProfileModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModuleBuilder.swift; sourceTree = "<group>"; };
 		E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSearchViewController.swift; sourceTree = "<group>"; };
 		E9D058232D75F76E0003484C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		E9DC7BCB2DB532AF002BFFF4 /* LeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
@@ -205,7 +209,9 @@
 			isa = PBXGroup;
 			children = (
 				E92681DB2DA9842A00138259 /* ProfileViewController.swift */,
+				E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */,
 				E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */,
+				E9A6F1872DD882FE00016F4C /* ProfileModuleBuilder.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -338,10 +344,10 @@
 		E98B6B5C2D53C807005012AB /* Test */ = {
 			isa = PBXGroup;
 			children = (
+				E950A9082DD73ADC00928DEB /* App */,
 				E950A8FD2DD72A5E00928DEB /* Networking */,
 				E950A90B2DD73DB300928DEB /* Utilities */,
 				E950A90A2DD73B1600928DEB /* Modules */,
-				E950A9082DD73ADC00928DEB /* App */,
 				E950A9092DD73AF400928DEB /* Resources */,
 				E98B6B6B2D53C80A005012AB /* Info.plist */,
 				E950A8DD2DD50F4300928DEB /* GoogleService-Info.plist */,
@@ -387,9 +393,9 @@
 		E9E2CF6D2D7F3460007ABC93 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				E98B6B612D53C807005012AB /* HomeViewController.swift */,
 				E9D058232D75F76E0003484C /* HomeViewModel.swift */,
 				E950A8EF2DD6122800928DEB /* HomeModuleBuilder.swift */,
-				E98B6B612D53C807005012AB /* HomeViewController.swift */,
 				E9EA79412D94331D00533B85 /* HomePersonCollectionViewCell.swift */,
 			);
 			path = Home;
@@ -534,9 +540,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E90741702D7DA49800E7599C /* LoginViewController.swift in Sources */,
+				E9A6F1882DD882FE00016F4C /* ProfileModuleBuilder.swift in Sources */,
 				E90741782D7DBCA700E7599C /* Constants.swift in Sources */,
 				E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */,
 				E950A8F02DD6122800928DEB /* HomeModuleBuilder.swift in Sources */,
+				E9A6F1862DD7ECA400016F4C /* ProfileVewModel.swift in Sources */,
 				E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */,
 				E9DE97862DB7D1E100832C8B /* NotificationsViewController.swift in Sources */,
 				E9DC7BCE2DB537A0002BFFF4 /* BottomSheetViewController.swift in Sources */,

@@ -9,9 +9,6 @@ import UIKit
 
 struct FillProfileModuleBuilder {
     static func build() -> UIViewController {
-        let profileService = ProfileService()
-        let viewModel = FillProfileViewModel(service: profileService)
-        let viewController = FillProfileViewController(viewModel: viewModel)
-        return viewController
+        return FillProfileViewController(viewModel: FillProfileViewModel(service: ProfileService(networkManager: AFNetworkManager())))
     }
 }

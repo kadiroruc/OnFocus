@@ -22,24 +22,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         
-        do{
-           try Auth.auth().signOut()
-        }catch{
-            print("Sign out error: \(error)")
-        }
+//        do{
+//           try Auth.auth().signOut()
+//        }catch{
+//            print("Sign out error: \(error)")
+//        }
         
-        let loginVC = LoginModuleBuilder.build()
-        
-        if Auth.auth().currentUser != nil {
-            // Kullanıcı giriş yapmışsa ana sayfaya git
-            let tabBar = TabBarModuleBuilder.build()
-            window.rootViewController = tabBar
-        } else {
-            // Giriş yapmamışsa login ekranına git
-            let loginVC = LoginModuleBuilder.build()
-            window.rootViewController = loginVC
-        }
-        
+//        
+//        if Auth.auth().currentUser != nil {
+//            // Kullanıcı giriş yapmışsa ana sayfaya git
+//            let tabBar = TabBarModuleBuilder.build()
+//            window.rootViewController = tabBar
+//        } else {
+//            // Giriş yapmamışsa login ekranına git
+//            let loginVC = LoginModuleBuilder.build()
+//            window.rootViewController = loginVC
+//        }
+                    let tabBar = TabBarModuleBuilder.build()
+                    window.rootViewController = tabBar
         window.makeKeyAndVisible()
         self.window = window
     }
