@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		E90741702D7DA49800E7599C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E907416F2D7DA49800E7599C /* LoginViewController.swift */; };
 		E90741722D7DA5D400E7599C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741712D7DA5D400E7599C /* LoginViewModel.swift */; };
-		E90741742D7DA9A200E7599C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741732D7DA9A200E7599C /* Extensions.swift */; };
+		E90741742D7DA9A200E7599C /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741732D7DA9A200E7599C /* UITextFieldExtension.swift */; };
 		E90741762D7DB60700E7599C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741752D7DB60700E7599C /* SignUpViewController.swift */; };
 		E90741782D7DBCA700E7599C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741772D7DBCA700E7599C /* Constants.swift */; };
 		E907417A2D7DE4FF00E7599C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741792D7DE4FF00E7599C /* SettingsViewController.swift */; };
@@ -56,6 +56,15 @@
 		E950A9152DD73F5100928DEB /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A9142DD73F5100928DEB /* NetworkConstants.swift */; };
 		E950A9172DD73F7C00928DEB /* ProfileEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A9162DD73F7C00928DEB /* ProfileEndpoint.swift */; };
 		E950A91B2DD7418B00928DEB /* UploadProfileImageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A91A2DD7418B00928DEB /* UploadProfileImageResponse.swift */; };
+		E95460C62DDA09BE00BB7365 /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460C52DDA09BE00BB7365 /* TimerService.swift */; };
+		E95460C82DDA0B0C00BB7365 /* SessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460C72DDA0B0C00BB7365 /* SessionModel.swift */; };
+		E95460CC2DDA0B4F00BB7365 /* StatisticsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460CB2DDA0B4F00BB7365 /* StatisticsModel.swift */; };
+		E95460CE2DDA1E2800BB7365 /* TimerService+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460CD2DDA1E2800BB7365 /* TimerService+Helpers.swift */; };
+		E95460D02DDA1EDC00BB7365 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460CF2DDA1EDC00BB7365 /* UIViewExtension.swift */; };
+		E95460D22DDA1EF100BB7365 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460D12DDA1EF100BB7365 /* UIColorExtension.swift */; };
+		E95460D42DDA1F0600BB7365 /* DateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460D32DDA1F0600BB7365 /* DateFormatterExtension.swift */; };
+		E95460D72DDA7B7C00BB7365 /* FetchTimeRangeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460D62DDA7B7C00BB7365 /* FetchTimeRangeEnum.swift */; };
+		E95460D92DDA7BEF00BB7365 /* TimeRangeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460D82DDA7BEF00BB7365 /* TimeRangeEnum.swift */; };
 		E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5D2D53C807005012AB /* AppDelegate.swift */; };
 		E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5F2D53C807005012AB /* SceneDelegate.swift */; };
 		E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B612D53C807005012AB /* HomeViewController.swift */; };
@@ -84,7 +93,7 @@
 /* Begin PBXFileReference section */
 		E907416F2D7DA49800E7599C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E90741712D7DA5D400E7599C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		E90741732D7DA9A200E7599C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		E90741732D7DA9A200E7599C /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		E90741752D7DB60700E7599C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		E90741772D7DBCA700E7599C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E90741792D7DE4FF00E7599C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +133,15 @@
 		E950A9142DD73F5100928DEB /* NetworkConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
 		E950A9162DD73F7C00928DEB /* ProfileEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEndpoint.swift; sourceTree = "<group>"; };
 		E950A91A2DD7418B00928DEB /* UploadProfileImageResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProfileImageResponse.swift; sourceTree = "<group>"; };
+		E95460C52DDA09BE00BB7365 /* TimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerService.swift; sourceTree = "<group>"; };
+		E95460C72DDA0B0C00BB7365 /* SessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionModel.swift; sourceTree = "<group>"; };
+		E95460CB2DDA0B4F00BB7365 /* StatisticsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsModel.swift; sourceTree = "<group>"; };
+		E95460CD2DDA1E2800BB7365 /* TimerService+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimerService+Helpers.swift"; sourceTree = "<group>"; };
+		E95460CF2DDA1EDC00BB7365 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
+		E95460D12DDA1EF100BB7365 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		E95460D32DDA1F0600BB7365 /* DateFormatterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterExtension.swift; sourceTree = "<group>"; };
+		E95460D62DDA7B7C00BB7365 /* FetchTimeRangeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchTimeRangeEnum.swift; sourceTree = "<group>"; };
+		E95460D82DDA7BEF00BB7365 /* TimeRangeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRangeEnum.swift; sourceTree = "<group>"; };
 		E98B6B5A2D53C807005012AB /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E98B6B5D2D53C807005012AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E98B6B5F2D53C807005012AB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -221,6 +239,8 @@
 			children = (
 				E950A8D92DD4EB3000928DEB /* AuthService.swift */,
 				E950A8F62DD6505300928DEB /* ProfileService.swift */,
+				E95460C52DDA09BE00BB7365 /* TimerService.swift */,
+				E95460CD2DDA1E2800BB7365 /* TimerService+Helpers.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -286,7 +306,7 @@
 			isa = PBXGroup;
 			children = (
 				E90741772D7DBCA700E7599C /* Constants.swift */,
-				E90741732D7DA9A200E7599C /* Extensions.swift */,
+				E95460D52DDA1FD500BB7365 /* Extensions */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -313,6 +333,10 @@
 			isa = PBXGroup;
 			children = (
 				E950A91A2DD7418B00928DEB /* UploadProfileImageResponse.swift */,
+				E95460C72DDA0B0C00BB7365 /* SessionModel.swift */,
+				E95460D82DDA7BEF00BB7365 /* TimeRangeEnum.swift */,
+				E95460D62DDA7B7C00BB7365 /* FetchTimeRangeEnum.swift */,
+				E95460CB2DDA0B4F00BB7365 /* StatisticsModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -323,6 +347,17 @@
 				E950A9142DD73F5100928DEB /* NetworkConstants.swift */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		E95460D52DDA1FD500BB7365 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E90741732D7DA9A200E7599C /* UITextFieldExtension.swift */,
+				E95460CF2DDA1EDC00BB7365 /* UIViewExtension.swift */,
+				E95460D12DDA1EF100BB7365 /* UIColorExtension.swift */,
+				E95460D32DDA1F0600BB7365 /* DateFormatterExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		E98B6B512D53C807005012AB = {
@@ -542,11 +577,16 @@
 				E90741702D7DA49800E7599C /* LoginViewController.swift in Sources */,
 				E9A6F1882DD882FE00016F4C /* ProfileModuleBuilder.swift in Sources */,
 				E90741782D7DBCA700E7599C /* Constants.swift in Sources */,
+				E95460C82DDA0B0C00BB7365 /* SessionModel.swift in Sources */,
+				E95460D72DDA7B7C00BB7365 /* FetchTimeRangeEnum.swift in Sources */,
 				E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */,
+				E95460D02DDA1EDC00BB7365 /* UIViewExtension.swift in Sources */,
 				E950A8F02DD6122800928DEB /* HomeModuleBuilder.swift in Sources */,
 				E9A6F1862DD7ECA400016F4C /* ProfileVewModel.swift in Sources */,
+				E95460D42DDA1F0600BB7365 /* DateFormatterExtension.swift in Sources */,
 				E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */,
 				E9DE97862DB7D1E100832C8B /* NotificationsViewController.swift in Sources */,
+				E95460D22DDA1EF100BB7365 /* UIColorExtension.swift in Sources */,
 				E9DC7BCE2DB537A0002BFFF4 /* BottomSheetViewController.swift in Sources */,
 				E9E2CF682D7F211F007ABC93 /* SettingsCollectionViewCell.swift in Sources */,
 				E950A8CF2DD27DD400928DEB /* StreakCalendarCell.swift in Sources */,
@@ -558,6 +598,7 @@
 				E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */,
 				E90741762D7DB60700E7599C /* SignUpViewController.swift in Sources */,
 				E90741722D7DA5D400E7599C /* LoginViewModel.swift in Sources */,
+				E95460CE2DDA1E2800BB7365 /* TimerService+Helpers.swift in Sources */,
 				E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */,
 				E950A9102DD73E8E00928DEB /* NetworkError.swift in Sources */,
 				E950A8DC2DD4ED5700928DEB /* SignUpModuleBuilder.swift in Sources */,
@@ -569,7 +610,9 @@
 				E9FF40692D93272400FE25F0 /* FillProfileViewController.swift in Sources */,
 				E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */,
 				E950A90E2DD73E7300928DEB /* NetworkType.swift in Sources */,
-				E90741742D7DA9A200E7599C /* Extensions.swift in Sources */,
+				E95460CC2DDA0B4F00BB7365 /* StatisticsModel.swift in Sources */,
+				E95460D92DDA7BEF00BB7365 /* TimeRangeEnum.swift in Sources */,
+				E90741742D7DA9A200E7599C /* UITextFieldExtension.swift in Sources */,
 				E9EA79422D94331D00533B85 /* HomePersonCollectionViewCell.swift in Sources */,
 				E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */,
 				E9CBD3F92DBA642300DF9A09 /* ProfileSearchViewController.swift in Sources */,
@@ -578,6 +621,7 @@
 				E9DC7BCC2DB532AF002BFFF4 /* LeaderboardViewController.swift in Sources */,
 				E9E2CF6A2D7F28A6007ABC93 /* SettingsViewModel.swift in Sources */,
 				E9DE978D2DB7E33500832C8B /* BalloonMarker.swift in Sources */,
+				E95460C62DDA09BE00BB7365 /* TimerService.swift in Sources */,
 				E950A8DA2DD4EB3000928DEB /* AuthService.swift in Sources */,
 				E950A8F32DD6131700928DEB /* TabBarModuleBuilder.swift in Sources */,
 			);

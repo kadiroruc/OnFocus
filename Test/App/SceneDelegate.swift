@@ -28,18 +28,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            print("Sign out error: \(error)")
 //        }
         
-//        
-//        if Auth.auth().currentUser != nil {
-//            // Kullanıcı giriş yapmışsa ana sayfaya git
-//            let tabBar = TabBarModuleBuilder.build()
-//            window.rootViewController = tabBar
-//        } else {
-//            // Giriş yapmamışsa login ekranına git
-//            let loginVC = LoginModuleBuilder.build()
-//            window.rootViewController = loginVC
-//        }
-                    let tabBar = TabBarModuleBuilder.build()
-                    window.rootViewController = tabBar
+        
+        if Auth.auth().currentUser != nil {
+            // Kullanıcı giriş yapmışsa ana sayfaya git
+            let tabBar = TabBarModuleBuilder.build()
+            window.rootViewController = tabBar
+        } else {
+            // Giriş yapmamışsa login ekranına git
+            let loginVC = LoginModuleBuilder.build()
+            window.rootViewController = loginVC
+        }
+
         window.makeKeyAndVisible()
         self.window = window
     }

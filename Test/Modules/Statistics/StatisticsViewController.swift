@@ -10,16 +10,6 @@ import DGCharts
 
 class StatisticsViewController: UIViewController {
     
-    private let oneDayButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("1D", for: .normal)
-        button.setTitleColor(UIColor(hex: "#333333"), for: .normal)
-        button.backgroundColor = UIColor(hex: "#FEF6F0")
-        button.layer.cornerRadius = 17
-        button.titleLabel?.font = .systemFont(ofSize: 17)
-        button.addTarget(self, action: #selector(oneDayButtonTapped), for: .touchUpInside)
-        return button
-    }()
     
     private let oneWeekButton: UIButton = {
         let button = UIButton(type: .system)
@@ -188,7 +178,6 @@ class StatisticsViewController: UIViewController {
     }
     
     func setupView(){
-        toggleStack.addArrangedSubview(oneDayButton)
         toggleStack.addArrangedSubview(oneWeekButton)
         toggleStack.addArrangedSubview(oneMonthButton)
         toggleStack.addArrangedSubview(oneYearButton)
@@ -272,24 +261,9 @@ class StatisticsViewController: UIViewController {
         chartView.data = data
     }
     
-    @objc func oneDayButtonTapped(){
-        oneDayButton.backgroundColor = UIColor(hex: "#FEF6F0")
-        oneDayButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
-        oneWeekButton.backgroundColor = UIColor(hex: "FFB570")
-        oneWeekButton.setTitleColor(.white, for: .normal)
-        oneMonthButton.backgroundColor = UIColor(hex: "FFB570")
-        oneMonthButton.setTitleColor(.white, for: .normal)
-        oneYearButton.backgroundColor = UIColor(hex: "FFB570")
-        oneYearButton.setTitleColor(.white, for: .normal)
-        fiveYearsButton.backgroundColor = UIColor(hex: "FFB570")
-        fiveYearsButton.setTitleColor(.white, for: .normal)
-    }
-    
     @objc func oneWeekButtonTapped(){
         oneWeekButton.backgroundColor = UIColor(hex: "#FEF6F0")
         oneWeekButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
-        oneDayButton.backgroundColor = UIColor(hex: "FFB570")
-        oneDayButton.setTitleColor(.white, for: .normal)
         oneMonthButton.backgroundColor = UIColor(hex: "FFB570")
         oneMonthButton.setTitleColor(.white, for: .normal)
         oneYearButton.backgroundColor = UIColor(hex: "FFB570")
@@ -303,8 +277,6 @@ class StatisticsViewController: UIViewController {
         oneMonthButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
         oneWeekButton.backgroundColor = UIColor(hex: "FFB570")
         oneWeekButton.setTitleColor(.white, for: .normal)
-        oneDayButton.backgroundColor = UIColor(hex: "FFB570")
-        oneDayButton.setTitleColor(.white, for: .normal)
         oneYearButton.backgroundColor = UIColor(hex: "FFB570")
         oneYearButton.setTitleColor(.white, for: .normal)
         fiveYearsButton.backgroundColor = UIColor(hex: "FFB570")
@@ -319,8 +291,6 @@ class StatisticsViewController: UIViewController {
         oneWeekButton.setTitleColor(.white, for: .normal)
         oneMonthButton.backgroundColor = UIColor(hex: "FFB570")
         oneMonthButton.setTitleColor(.white, for: .normal)
-        oneDayButton.backgroundColor = UIColor(hex: "FFB570")
-        oneDayButton.setTitleColor(.white, for: .normal)
         fiveYearsButton.backgroundColor = UIColor(hex: "FFB570")
         fiveYearsButton.setTitleColor(.white, for: .normal)
         
@@ -335,8 +305,6 @@ class StatisticsViewController: UIViewController {
         oneMonthButton.setTitleColor(.white, for: .normal)
         oneYearButton.backgroundColor = UIColor(hex: "FFB570")
         oneYearButton.setTitleColor(.white, for: .normal)
-        oneDayButton.backgroundColor = UIColor(hex: "FFB570")
-        oneDayButton.setTitleColor(.white, for: .normal)
         
     }
 }

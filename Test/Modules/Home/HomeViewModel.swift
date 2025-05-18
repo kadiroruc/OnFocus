@@ -6,10 +6,10 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 protocol HomeViewModelInterface: AnyObject {
     var view: HomeViewInterface? { get set }
-    
     var animationRunning: Bool { get set}
     func toggleCountdown()
     func viewDidLoad()
@@ -23,11 +23,11 @@ protocol HomeViewModelInterface: AnyObject {
 
 final class HomeViewModel {
     weak var view: HomeViewInterface?
-//    private let timerService: TimerServiceProtocol
-//    
-//    init(timerService: TimerServiceProtocol) {
-//        self.timerService = timerService
-//    }
+    private let timerService: TimerServiceProtocol
+    
+    init(timerService: TimerServiceProtocol) {
+        self.timerService = timerService
+    }
     
     var animationRunning = false
     
@@ -80,11 +80,42 @@ final class HomeViewModel {
         view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
     }
     
+    func saveTimeToDatabase(if session:Bool) {
+        guard session else { return }
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        //let tomorrow = Calendar.current.date(byAdding: .year, value: 1, to: Date())!
+        
+        let session = SessionModel(id: UUID().uuidString, duration: TimeInterval(25*60), timestamp: Date())
+            
+            
+        Task {
+            do {
+                try await timerService.saveSession(session, userId: userId)
+                try await timerService.updateAggregate(for: session, userId: userId)
+            } catch {
+                print("Hata oluştu: \(error)")
+            }
+        }
+                 
+    }
+        
 }
 
 extension HomeViewModel: HomeViewModelInterface{
     func viewDidLoad() {
         view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
+        
+//        Task {
+//            do {
+//                let data = try await timerService.fetchStatistics(for: .fiveYears, from: Date(), userId: Auth.auth().currentUser?.uid ?? "")
+//                print(data)
+//                
+//            } catch {
+//                print("Error fetching session count: \(error)")
+//            }
+//        }
+        
     }
     
     func toggleCountdown() {
@@ -92,10 +123,8 @@ extension HomeViewModel: HomeViewModelInterface{
             if animationRunning{
                 resumeCountdown()
             }else{
-                print("sadfasf")
                 startCountdown()
             }
-            print("a")
         } else {
             pauseCountdown()
         }
@@ -141,6 +170,7 @@ extension HomeViewModel: HomeViewModelInterface{
             }
             view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
         } else {
+            saveTimeToDatabase(if: isSessionCompleted)
             resetTimer()
         }
     }

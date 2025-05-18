@@ -9,7 +9,6 @@ import UIKit
 
 struct HomeModuleBuilder {
     static func build() -> UIViewController {
-            
-        return HomeViewController(viewModel: HomeViewModel())
+        return HomeViewController(viewModel: HomeViewModel(timerService: TimerService()))
     }
 }
