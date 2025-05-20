@@ -56,8 +56,8 @@
 		E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */; };
 		E9A6F1862DD7ECA400016F4C /* ProfileVewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */; };
 		E9A6F1882DD882FE00016F4C /* ProfileModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1872DD882FE00016F4C /* ProfileModuleBuilder.swift */; };
-		E9B699742DDCD446006B05E4 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9B699732DDCD446006B05E4 /* Config.plist */; };
-		E9B699762DDCD53E006B05E4 /* ExampleConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9B699752DDCD53E006B05E4 /* ExampleConfig.plist */; };
+		E9B6997A2DDD05F7006B05E4 /* Congif.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9B699792DDD05F7006B05E4 /* Congif.plist */; };
+		E9B6997C2DDD0628006B05E4 /* SampleConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9B6997B2DDD0628006B05E4 /* SampleConfig.plist */; };
 		E9CBD3F92DBA642300DF9A09 /* ProfileSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */; };
 		E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9D058232D75F76E0003484C /* HomeViewModel.swift */; };
 		E9DC7BCC2DB532AF002BFFF4 /* LeaderboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9DC7BCB2DB532AF002BFFF4 /* LeaderboardViewController.swift */; };
@@ -120,8 +120,8 @@
 		E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillProfileViewModel.swift; sourceTree = "<group>"; };
 		E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVewModel.swift; sourceTree = "<group>"; };
 		E9A6F1872DD882FE00016F4C /* ProfileModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModuleBuilder.swift; sourceTree = "<group>"; };
-		E9B699732DDCD446006B05E4 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Config.plist; sourceTree = "<group>"; };
-		E9B699752DDCD53E006B05E4 /* ExampleConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = ExampleConfig.plist; sourceTree = "<group>"; };
+		E9B699792DDD05F7006B05E4 /* Congif.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Congif.plist; sourceTree = "<group>"; };
+		E9B6997B2DDD0628006B05E4 /* SampleConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SampleConfig.plist; sourceTree = "<group>"; };
 		E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSearchViewController.swift; sourceTree = "<group>"; };
 		E9D058232D75F76E0003484C /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		E9DC7BCB2DB532AF002BFFF4 /* LeaderboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewController.swift; sourceTree = "<group>"; };
@@ -223,8 +223,8 @@
 			isa = PBXGroup;
 			children = (
 				E98B6B662D53C809005012AB /* Assets.xcassets */,
-				E9B699732DDCD446006B05E4 /* Config.plist */,
-				E9B699752DDCD53E006B05E4 /* ExampleConfig.plist */,
+				E9B699792DDD05F7006B05E4 /* Congif.plist */,
+				E9B6997B2DDD0628006B05E4 /* SampleConfig.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -489,10 +489,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9B699762DDCD53E006B05E4 /* ExampleConfig.plist in Resources */,
-				E9B699742DDCD446006B05E4 /* Config.plist in Resources */,
+				E9B6997A2DDD05F7006B05E4 /* Congif.plist in Resources */,
 				E98B6B672D53C809005012AB /* Assets.xcassets in Resources */,
 				E98B6B6A2D53C80A005012AB /* Base in Resources */,
+				E9B6997C2DDD0628006B05E4 /* SampleConfig.plist in Resources */,
 				E950A8DE2DD50F4300928DEB /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

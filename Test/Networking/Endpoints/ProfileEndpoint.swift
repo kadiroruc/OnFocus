@@ -22,7 +22,7 @@ enum ProfileEndpoint: NetworkPath {
     var urlString: String {
         switch self {
         case .uploadImage:
-            return "\(NetworkConstants.baseURL)upload?key=\(NetworkConstants.apiKey)"
+            return "\(NetworkConstants.baseURL)upload?key=\(NetworkConstants.imgBBApiKey)"
         }
     }
     
