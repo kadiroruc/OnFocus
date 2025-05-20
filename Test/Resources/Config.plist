@@ -1,0 +1,13 @@
+//
+//  Config.plist
+//  Test
+//
+//  Created by Abdulkadir Oruç on 20.05.2025.
+//
+
+<plist version="1.0">
+<dict>
+    <key>IMGBBAPIKey</key>
+    <string>9920a244e9ef0174987d0af525fc9157</string>
+</dict>
+</plist>
