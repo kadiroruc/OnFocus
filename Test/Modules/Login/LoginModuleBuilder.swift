@@ -5,10 +5,8 @@
 //  Created by Abdulkadir Oruç on 15.05.2025.
 //
 
-import UIKit
-
 struct LoginModuleBuilder {
-    static func build() -> UIViewController {
+    static func build() -> LoginViewController {
         return LoginViewController(viewModel: LoginViewModel(authService: AuthService()))
     }
 }

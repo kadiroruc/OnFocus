@@ -84,9 +84,9 @@ final class HomeViewModel {
         guard session else { return }
         guard let userId = Auth.auth().currentUser?.uid else { return }
         
-        //let tomorrow = Calendar.current.date(byAdding: .year, value: 1, to: Date())!
+        let previous1 = Calendar.current.date(byAdding: .day, value: -8, to: Date())!
         
-        let session = SessionModel(id: UUID().uuidString, duration: TimeInterval(25*60), timestamp: Date())
+        let session = SessionModel(id: UUID().uuidString, duration: TimeInterval(25*60), timestamp: previous1)
             
             
         Task {
@@ -106,15 +106,6 @@ extension HomeViewModel: HomeViewModelInterface{
     func viewDidLoad() {
         view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
         
-//        Task {
-//            do {
-//                let data = try await timerService.fetchStatistics(for: .fiveYears, from: Date(), userId: Auth.auth().currentUser?.uid ?? "")
-//                print(data)
-//                
-//            } catch {
-//                print("Error fetching session count: \(error)")
-//            }
-//        }
         
     }
     

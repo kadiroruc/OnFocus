@@ -5,10 +5,8 @@
 //  Created by Abdulkadir Oruç on 15.05.2025.
 //
 
-import UIKit
-
 struct FillProfileModuleBuilder {
-    static func build() -> UIViewController {
+    static func build() -> FillProfileViewController {
         return FillProfileViewController(viewModel: FillProfileViewModel(service: ProfileService(networkManager: AFNetworkManager())))
     }
 }

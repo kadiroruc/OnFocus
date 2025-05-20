@@ -8,8 +8,14 @@
 import UIKit
 import DGCharts
 
+protocol StatisticsViewInterface: AnyObject {
+    func updateChart(with statistics: [StatisticModel])
+    func updateAverageLabel(with average: String)
+    func updateProgressLabel(with progress: String)
+}
+
 class StatisticsViewController: UIViewController {
-    
+    private var viewModel: StatisticsViewModelInterface
     
     private let oneWeekButton: UIButton = {
         let button = UIButton(type: .system)
@@ -17,7 +23,7 @@ class StatisticsViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .systemFont(ofSize: 17)
-        button.addTarget(self, action: #selector(oneWeekButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -28,7 +34,7 @@ class StatisticsViewController: UIViewController {
         button.backgroundColor = .clear
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .systemFont(ofSize: 17)
-        button.addTarget(self, action: #selector(oneMonthButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -39,7 +45,7 @@ class StatisticsViewController: UIViewController {
         button.backgroundColor = .clear
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .systemFont(ofSize: 17)
-        button.addTarget(self, action: #selector(oneYearButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -50,7 +56,7 @@ class StatisticsViewController: UIViewController {
         button.backgroundColor = .clear
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .systemFont(ofSize: 17)
-        button.addTarget(self, action: #selector(fiveYearsButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleButtonTapped(_:)), for: .touchUpInside)
         return button
     }()
     
@@ -73,10 +79,14 @@ class StatisticsViewController: UIViewController {
         let chartView =  LineChartView()
         chartView.backgroundColor = .clear
         chartView.xAxis.labelPosition = .bottom
-        chartView.xAxis.labelTextColor = UIColor(hex: "#70C1B3", alpha: 1)
-        chartView.leftAxis.labelTextColor = UIColor(hex: "#70C1B3", alpha: 1)
+        chartView.xAxis.labelTextColor = UIColor(hex: "#333333")
+        chartView.leftAxis.labelTextColor = UIColor(hex: "#333333")
         chartView.rightAxis.enabled = false
         chartView.legend.enabled = true
+        chartView.legend.verticalAlignment = .top
+        chartView.legend.orientation = .horizontal
+        chartView.legend.horizontalAlignment = .right
+        chartView.legend.drawInside = false
         chartView.xAxis.drawGridLinesEnabled = false
         chartView.leftAxis.drawGridLinesEnabled = false
         chartView.translatesAutoresizingMaskIntoConstraints = false
@@ -159,17 +169,23 @@ class StatisticsViewController: UIViewController {
         label.textColor = .white
         return label
     }()
+    
+    init(viewModel: StatisticsViewModelInterface) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.view = self
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         
         averageLabel.text = "Ortalama: "
-        averageTimeLabel.text = "8 saat"
         progressLabel.text = "İlerleme: "
-        progressPercentageLabel.text = "-%28"
-        
-        setData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -202,8 +218,8 @@ class StatisticsViewController: UIViewController {
             toggleStack.heightAnchor.constraint(equalToConstant: 50),
             
             chartView.topAnchor.constraint(equalTo: toggleStack.bottomAnchor, constant: 40),
-            chartView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            chartView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            chartView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            chartView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             chartView.heightAnchor.constraint(equalTo: chartView.widthAnchor),
             
             statisticsContainerView.topAnchor.constraint(equalTo: chartView.bottomAnchor,constant: 40),
@@ -236,80 +252,90 @@ class StatisticsViewController: UIViewController {
         ])
         
     }
-
-
-    func setData() {
-        let values: [Double] = [8, 10, 6, 2, 7, 0, 8]
-        let entries = values.enumerated().map { index, value in
-            ChartDataEntry(x: Double(index), y: value)
+    
+    func updateButtonStates(selectedButton: UIButton) {
+        let buttons = [oneWeekButton, oneMonthButton, oneYearButton, fiveYearsButton]
+        
+        for button in buttons {
+            if button == selectedButton {
+                button.backgroundColor = UIColor(hex: "#FEF6F0")
+                button.setTitleColor(UIColor(hex: "#333333"), for: .normal)
+            } else {
+                button.backgroundColor = UIColor(hex: "#FFB570")
+                button.setTitleColor(.white, for: .normal)
+            }
         }
+    }
+    
+    @objc func toggleButtonTapped(_ sender: UIButton) {
+        updateButtonStates(selectedButton: sender)
+        switch sender.title(for: .normal) {
+            case "1W":
+                viewModel.loadStatistics(for: .week)
+            case "1M":
+                viewModel.loadStatistics(for: .month)
+            case "1Y":
+                viewModel.loadStatistics(for: .year)
+            case "5Y":
+                viewModel.loadStatistics(for: .fiveYears)
+            default:
+                break
+        }
+    }
+    
+}
 
-        let set = LineChartDataSet(entries: entries, label: "Work Time")
-        set.mode = .cubicBezier
+extension StatisticsViewController: StatisticsViewInterface {
+    func updateChart(with statistics: [StatisticModel]) {
+        
+        let values = statistics.map { Double($0.totalDuration)/(60*60) }
+        let entries = values.enumerated().map { ChartDataEntry(x: Double($0.offset ), y: $0.element) }
+
+        let set = LineChartDataSet(entries: entries, label: "Work Time (Hour)")
+        set.mode = .linear
         set.drawCirclesEnabled = false
-        set.lineWidth = 2
-        set.setColor(UIColor(hex: "#70C1B3", alpha: 1))
-        set.fillColor = UIColor(hex: "#70C1B3", alpha: 1)
+        set.setColor(UIColor(hex: "#70C1B3"))
+        set.fillColor = UIColor(hex: "#70C1B3")
         set.drawFilledEnabled = true
         set.fillAlpha = 0.2
+        set.drawCirclesEnabled = false
         set.drawValuesEnabled = false
         set.highlightEnabled = true
         set.drawHorizontalHighlightIndicatorEnabled = false
         set.drawVerticalHighlightIndicatorEnabled = false
+        chartView.xAxis.granularity = 1
+        chartView.xAxis.granularityEnabled = true
+        chartView.xAxis.labelCount = statistics.count
+        
+        chartView.leftAxis.axisMinimum = 0
+        chartView.leftAxis.axisMaximum = Double(statistics.count <= 8 ? 8 : statistics.count)
+        chartView.leftAxis.granularity = 1
+        chartView.leftAxis.granularityEnabled = true
+        chartView.leftAxis.labelCount = statistics.count <= 8 ? 8 : statistics.count
+        chartView.leftAxis.valueFormatter = DefaultAxisValueFormatter(block: { value, _ in
+            return "\(Int(value))"
+        })
+        
+        let xLabels = viewModel.generateXLabels(from: statistics)
+        
+        chartView.xAxis.valueFormatter = IndexAxisValueFormatter(values: xLabels)
+        chartView.xAxis.labelPosition = .bottom
+        chartView.xAxis.labelRotationAngle = -45
 
-        let data = LineChartData(dataSet: set)
-        chartView.data = data
+        chartView.data = LineChartData(dataSet: set)
     }
     
-    @objc func oneWeekButtonTapped(){
-        oneWeekButton.backgroundColor = UIColor(hex: "#FEF6F0")
-        oneWeekButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
-        oneMonthButton.backgroundColor = UIColor(hex: "FFB570")
-        oneMonthButton.setTitleColor(.white, for: .normal)
-        oneYearButton.backgroundColor = UIColor(hex: "FFB570")
-        oneYearButton.setTitleColor(.white, for: .normal)
-        fiveYearsButton.backgroundColor = UIColor(hex: "FFB570")
-        fiveYearsButton.setTitleColor(.white, for: .normal)
+    func updateAverageLabel(with average: String) {
+        averageTimeLabel.text = average
+    }
+
+    func updateProgressLabel(with progress: String) {
+        progressPercentageLabel.text = progress.hasPrefix("-") ? progress : "+\(progress)"
     }
     
-    @objc func oneMonthButtonTapped(){
-        oneMonthButton.backgroundColor = UIColor(hex: "#FEF6F0")
-        oneMonthButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
-        oneWeekButton.backgroundColor = UIColor(hex: "FFB570")
-        oneWeekButton.setTitleColor(.white, for: .normal)
-        oneYearButton.backgroundColor = UIColor(hex: "FFB570")
-        oneYearButton.setTitleColor(.white, for: .normal)
-        fiveYearsButton.backgroundColor = UIColor(hex: "FFB570")
-        fiveYearsButton.setTitleColor(.white, for: .normal)
-        
-    }
-    
-    @objc func oneYearButtonTapped(){
-        oneYearButton.backgroundColor = UIColor(hex: "#FEF6F0")
-        oneYearButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
-        oneWeekButton.backgroundColor = UIColor(hex: "FFB570")
-        oneWeekButton.setTitleColor(.white, for: .normal)
-        oneMonthButton.backgroundColor = UIColor(hex: "FFB570")
-        oneMonthButton.setTitleColor(.white, for: .normal)
-        fiveYearsButton.backgroundColor = UIColor(hex: "FFB570")
-        fiveYearsButton.setTitleColor(.white, for: .normal)
-        
-    }
-    
-    @objc func fiveYearsButtonTapped(){
-        fiveYearsButton.backgroundColor = UIColor(hex: "#FEF6F0")
-        fiveYearsButton.setTitleColor(UIColor(hex: "#333333"), for: .normal)
-        oneWeekButton.backgroundColor = UIColor(hex: "FFB570")
-        oneWeekButton.setTitleColor(.white, for: .normal)
-        oneMonthButton.backgroundColor = UIColor(hex: "FFB570")
-        oneMonthButton.setTitleColor(.white, for: .normal)
-        oneYearButton.backgroundColor = UIColor(hex: "FFB570")
-        oneYearButton.setTitleColor(.white, for: .normal)
-        
-    }
 }
 
-#Preview("StatisticsViewController"){
-    StatisticsViewController()
-}
+//#Preview("StatisticsViewController"){
+//    StatisticsViewController()
+//}
 

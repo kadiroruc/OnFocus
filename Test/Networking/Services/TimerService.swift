@@ -11,7 +11,10 @@ import FirebaseAuth
 protocol TimerServiceProtocol {
     func saveSession(_ session: SessionModel, userId: String) async throws
     func updateAggregate(for session: SessionModel, userId: String) async throws
-    func fetchStatistics(for rangeType: TimeRangeType, from date: Date, userId: String) async throws -> [StatisticModel]
+    func fetchStatistics(for rangeType: FetchTimeRangeType, from date: Date, completion: @escaping (Result<[StatisticModel], Error>) -> Void)
+    func fetchAverageDuration(for rangeType: FetchTimeRangeType,
+                            from date: Date,
+                            completion: @escaping (Result<Double, Error>) -> Void)
 }
 
 final class TimerService {
@@ -40,9 +43,15 @@ extension TimerService: TimerServiceProtocol{
         let yearId = "yearly_" + yearKey(for: date)
         let fiveYearsId = "fiveYears_" + fiveYearsKey(for: date)
         
-        let statIds = [dayId, weekId, monthId, yearId, fiveYearsId]
+        let statInfos: [(id: String, divisor: Int?)] = [
+            (dayId, nil),            // daily: sadece total tutulur
+            (weekId, 7),
+            (monthId, daysInMonth(for: date)),
+            (yearId, 365),
+            (fiveYearsId, 5 * 365)
+        ]
         
-        for statId in statIds {
+        for (statId, divisor) in statInfos {
             let ref = db.collection("users").document(userId)
                 .collection("statistics")
                 .document(statId)
@@ -52,17 +61,16 @@ extension TimerService: TimerServiceProtocol{
                     let snapshot = try transaction.getDocument(ref)
                     let existing = snapshot.data() ?? [:]
                     let oldTotal = existing["totalDuration"] as? Int ?? 0
-                    let oldCount = existing["sessionCount"] as? Int ?? 0
                     
                     let newTotal = oldTotal + Int(session.duration)
-                    let newCount = oldCount + 1
-                    let average =  Double(newTotal) / Double(newCount)
+                    var data: [String: Any] = ["totalDuration": newTotal]
                     
-                    transaction.setData([
-                        "totalDuration": newTotal,
-                        "sessionCount": newCount,
-                        "averageDuration": average
-                    ], forDocument: ref, merge: true)
+                    if let divisor {
+                        let average = Double(newTotal) / Double(divisor)
+                        data["averageDuration"] = average
+                    }
+                    
+                    transaction.setData(data, forDocument: ref, merge: true)
                 } catch let error {
                     errorPointer?.pointee = error as NSError
                 }
@@ -72,63 +80,118 @@ extension TimerService: TimerServiceProtocol{
         }
     }
     
-    func fetchStatistics(for rangeType: TimeRangeType, from date: Date, userId: String) async throws -> [StatisticModel] {
+    func fetchStatistics(for rangeType: FetchTimeRangeType,
+                         from date: Date,
+                         completion: @escaping (Result<[StatisticModel], Error>) -> Void) {
+        
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(.failure(NSError(domain: "User not authenticated", code: 401, userInfo: nil)))
+            return
+        }
+
         var ids: [String] = []
 
         switch rangeType {
         case .week:
-            // 7 gün: her gün için "daily_yyyyMMdd"
             ids = (0..<7).map { offset in
                 let targetDate = Calendar.current.date(byAdding: .day, value: -offset, to: date)!
                 return "daily_" + DateFormatter.yyyyMMdd.string(from: targetDate)
             }
 
         case .month:
-            // 4 hafta: her hafta için "weekly_yyyy-ww"
             ids = (0..<4).map { offset in
                 let targetDate = Calendar.current.date(byAdding: .weekOfYear, value: -offset, to: date)!
                 return "weekly_" + weekKey(for: targetDate)
             }
 
         case .year:
-            // 12 ay: her ay için "monthly_yyyy-MM"
             ids = (0..<12).map { offset in
                 let targetDate = Calendar.current.date(byAdding: .month, value: -offset, to: date)!
                 return "monthly_" + monthKey(for: targetDate)
             }
 
         case .fiveYears:
-            // 5 yıl: her yıl için "yearly_yyyy"
             ids = (0..<5).map { offset in
                 let targetDate = Calendar.current.date(byAdding: .year, value: -offset, to: date)!
                 return "yearly_" + yearKey(for: targetDate)
             }
         }
 
-        var results: [StatisticModel] = []
+        var results: [StatisticModel] = Array(repeating: StatisticModel(totalDuration: 0, documentName: nil), count: ids.count)
+        let group = DispatchGroup()
 
-        for id in ids.reversed() {
+        for (index, id) in ids.reversed().enumerated() {
+            group.enter()
+
             let ref = Firestore.firestore()
                 .collection("users")
                 .document(userId)
                 .collection("statistics")
                 .document(id)
 
-            let snapshot = try await ref.getDocument()
+            ref.getDocument { snapshot, error in
+                defer { group.leave() }
 
-            if let data = snapshot.data() {
-                let stat = try Firestore.Decoder().decode(StatisticModel.self, from: data)
-                results.append(stat)
-            } else {
-                results.append(StatisticModel(
-                    totalDuration: 0,
-                    sessionCount: 0,
-                    averageDuration: 0
-                ))
+                if let error = error {
+                    print("Document fetch error: \(error)")
+                    return
+                }
+
+                let totalDuration = snapshot?.data()?["totalDuration"] as? Int ?? 0
+                results[index] = StatisticModel(totalDuration: totalDuration, documentName: id)
             }
         }
 
-        return results
+        group.notify(queue: .main) {
+            completion(.success(results))
+        }
     }
+    
+    func fetchAverageDuration(for rangeType: FetchTimeRangeType,
+                            from date: Date,
+                            completion: @escaping (Result<Double, Error>) -> Void) {
+        
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(.failure(NSError(domain: "User not authenticated", code: 401, userInfo: nil)))
+            return
+        }
+
+        var parentId: String
+
+        switch rangeType {
+            case .week:
+                parentId = "weekly_" + weekKey(for: date)
+
+            case .month:
+                parentId = "monthly_" + monthKey(for: date)
+                
+            case .year:
+                parentId = "yearly_" + yearKey(for: date)
+                
+            case .fiveYears:
+                parentId = "fiveYears_" + fiveYearsKey(for: date)
+        }
+
+        let ref = Firestore.firestore()
+            .collection("users")
+            .document(userId)
+            .collection("statistics")
+            .document(parentId)
+
+        ref.getDocument { snapshot, error in
+            if let error = error {
+                print("Average fetch error: \(error.localizedDescription)")
+                
+                return
+            }
+            
+            
+            let average = snapshot?.data()?["averageDuration"] as? Double ?? 0
+            completion(.success(average))
+        }
+            
+    }
+
+
 }
 

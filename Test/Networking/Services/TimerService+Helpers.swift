@@ -76,4 +76,42 @@ extension TimerService {
         let currentYear = calendar.component(.year, from: date)
         return (0..<5).map { "\(currentYear - $0)" }.reversed()
     }
+    
+    func daysInMonth(for date: Date) -> Int {
+        let range = calendar.range(of: .day, in: .month, for: date)
+        return range?.count ?? 30 // varsayılan 30 gün
+    }
+    
+    func weekKeyToDate(_ key: String) -> Date? {
+        let components = key.split(separator: "_")
+        guard components.count == 2,
+              let year = Int(components[0]),
+              let weekOfYear = Int(components[1]) else { return nil }
+
+        var calendar = Calendar.current
+        calendar.firstWeekday = 2 // Monday
+        calendar.minimumDaysInFirstWeek = 4
+
+        var dateComponents = DateComponents()
+        dateComponents.calendar = calendar
+        dateComponents.weekOfYear = weekOfYear
+        dateComponents.yearForWeekOfYear = year
+
+        return calendar.date(from: dateComponents)
+    }
+
+    func monthKeyToDate(_ key: String) -> Date? {
+        let components = key.split(separator: "_")
+        guard components.count == 2,
+              let year = Int(components[0]),
+              let month = Int(components[1]) else { return nil }
+
+        var dateComponents = DateComponents()
+        dateComponents.year = year
+        dateComponents.month = month
+        dateComponents.day = 1
+
+        return Calendar.current.date(from: dateComponents)
+    }
+
 }

@@ -22,7 +22,7 @@ struct TabBarModuleBuilder {
         profileNav.tabBarItem.selectedImage = UIImage(systemName: Constants.Icons.personFill)
         
         
-        let statisticsVC = StatisticsViewController()
+        let statisticsVC = StatisticsModuleBuilder.build()
         statisticsVC.title = "Statistics"
         let statisticsNav = UINavigationController(rootViewController: statisticsVC)
         statisticsNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.chartLineUptrendXyaxis), tag: 2)

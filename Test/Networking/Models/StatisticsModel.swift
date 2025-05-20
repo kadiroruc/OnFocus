@@ -9,6 +9,5 @@ import Foundation
 
 struct StatisticModel: Codable {
     let totalDuration: Int
-    let sessionCount: Int
-    let averageDuration: Int
+    var documentName: String?
 }

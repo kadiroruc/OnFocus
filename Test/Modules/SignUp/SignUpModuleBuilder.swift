@@ -4,10 +4,9 @@
 //
 //  Created by Abdulkadir Oruç on 14.05.2025.
 //
-import UIKit
 
 struct SignUpModuleBuilder {
-    static func build() -> UIViewController {
+    static func build() -> SignUpViewController {
         return SignUpViewController(viewModel: SignUpViewModel(authService: AuthService()))
     }
 }

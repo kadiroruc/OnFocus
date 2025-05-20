@@ -38,7 +38,11 @@ class BalloonMarker: MarkerView {
     }
 
     override func offsetForDrawing(atPoint point: CGPoint) -> CGPoint {
-        return CGPoint(x: -self.bounds.width / 2, y: -self.bounds.height - 8)
+        let x = max(
+            min(point.x - self.bounds.width / 2, (self.chartView?.bounds.width ?? 0) - self.bounds.width),
+            0
+        )
+        return CGPoint(x: x - point.x, y: -self.bounds.height - 8)
     }
 
     override func draw(context: CGContext, point: CGPoint) {

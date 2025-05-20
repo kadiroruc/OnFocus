@@ -5,10 +5,8 @@
 //  Created by Abdulkadir Oruç on 15.05.2025.
 //
 
-import UIKit
-
 struct HomeModuleBuilder {
-    static func build() -> UIViewController {
+    static func build() -> HomeViewController {
         return HomeViewController(viewModel: HomeViewModel(timerService: TimerService()))
     }
 }
