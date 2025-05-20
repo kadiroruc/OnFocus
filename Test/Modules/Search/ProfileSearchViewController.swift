@@ -33,7 +33,7 @@ class ProfileSearchViewController: UIViewController, UICollectionViewDataSource,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hex: "#FEF6F0")
+        view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
         searchBar.delegate = self
         title = "Search Profile"
         
@@ -125,15 +125,15 @@ class ProfileCell: UICollectionViewCell {
         label.font = .systemFont(ofSize: 17, weight: .medium)
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(hex: "#333333")
+        label.textColor = UIColor(hex: Constants.Colors.darkGray)
         return label
     }()
     
     private let profileImageView: UIImageView = {
-        let iv = UIImageView(image: UIImage(systemName: "person.crop.circle.fill"))
+        let iv = UIImageView(image: UIImage(systemName: Constants.Icons.personCropCircleFill))
         iv.contentMode = .scaleAspectFit
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.tintColor = UIColor(hex: "#FF8A5C")
+        iv.tintColor = UIColor(hex: Constants.Colors.softOrange)
         return iv
     }()
     

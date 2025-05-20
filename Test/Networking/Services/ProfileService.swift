@@ -50,7 +50,7 @@ extension ProfileService: ProfileServiceProtocol {
         guard let userId = Auth.auth().currentUser?.uid else {
             completion(.failure(NSError(domain: "AuthError",
                                         code: -1,
-                                        userInfo: [NSLocalizedDescriptionKey: "User not logged in."])))
+                                        userInfo: [NSLocalizedDescriptionKey: Constants.ValidationMessages.notLoggedIn])))
             return
         }
         

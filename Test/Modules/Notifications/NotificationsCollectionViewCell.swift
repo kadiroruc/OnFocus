@@ -24,23 +24,23 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         lbl.font = UIFont.systemFont(ofSize: 17, weight: .medium)
         lbl.textColor = .black
         lbl.translatesAutoresizingMaskIntoConstraints = false
-        lbl.textColor = UIColor(hex: "#333333")
+        lbl.textColor = UIColor(hex: Constants.Colors.darkGray)
         return lbl
     }()
     
     let declineButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "xmark"), for: .normal)
+        button.setImage(UIImage(systemName: Constants.Icons.xmark), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = UIColor(hex: "#FF8A5C")
+        button.tintColor = UIColor(hex: Constants.Colors.softOrange)
         return button
     }()
     
     let acceptButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "checkmark"), for: .normal)
+        button.setImage(UIImage(systemName: Constants.Icons.checkmark), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = UIColor(hex: "#70C1B3")
+        button.tintColor = UIColor(hex: Constants.Colors.mintGreen)
         return button
     }()
     

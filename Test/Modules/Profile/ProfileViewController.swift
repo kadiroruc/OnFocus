@@ -22,13 +22,13 @@ class ProfileViewController: UIViewController {
     
     private let addFriendBarButtonItem : UIBarButtonItem = {
         let item = UIBarButtonItem()
-        item.image = UIImage(systemName: Constants.Icons.personBadgePlus)?.withTintColor(UIColor(hex: "#333333", alpha: 1), renderingMode: .alwaysOriginal)
+        item.image = UIImage(systemName: Constants.Icons.personBadgePlus)?.withTintColor(UIColor(hex: Constants.Colors.darkGray, alpha: 1), renderingMode: .alwaysOriginal)
         return item
     }()
     
     private let menuBarButtonItem : UIBarButtonItem = {
         let item = UIBarButtonItem()
-        item.image = UIImage(systemName: Constants.Icons.ellipsis)?.withTintColor(UIColor(hex: "#333333", alpha: 1), renderingMode: .alwaysOriginal)
+        item.image = UIImage(systemName: Constants.Icons.ellipsis)?.withTintColor(UIColor(hex: Constants.Colors.darkGray, alpha: 1), renderingMode: .alwaysOriginal)
         return item
     }()
     
@@ -38,8 +38,8 @@ class ProfileViewController: UIViewController {
         iv.layer.cornerRadius = 60
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.image = UIImage(systemName: "person.circle")
-        iv.tintColor = UIColor(hex: "#333333", alpha: 1)
+        iv.image = UIImage(systemName: Constants.Icons.personCircle)
+        iv.tintColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return iv
     }()
     
@@ -56,7 +56,7 @@ class ProfileViewController: UIViewController {
         let label = UILabel()
         label.text = "Average Work Hour: 7"
         label.textColor = .white
-        label.backgroundColor = UIColor(hex: "#70C1B3")
+        label.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         label.textAlignment = .center
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
@@ -68,7 +68,7 @@ class ProfileViewController: UIViewController {
         let label = UILabel()
         label.text = "Current Streak Day: 280"
         label.textColor = .white
-        label.backgroundColor = UIColor(hex: "#FF8A5C")
+        label.backgroundColor = UIColor(hex: Constants.Colors.softOrange)
         label.textAlignment = .center
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
@@ -79,15 +79,15 @@ class ProfileViewController: UIViewController {
     private let calendar: FSCalendar = {
         let calendar = FSCalendar()
         calendar.translatesAutoresizingMaskIntoConstraints = false
-        calendar.appearance.titleDefaultColor = UIColor(hex: "333333")
+        calendar.appearance.titleDefaultColor = UIColor(hex: Constants.Colors.darkGray)
         calendar.appearance.todayColor = .clear
-        calendar.appearance.titleTodayColor = UIColor(hex: "333333")
-        calendar.appearance.selectionColor = UIColor(hex: "#70C1B3")
+        calendar.appearance.titleTodayColor = UIColor(hex: Constants.Colors.darkGray)
+        calendar.appearance.selectionColor = UIColor(hex: Constants.Colors.mintGreen)
         
         calendar.appearance.headerDateFormat = "MMMM yyyy"
-        calendar.appearance.headerTitleColor = UIColor(hex: "#333333")
+        calendar.appearance.headerTitleColor = UIColor(hex: Constants.Colors.darkGray)
         calendar.appearance.weekdayTextColor = .gray
-        calendar.backgroundColor = UIColor(hex: "#FEF6F0")
+        calendar.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
         calendar.layer.cornerRadius = 20
         
         
@@ -114,7 +114,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
+        view.setGradientBackground(colors: [UIColor(hex: Constants.Colors.lightPeach), .white])
     }
     private func setupViews() {
         view.addSubview(profileImageView)

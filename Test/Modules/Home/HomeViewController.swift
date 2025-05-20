@@ -32,7 +32,7 @@ final class HomeViewController: UIViewController {
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 70, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(hex: "333333", alpha: 1)
+        label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         label.textAlignment = .center
         return label
     }()
@@ -50,23 +50,23 @@ final class HomeViewController: UIViewController {
 
     private let playButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "play"), for: .normal)
+        button.setImage(UIImage(systemName: Constants.Icons.play), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)
-        let image = UIImage(systemName: "play", withConfiguration: config)
+        let image = UIImage(systemName: Constants.Icons.play, withConfiguration: config)
         button.setImage(image, for: .normal)
-        button.tintColor = UIColor(hex: "333333", alpha: 1)
+        button.tintColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return button
     }()
 
     private let cancelButton: UIButton = {
         let button = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 23, weight: .regular)
-        let image = UIImage(systemName: "xmark.circle", withConfiguration: config)
+        let image = UIImage(systemName: Constants.Icons.xmarkCircle, withConfiguration: config)
         button.setImage(image, for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = UIColor(hex: "333333", alpha: 1)
+        button.tintColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return button
     }()
     
@@ -74,7 +74,7 @@ final class HomeViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 16)
-        label.textColor = UIColor(hex: "444444", alpha: 1)
+        label.textColor = UIColor(hex: Constants.Colors.mediumDarkGray, alpha: 1)
         label.textAlignment = .center
         return label
     }()
@@ -82,7 +82,7 @@ final class HomeViewController: UIViewController {
     private let sessionsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(hex: "444444", alpha: 1)
+        label.textColor = UIColor(hex: Constants.Colors.mediumDarkGray, alpha: 1)
         label.font = .systemFont(ofSize: 16)
         label.textAlignment = .center
         return label
@@ -99,7 +99,7 @@ final class HomeViewController: UIViewController {
         label.layer.cornerRadius = 13
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.backgroundColor = UIColor(hex: "#FF8A5C", alpha: 1)
+        label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
         label.textAlignment = .center
         return label
@@ -147,7 +147,7 @@ final class HomeViewController: UIViewController {
                 isCirclePathCreated = true
             }
         
-        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
+        view.setGradientBackground(colors: [UIColor(hex: Constants.Colors.lightPeach), .white])
     }
 
     private func setupUI() {
@@ -156,7 +156,7 @@ final class HomeViewController: UIViewController {
         listCollectionView.register(HomePersonCollectionViewCell.self, forCellWithReuseIdentifier: Constants.CellIdentifiers.personCell)
         
         
-        let settingsBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear"), style: .plain, target: self, action: #selector(gearButtonTapped))
+        let settingsBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.Icons.gear), style: .plain, target: self, action: #selector(gearButtonTapped))
         settingsBarButtonItem.tintColor = .black
         navigationItem.rightBarButtonItem = settingsBarButtonItem
         
@@ -229,7 +229,7 @@ final class HomeViewController: UIViewController {
         )
 
         circleLayer.path = circularPath.cgPath
-        circleLayer.strokeColor = UIColor(hex: "#FF8A5C", alpha: 1).cgColor
+        circleLayer.strokeColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1).cgColor
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.lineWidth = 12
         circleLayer.strokeEnd = 1
@@ -245,7 +245,7 @@ final class HomeViewController: UIViewController {
         movingCircle.layer.cornerRadius = 14
         movingCircle.backgroundColor = .white
         movingCircle.layer.borderWidth = 5
-        movingCircle.layer.borderColor = UIColor(hex: "#333333", alpha: 1).cgColor
+        movingCircle.layer.borderColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1).cgColor
         circleContainer.addSubview(movingCircle)
     }
 
@@ -386,12 +386,12 @@ extension HomeViewController: HomeViewInterface {
         
         if isSessionCompleted {
             //break
-            circleLayer.strokeColor = UIColor(hex: "#70C1B3", alpha: 1).cgColor
+            circleLayer.strokeColor = UIColor(hex: Constants.Colors.mintGreen, alpha: 1).cgColor
             
         }
         else {
             //working
-            circleLayer.strokeColor = UIColor(hex: "#FF8A5C", alpha: 1).cgColor
+            circleLayer.strokeColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1).cgColor
         }
         
     }
@@ -451,7 +451,7 @@ extension HomeViewController: HomeViewInterface {
 
     func updatePlayButton(isPaused: Bool) {
 
-        let buttonImage = isPaused ? UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)) : UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold))
+        let buttonImage = isPaused ? UIImage(systemName: Constants.Icons.play, withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)) : UIImage(systemName: Constants.Icons.pause, withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold))
         playButton.setImage(buttonImage, for: .normal)
     }
     
@@ -469,7 +469,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.CellIdentifiers.personCell, for: indexPath) as! HomePersonCollectionViewCell
         cell.layer.cornerRadius = 25
         cell.clipsToBounds = true
-        cell.layer.borderColor = UIColor(hex: "#70C1B3").cgColor
+        cell.layer.borderColor = UIColor(hex: Constants.Colors.mintGreen).cgColor
         cell.layer.borderWidth = 5
         cell.contentMode = .scaleAspectFit
         

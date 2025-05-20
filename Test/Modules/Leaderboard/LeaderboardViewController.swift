@@ -16,10 +16,10 @@ class LeaderboardViewController: UIViewController {
     private let dailyButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Daily", for: .normal)
-        button.backgroundColor = UIColor(hex: "#FEF6F0", alpha: 1)
+        button.backgroundColor = UIColor(hex: Constants.Colors.lightPeach, alpha: 1)
         button.layer.cornerRadius = 17
         button.titleLabel?.font = .systemFont(ofSize: 17)
-        button.setTitleColor(UIColor(hex: "333333", alpha: 1), for: .normal)
+        button.setTitleColor(UIColor(hex: Constants.Colors.darkGray, alpha: 1), for: .normal)
         return button
     }()
     
@@ -50,7 +50,7 @@ class LeaderboardViewController: UIViewController {
         stack.isLayoutMarginsRelativeArrangement = true
         stack.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         stack.layer.cornerRadius = 20
-        stack.backgroundColor = UIColor(hex: "#FFB570")
+        stack.backgroundColor = UIColor(hex: Constants.Colors.lightOrange)
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
@@ -60,7 +60,7 @@ class LeaderboardViewController: UIViewController {
         view.backgroundColor = .white
         view.layer.cornerRadius = 20
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(hex: "#A9DEF9", alpha: 1)
+        view.backgroundColor = UIColor(hex: Constants.Colors.babyBlue, alpha: 1)
         return view
     }()
     
@@ -69,7 +69,7 @@ class LeaderboardViewController: UIViewController {
         label.layer.cornerRadius = 20
         label.clipsToBounds = true
         label.font = .systemFont(ofSize: 20)
-        label.backgroundColor = UIColor(hex: "#FFB570", alpha: 1)
+        label.backgroundColor = UIColor(hex: Constants.Colors.lightOrange, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.textColor = .white
@@ -91,7 +91,7 @@ class LeaderboardViewController: UIViewController {
         iv.layer.cornerRadius = 35
         iv.backgroundColor = .black
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.backgroundColor = UIColor(hex: "#FFB570", alpha: 1)
+        iv.backgroundColor = UIColor(hex: Constants.Colors.lightOrange, alpha: 1)
         return iv
     }()
     
@@ -101,7 +101,7 @@ class LeaderboardViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 2
-        label.textColor = UIColor(hex: "333333", alpha: 1)
+        label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return label
     }()
     
@@ -112,7 +112,7 @@ class LeaderboardViewController: UIViewController {
         label.textAlignment = .center
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
-        label.backgroundColor = UIColor(hex: "#FF8A5C", alpha: 1)
+        label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
         return label
     }()
@@ -129,7 +129,7 @@ class LeaderboardViewController: UIViewController {
         iv.layer.cornerRadius = 35
         iv.backgroundColor = .black
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.backgroundColor = UIColor(hex: "#FFB570", alpha: 1)
+        iv.backgroundColor = UIColor(hex: Constants.Colors.lightOrange, alpha: 1)
         return iv
     }()
     
@@ -139,7 +139,7 @@ class LeaderboardViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 2
-        label.textColor = UIColor(hex: "333333", alpha: 1)
+        label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return label
     }()
     
@@ -150,7 +150,7 @@ class LeaderboardViewController: UIViewController {
         label.textAlignment = .center
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
-        label.backgroundColor = UIColor(hex: "#FF8A5C", alpha: 1)
+        label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
         return label
     }()
@@ -160,7 +160,7 @@ class LeaderboardViewController: UIViewController {
         iv.layer.cornerRadius = 35
         iv.backgroundColor = .black
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.backgroundColor = UIColor(hex: "#FFB570", alpha: 1)
+        iv.backgroundColor = UIColor(hex: Constants.Colors.lightOrange, alpha: 1)
         return iv
     }()
     
@@ -170,7 +170,7 @@ class LeaderboardViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.numberOfLines = 2
-        label.textColor = UIColor(hex: "333333", alpha: 1)
+        label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return label
     }()
     
@@ -181,7 +181,7 @@ class LeaderboardViewController: UIViewController {
         label.textAlignment = .center
         label.layer.cornerRadius = 15
         label.clipsToBounds = true
-        label.backgroundColor = UIColor(hex: "#FF8A5C", alpha: 1)
+        label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
         return label
     }()
@@ -214,12 +214,12 @@ class LeaderboardViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
+        view.setGradientBackground(colors: [UIColor(hex: Constants.Colors.lightPeach), .white])
     }
     
     func setupView(){
         tabBarController?.tabBar.backgroundColor = .white
-        let searchBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass.circle.fill"), style: .plain, target: self, action: #selector(searchBarButtonItemTapped))
+        let searchBarButtonItem = UIBarButtonItem(image: UIImage(systemName: Constants.Icons.magnifyingglassCircleFill), style: .plain, target: self, action: #selector(searchBarButtonItemTapped))
         searchBarButtonItem.tintColor = .black
         navigationItem.rightBarButtonItem = searchBarButtonItem
         
@@ -337,8 +337,8 @@ class LeaderboardViewController: UIViewController {
 
     
     @objc func dailyButtonTapped() {
-        dailyButton.backgroundColor = UIColor(hex: "#FEF6F0")
-        dailyButton.setTitleColor(UIColor(hex: "333333", alpha: 1), for: .normal)
+        dailyButton.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
+        dailyButton.setTitleColor(UIColor(hex: Constants.Colors.darkGray, alpha: 1), for: .normal)
         weeklyButton.backgroundColor = .clear
         weeklyButton.setTitleColor(.white, for: .normal)
         monthlyButton.backgroundColor = .clear
@@ -347,8 +347,8 @@ class LeaderboardViewController: UIViewController {
     
     
     @objc func weeklyButtonTapped() {
-        weeklyButton.backgroundColor = UIColor(hex: "#FEF6F0")
-        weeklyButton.setTitleColor(UIColor(hex: "333333", alpha: 1), for: .normal)
+        weeklyButton.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
+        weeklyButton.setTitleColor(UIColor(hex: Constants.Colors.darkGray, alpha: 1), for: .normal)
         dailyButton.backgroundColor = .clear
         dailyButton.setTitleColor(.white, for: .normal)
         monthlyButton.backgroundColor = .clear
@@ -356,8 +356,8 @@ class LeaderboardViewController: UIViewController {
     }
     
     @objc func monthlyButtonTapped() {
-        monthlyButton.backgroundColor = UIColor(hex: "#FEF6F0")
-        monthlyButton.setTitleColor(UIColor(hex: "333333", alpha: 1), for: .normal)
+        monthlyButton.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
+        monthlyButton.setTitleColor(UIColor(hex: Constants.Colors.darkGray, alpha: 1), for: .normal)
         dailyButton.backgroundColor = .clear
         dailyButton.setTitleColor(.white, for: .normal)
         weeklyButton.backgroundColor = .clear

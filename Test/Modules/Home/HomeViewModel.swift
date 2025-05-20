@@ -84,7 +84,7 @@ final class HomeViewModel {
         guard session else { return }
         guard let userId = Auth.auth().currentUser?.uid else { return }
         
-        let previous1 = Calendar.current.date(byAdding: .day, value: -8, to: Date())!
+        let previous1 = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
         
         let session = SessionModel(id: UUID().uuidString, duration: TimeInterval(25*60), timestamp: previous1)
             
@@ -169,10 +169,10 @@ extension HomeViewModel: HomeViewModelInterface{
     func cancelButtonTapped(){
         if !isBreak{
             if !animationRunning{
-                view?.showMessage("Plese first start the timer.")
+                view?.showMessage(Constants.ValidationMessages.pleaseStartTimer)
                 return
             }else{
-                view?.showConfirm("Are you sure you want to skip the current session?")
+                view?.showConfirm(Constants.ValidationMessages.skipSessionConfirmation)
             }
         }else{
             resetTimer()

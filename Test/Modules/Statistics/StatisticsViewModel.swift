@@ -45,10 +45,11 @@ extension StatisticsViewModel: StatisticsViewModelInterface {
             }
         }
         
-        var currentAverage: Double = 0
+        
         timerService.fetchAverageDuration(for: type, from: Date()) {[weak self] result in
             guard let self = self else { return }
             
+            var currentAverage: Double = 0
             switch result{
             case.success(let average):
                 currentAverage = average
@@ -65,26 +66,34 @@ extension StatisticsViewModel: StatisticsViewModelInterface {
                     formatted += "\(minutes) dakika"
                 }
                 self.view?.updateAverageLabel(with: formatted)
+                
+                //Önceki zaman diliminin ortalaması:
+                
+                let previous = Calendar.current.date(byAdding: type.asCalendarComponent , value: type.offsetValue, to: Date())!
+                
+                timerService.fetchAverageDuration(for: type, from: previous) { [weak self] result in
+                    guard let self = self else { return }
+                    
+                    switch result{
+                    case.success(let average):
+                        if average != 0 {
+                            let percentageChange = (Double(currentAverage - average) / Double(average)) * 100
+                            self.view?.updateProgressLabel(with: "\(String(format: "%.1f", percentageChange))%")
+                        }else{
+                            self.view?.updateProgressLabel(with: "-")
+                        }
+                        
+                    case .failure(let error):
+                        print("Geçmiş ortalama değer alınamadı: \(error)")
+                    }
+                }
+
             case .failure(let error):
-                print("Ortalama değer alınamadı: \(error)")
+                print("Güncel ortalama değer alınamadı: \(error)")
             }
         }
         
 
-        let previous = Calendar.current.date(byAdding: type.asCalendarComponent , value: -1, to: Date())!
-        
-        timerService.fetchAverageDuration(for: type, from: previous) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result{
-            case.success(let average):
-                guard average != 0 else { return }
-                let percentageChange = (Double(currentAverage - average) / Double(average)) * 100
-                self.view?.updateProgressLabel(with: String(percentageChange))
-            case .failure(let error):
-                print("Ortalama değer alınamadı: \(error)")
-            }
-        }
     }
     
     

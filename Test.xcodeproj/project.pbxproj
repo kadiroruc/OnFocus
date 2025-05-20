@@ -35,7 +35,6 @@
 		E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92681DB2DA9842A00138259 /* ProfileViewController.swift */; };
 		E93F1FEC2DDA947B00966661 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93F1FEB2DDA947B00966661 /* StatisticsViewModel.swift */; };
 		E93F1FEE2DDA983D00966661 /* StatisticsModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93F1FED2DDA983D00966661 /* StatisticsModuleBuilder.swift */; };
-		E93F1FF02DDBA09500966661 /* FetchTimeRangeTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93F1FEF2DDBA09500966661 /* FetchTimeRangeTypeExtension.swift */; };
 		E950A8CD2DD2724700928DEB /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8CC2DD2724700928DEB /* FSCalendar */; };
 		E950A8CF2DD27DD400928DEB /* StreakCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */; };
 		E950A8D72DD4E58400928DEB /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8D62DD4E58300928DEB /* SignUpViewModel.swift */; };
@@ -122,7 +121,6 @@
 		E92681DB2DA9842A00138259 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E93F1FEB2DDA947B00966661 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		E93F1FED2DDA983D00966661 /* StatisticsModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsModuleBuilder.swift; sourceTree = "<group>"; };
-		E93F1FEF2DDBA09500966661 /* FetchTimeRangeTypeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchTimeRangeTypeExtension.swift; sourceTree = "<group>"; };
 		E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalendarCell.swift; sourceTree = "<group>"; };
 		E950A8D62DD4E58300928DEB /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		E950A8D92DD4EB3000928DEB /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
@@ -362,7 +360,6 @@
 				E95460CF2DDA1EDC00BB7365 /* UIViewExtension.swift */,
 				E95460D12DDA1EF100BB7365 /* UIColorExtension.swift */,
 				E95460D32DDA1F0600BB7365 /* DateFormatterExtension.swift */,
-				E93F1FEF2DDBA09500966661 /* FetchTimeRangeTypeExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -606,7 +603,6 @@
 				E950A9172DD73F7C00928DEB /* ProfileEndpoint.swift in Sources */,
 				E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */,
 				E90741762D7DB60700E7599C /* SignUpViewController.swift in Sources */,
-				E93F1FF02DDBA09500966661 /* FetchTimeRangeTypeExtension.swift in Sources */,
 				E90741722D7DA5D400E7599C /* LoginViewModel.swift in Sources */,
 				E95460CE2DDA1E2800BB7365 /* TimerService+Helpers.swift in Sources */,
 				E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */,

@@ -28,15 +28,15 @@ final class SignUpViewController: UIViewController{
         let label = UILabel()
         label.text = "Create your\nAccount"
         label.numberOfLines = 0
-        label.font = UIFont(name: "Poppins-Bold", size: 42)
-        label.textColor = UIColor(hex: "333333")
+        label.font = UIFont.systemFont(ofSize: 42,weight: .bold)
+        label.textColor = UIColor(hex: Constants.Colors.darkGray)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
     private let emailIconView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 40))
-        let imageView = UIImageView(image: UIImage(systemName: "envelope.fill"))
+        let imageView = UIImageView(image: UIImage(systemName: Constants.Icons.envelopeFill))
         imageView.tintColor = .gray
         imageView.frame = CGRect(x: 15, y: 10, width: 24, height: 20)
         view.addSubview(imageView)
@@ -51,8 +51,8 @@ final class SignUpViewController: UIViewController{
         tf.layer.cornerRadius = 14
         tf.layer.borderWidth = 1
         tf.backgroundColor = .white
-        tf.textColor = UIColor(hex: "333333")
-        tf.layer.borderColor = UIColor(hex: "333333").cgColor
+        tf.textColor = UIColor(hex: Constants.Colors.darkGray)
+        tf.layer.borderColor = UIColor(hex: Constants.Colors.darkGray).cgColor
         tf.leftViewMode = .always
         tf.autocapitalizationType = .none
         return tf
@@ -60,7 +60,7 @@ final class SignUpViewController: UIViewController{
     
     private let passwordIconView: UIView = {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 42, height: 40))
-        let imageView = UIImageView(image: UIImage(systemName: "lock.fill"))
+        let imageView = UIImageView(image: UIImage(systemName: Constants.Icons.lockFill))
         imageView.tintColor = .gray
         imageView.frame = CGRect(x: 16, y: 10, width: 20, height: 20)
         view.addSubview(imageView)
@@ -75,8 +75,8 @@ final class SignUpViewController: UIViewController{
         tf.layer.cornerRadius = 14
         tf.layer.borderWidth = 1
         tf.backgroundColor = .white
-        tf.textColor = UIColor(hex: "333333")
-        tf.layer.borderColor = UIColor(hex: "333333").cgColor
+        tf.textColor = UIColor(hex: Constants.Colors.darkGray)
+        tf.layer.borderColor = UIColor(hex: Constants.Colors.darkGray).cgColor
         tf.isSecureTextEntry = true
         tf.leftViewMode = .always
         tf.rightViewMode = .always
@@ -87,7 +87,7 @@ final class SignUpViewController: UIViewController{
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .regular)
-        btn.setImage(UIImage(systemName: "eye.slash", withConfiguration: config), for: .normal)
+        btn.setImage(UIImage(systemName: Constants.Icons.lockFill, withConfiguration: config), for: .normal)
         btn.tintColor = .gray
         return btn
     }()
@@ -95,9 +95,9 @@ final class SignUpViewController: UIViewController{
     private let rememberMeCheckbox: UIButton = {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setImage(UIImage(systemName: "square"), for: .normal)
-        btn.setImage(UIImage(systemName: "checkmark.square.fill"), for: .selected)
-        btn.tintColor = UIColor(hex: "333333")
+        btn.setImage(UIImage(systemName: Constants.Icons.square), for: .normal)
+        btn.setImage(UIImage(systemName: Constants.Icons.checkmarkSquareFill), for: .selected)
+        btn.tintColor = UIColor(hex: Constants.Colors.darkGray)
         btn.backgroundColor = .clear
         return btn
     }()
@@ -107,7 +107,7 @@ final class SignUpViewController: UIViewController{
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Remember me"
         label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = UIColor(hex: "#333333")
+        label.textColor = UIColor(hex: Constants.Colors.darkGray)
         return label
     }()
     
@@ -116,8 +116,9 @@ final class SignUpViewController: UIViewController{
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("Sign up", for: .normal)
         btn.setTitleColor(.white, for: .normal)
-        btn.backgroundColor = UIColor(hex: "#70C1B3")
+        btn.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         btn.layer.cornerRadius = 17
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         return btn
     }()
 
@@ -126,8 +127,8 @@ final class SignUpViewController: UIViewController{
         label.translatesAutoresizingMaskIntoConstraints = false
         let text = "Have an account?"
         label.text = text
-        label.font = UIFont(name: "Poppins-Regular", size: 14)
-        label.textColor = UIColor(hex: "#444444")
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = UIColor(hex: Constants.Colors.mediumDarkGray)
         return label
     }()
 
@@ -135,8 +136,8 @@ final class SignUpViewController: UIViewController{
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("Sign in", for: .normal)
-        btn.setTitleColor(UIColor(hex: "#FF8A5C"), for: .normal)
-        btn.titleLabel?.font = UIFont(name: "Poppins-SemiBold", size: 14)
+        btn.setTitleColor(UIColor(hex: Constants.Colors.softOrange), for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         return btn
     }()
     
@@ -168,7 +169,7 @@ final class SignUpViewController: UIViewController{
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
+        view.setGradientBackground(colors: [UIColor(hex: Constants.Colors.lightPeach), .white])
     }
     
     

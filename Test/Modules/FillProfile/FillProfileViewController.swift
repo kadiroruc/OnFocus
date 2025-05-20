@@ -24,27 +24,27 @@ final class FillProfileViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Fill Your Profile"
-        label.font = UIFont(name: "Poppins-Bold", size: 28)
+        label.font = UIFont.systemFont(ofSize: 28)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = UIColor(hex: "333333", alpha: 1)
+        label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return label
     }()
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Don't worry, you can change it later, or you can skip it for now."
-        label.font = UIFont(name: "Poppins-Regular", size: 16)
+        label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.textColor = UIColor(hex: "444444", alpha: 1)
+        label.textColor = UIColor(hex: Constants.Colors.mediumDarkGray, alpha: 1)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person.crop.circle.fill")?.withTintColor(UIColor(hex: "#FFB570"), renderingMode: .alwaysOriginal)
+        imageView.image = UIImage(systemName: Constants.Icons.personCropCircleFill)?.withTintColor(UIColor(hex: Constants.Colors.lightOrange), renderingMode: .alwaysOriginal)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 65
@@ -55,10 +55,10 @@ final class FillProfileViewController: UIViewController {
     private let changeProfileButton: UIButton = {
         let button = UIButton(type: .system)
         let config = UIImage.SymbolConfiguration(pointSize: 22)
-        let image = UIImage(systemName: "square.and.pencil.circle.fill", withConfiguration: config)
+        let image = UIImage(systemName: Constants.Icons.squareAndPencilCircleFill, withConfiguration: config)
         button.setImage(image, for: .normal)
-        button.tintColor = UIColor(hex: "#333333")
-        button.backgroundColor = UIColor(hex: "#FEF6F0")
+        button.tintColor = UIColor(hex: Constants.Colors.darkGray)
+        button.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
         button.layer.cornerRadius = 15
         button.layer.borderWidth = 0
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -68,12 +68,12 @@ final class FillProfileViewController: UIViewController {
     private let nameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Full Name"
-        tf.textColor = UIColor(hex: "333333")
+        tf.textColor = UIColor(hex: Constants.Colors.darkGray)
         tf.layer.borderWidth = 1
-        tf.layer.borderColor = UIColor(hex: "#333333").cgColor
+        tf.layer.borderColor = UIColor(hex: Constants.Colors.darkGray).cgColor
         tf.layer.cornerRadius = 14
         tf.backgroundColor = .white
-        tf.font = UIFont(name: "Poppins-SemiBold", size: 15)
+        tf.font = UIFont.systemFont(ofSize: 15)
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.setLeftPadding(12)
         return tf
@@ -82,12 +82,12 @@ final class FillProfileViewController: UIViewController {
     private let nicknameTextField: UITextField = {
         let tf = UITextField()
         tf.placeholder = "Nickname"
-        tf.textColor = UIColor(hex: "333333")
+        tf.textColor = UIColor(hex: Constants.Colors.darkGray)
         tf.layer.borderWidth = 1
-        tf.layer.borderColor = UIColor(hex: "#333333").cgColor
+        tf.layer.borderColor = UIColor(hex: Constants.Colors.darkGray).cgColor
         tf.layer.cornerRadius = 14
         tf.backgroundColor = .white
-        tf.font = UIFont(name: "Poppins-SemiBold", size: 15)
+        tf.font = UIFont.systemFont(ofSize: 15)
         tf.translatesAutoresizingMaskIntoConstraints = false
         tf.setLeftPadding(12)
         tf.autocapitalizationType = .none
@@ -98,7 +98,7 @@ final class FillProfileViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Start", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(hex: "#70C1B3")
+        button.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         button.layer.cornerRadius = 17
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -131,7 +131,7 @@ final class FillProfileViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
+        view.setGradientBackground(colors: [UIColor(hex: Constants.Colors.lightPeach), .white])
     }
     
     // MARK: - Setup
@@ -207,7 +207,7 @@ final class FillProfileViewController: UIViewController {
 extension FillProfileViewController: FillProfileViewInterface {
     
     func setNicknameNotAvailable() {
-        nicknameTextField.layer.borderColor = UIColor(hex: "#FF8A5C").cgColor
+        nicknameTextField.layer.borderColor = UIColor(hex: Constants.Colors.softOrange).cgColor
         nicknameTextField.layer.borderWidth = 2
         
     }
@@ -241,10 +241,10 @@ extension FillProfileViewController: FillProfileViewInterface {
     
     func enableStartButton(_ isEnabled: Bool) {
         startButton.isEnabled = isEnabled
-        startButton.backgroundColor = isEnabled ? UIColor(hex: "#70C1B3") : UIColor(hex: "#A5A5A5")
-        startButton.setTitleColor(isEnabled ? .white : UIColor(hex: "#333333"), for: .normal)
+        startButton.backgroundColor = isEnabled ? UIColor(hex: Constants.Colors.mintGreen) : UIColor(hex: Constants.Colors.lightGray)
+        startButton.setTitleColor(isEnabled ? .white : UIColor(hex: Constants.Colors.darkGray), for: .normal)
         startButton.layer.borderWidth = isEnabled ? 0 : 1
-        startButton.layer.borderColor = isEnabled ? UIColor.clear.cgColor : UIColor(hex: "#333333").cgColor
+        startButton.layer.borderColor = isEnabled ? UIColor.clear.cgColor : UIColor(hex: Constants.Colors.darkGray).cgColor
     }
 }
 

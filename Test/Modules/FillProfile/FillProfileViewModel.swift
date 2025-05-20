@@ -33,11 +33,11 @@ extension FillProfileViewModel: FillProfileViewModelInterface{
     func startButtonTapped(name: String?, nickname: String?) {
         guard let name = name, !name.isEmpty,
               let nickname = nickname, !nickname.isEmpty else {
-            view?.showError(message: "Please fill in all fields.")
+            view?.showError(message: Constants.ValidationMessages.fillAllFields)
             return
         }
         guard let selectedImage = selectedImage else {
-            view?.showError(message: "Please select an image.")
+            view?.showError(message: Constants.ValidationMessages.selectImage)
             return
         }
         
@@ -64,7 +64,7 @@ extension FillProfileViewModel: FillProfileViewModelInterface{
                     }
                 } else {
                     self.view?.showLoading(false)
-                    self.view?.showError(message: "Nickname is already taken. Please choose another one.")
+                    self.view?.showError(message: Constants.ValidationMessages.nicknameTaken)
                     self.view?.setNicknameNotAvailable()
                     self.view?.enableStartButton(true)
                 }

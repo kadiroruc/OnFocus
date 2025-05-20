@@ -68,7 +68,7 @@ class StatisticsViewController: UIViewController {
         stack.isLayoutMarginsRelativeArrangement = true
         stack.layoutMargins = UIEdgeInsets(top: 4, left: 4, bottom: 4, right: 4)
         stack.layer.cornerRadius = 20
-        stack.backgroundColor = UIColor(hex: "#FFB570")
+        stack.backgroundColor = UIColor(hex: Constants.Colors.lightOrange)
         stack.translatesAutoresizingMaskIntoConstraints = false
         
         return stack
@@ -79,8 +79,8 @@ class StatisticsViewController: UIViewController {
         let chartView =  LineChartView()
         chartView.backgroundColor = .clear
         chartView.xAxis.labelPosition = .bottom
-        chartView.xAxis.labelTextColor = UIColor(hex: "#333333")
-        chartView.leftAxis.labelTextColor = UIColor(hex: "#333333")
+        chartView.xAxis.labelTextColor = UIColor(hex: Constants.Colors.darkGray)
+        chartView.leftAxis.labelTextColor = UIColor(hex: Constants.Colors.darkGray)
         chartView.rightAxis.enabled = false
         chartView.legend.enabled = true
         chartView.legend.verticalAlignment = .top
@@ -101,7 +101,7 @@ class StatisticsViewController: UIViewController {
     
     private let statisticsContainerView: UIStackView = {
         let stackView = UIStackView()
-        stackView.backgroundColor = UIColor(hex: "#FBE2C8", alpha: 1)
+        stackView.backgroundColor = UIColor(hex: Constants.Colors.palePeach, alpha: 1)
         stackView.layer.cornerRadius = 20
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
@@ -134,7 +134,7 @@ class StatisticsViewController: UIViewController {
         label.font = .systemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.textColor = UIColor(hex: "#333333", alpha: 1)
+        label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return label
     }()
     
@@ -145,7 +145,7 @@ class StatisticsViewController: UIViewController {
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.backgroundColor = UIColor(hex: "#70C1B3", alpha: 1)
+        label.backgroundColor = UIColor(hex: Constants.Colors.mintGreen, alpha: 1)
         label.textColor = .white
         return label
     }()
@@ -165,7 +165,7 @@ class StatisticsViewController: UIViewController {
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.backgroundColor = UIColor(hex: "#FF8A5C", alpha: 1)
+        label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
         return label
     }()
@@ -190,7 +190,7 @@ class StatisticsViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        view.setGradientBackground(colors: [UIColor(hex: "#FEF6F0"), .white])
+        view.setGradientBackground(colors: [UIColor(hex: Constants.Colors.lightPeach), .white])
     }
     
     func setupView(){
@@ -258,10 +258,10 @@ class StatisticsViewController: UIViewController {
         
         for button in buttons {
             if button == selectedButton {
-                button.backgroundColor = UIColor(hex: "#FEF6F0")
-                button.setTitleColor(UIColor(hex: "#333333"), for: .normal)
+                button.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
+                button.setTitleColor(UIColor(hex: Constants.Colors.darkGray), for: .normal)
             } else {
-                button.backgroundColor = UIColor(hex: "#FFB570")
+                button.backgroundColor = UIColor(hex: Constants.Colors.lightOrange)
                 button.setTitleColor(.white, for: .normal)
             }
         }
@@ -294,8 +294,8 @@ extension StatisticsViewController: StatisticsViewInterface {
         let set = LineChartDataSet(entries: entries, label: "Work Time (Hour)")
         set.mode = .linear
         set.drawCirclesEnabled = false
-        set.setColor(UIColor(hex: "#70C1B3"))
-        set.fillColor = UIColor(hex: "#70C1B3")
+        set.setColor(UIColor(hex: Constants.Colors.mintGreen))
+        set.fillColor = UIColor(hex: Constants.Colors.mintGreen)
         set.drawFilledEnabled = true
         set.fillAlpha = 0.2
         set.drawCirclesEnabled = false

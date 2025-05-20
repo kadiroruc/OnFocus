@@ -22,11 +22,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         
-//        do{
-//           try Auth.auth().signOut()
-//        }catch{
-//            print("Sign out error: \(error)")
-//        }
+        do{
+           try Auth.auth().signOut()
+        }catch{
+            print("Sign out error: \(error)")
+        }
         
         
         if Auth.auth().currentUser != nil {

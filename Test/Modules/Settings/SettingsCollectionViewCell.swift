@@ -31,7 +31,7 @@ class SettingsCollectionViewCell: UICollectionViewCell {
     let switchButton: UISwitch = {
         let sw = UISwitch()
         sw.translatesAutoresizingMaskIntoConstraints = false
-        sw.onTintColor = UIColor(hex: "#70C1B3")
+        sw.onTintColor = UIColor(hex: Constants.Colors.mintGreen)
         return sw
     }()
     

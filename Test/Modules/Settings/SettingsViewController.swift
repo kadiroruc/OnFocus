@@ -33,7 +33,7 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hex: "#FEF6F0")
+        view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
         title = "Settings"
         
         setupLayout()
@@ -62,10 +62,10 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
         cell.backgroundColor = .white
         cell.layer.cornerRadius = 8
         cell.imageView.backgroundColor = .clear
-        cell.imageView.tintColor = UIColor(hex: "#FF8A5C", alpha: 1)
+        cell.imageView.tintColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         cell.imageView.layer.cornerRadius = 4
         cell.imageView.contentMode = .scaleAspectFit
-        cell.label.textColor = UIColor(hex: "#333333")
+        cell.label.textColor = UIColor(hex: Constants.Colors.darkGray)
         
         viewModel.configureCell(cell: cell, at: indexPath)
         

@@ -56,7 +56,7 @@ class StreakCalendarCell: FSCalendarCell {
             }
         }
         streakLayer.path = barPath.cgPath
-        streakLayer.fillColor = UIColor(hex: "FF8A5C", alpha: 0.3).cgColor
+        streakLayer.fillColor = UIColor(hex: Constants.Colors.softOrange, alpha: 0.3).cgColor
         streakLayer.strokeColor = nil
         
         // 💡 Daire şekli (sadece baş/son günlerde göster)
@@ -71,7 +71,7 @@ class StreakCalendarCell: FSCalendarCell {
         circleLayer.path = circlePath.cgPath
         
         if isStreak && (!isLeftConnected || !isRightConnected) {
-            circleLayer.fillColor = UIColor(hex: "FF8A5C").cgColor
+            circleLayer.fillColor = UIColor(hex: Constants.Colors.softOrange).cgColor
         } else {
             circleLayer.fillColor = UIColor.clear.cgColor
         }
