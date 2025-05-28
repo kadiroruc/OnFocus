@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UploadResponse: Codable {
+struct ProfileImageResponse: Codable {
     let data: UploadImageData
     let success: Bool
     let status: Int

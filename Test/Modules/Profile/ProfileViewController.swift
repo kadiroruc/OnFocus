@@ -7,14 +7,15 @@
 
 import UIKit
 import FSCalendar
+import Kingfisher
 
 protocol ProfileViewInterface: AnyObject {
-    func updateProfileImage(with image: UIImage)
+    func updateProfileImage(with url: URL)
     func showError(_ message: String)
     func updateStreakCalendar()
     func updateNickname(_ nickname: String)
     func updateAverageWorkTime(_ time: String)
-    func updateStreakDay(_ count: Int)
+    func updateStreakDayLabel(_ count: Int)
 }
 
 class ProfileViewController: UIViewController {
@@ -54,7 +55,7 @@ class ProfileViewController: UIViewController {
     
     private let averageWorkTimeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Average Work Hour: 7"
+        label.text = "Average Work Hour: "
         label.textColor = .white
         label.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         label.textAlignment = .center
@@ -66,7 +67,7 @@ class ProfileViewController: UIViewController {
     
     private let streakDayLabel: UILabel = {
         let label = UILabel()
-        label.text = "Current Streak Day: 280"
+        label.text = "Current Streak Day: "
         label.textColor = .white
         label.backgroundColor = UIColor(hex: Constants.Colors.softOrange)
         label.textAlignment = .center
@@ -89,8 +90,6 @@ class ProfileViewController: UIViewController {
         calendar.appearance.weekdayTextColor = .gray
         calendar.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
         calendar.layer.cornerRadius = 20
-        
-        
         return calendar
     }()
     
@@ -183,9 +182,10 @@ class ProfileViewController: UIViewController {
 
 // MARK: - ProfileViewInterface
 extension ProfileViewController: ProfileViewInterface {
-    func updateProfileImage(with image: UIImage) {
-        profileImageView.image = image
+    func updateProfileImage(with url: URL) {
+        profileImageView.kf.setImage(with: url)
     }
+
 
     func showError(_ message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
@@ -205,7 +205,7 @@ extension ProfileViewController: ProfileViewInterface {
         averageWorkTimeLabel.text = time
     }
 
-    func updateStreakDay(_ count: Int) {
+    func updateStreakDayLabel(_ count: Int) {
         streakDayLabel.text = "Current Streak Day: \(count)"
     }
 }
@@ -224,4 +224,9 @@ extension ProfileViewController: FSCalendarDataSource, FSCalendarDelegate, FSCal
 
         return cell
     }
+}
+
+
+#Preview(""){
+    return UINavigationController(rootViewController: ProfileModuleBuilder.build())
 }

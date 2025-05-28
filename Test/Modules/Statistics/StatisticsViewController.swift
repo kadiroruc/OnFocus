@@ -145,7 +145,7 @@ class StatisticsViewController: UIViewController {
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.backgroundColor = UIColor(hex: Constants.Colors.mintGreen, alpha: 1)
+        label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
         return label
     }()
@@ -165,7 +165,7 @@ class StatisticsViewController: UIViewController {
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
+        label.backgroundColor = UIColor(hex: Constants.Colors.mintGreen, alpha: 1)
         label.textColor = .white
         return label
     }()
@@ -330,7 +330,14 @@ extension StatisticsViewController: StatisticsViewInterface {
     }
 
     func updateProgressLabel(with progress: String) {
-        progressPercentageLabel.text = progress.hasPrefix("-") ? progress : "+\(progress)"
+        if progress.hasPrefix("-"){
+            progressPercentageLabel.backgroundColor = UIColor(hex: Constants.Colors.softOrange)
+            progressPercentageLabel.text = progress
+        }else{
+            progressPercentageLabel.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
+            progressPercentageLabel.text = "+\(progress)"
+        }
+        
     }
     
 }

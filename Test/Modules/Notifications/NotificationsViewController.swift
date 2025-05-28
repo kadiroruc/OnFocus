@@ -59,7 +59,7 @@ extension NotificationsViewController: UICollectionViewDelegate, UICollectionVie
         cell.clipsToBounds = true
         
         cell.imageView.backgroundColor = UIColor(hex: Constants.Colors.softOrange)
-        cell.label.text = "asudfaşşfsdfsşdsş"
+        cell.label.text = "username"
         
         return cell
     }

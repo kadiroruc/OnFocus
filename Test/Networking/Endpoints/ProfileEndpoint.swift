@@ -18,16 +18,24 @@ protocol NetworkPath {
 
 enum ProfileEndpoint: NetworkPath {
     case uploadImage(data: Data)
+    case fetchImage(imageId: String)
     
     var urlString: String {
         switch self {
         case .uploadImage:
             return "\(NetworkConstants.baseURL)upload?key=\(NetworkConstants.imgBBApiKey)"
+        case .fetchImage(let imageId):
+            return "\(NetworkConstants.baseURL)images/\(imageId)"
         }
     }
     
     var method: HTTPMethod {
-        return .post
+        switch self {
+        case .uploadImage:
+            return .post
+        case .fetchImage:
+            return .get
+        }
     }
     
     var multipartFormData: ((MultipartFormData) -> Void)? {
@@ -36,14 +44,21 @@ enum ProfileEndpoint: NetworkPath {
             return { multipart in
                 multipart.append(data, withName: "image", fileName: "profile.jpg", mimeType: "image/jpeg")
             }
+        case .fetchImage:
+            return nil
         }
     }
     
     var parameters: [String : Any]? {
-        return nil // Ekstra parametre eklemek istersen buraya (örneğin "name" veya "expiration")
+        return nil // If you want to add extra parameters like name, expiration etc.
     }
     
     var encoding: ParameterEncoding {
-        return URLEncoding.default
+        switch self {
+        case .uploadImage:
+            return URLEncoding.default
+        case .fetchImage:
+            return URLEncoding.default
+        }
     }
 }

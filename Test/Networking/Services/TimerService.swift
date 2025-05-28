@@ -36,12 +36,16 @@ extension TimerService: TimerServiceProtocol{
     
     func updateAggregate(for session: SessionModel, userId: String) async throws {
         let date = session.timestamp
+        let dateKey = DateFormatter.yyyyMMdd.string(from: date)
         
-        let dayId = "daily_" + DateFormatter.yyyyMMdd.string(from: date)
+        let dayId = "daily_" + dateKey
         let weekId = "weekly_" + weekKey(for: date)
         let monthId = "monthly_" + monthKey(for: date)
         let yearId = "yearly_" + yearKey(for: date)
         let fiveYearsId = "fiveYears_" + fiveYearsKey(for: date)
+        
+        //Daily record control for second update (general daily average)
+        var isNewDay: Bool = true
         
         let statInfos: [(id: String, divisor: Int?)] = [
             (dayId, nil),            // daily: sadece total tutulur
@@ -51,6 +55,7 @@ extension TimerService: TimerServiceProtocol{
             (fiveYearsId, 5 * 365)
         ]
         
+        // 1. Sessions and statistics(daily, weekly, monthly...)
         for (statId, divisor) in statInfos {
             let ref = db.collection("users").document(userId)
                 .collection("statistics")
@@ -59,6 +64,9 @@ extension TimerService: TimerServiceProtocol{
             try await db.runTransaction { transaction, errorPointer in
                 do {
                     let snapshot = try transaction.getDocument(ref)
+                    if statId == dayId {
+                        isNewDay = !snapshot.exists
+                    }
                     let existing = snapshot.data() ?? [:]
                     let oldTotal = existing["totalDuration"] as? Int ?? 0
                     
@@ -74,9 +82,43 @@ extension TimerService: TimerServiceProtocol{
                 } catch let error {
                     errorPointer?.pointee = error as NSError
                 }
-                
                 return nil
             }
+        }
+        
+        //2. Update general average work time of user (total work time / total days)
+        let userRef = db.collection("users").document(userId)
+        let dailyStatRef = db.collection("users").document(userId)
+            .collection("statistics").document(dayId)
+        
+        try await db.runTransaction { transaction, errorPointer in
+            do {
+                let userSnapshot = try transaction.getDocument(userRef)
+                let userData = userSnapshot.data() ?? [:]
+                
+                let currentTotalWork = userData["totalWorkTime"] as? Int ?? 0
+                let currentDaysWorked = userData["totalDaysWorked"] as? Int ?? 0
+                
+                let dailySnapshot = try transaction.getDocument(dailyStatRef)
+                
+                let newTotal = currentTotalWork + Int(session.duration)
+                
+                print(isNewDay)
+                let newDays = isNewDay ? (currentDaysWorked + 1) : currentDaysWorked
+                let newAverageDaily = newDays > 0 ? Double(newTotal) / Double(newDays) : 0
+                
+                let updatedData: [String: Any] = [
+                    "totalWorkTime": newTotal,
+                    "totalDaysWorked": newDays,
+                    "averageDailyWorkTime": newAverageDaily
+                ]
+                
+                transaction.setData(updatedData, forDocument: userRef, merge: true)
+                
+            } catch let error {
+                errorPointer?.pointee = error as NSError
+            }
+            return nil
         }
     }
     

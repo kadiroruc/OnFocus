@@ -209,7 +209,6 @@ extension FillProfileViewController: FillProfileViewInterface {
     func setNicknameNotAvailable() {
         nicknameTextField.layer.borderColor = UIColor(hex: Constants.Colors.softOrange).cgColor
         nicknameTextField.layer.borderWidth = 2
-        
     }
     
     func navigateToHome() {
@@ -269,8 +268,6 @@ extension  FillProfileViewController: UIImagePickerControllerDelegate, UINavigat
     
 
 
-//#Preview(""){
-//    return UINavigationController(rootViewController: FillProfileViewController(viewModel: FillProfileViewModel(service: AuthService())))
-//        
-//    
-//}
+#Preview(""){
+    return UINavigationController(rootViewController: FillProfileModuleBuilder.build())
+}

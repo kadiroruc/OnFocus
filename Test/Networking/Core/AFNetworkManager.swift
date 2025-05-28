@@ -5,7 +5,7 @@
 //  Created by Abdulkadir Oruç on 16.05.2025.
 //
 
-import Foundation
+import UIKit
 import Alamofire
 
 //MARK: - Protocol
@@ -22,6 +22,7 @@ protocol NetworkManaging {
 
 final class AFNetworkManager: NetworkManaging {
     
+    //JSON Data
     func request<T: Codable>(_ path: NetworkPath,
                              decodeTo type: T.Type,
                              completion: @escaping (Result<T, Error>) -> ()) {
@@ -45,7 +46,7 @@ final class AFNetworkManager: NetworkManaging {
             }
     }
     
-    // Sadece multipartFormData varsa upload işlemi yapar
+    //Multipart Data
     func upload<T: Codable>(_ path: NetworkPath,
                             decodeTo type: T.Type,
                             completion: @escaping (Result<T, Error>) -> ()) {

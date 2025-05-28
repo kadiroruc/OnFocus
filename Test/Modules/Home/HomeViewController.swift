@@ -133,7 +133,7 @@ final class HomeViewController: UIViewController {
         setupCircleContainerTapGesture()
 
         
-        onlineLabel.text = "13423 Online"
+        onlineLabel.text = "130767 Online"
         sessionsLabel.text = "1 of 4 Session"
         workingLabel.text = "10/58 Working"
     }
@@ -467,14 +467,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.CellIdentifiers.personCell, for: indexPath) as! HomePersonCollectionViewCell
-        cell.layer.cornerRadius = 25
-        cell.clipsToBounds = true
-        cell.layer.borderColor = UIColor(hex: Constants.Colors.mintGreen).cgColor
-        cell.layer.borderWidth = 5
-        cell.contentMode = .scaleAspectFit
         
 //        cell.profileImageView.image = viewModel.profileImage(at: indexPath.row)
-        cell.profileImageView.image = UIImage(named: "profile")
+        cell.profileImageView.image = UIImage(systemName: Constants.Icons.person)?.withTintColor(UIColor(hex: Constants.Colors.darkGray), renderingMode: .alwaysOriginal)
         return cell
     }
 }

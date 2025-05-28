@@ -44,10 +44,10 @@ extension FillProfileViewModel: FillProfileViewModelInterface{
         view?.enableStartButton(false)
         view?.showLoading(true)
         
-        profileService.isNicknameAvailable(nickname) { [weak self] isAvailable in
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self else { return }
             
-            DispatchQueue.main.async {
+            profileService.isNicknameAvailable(nickname) {  isAvailable in
                 if isAvailable {
                     
                     self.profileService.saveProfile(name: name, nickname: nickname, image: selectedImage) { result in
@@ -70,5 +70,6 @@ extension FillProfileViewModel: FillProfileViewModelInterface{
                 }
             }
         }
+
     }
 }

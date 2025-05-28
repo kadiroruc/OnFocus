@@ -25,30 +25,61 @@ final class ProfileViewModel: ProfileViewModelInterface {
     weak var view: ProfileViewInterface?
     private let profileService: ProfileServiceProtocol
     private(set) var streakDates: [Date] = []
+    
+    private var isFetching = false
 
+    //MARK: - Init
     init(profileService: ProfileServiceProtocol) {
         self.profileService = profileService
     }
 
     func viewDidLoad() {
-        profileService.fetchProfile { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let profile):
-                DispatchQueue.main.async {
-                    self.view?.updateNickname(profile.nickname)
-                    self.view?.updateAverageWorkTime("Average Work Hour: \(profile.averageWorkTime)")
-                    self.view?.updateStreakDay(profile.currentStreakCount)
-                    self.view?.updateProfileImage(with: profile.image)
-                    self.streakDates = self.calculateStreakDates(from: profile.streakRawDates)
-                    self.view?.updateStreakCalendar()
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self.view?.showError(error.localizedDescription)
+        
+        guard !isFetching else { return } // if there is fetch operation , dont start
+        isFetching = true
+        DispatchQueue.global(qos: .background).async {[weak self] in
+            guard let self = self else {return}
+            
+            self.profileService.fetchProfile { result in
+                switch result {
+                case .success(let profile):
+                    DispatchQueue.main.async {
+                        self.view?.updateNickname(profile.nickname)
+                        if let profileImageUrl = profile.profileImageUrl,
+                           let url = URL(string: profileImageUrl) {
+                            self.view?.updateProfileImage(with: url )
+                        }
+
+                        //self.view?.updateAverageWorkTime("Average Work Hour: \(profile.averageWorkTime)")
+                        //self.view?.updateStreakDay(profile.currentStreakCount)
+                        //self.view?.updateProfileImage(with: profile.image)
+                        //self.streakDates = self.calculateStreakDates(from: profile.streakRawDates)
+                        //self.view?.updateStreakCalendar()
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        self.view?.showError(error.localizedDescription)
+                    }
                 }
             }
         }
+
+        
+        //MARK: - TEST
+//        DispatchQueue.main.async {
+//
+//            let calendar = Calendar.current
+//            let today = Date()
+//            let exampleDates: [Date] = [
+//                today,
+//                calendar.date(byAdding: .day, value: -1, to: today)!,
+//                calendar.date(byAdding: .day, value: -2, to: today)!,
+//                calendar.date(byAdding: .day, value: -3, to: today)!
+//            ]
+//            self.streakDates = self.calculateStreakDates(from: exampleDates)
+//
+//            self.view?.updateStreakCalendar()
+//        }
     }
 
     private func calculateStreakDates(from dates: [Date]) -> [Date] {
@@ -81,15 +112,5 @@ final class ProfileViewModel: ProfileViewModelInterface {
         guard let next = Calendar.current.date(byAdding: .day, value: 1, to: date) else { return false }
         return isDatePartOfStreak(next)
     }
-}
-
-// MARK: - Model
-
-struct ProfileModel {
-    let nickname: String
-    let averageWorkTime: Int
-    let currentStreakCount: Int
-    let streakRawDates: [Date]
-    let image: UIImage
 }
 

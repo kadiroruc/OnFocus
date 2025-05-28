@@ -87,7 +87,7 @@ final class SignUpViewController: UIViewController{
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 12, weight: .regular)
-        btn.setImage(UIImage(systemName: Constants.Icons.lockFill, withConfiguration: config), for: .normal)
+        btn.setImage(UIImage(systemName: Constants.Icons.eye, withConfiguration: config), for: .normal)
         btn.tintColor = .gray
         return btn
     }()

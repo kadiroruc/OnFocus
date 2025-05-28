@@ -26,6 +26,7 @@ final class ProfileService {
     private let db = Firestore.firestore()
     private let networkManager: NetworkManaging
     
+    //MARK: - Init
     init(networkManager: NetworkManaging) {
         self.networkManager = networkManager
     }
@@ -61,7 +62,7 @@ extension ProfileService: ProfileServiceProtocol {
         
         if let image = image, let imageData = image.jpegData(compressionQuality: 0.8) {
             // Resmi API üzerinden yükle
-            networkManager.upload(ProfileEndpoint.uploadImage(data: imageData), decodeTo: UploadResponse.self) { [weak self] result in
+            networkManager.upload(ProfileEndpoint.uploadImage(data: imageData), decodeTo: ProfileImageResponse.self) { [weak self] result in
                 switch result {
                 case .success(let response):
                     // API’den dönen URL'yi Firestore’a kaydet
@@ -94,57 +95,28 @@ extension ProfileService: ProfileServiceProtocol {
     }
     
     func fetchProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void) {
-        //        guard let userId = Auth.auth().currentUser?.uid else {
-        //            completion(.failure(NSError(domain: "AuthError",
-        //                                        code: -1,
-        //                                        userInfo: [NSLocalizedDescriptionKey: "User not logged in."])))
-        //            return
-        //        }
-        //
-        //        db.collection("users").document(userId).getDocument { snapshot, error in
-        //            if let error = error {
-        //                completion(.failure(error))
-        //                return
-        //            }
-        //
-        //            guard let data = snapshot?.data(),
-        //                  let nickname = data["nickname"] as? String,
-        //                  let averageWorkTime = data["averageWorkTime"] as? Int,
-        //                  let currentStreakCount = data["currentStreakCount"] as? Int,
-        //                  let streakTimestamps = data["streakRawDates"] as? [Timestamp],
-        //                  let profileImagePath = data["profileImagePath"] as? String
-        //            else {
-        //                completion(.failure(NSError(domain: "DataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid profile data"])))
-        //                return
-        //            }
-        //
-        //            let streakRawDates: [Date] = streakTimestamps.map { $0.dateValue() }
-        //
-        //            // Fetch image from Firebase Storage
-        //            let imageRef = self.storage.reference(withPath: profileImagePath)
-        //            imageRef.getData(maxSize: 5 * 1024 * 1024) { imageData, error in
-        //                if let error = error {
-        //                    completion(.failure(error))
-        //                    return
-        //                }
-        //
-        //                guard let imageData = imageData,
-        //                      let image = UIImage(data: imageData) else {
-        //                    completion(.failure(NSError(domain: "ImageError", code: -2, userInfo: [NSLocalizedDescriptionKey: "Unable to decode image"])))
-        //                    return
-        //                }
-        //
-        //                let profile = ProfileModel(
-        //                    profileImage: image,
-        //                    nickname: nickname,
-        //                    averageWorkTime: averageWorkTime,
-        //                    currentStreakCount: currentStreakCount,
-        //                    streakRawDates: streakRawDates
-        //                )
-        //
-        //                completion(.success(profile))
-        //            }
-        //        }
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(.failure(NSError(domain: "AuthError",
+                                        code: -1,
+                                        userInfo: [NSLocalizedDescriptionKey: "User not logged in."])))
+            return
+        }
+        print("asfa")
+        db.collection("users").document(userId).getDocument { document, error in
+            
+            if let document = document, document.exists {
+                let nickname = document.get("nickname") as? String ?? ""
+                let profileImageUrl = document.get("profileImageURL") as? String
+        
+                let profileModel = ProfileModel(nickname: nickname, averageWorkTime: "", currentStreakCount: "", profileImageUrl: profileImageUrl)
+                
+                completion(.success(profileModel))
+                
+            } else {
+                completion(.failure(NSError(domain: "DataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Profile data could not be fetched."])))
+            }
+
+        }
         
     }
 }

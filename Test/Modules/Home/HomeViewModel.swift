@@ -32,7 +32,7 @@ final class HomeViewModel {
     var animationRunning = false
     
     private var countdownMinutes = 0
-    private var countdownSeconds = 2
+    private var countdownSeconds = 1
     private var splitSeconds = 59
     
     private var isPaused: Bool = true
@@ -84,9 +84,9 @@ final class HomeViewModel {
         guard session else { return }
         guard let userId = Auth.auth().currentUser?.uid else { return }
         
-        let previous1 = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+        let test = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
         
-        let session = SessionModel(id: UUID().uuidString, duration: TimeInterval(25*60), timestamp: previous1)
+        let session = SessionModel(id: UUID().uuidString, duration: TimeInterval(25*60), timestamp: Date())
             
             
         Task {
@@ -94,10 +94,10 @@ final class HomeViewModel {
                 try await timerService.saveSession(session, userId: userId)
                 try await timerService.updateAggregate(for: session, userId: userId)
             } catch {
-                print("Hata oluştu: \(error)")
+                print("Error: \(error.localizedDescription)")
             }
         }
-                 
+        
     }
         
 }
