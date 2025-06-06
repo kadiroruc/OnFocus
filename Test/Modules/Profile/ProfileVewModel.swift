@@ -5,8 +5,8 @@
 //  Created by Abdulkadir Oruç on 17.05.2025.
 //
 
-import Foundation
 import UIKit
+import FirebaseAuth
 
 // MARK: - ProfileViewModelInterface
 
@@ -23,36 +23,53 @@ protocol ProfileViewModelInterface: AnyObject {
 
 final class ProfileViewModel: ProfileViewModelInterface {
     weak var view: ProfileViewInterface?
+    private var userId: String?
     private let profileService: ProfileServiceProtocol
     private(set) var streakDates: [Date] = []
     
     private var isFetching = false
 
     //MARK: - Init
-    init(profileService: ProfileServiceProtocol) {
+    init(profileService: ProfileServiceProtocol, userId: String?) {
+        if let userId = userId{
+            self.userId = userId
+        }
         self.profileService = profileService
     }
 
     func viewDidLoad() {
         
         guard !isFetching else { return } // if there is fetch operation , dont start
+        if userId == nil{
+            if let uid = Auth.auth().currentUser?.uid{
+                userId = uid
+                view?.setAddFriendButtonHidden(true)
+            }else{
+                view?.showError(Constants.ValidationMessages.notLoggedIn)
+            }
+        }else if userId != Auth.auth().currentUser?.uid {
+            view?.setAddFriendButtonHidden(false)
+        }
+        
         isFetching = true
-        DispatchQueue.global(qos: .background).async {[weak self] in
+        DispatchQueue.global(qos: .userInitiated).async {[weak self] in
             guard let self = self else {return}
             
-            self.profileService.fetchProfile { result in
+            self.profileService.fetchProfile(userId: userId) { result in
                 switch result {
                 case .success(let profile):
                     DispatchQueue.main.async {
                         self.view?.updateNickname(profile.nickname)
-                        if let profileImageUrl = profile.profileImageUrl,
+                        if let profileImageUrl = profile.profileImageURL,
                            let url = URL(string: profileImageUrl) {
                             self.view?.updateProfileImage(with: url )
                         }
+                        if let averageWorkTime = profile.averageWorkTime{
+                            let averageWorkTimeString = String(format: "Average Work Hour: %.2f", (averageWorkTime/60/60))
+                            self.view?.updateAverageWorkTime(averageWorkTimeString)
+                        }
 
-                        //self.view?.updateAverageWorkTime("Average Work Hour: \(profile.averageWorkTime)")
                         //self.view?.updateStreakDay(profile.currentStreakCount)
-                        //self.view?.updateProfileImage(with: profile.image)
                         //self.streakDates = self.calculateStreakDates(from: profile.streakRawDates)
                         //self.view?.updateStreakCalendar()
                     }

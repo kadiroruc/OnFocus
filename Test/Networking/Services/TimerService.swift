@@ -103,7 +103,6 @@ extension TimerService: TimerServiceProtocol{
                 
                 let newTotal = currentTotalWork + Int(session.duration)
                 
-                print(isNewDay)
                 let newDays = isNewDay ? (currentDaysWorked + 1) : currentDaysWorked
                 let newAverageDaily = newDays > 0 ? Double(newTotal) / Double(newDays) : 0
                 

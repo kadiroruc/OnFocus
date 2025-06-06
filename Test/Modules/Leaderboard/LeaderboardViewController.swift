@@ -382,7 +382,7 @@ class LeaderboardViewController: UIViewController {
     }
     
     @objc func searchBarButtonItemTapped(){
-        navigationController?.pushViewController(ProfileSearchViewController(), animated: true)
+        navigationController?.pushViewController(ProfileSearchModuleBuilder.build(), animated: true)
     }
 }
 

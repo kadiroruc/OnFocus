@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
-struct ProfileModel {
+struct ProfileModel: Codable, Identifiable {
+    @DocumentID var id: String?
     let nickname: String
-    let averageWorkTime: String?
-    let currentStreakCount: String?
+    let averageWorkTime: Double?
+    let currentStreakCount: Int?
     //let streakRawDates: [Date]
-    let profileImageUrl: String?
+    let profileImageURL: String?
 }
 

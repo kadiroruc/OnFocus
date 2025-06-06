@@ -16,6 +16,7 @@ protocol ProfileViewInterface: AnyObject {
     func updateNickname(_ nickname: String)
     func updateAverageWorkTime(_ time: String)
     func updateStreakDayLabel(_ count: Int)
+    func setAddFriendButtonHidden(_ hidden: Bool)
 }
 
 class ProfileViewController: UIViewController {
@@ -182,6 +183,10 @@ class ProfileViewController: UIViewController {
 
 // MARK: - ProfileViewInterface
 extension ProfileViewController: ProfileViewInterface {
+    func setAddFriendButtonHidden(_ hidden: Bool) {
+        addFriendBarButtonItem.isHidden = hidden
+    }
+    
     func updateProfileImage(with url: URL) {
         profileImageView.kf.setImage(with: url)
     }
@@ -228,5 +233,5 @@ extension ProfileViewController: FSCalendarDataSource, FSCalendarDelegate, FSCal
 
 
 #Preview(""){
-    return UINavigationController(rootViewController: ProfileModuleBuilder.build())
+    return UINavigationController(rootViewController: ProfileModuleBuilder.build(userId: nil))
 }

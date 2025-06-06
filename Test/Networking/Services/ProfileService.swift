@@ -18,7 +18,12 @@ protocol ProfileServiceProtocol {
     func isNicknameAvailable(_ nickname: String,
                              completion: @escaping (Bool) -> Void)
     
-    func fetchProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void)
+    func fetchProfile(userId: String?, completion: @escaping (Result<ProfileModel, Error>) -> Void)
+    
+    func searchProfiles(matching query: String,
+                        completion: @escaping (Result<[ProfileModel], Error>) -> Void)
+    
+    
 }
 
 final class ProfileService {
@@ -94,21 +99,17 @@ extension ProfileService: ProfileServiceProtocol {
             }
     }
     
-    func fetchProfile(completion: @escaping (Result<ProfileModel, Error>) -> Void) {
-        guard let userId = Auth.auth().currentUser?.uid else {
-            completion(.failure(NSError(domain: "AuthError",
-                                        code: -1,
-                                        userInfo: [NSLocalizedDescriptionKey: "User not logged in."])))
-            return
-        }
-        print("asfa")
+    func fetchProfile(userId: String?, completion: @escaping (Result<ProfileModel, Error>) -> Void) {
+        guard let userId = userId else { return }
+        
         db.collection("users").document(userId).getDocument { document, error in
             
             if let document = document, document.exists {
                 let nickname = document.get("nickname") as? String ?? ""
                 let profileImageUrl = document.get("profileImageURL") as? String
+                let averageWorkTime = document.get("averageDailyWorkTime") as? Double
         
-                let profileModel = ProfileModel(nickname: nickname, averageWorkTime: "", currentStreakCount: "", profileImageUrl: profileImageUrl)
+                let profileModel = ProfileModel(nickname: nickname, averageWorkTime: averageWorkTime, currentStreakCount: 0, profileImageURL: profileImageUrl)
                 
                 completion(.success(profileModel))
                 
@@ -118,6 +119,30 @@ extension ProfileService: ProfileServiceProtocol {
 
         }
         
+    }
+    
+    func searchProfiles(matching query: String, completion: @escaping (Result<[ProfileModel], Error>) -> Void) {
+        db.collection("users")
+            .whereField("nickname", isGreaterThanOrEqualTo: query)
+            .whereField("nickname", isLessThan: query + "\u{f8ff}")
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    completion(.success([]))
+                    return
+                }
+                
+
+                let profiles: [ProfileModel] = documents.compactMap { doc in
+                    try? doc.data(as: ProfileModel.self)
+                }
+                
+                completion(.success(profiles))
+            }
     }
 }
     

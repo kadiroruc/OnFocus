@@ -15,7 +15,7 @@ struct TabBarModuleBuilder {
         let homeNav = UINavigationController(rootViewController: homeVC)
         homeNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.clockArrowCirclepath), tag: 0)
         
-        let profileVC = ProfileModuleBuilder.build()
+        let profileVC = ProfileModuleBuilder.build(userId: nil)
         profileVC.title = "Profile"
         let profileNav = UINavigationController(rootViewController: profileVC)
         profileNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.person), tag: 1)
