@@ -9,12 +9,20 @@
 import UIKit
 import Kingfisher
 
+protocol NotificationsCellDelegate: AnyObject {
+    func didTapAccept(at indexPath: IndexPath)
+    func didTapDecline(at indexPath: IndexPath)
+}
+
 class NotificationsCollectionViewCell: UICollectionViewCell {
+    
+    weak var delegate: NotificationsCellDelegate?
+    private var indexPath: IndexPath?
     
     let imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
-        iv.layer.cornerRadius = 20
+        iv.layer.cornerRadius = 10
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
@@ -22,7 +30,7 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
     
     let label: UILabel = {
         let lbl = UILabel()
-        lbl.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        lbl.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         lbl.textColor = .black
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = UIColor(hex: Constants.Colors.darkGray)
@@ -34,6 +42,7 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         button.setImage(UIImage(systemName: Constants.Icons.xmark), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = UIColor(hex: Constants.Colors.softOrange)
+        button.addTarget(self, action: #selector(declineTapped), for: .touchUpInside)
         return button
     }()
     
@@ -42,6 +51,7 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         button.setImage(UIImage(systemName: Constants.Icons.checkmark), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = UIColor(hex: Constants.Colors.mintGreen)
+        button.addTarget(self, action: #selector(acceptTapped), for: .touchUpInside)
         return button
     }()
     
@@ -64,8 +74,8 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 40),
-            imageView.heightAnchor.constraint(equalToConstant: 40),
+            imageView.widthAnchor.constraint(equalToConstant: 20),
+            imageView.heightAnchor.constraint(equalToConstant: 20),
             
             label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
             label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -81,22 +91,52 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(with model: NotificationModel) {
+    func configure(with model: NotificationModel, at indexPath: IndexPath, delegate: NotificationsCellDelegate) {
+        self.indexPath = indexPath
+        self.delegate = delegate
+        
         // Kullanıcı ismini ayarla
         label.text = "\(model.user.nickname) sent you a friend request"
         
-        // Profil resmini ayarla (varsayılan görsel yedeğiyle)
-        if let urlString = model.user.profileImageURL, let url = URL(string: urlString) {
-            imageView.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
-        } else {
-            imageView.image = UIImage(named: "defaultProfile")
-        }
+        // Ortak placeholder ayarı
+        let inset: CGFloat = 8
+        let rawPlaceholder = UIImage(systemName: Constants.Icons.person)?
+            .withTintColor(UIColor(hex: Constants.Colors.darkGray), renderingMode: .alwaysOriginal)
+        let paddedPlaceholder = rawPlaceholder?.withAlignmentRectInsets(
+            UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+        )
         
-        // İstek "pending" mi, değil mi kontrolü
+        // Profil resmini yükle (varsa)
+        if let urlString = model.user.profileImageURL, let url = URL(string: urlString) {
+            imageView.kf.setImage(
+                with: url,
+                placeholder: paddedPlaceholder,
+                options: [
+                    .transition(.fade(0.2)),
+                    .cacheOriginalImage
+                ]
+            )
+        } else {
+            imageView.image = paddedPlaceholder
+        }
+
+        // Eğer pending istekse butonları göster
         let isPending = model.type == Constants.Firebase.pending
         acceptButton.isHidden = !isPending
         declineButton.isHidden = !isPending
     }
+
+    
+    @objc private func acceptTapped() {
+        guard let indexPath = indexPath else { return }
+        delegate?.didTapAccept(at: indexPath)
+    }
+
+    @objc private func declineTapped() {
+        guard let indexPath = indexPath else { return }
+        delegate?.didTapDecline(at: indexPath)
+    }
+
         
 }
 

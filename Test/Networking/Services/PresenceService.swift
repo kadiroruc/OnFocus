@@ -26,7 +26,7 @@ final class PresenceService: PresenceServiceProtocol {
     // MARK: - Kullanıcının durumunu güncelle (online / offline)
     func setUserStatus(online: Bool) {
         guard let userId = currentUserId else { return }
-        print(userId)
+        
         let status = online ? "online" : "offline"
         db.collection("users").document(userId).setData(["status": status], merge: true) { error in
             if let error = error {

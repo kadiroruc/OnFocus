@@ -16,10 +16,12 @@ protocol FillProfileViewModelInterface {
 final class FillProfileViewModel {
     weak var view: FillProfileViewInterface?
     private let profileService: ProfileServiceProtocol
+    private let presenceService: PresenceServiceProtocol
     private var selectedImage: UIImage?
     
-    init(service: ProfileServiceProtocol) {
+    init(service: ProfileServiceProtocol, presenceService: PresenceServiceProtocol) {
         self.profileService = service
+        self.presenceService = presenceService
     }
 }
 
@@ -36,10 +38,10 @@ extension FillProfileViewModel: FillProfileViewModelInterface{
             view?.showError(message: Constants.ValidationMessages.fillAllFields)
             return
         }
-        guard let selectedImage = selectedImage else {
-            view?.showError(message: Constants.ValidationMessages.selectImage)
-            return
-        }
+//        guard let selectedImage = selectedImage else {
+//            view?.showError(message: Constants.ValidationMessages.selectImage)
+//            return
+//        }
         
         view?.enableStartButton(false)
         view?.showLoading(true)
@@ -53,6 +55,7 @@ extension FillProfileViewModel: FillProfileViewModelInterface{
                         self.view?.showLoading(false)
                         switch result {
                         case .success:
+                            self.presenceService.setUserStatus(online: true)
                             self.view?.navigateToHome()
                         case .failure(let error):
                             self.view?.showError(message: error.localizedDescription)

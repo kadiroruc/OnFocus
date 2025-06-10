@@ -22,6 +22,18 @@ protocol FriendsServiceProtocol {
                                and user2Id: String,
                                completion: @escaping (Result<String?, Error>) -> Void)
     
+    func cancelFriendRequest(from senderId: String,
+                             to receiverId: String,
+                             completion: @escaping (Result<Void, Error>) -> Void)
+    
+    func acceptFriendRequest(from senderId: String,
+                             to receiverId: String,
+                             completion: @escaping (Result<Void, Error>) -> Void)
+    
+    func rejectFriendRequest(from senderId: String,
+                             to receiverId: String,
+                             completion: @escaping (Result<Void, Error>) -> Void)
+    
     
 }
 
@@ -126,6 +138,122 @@ extension FriendsService: FriendsServiceProtocol {
                 completion(.success(requests))
             }
     }
+    
+    func cancelFriendRequest(from user1Id: String, to user2Id: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let db = Firestore.firestore()
+        let friendshipsRef = db.collection("friendships")
+        
+        let statusFilter = Filter.orFilter([
+            Filter.whereField("status", isEqualTo: Constants.Firebase.pending),
+            Filter.whereField("status", isEqualTo: Constants.Firebase.accepted)
+        ])
+        
+        let userFilter = Filter.orFilter([
+            Filter.andFilter([
+                Filter.whereField("user1Id", isEqualTo: user1Id),
+                Filter.whereField("user2Id", isEqualTo: user2Id)
+            ]),
+            Filter.andFilter([
+                Filter.whereField("user1Id", isEqualTo: user2Id),
+                Filter.whereField("user2Id", isEqualTo: user1Id)
+            ])
+        ])
+        
+        let combinedFilter = Filter.andFilter([
+            statusFilter,
+            userFilter
+        ])
+        
+        friendshipsRef
+            .whereFilter(combinedFilter)
+            .getDocuments { snapshot, error in
+                
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let document = snapshot?.documents.first else {
+                    completion(.success(())) // Zaten yoksa da başarılı kabul edilir
+                    return
+                }
+                
+                friendshipsRef.document(document.documentID).delete { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            }
+    }
+
+
+    
+    func acceptFriendRequest(from senderId: String, to receiverId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let db = Firestore.firestore()
+        let friendshipsRef = db.collection("friendships")
+        
+        friendshipsRef
+            .whereField("user1Id", isEqualTo: senderId)
+            .whereField("user2Id", isEqualTo: receiverId)
+            .whereField("status", isEqualTo: Constants.Firebase.pending)
+            .getDocuments { snapshot, error in
+                
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let document = snapshot?.documents.first else {
+                    completion(.success(())) // Zaten kabul edilmiş olabilir
+                    return
+                }
+                
+                friendshipsRef.document(document.documentID).updateData([
+                    "status": Constants.Firebase.accepted,
+                    "updatedAt": FieldValue.serverTimestamp()
+                ]) { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            }
+    }
+    
+    func rejectFriendRequest(from senderId: String, to receiverId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let db = Firestore.firestore()
+        let friendshipsRef = db.collection("friendships")
+        
+        friendshipsRef
+            .whereField("user1Id", isEqualTo: senderId)
+            .whereField("user2Id", isEqualTo: receiverId)
+            .whereField("status", isEqualTo: Constants.Firebase.pending)
+            .getDocuments { snapshot, error in
+                
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let document = snapshot?.documents.first else {
+                    completion(.success(())) // Zaten silinmiş olabilir
+                    return
+                }
+                
+                friendshipsRef.document(document.documentID).delete { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            }
+    }
+
+
 }
 
     

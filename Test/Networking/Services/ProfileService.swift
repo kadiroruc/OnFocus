@@ -187,7 +187,6 @@ extension ProfileService: ProfileServiceProtocol {
                 completion(.success(profiles))
             }
     }
-    
 }
     
 

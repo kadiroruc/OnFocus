@@ -24,6 +24,7 @@ protocol HomeViewModelInterface: AnyObject {
 final class HomeViewModel {
     weak var view: HomeViewInterface?
     private let timerService: TimerServiceProtocol
+    private let friends: [ProfileModel] = []
     
     init(timerService: TimerServiceProtocol) {
         self.timerService = timerService

@@ -19,9 +19,11 @@ protocol LoginViewModelInterface {
 final class LoginViewModel{
     weak var view: LoginViewInterface?
     private let authService: AuthServiceProtocol
+    private let presenceService: PresenceServiceProtocol
     
-    init(authService: AuthServiceProtocol) {
+    init(authService: AuthServiceProtocol, presenceService: PresenceServiceProtocol) {
         self.authService = authService
+        self.presenceService = presenceService
     }
     
     
@@ -49,6 +51,7 @@ extension LoginViewModel: LoginViewModelInterface{
 
                 switch result {
                 case .success:
+                    self.presenceService.setUserStatus(online: true)
                     self.view?.navigateToHome()
                 case .failure(let error):
                     self.view?.enableLoginButton(true)

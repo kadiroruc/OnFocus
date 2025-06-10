@@ -68,6 +68,8 @@ struct Constants {
         static let friendRequestSent = "Friend request sent successfully."
         static let friendRequestError = "Error sending friend request. Please try again."
         static let logoutError = "Error logging out. Please try again."
+        static let friendRequestCancelled = "Friend request cancelled successfully."
+        static let friendRequestCancelledError = "Error cancelling friend request. Please try again."
     }
     
     struct Colors{
@@ -86,5 +88,6 @@ struct Constants {
         static let pending = "pending"
         static let accepted = "accepted"
         static let rejected = "rejected"
+
     }
 }

@@ -34,7 +34,7 @@ final class DIContainer {
 
     // MARK: - ViewModels
     func makeFillProfileViewModel() -> FillProfileViewModel {
-        return FillProfileViewModel(service: profileService)
+        return FillProfileViewModel(service: profileService, presenceService: PresenceService())
     }
     
     func makeHomeViewModel() -> HomeViewModel {
@@ -46,7 +46,7 @@ final class DIContainer {
 //    }
     
     func makeLoginViewModel() -> LoginViewModel {
-        return LoginViewModel(authService: authService)
+        return LoginViewModel(authService: authService, presenceService: presenceService)
     }
     
     func makeNotificationsViewModel() -> NotificationsViewModel {

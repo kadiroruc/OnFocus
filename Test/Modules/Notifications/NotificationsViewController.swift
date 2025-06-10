@@ -82,7 +82,18 @@ extension NotificationsViewController: UICollectionViewDelegate, UICollectionVie
         }
 
         let notification = viewModel.notification(at: indexPath.item)
-        cell.configure(with: notification)
+        cell.configure(with: notification, at: indexPath, delegate: self)
         return cell
+    }
+}
+
+extension NotificationsViewController: NotificationsCellDelegate {
+    
+    func didTapAccept(at indexPath: IndexPath) {
+        viewModel.acceptNotification(at: indexPath.item)
+    }
+
+    func didTapDecline(at indexPath: IndexPath) {
+        viewModel.declineNotification(at: indexPath.item)
     }
 }

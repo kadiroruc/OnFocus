@@ -21,6 +21,7 @@ protocol ProfileViewInterface: AnyObject {
     func navigateToLogin()
     func showLoading(_ show: Bool)
     func configureAddFriendButton(_ status: String?)
+    func navigateToFillProfile()
 }
 
 class ProfileViewController: UIViewController {
@@ -222,13 +223,24 @@ class ProfileViewController: UIViewController {
                 viewModel.addFriendTapped()
                 
             case Constants.Firebase.pending:
-                print("pending")
+                let alert = UIAlertController(title: "Friend Request Pending", message: "Do you want to cancel the request?", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel Request", style: .destructive, handler: { _ in
+                    self.viewModel.cancelFriendRequest()
+                }))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                present(alert, animated: true)
+                
                 
             case Constants.Firebase.accepted:
-                print("accepted")
+                let alert = UIAlertController(title: "Do you want to remove your friend?", message: nil, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel Request", style: .destructive, handler: { _ in
+                    self.viewModel.cancelFriendRequest()
+                }))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                present(alert, animated: true)
                 
             default:
-                return
+                viewModel.addFriendTapped()
             }
         }else{
             viewModel.addFriendTapped()
@@ -240,6 +252,12 @@ class ProfileViewController: UIViewController {
 
 // MARK: - ProfileViewInterface
 extension ProfileViewController: ProfileViewInterface {
+    func navigateToFillProfile() {
+        let fillProfileVC = DIContainer.shared.makeFillProfileViewController()
+        fillProfileVC.modalPresentationStyle = .fullScreen
+        present(fillProfileVC, animated: true, completion: nil)
+    }
+    
     func configureAddFriendButton(_ status: String?) {
         if let status = status{
             friendButtonStatus = status

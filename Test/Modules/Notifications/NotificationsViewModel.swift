@@ -14,6 +14,8 @@ protocol NotificationsViewModelInterface: AnyObject {
     func viewDidLoad()
     func numberOfItems() -> Int
     func notification(at index: Int) -> NotificationModel
+    func acceptNotification(at index: Int)
+    func declineNotification(at index: Int)
 }
 
 final class NotificationsViewModel: NotificationsViewModelInterface {
@@ -84,5 +86,37 @@ final class NotificationsViewModel: NotificationsViewModelInterface {
     
     func notification(at index: Int) -> NotificationModel {
         return notifications[index]
+    }
+    
+    func acceptNotification(at index: Int) {
+        let friendship = friendshipModels[index]
+        friendsService.acceptFriendRequest(from: friendship.user1Id, to: friendship.user2Id) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                print("Friend request accepted successfully")
+                self.friendshipModels.remove(at: index)
+                self.notifications.remove(at: index)
+                self.view?.reloadData()
+            case .failure(let error):
+                print("Friend request acceptance error: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    func declineNotification(at index: Int) {
+        let friendship = friendshipModels[index]
+        friendsService.rejectFriendRequest(from: friendship.user1Id, to: friendship.user2Id) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                print("Friend request accepted successfully")
+                self.friendshipModels.remove(at: index)
+                self.notifications.remove(at: index)
+                self.view?.reloadData()
+            case .failure(let error):
+                print("Friend request acceptance error: \(error.localizedDescription)")
+            }
+        }
     }
 }

@@ -19,6 +19,7 @@ protocol ProfileViewModelInterface: AnyObject {
     func isDateConnectedRight(_ date: Date) -> Bool
     func signOut()
     func addFriendTapped()
+    func cancelFriendRequest()
 }
 
 // MARK: - ProfileViewModel
@@ -63,6 +64,29 @@ final class ProfileViewModel {
 }
 
 extension ProfileViewModel: ProfileViewModelInterface {
+    func cancelFriendRequest() {
+        if let currentUserId = Auth.auth().currentUser?.uid, let userId = userId, currentUserId != userId {
+            view?.showLoading(true)
+            
+            friendsService.cancelFriendRequest(from: currentUserId, to: userId) { [weak self] result in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.view?.showLoading(false)
+                    switch result {
+                    case .success:
+                        self.view?.showMessage(Constants.ValidationMessages.friendRequestCancelled, type: .success)
+                        self.view?.configureAddFriendButton("")
+                    case .failure:
+                        self.view?.showMessage(Constants.ValidationMessages.friendRequestError, type: .error)
+                    }
+                }
+            }
+        } else {
+            view?.showMessage(Constants.ValidationMessages.notLoggedIn, type: .error)
+        }
+
+    }
+    
     
     func viewDidLoad() {
         guard !isFetching else { return }
@@ -93,6 +117,10 @@ extension ProfileViewModel: ProfileViewModelInterface {
             switch result {
             case .success(let profile):
                 DispatchQueue.main.async {
+                    if profile.nickname == ""{
+                        self.view?.navigateToFillProfile()
+                        return
+                    }
                     self.view?.updateNickname(profile.nickname)
                     if let profileImageUrl = profile.profileImageURL,
                        let url = URL(string: profileImageUrl) {
@@ -104,9 +132,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
                     }
                 }
             case .failure(_):
-                DispatchQueue.main.async {
-                    self.view?.showMessage(Constants.ValidationMessages.friendRequestError, type: .error)
-                }
+                print("Profile fetch error")
             }
             group.leave()
         }
@@ -172,9 +198,10 @@ extension ProfileViewModel: ProfileViewModelInterface {
     
     
     func signOut() {
+        presenceService.setUserStatus(online: false)
+        
         do {
             try Auth.auth().signOut()
-            
             view?.navigateToLogin()
         } catch {
             view?.showMessage(Constants.ValidationMessages.logoutError, type: .error)
@@ -192,6 +219,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
                     switch result {
                     case .success:
                         self.view?.showMessage(Constants.ValidationMessages.friendRequestSent, type: .success)
+                        self.view?.configureAddFriendButton(Constants.Firebase.pending)
                     case .failure(_):
                         self.view?.showMessage(Constants.ValidationMessages.friendRequestError, type: .error)
                     }
