@@ -27,7 +27,7 @@ struct TabBarModuleBuilder {
         let statisticsNav = UINavigationController(rootViewController: statisticsVC)
         statisticsNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.chartLineUptrendXyaxis), tag: 2)
         
-        let notificationsVC = NotificationsViewController()
+        let notificationsVC = NotificationsModuleBuilder.build()
         notificationsVC.title = "Notifications"
         let notificationsNav = UINavigationController(rootViewController: notificationsVC)
         notificationsNav.tabBarItem = UITabBarItem(title: "", image: UIImage(systemName: Constants.Icons.bell), tag: 2)

@@ -44,30 +44,27 @@ extension FillProfileViewModel: FillProfileViewModelInterface{
         view?.enableStartButton(false)
         view?.showLoading(true)
         
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+        profileService.isNicknameAvailable(nickname) {[weak self]  isAvailable in
             guard let self = self else { return }
             
-            profileService.isNicknameAvailable(nickname) {  isAvailable in
-                if isAvailable {
-                    
-                    self.profileService.saveProfile(name: name, nickname: nickname, image: selectedImage) { result in
-                        DispatchQueue.main.async {
-                            self.view?.showLoading(false)
-                            switch result {
-                            case .success:
-                                self.view?.navigateToHome()
-                            case .failure(let error):
-                                self.view?.showError(message: error.localizedDescription)
-                                self.view?.enableStartButton(true)
-                            }
+            if isAvailable {
+                self.profileService.saveProfile(name: name, nickname: nickname, image: selectedImage) { result in
+                    DispatchQueue.main.async {
+                        self.view?.showLoading(false)
+                        switch result {
+                        case .success:
+                            self.view?.navigateToHome()
+                        case .failure(let error):
+                            self.view?.showError(message: error.localizedDescription)
+                            self.view?.enableStartButton(true)
                         }
                     }
-                } else {
-                    self.view?.showLoading(false)
-                    self.view?.showError(message: Constants.ValidationMessages.nicknameTaken)
-                    self.view?.setNicknameNotAvailable()
-                    self.view?.enableStartButton(true)
                 }
+            } else {
+                self.view?.showLoading(false)
+                self.view?.showError(message: Constants.ValidationMessages.nicknameTaken)
+                self.view?.setNicknameNotAvailable()
+                self.view?.enableStartButton(true)
             }
         }
 

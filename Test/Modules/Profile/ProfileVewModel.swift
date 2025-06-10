@@ -17,86 +17,30 @@ protocol ProfileViewModelInterface: AnyObject {
     func isDatePartOfStreak(_ date: Date) -> Bool
     func isDateConnectedLeft(_ date: Date) -> Bool
     func isDateConnectedRight(_ date: Date) -> Bool
+    func signOut()
+    func addFriendTapped()
 }
 
 // MARK: - ProfileViewModel
 
-final class ProfileViewModel: ProfileViewModelInterface {
+final class ProfileViewModel {
     weak var view: ProfileViewInterface?
     private var userId: String?
     private let profileService: ProfileServiceProtocol
+    private let friendsService: FriendsServiceProtocol
+    private let presenceService: PresenceServiceProtocol
     private(set) var streakDates: [Date] = []
     
     private var isFetching = false
 
     //MARK: - Init
-    init(profileService: ProfileServiceProtocol, userId: String?) {
+    init(profileService: ProfileServiceProtocol,friendsService: FriendsServiceProtocol, presenceService: PresenceServiceProtocol, userId: String?) {
         if let userId = userId{
             self.userId = userId
         }
         self.profileService = profileService
-    }
-
-    func viewDidLoad() {
-        
-        guard !isFetching else { return } // if there is fetch operation , dont start
-        if userId == nil{
-            if let uid = Auth.auth().currentUser?.uid{
-                userId = uid
-                view?.setAddFriendButtonHidden(true)
-            }else{
-                view?.showError(Constants.ValidationMessages.notLoggedIn)
-            }
-        }else if userId != Auth.auth().currentUser?.uid {
-            view?.setAddFriendButtonHidden(false)
-        }
-        
-        isFetching = true
-        DispatchQueue.global(qos: .userInitiated).async {[weak self] in
-            guard let self = self else {return}
-            
-            self.profileService.fetchProfile(userId: userId) { result in
-                switch result {
-                case .success(let profile):
-                    DispatchQueue.main.async {
-                        self.view?.updateNickname(profile.nickname)
-                        if let profileImageUrl = profile.profileImageURL,
-                           let url = URL(string: profileImageUrl) {
-                            self.view?.updateProfileImage(with: url )
-                        }
-                        if let averageWorkTime = profile.averageWorkTime{
-                            let averageWorkTimeString = String(format: "Average Work Hour: %.2f", (averageWorkTime/60/60))
-                            self.view?.updateAverageWorkTime(averageWorkTimeString)
-                        }
-
-                        //self.view?.updateStreakDay(profile.currentStreakCount)
-                        //self.streakDates = self.calculateStreakDates(from: profile.streakRawDates)
-                        //self.view?.updateStreakCalendar()
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        self.view?.showError(error.localizedDescription)
-                    }
-                }
-            }
-        }
-
-        
-        //MARK: - TEST
-//        DispatchQueue.main.async {
-//
-//            let calendar = Calendar.current
-//            let today = Date()
-//            let exampleDates: [Date] = [
-//                today,
-//                calendar.date(byAdding: .day, value: -1, to: today)!,
-//                calendar.date(byAdding: .day, value: -2, to: today)!,
-//                calendar.date(byAdding: .day, value: -3, to: today)!
-//            ]
-//            self.streakDates = self.calculateStreakDates(from: exampleDates)
-//
-//            self.view?.updateStreakCalendar()
-//        }
+        self.friendsService = friendsService
+        self.presenceService = presenceService
     }
 
     private func calculateStreakDates(from dates: [Date]) -> [Date] {
@@ -116,18 +60,147 @@ final class ProfileViewModel: ProfileViewModelInterface {
         return streak
     }
 
+}
+
+extension ProfileViewModel: ProfileViewModelInterface {
+    
+    func viewDidLoad() {
+        guard !isFetching else { return }
+        
+        if userId == nil {
+            if let uid = Auth.auth().currentUser?.uid {
+                userId = uid
+                view?.setAddFriendButtonHidden(true)
+                view?.setMenuButtonHidden(false)
+            } else {
+                view?.showMessage(Constants.ValidationMessages.friendRequestSent, type: .success)
+                return
+            }
+        } else if userId != Auth.auth().currentUser?.uid {
+            view?.setAddFriendButtonHidden(false)
+            view?.setMenuButtonHidden(true)
+        }
+
+        isFetching = true
+        view?.showLoading(true)
+        
+        let group = DispatchGroup()
+
+        // Profil çekme işlemi
+        group.enter()
+        profileService.fetchProfile(userId: userId) { [weak self] result in
+            guard let self = self else { group.leave(); return }
+            switch result {
+            case .success(let profile):
+                DispatchQueue.main.async {
+                    self.view?.updateNickname(profile.nickname)
+                    if let profileImageUrl = profile.profileImageURL,
+                       let url = URL(string: profileImageUrl) {
+                        self.view?.updateProfileImage(with: url)
+                    }
+                    if let averageWorkTime = profile.averageWorkTime {
+                        let formatted = String(format: "Average Work Hour: %.2f", (averageWorkTime / 60 / 60))
+                        self.view?.updateAverageWorkTime(formatted)
+                    }
+                }
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self.view?.showMessage(Constants.ValidationMessages.friendRequestError, type: .error)
+                }
+            }
+            group.leave()
+        }
+
+        // Arkadaşlık durumu kontrolü (giriş yapan kişi farklıysa)
+        if let currentUserId = Auth.auth().currentUser?.uid,
+           let userId = userId,
+           currentUserId != userId {
+            
+            group.enter()
+            friendsService.checkFriendshipStatus(between: currentUserId, and: userId) { [weak self] result in
+                guard let self = self else { group.leave(); return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let status):
+                        self.view?.configureAddFriendButton(status)
+                    case .failure(let error):
+                        self.view?.showMessage(error.localizedDescription, type: .error)
+                    }
+                }
+                group.leave()
+            }
+        }
+
+        // Tüm işlemler bittiğinde
+        group.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+            self.view?.showLoading(false)
+            self.isFetching = false
+        }
+        
+        
+        //MARK: - TEST
+        //        DispatchQueue.main.async {
+        //
+        //            let calendar = Calendar.current
+        //            let today = Date()
+        //            let exampleDates: [Date] = [
+        //                today,
+        //                calendar.date(byAdding: .day, value: -1, to: today)!,
+        //                calendar.date(byAdding: .day, value: -2, to: today)!,
+        //                calendar.date(byAdding: .day, value: -3, to: today)!
+        //            ]
+        //            self.streakDates = self.calculateStreakDates(from: exampleDates)
+        //
+        //            self.view?.updateStreakCalendar()
+        //        }
+    }
+    
     func isDatePartOfStreak(_ date: Date) -> Bool {
         return streakDates.contains { Calendar.current.isDate($0, inSameDayAs: date) }
     }
-
+    
     func isDateConnectedLeft(_ date: Date) -> Bool {
         guard let previous = Calendar.current.date(byAdding: .day, value: -1, to: date) else { return false }
         return isDatePartOfStreak(previous)
     }
-
+    
     func isDateConnectedRight(_ date: Date) -> Bool {
         guard let next = Calendar.current.date(byAdding: .day, value: 1, to: date) else { return false }
         return isDatePartOfStreak(next)
     }
+    
+    
+    func signOut() {
+        do {
+            try Auth.auth().signOut()
+            
+            view?.navigateToLogin()
+        } catch {
+            view?.showMessage(Constants.ValidationMessages.logoutError, type: .error)
+        }
+    }
+    
+    func addFriendTapped() {
+        if let currentUserId = Auth.auth().currentUser?.uid, let userId = userId, currentUserId != userId {
+            view?.showLoading(true)
+
+            friendsService.sendFriendRequest(from: currentUserId, to: userId) {[weak self] result in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.view?.showLoading(false)
+                    switch result {
+                    case .success:
+                        self.view?.showMessage(Constants.ValidationMessages.friendRequestSent, type: .success)
+                    case .failure(_):
+                        self.view?.showMessage(Constants.ValidationMessages.friendRequestError, type: .error)
+                    }
+                }
+            }
+        } else {
+            view?.showMessage(Constants.ValidationMessages.notLoggedIn, type: .error)
+        }
+    }
 }
+    
 

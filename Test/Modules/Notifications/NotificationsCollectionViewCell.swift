@@ -7,6 +7,7 @@
 
 
 import UIKit
+import Kingfisher
 
 class NotificationsCollectionViewCell: UICollectionViewCell {
     
@@ -54,12 +55,6 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    func setupCell(settingsModel: SettingsModel) {
-//        imageView.image = settingsModel.image
-//        label.text = settingsModel.text
-//        switchButton.isOn = settingsModel.switchOn
-//    }
-    
     private func setupViews() {
         contentView.addSubview(imageView)
         contentView.addSubview(label)
@@ -85,6 +80,24 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
             
         ])
     }
+    
+    func configure(with model: NotificationModel) {
+        // Kullanıcı ismini ayarla
+        label.text = "\(model.user.nickname) sent you a friend request"
+        
+        // Profil resmini ayarla (varsayılan görsel yedeğiyle)
+        if let urlString = model.user.profileImageURL, let url = URL(string: urlString) {
+            imageView.kf.setImage(with: url, placeholder: UIImage(named: "defaultProfile"))
+        } else {
+            imageView.image = UIImage(named: "defaultProfile")
+        }
+        
+        // İstek "pending" mi, değil mi kontrolü
+        let isPending = model.type == Constants.Firebase.pending
+        acceptButton.isHidden = !isPending
+        declineButton.isHidden = !isPending
+    }
+        
 }
 
 

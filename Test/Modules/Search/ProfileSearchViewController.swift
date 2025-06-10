@@ -26,7 +26,22 @@ class ProfileSearchViewController: UIViewController {
         return sb
     }()
     
-    private var collectionView: UICollectionView!
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 16
+        layout.minimumLineSpacing = 16
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 32, right: 16)
+
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = .clear
+        cv.register(ProfileCell.self, forCellWithReuseIdentifier: "ProfileCell")
+        
+        cv.delegate = self
+        cv.dataSource = self
+        return cv
+    }()
     
     private let noResultsLabel: UILabel = {
         let label = UILabel()
@@ -68,6 +83,7 @@ class ProfileSearchViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
         title = "Search Profile"
+        navigationController?.navigationBar.tintColor = UIColor(hex: Constants.Colors.darkGray)
         
         setupSearchBar()
         setupCollectionView()
@@ -85,18 +101,6 @@ class ProfileSearchViewController: UIViewController {
     }
     
     private func setupCollectionView() {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 16
-        layout.minimumLineSpacing = 16
-        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 32, right: 16)
-        
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.backgroundColor = .clear
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(ProfileCell.self, forCellWithReuseIdentifier: "ProfileCell")
         
         view.addSubview(collectionView)
         
@@ -121,8 +125,8 @@ class ProfileSearchViewController: UIViewController {
         NSLayoutConstraint.activate([
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            activityIndicator.widthAnchor.constraint(equalToConstant: 24),
-            activityIndicator.heightAnchor.constraint(equalToConstant: 24)
+            activityIndicator.widthAnchor.constraint(equalToConstant: 40),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
     

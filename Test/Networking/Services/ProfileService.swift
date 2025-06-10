@@ -10,6 +10,9 @@ import FirebaseFirestore
 import FirebaseAuth
 
 protocol ProfileServiceProtocol {
+    
+    var currentUserId: String? { get }
+    
     func saveProfile(name: String,
                      nickname: String,
                      image: UIImage?,
@@ -23,16 +26,20 @@ protocol ProfileServiceProtocol {
     func searchProfiles(matching query: String,
                         completion: @escaping (Result<[ProfileModel], Error>) -> Void)
     
+    func fetchRequestProfileFor(userId: String?,
+                                completion: @escaping (Result<ProfileModel, Error>) -> Void)
+
+    
     
 }
 
 final class ProfileService {
     
     private let db = Firestore.firestore()
-    private let networkManager: NetworkManaging
+    private let networkManager: NetworkManaging?
     
     //MARK: - Init
-    init(networkManager: NetworkManaging) {
+    init(networkManager: NetworkManaging? = nil) {
         self.networkManager = networkManager
     }
     
@@ -51,6 +58,10 @@ final class ProfileService {
 
 extension ProfileService: ProfileServiceProtocol {
     
+    var currentUserId: String? {
+        Auth.auth().currentUser?.uid
+    }
+    
     func saveProfile(name: String, nickname: String, image: UIImage?, completion: @escaping (Result<Void, Error>) -> Void) {
         
         guard let userId = Auth.auth().currentUser?.uid else {
@@ -67,6 +78,7 @@ extension ProfileService: ProfileServiceProtocol {
         
         if let image = image, let imageData = image.jpegData(compressionQuality: 0.8) {
             // Resmi API üzerinden yükle
+            guard let networkManager = networkManager else { return }
             networkManager.upload(ProfileEndpoint.uploadImage(data: imageData), decodeTo: ProfileImageResponse.self) { [weak self] result in
                 switch result {
                 case .success(let response):
@@ -118,7 +130,38 @@ extension ProfileService: ProfileServiceProtocol {
             }
 
         }
+    }
+    
+    func fetchRequestProfileFor(userId: String?, completion: @escaping (Result<ProfileModel, Error>) -> Void) {
+        guard let userId = userId else {
+            completion(.failure(NSError(domain: "InvalidUserId", code: -1, userInfo: [NSLocalizedDescriptionKey: "User ID is nil."])))
+            return
+        }
         
+        db.collection("users").document(userId).getDocument { document, error in
+            
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let document = document, document.exists else {
+                completion(.failure(NSError(domain: "DataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Profile data not found."])))
+                return
+            }
+            
+            let nickname = document.get("nickname") as? String ?? ""
+            let profileImageURL = document.get("profileImageURL") as? String
+            
+            // Diğer alanları boş veya varsayılan bırakarak ProfileModel oluşturuyoruz
+            let profileModel = ProfileModel(id: document.documentID,
+                                            nickname: nickname,
+                                            averageWorkTime: nil,
+                                            currentStreakCount: nil,
+                                            profileImageURL: profileImageURL)
+            
+            completion(.success(profileModel))
+        }
     }
     
     func searchProfiles(matching query: String, completion: @escaping (Result<[ProfileModel], Error>) -> Void) {
@@ -144,6 +187,7 @@ extension ProfileService: ProfileServiceProtocol {
                 completion(.success(profiles))
             }
     }
+    
 }
     
 

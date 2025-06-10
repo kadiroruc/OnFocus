@@ -47,6 +47,9 @@ struct Constants {
         static let magnifyingglassCircleFill = "magnifyingglass.circle.fill"
         static let xmark = "xmark"
         static let checkmark = "checkmark"
+        static let personBadgeClockFill = "person.badge.clock.fill"
+        static let personFillCheckmark = "person.fill.checkmark"
+        
     }
     
     struct CellIdentifiers{
@@ -62,6 +65,9 @@ struct Constants {
         static let nicknameTaken = "Nickname is already taken. Please choose another one."
         static let fillAllFields = "Please fill in all fields."
         static let selectImage = "Please select an image."
+        static let friendRequestSent = "Friend request sent successfully."
+        static let friendRequestError = "Error sending friend request. Please try again."
+        static let logoutError = "Error logging out. Please try again."
     }
     
     struct Colors{
@@ -74,5 +80,11 @@ struct Constants {
         static let lightGray = "#A5A5A5"
         static let babyBlue = "#A9DEF9"
         static let palePeach = "#FBE2C8"
+    }
+    
+    struct Firebase{
+        static let pending = "pending"
+        static let accepted = "accepted"
+        static let rejected = "rejected"
     }
 }

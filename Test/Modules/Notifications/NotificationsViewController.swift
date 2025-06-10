@@ -7,8 +7,25 @@
 
 import UIKit
 
-class NotificationsViewController: UIViewController {
+protocol NotificationsViewInterface: AnyObject {
+    func reloadData()
+    func showMessage(_ text: String, type: MessageType)
+}
+
+final class NotificationsViewController: UIViewController {
     
+    private let viewModel: NotificationsViewModelInterface
+    
+    init(viewModel: NotificationsViewModelInterface) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.view = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -26,13 +43,12 @@ class NotificationsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         setupView()
+        viewModel.viewDidLoad()
     }
     
-    func setupView(){
+    private func setupView(){
         view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
-        
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -42,29 +58,31 @@ class NotificationsViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-
 }
 
-extension NotificationsViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+extension NotificationsViewController: NotificationsViewInterface {
+    func showMessage(_ text: String, type: MessageType) {
+        showAlert(text, type: type)
+    }
+    
+    func reloadData() {
+        collectionView.reloadData()
+    }
+}
+
+extension NotificationsViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return viewModel.numberOfItems()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! NotificationsCollectionViewCell
-        cell.backgroundColor = .white
-        cell.layer.cornerRadius = 20
-        cell.clipsToBounds = true
-        
-        cell.imageView.backgroundColor = UIColor(hex: Constants.Colors.softOrange)
-        cell.label.text = "username"
-        
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? NotificationsCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+
+        let notification = viewModel.notification(at: indexPath.item)
+        cell.configure(with: notification)
         return cell
     }
-}
-
-#Preview("NotificationsViewController"){
-    NotificationsViewController()
 }

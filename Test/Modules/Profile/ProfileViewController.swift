@@ -11,18 +11,23 @@ import Kingfisher
 
 protocol ProfileViewInterface: AnyObject {
     func updateProfileImage(with url: URL)
-    func showError(_ message: String)
+    func showMessage(_ text: String, type: MessageType)
     func updateStreakCalendar()
     func updateNickname(_ nickname: String)
     func updateAverageWorkTime(_ time: String)
     func updateStreakDayLabel(_ count: Int)
     func setAddFriendButtonHidden(_ hidden: Bool)
+    func setMenuButtonHidden(_ hidden: Bool)
+    func navigateToLogin()
+    func showLoading(_ show: Bool)
+    func configureAddFriendButton(_ status: String?)
 }
 
 class ProfileViewController: UIViewController {
     private let viewModel: ProfileViewModelInterface
+    private var friendButtonStatus: String?
     
-    private let addFriendBarButtonItem : UIBarButtonItem = {
+    private let friendBarButtonItem : UIBarButtonItem = {
         let item = UIBarButtonItem()
         item.image = UIImage(systemName: Constants.Icons.personBadgePlus)?.withTintColor(UIColor(hex: Constants.Colors.darkGray, alpha: 1), renderingMode: .alwaysOriginal)
         return item
@@ -94,6 +99,14 @@ class ProfileViewController: UIViewController {
         return calendar
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        indicator.color = .gray
+        return indicator
+    }()
+    
     //MARK: - Initialization
     init(viewModel: ProfileViewModelInterface) {
         self.viewModel = viewModel
@@ -116,18 +129,27 @@ class ProfileViewController: UIViewController {
         super.viewDidLayoutSubviews()
         view.setGradientBackground(colors: [UIColor(hex: Constants.Colors.lightPeach), .white])
     }
+    
     private func setupViews() {
         view.addSubview(profileImageView)
         view.addSubview(nicknameLabel)
         view.addSubview(averageWorkTimeLabel)
         view.addSubview(streakDayLabel)
+        view.addSubview(activityIndicator)
         
         view.addSubview(calendar)
         calendar.register(StreakCalendarCell.self, forCellReuseIdentifier: "cell")
         calendar.delegate = self
         calendar.dataSource = self
         
-        navigationItem.rightBarButtonItems = [menuBarButtonItem, addFriendBarButtonItem]
+        
+        menuBarButtonItem.target = self
+        menuBarButtonItem.action = #selector(menuBarButtonItemTapped)
+        
+        friendBarButtonItem.target = self
+        friendBarButtonItem.action = #selector(friendBarButtonItemTapped)
+        
+        navigationItem.rightBarButtonItems = [menuBarButtonItem, friendBarButtonItem]
     }
     
     private func setupConstraints() {
@@ -160,6 +182,10 @@ class ProfileViewController: UIViewController {
             streakDayLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
             streakDayLabel.heightAnchor.constraint(equalToConstant: 40),
             
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: -20),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 40),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 40)
            
         ])
         
@@ -178,13 +204,82 @@ class ProfileViewController: UIViewController {
             NSLayoutConstraint.activate(streakCalendarConstraints)
         }
     }
+    @objc private func menuBarButtonItemTapped() {
+        let alert = UIAlertController(title: "Menu", message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "Logout", style: .destructive, handler: { _ in
+            self.viewModel.signOut()
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        present(alert, animated: true)
+    }
+    
+    @objc private func friendBarButtonItemTapped() {
+        if let status = friendButtonStatus{
+            switch status{
+            case Constants.Firebase.rejected:
+                viewModel.addFriendTapped()
+                
+            case Constants.Firebase.pending:
+                print("pending")
+                
+            case Constants.Firebase.accepted:
+                print("accepted")
+                
+            default:
+                return
+            }
+        }else{
+            viewModel.addFriendTapped()
+        }
+        
+    }
 
 }
 
 // MARK: - ProfileViewInterface
 extension ProfileViewController: ProfileViewInterface {
+    func configureAddFriendButton(_ status: String?) {
+        if let status = status{
+            friendButtonStatus = status
+            switch status {
+            case Constants.Firebase.pending:
+                friendBarButtonItem.image = UIImage(systemName: Constants.Icons.personBadgeClockFill)?.withTintColor(UIColor(hex: Constants.Colors.darkGray, alpha: 1), renderingMode: .alwaysOriginal)
+                
+            case Constants.Firebase.accepted:
+                friendBarButtonItem.image = UIImage(systemName: Constants.Icons.personFillCheckmark)?.withTintColor(UIColor(hex: Constants.Colors.mintGreen, alpha: 1), renderingMode: .alwaysOriginal)
+            case Constants.Firebase.rejected:
+                friendBarButtonItem.image = UIImage(systemName: Constants.Icons.personBadgePlus)?.withTintColor(UIColor(hex: Constants.Colors.darkGray, alpha: 1), renderingMode: .alwaysOriginal)
+            default:
+                friendBarButtonItem.image = UIImage(systemName: Constants.Icons.personBadgePlus)?.withTintColor(UIColor(hex: Constants.Colors.darkGray, alpha: 1), renderingMode: .alwaysOriginal)
+
+            }
+        }
+    }
+    
+    func showLoading(_ isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+            view.isUserInteractionEnabled = false
+        } else {
+            activityIndicator.stopAnimating()
+            view.isUserInteractionEnabled = true
+        }
+    }
+    
+    func setMenuButtonHidden(_ hidden: Bool) {
+        menuBarButtonItem.isHidden = hidden
+    }
+    
+    func navigateToLogin() {
+        let loginVC = LoginModuleBuilder.build()
+        loginVC.modalPresentationStyle = .fullScreen
+        present(loginVC, animated: true, completion: nil)
+    }
+    
     func setAddFriendButtonHidden(_ hidden: Bool) {
-        addFriendBarButtonItem.isHidden = hidden
+        friendBarButtonItem.isHidden = hidden
     }
     
     func updateProfileImage(with url: URL) {
@@ -192,10 +287,8 @@ extension ProfileViewController: ProfileViewInterface {
     }
 
 
-    func showError(_ message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+    func showMessage(_ text: String, type: MessageType) {
+        showAlert(text, type: type)
     }
 
     func updateStreakCalendar() {
