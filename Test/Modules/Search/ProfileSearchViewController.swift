@@ -169,7 +169,7 @@ extension ProfileSearchViewController: UISearchBarDelegate {
 
 extension ProfileSearchViewController: ProfileSearchViewInterface{
     func navigateToProfileDetail(profile: ProfileModel) {
-        navigationController?.pushViewController(ProfileModuleBuilder.build(userId: profile.id), animated: true)
+        navigationController?.pushViewController(DIContainer.shared.makeProfileViewController(userId: profile.id), animated: true)
     }
     
     func showLoading(_ isLoading: Bool) {
@@ -197,5 +197,5 @@ extension ProfileSearchViewController: ProfileSearchViewInterface{
     
 
 #Preview(""){
-    return UINavigationController(rootViewController: ProfileSearchModuleBuilder.build())
+    return UINavigationController(rootViewController: DIContainer.shared.makeProfileSearchViewController())
 }

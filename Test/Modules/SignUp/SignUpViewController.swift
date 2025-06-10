@@ -297,7 +297,7 @@ extension SignUpViewController: SignUpViewInterface{
     }
     
     func navigateToFillProfile() {
-        let fillProfileVC = FillProfileModuleBuilder.build()
+        let fillProfileVC = DIContainer.shared.makeFillProfileViewController()
         fillProfileVC.modalPresentationStyle = .fullScreen
         present(fillProfileVC, animated: true)
     }

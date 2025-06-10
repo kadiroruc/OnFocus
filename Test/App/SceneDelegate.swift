@@ -11,7 +11,7 @@ import FirebaseAuth
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    let presenceService = PresenceService()
+    let container = DIContainer.shared
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -25,12 +25,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if Auth.auth().currentUser != nil {
             // Kullanıcı giriş yapmışsa ana sayfaya git
-            let tabBar = TabBarModuleBuilder.build()
-            window.rootViewController = tabBar
+            window.rootViewController = MainTabBarBuilder.makeTabBar(using: container)
         } else {
             // Giriş yapmamışsa login ekranına git
-            let loginVC = LoginModuleBuilder.build()
-            window.rootViewController = loginVC
+            let loginVC = container.makeLoginViewController()
+            window.rootViewController = UINavigationController(rootViewController: loginVC)
         }
 
         window.makeKeyAndVisible()
@@ -58,7 +57,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            self?.presenceService.setUserStatus(online: true)
+            guard let self = self else { return }
+            self.container.presenceService.setUserStatus(online: true)
         }
     }
 
@@ -67,7 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
         
-        presenceService.setUserStatus(online: false)
+        self.container.presenceService.setUserStatus(online: false)
     }
 
 

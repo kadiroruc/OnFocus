@@ -213,7 +213,7 @@ extension FillProfileViewController: FillProfileViewInterface {
     
     func navigateToHome() {
         // Ana ekran ViewController'ını göster
-        let tabBar = TabBarModuleBuilder.build()
+        let tabBar = MainTabBarBuilder.makeTabBar(using: DIContainer.shared)
         tabBar.modalPresentationStyle = .fullScreen
         present(tabBar, animated: true)
     }
@@ -269,5 +269,5 @@ extension  FillProfileViewController: UIImagePickerControllerDelegate, UINavigat
 
 
 #Preview(""){
-    return UINavigationController(rootViewController: FillProfileModuleBuilder.build())
+    return UINavigationController(rootViewController: DIContainer.shared.makeFillProfileViewController())
 }

@@ -15,17 +15,15 @@
 		E907417A2D7DE4FF00E7599C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741792D7DE4FF00E7599C /* SettingsViewController.swift */; };
 		E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92681DB2DA9842A00138259 /* ProfileViewController.swift */; };
 		E93503BE2DF8533A009D621D /* PresenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93503BD2DF8533A009D621D /* PresenceService.swift */; };
+		E93503E62DF871AB009D621D /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93503E52DF871AB009D621D /* DIContainer.swift */; };
 		E93F1FEC2DDA947B00966661 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93F1FEB2DDA947B00966661 /* StatisticsViewModel.swift */; };
-		E93F1FEE2DDA983D00966661 /* StatisticsModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93F1FED2DDA983D00966661 /* StatisticsModuleBuilder.swift */; };
 		E94923C72DF238AD0025A7F3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923C62DF238AD0025A7F3 /* ProfileCell.swift */; };
 		E94923C92DF23AB90025A7F3 /* ProfileSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923C82DF23AB90025A7F3 /* ProfileSearchViewModel.swift */; };
-		E94923CB2DF2CAB10025A7F3 /* ProfileSearchModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923CA2DF2CAB10025A7F3 /* ProfileSearchModuleBuilder.swift */; };
 		E94923CD2DF30A060025A7F3 /* FriendshipModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923CC2DF30A060025A7F3 /* FriendshipModel.swift */; };
 		E94923D12DF30F930025A7F3 /* AlertMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923D02DF30F930025A7F3 /* AlertMessageModel.swift */; };
 		E94923D32DF310F70025A7F3 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923D22DF310F70025A7F3 /* UIViewControllerExtension.swift */; };
 		E94923D52DF31D380025A7F3 /* NotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923D42DF31D380025A7F3 /* NotificationsViewModel.swift */; };
 		E94923D72DF31D520025A7F3 /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923D62DF31D520025A7F3 /* NotificationModel.swift */; };
-		E94923D92DF31DB10025A7F3 /* NotificationsModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923D82DF31DB10025A7F3 /* NotificationsModuleBuilder.swift */; };
 		E94923DB2DF31F9C0025A7F3 /* FriendsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923DA2DF31F9C0025A7F3 /* FriendsService.swift */; };
 		E94EC5DE2DE6157E00F28D21 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94EC5DD2DE6157E00F28D21 /* ProfileModel.swift */; };
 		E94EC5E12DE7597E00F28D21 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = E94EC5E02DE7597E00F28D21 /* Kingfisher */; };
@@ -33,16 +31,12 @@
 		E950A8CF2DD27DD400928DEB /* StreakCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */; };
 		E950A8D72DD4E58400928DEB /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8D62DD4E58300928DEB /* SignUpViewModel.swift */; };
 		E950A8DA2DD4EB3000928DEB /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8D92DD4EB3000928DEB /* AuthService.swift */; };
-		E950A8DC2DD4ED5700928DEB /* SignUpModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8DB2DD4ED5700928DEB /* SignUpModuleBuilder.swift */; };
 		E950A8DE2DD50F4300928DEB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E950A8DD2DD50F4300928DEB /* GoogleService-Info.plist */; };
 		E950A8E82DD5ED4D00928DEB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8E72DD5ED4D00928DEB /* FirebaseAuth */; };
 		E950A8EA2DD5ED4D00928DEB /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8E92DD5ED4D00928DEB /* FirebaseCore */; };
 		E950A8EC2DD5ED4D00928DEB /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8EB2DD5ED4D00928DEB /* FirebaseFirestore */; };
-		E950A8EE2DD5EFDE00928DEB /* LoginModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8ED2DD5EFDE00928DEB /* LoginModuleBuilder.swift */; };
-		E950A8F02DD6122800928DEB /* HomeModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8EF2DD6122800928DEB /* HomeModuleBuilder.swift */; };
-		E950A8F32DD6131700928DEB /* TabBarModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8F22DD6131700928DEB /* TabBarModuleBuilder.swift */; };
+		E950A8F32DD6131700928DEB /* MainTabBarBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8F22DD6131700928DEB /* MainTabBarBuilder.swift */; };
 		E950A8F72DD6505300928DEB /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8F62DD6505300928DEB /* ProfileService.swift */; };
-		E950A8F92DD650B700928DEB /* FillProfileModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8F82DD650B700928DEB /* FillProfileModuleBuilder.swift */; };
 		E950A8FB2DD653D800928DEB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8FA2DD653D800928DEB /* FirebaseStorage */; };
 		E950A9002DD72A8A00928DEB /* AFNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8FF2DD72A8A00928DEB /* AFNetworkManager.swift */; };
 		E950A9032DD72F0700928DEB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E950A9022DD72F0700928DEB /* Alamofire */; };
@@ -68,7 +62,6 @@
 		E98B6B6A2D53C80A005012AB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B692D53C80A005012AB /* Base */; };
 		E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */; };
 		E9A6F1862DD7ECA400016F4C /* ProfileVewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */; };
-		E9A6F1882DD882FE00016F4C /* ProfileModuleBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1872DD882FE00016F4C /* ProfileModuleBuilder.swift */; };
 		E9B6997A2DDD05F7006B05E4 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9B699792DDD05F7006B05E4 /* Config.plist */; };
 		E9B6997C2DDD0628006B05E4 /* SampleConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9B6997B2DDD0628006B05E4 /* SampleConfig.plist */; };
 		E9CBD3F92DBA642300DF9A09 /* ProfileSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */; };
@@ -97,29 +90,23 @@
 		E90741792D7DE4FF00E7599C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E92681DB2DA9842A00138259 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E93503BD2DF8533A009D621D /* PresenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenceService.swift; sourceTree = "<group>"; };
+		E93503E52DF871AB009D621D /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
 		E93F1FEB2DDA947B00966661 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
-		E93F1FED2DDA983D00966661 /* StatisticsModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsModuleBuilder.swift; sourceTree = "<group>"; };
 		E94923C62DF238AD0025A7F3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		E94923C82DF23AB90025A7F3 /* ProfileSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSearchViewModel.swift; sourceTree = "<group>"; };
-		E94923CA2DF2CAB10025A7F3 /* ProfileSearchModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSearchModuleBuilder.swift; sourceTree = "<group>"; };
 		E94923CC2DF30A060025A7F3 /* FriendshipModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendshipModel.swift; sourceTree = "<group>"; };
 		E94923D02DF30F930025A7F3 /* AlertMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertMessageModel.swift; sourceTree = "<group>"; };
 		E94923D22DF310F70025A7F3 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		E94923D42DF31D380025A7F3 /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
 		E94923D62DF31D520025A7F3 /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
-		E94923D82DF31DB10025A7F3 /* NotificationsModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsModuleBuilder.swift; sourceTree = "<group>"; };
 		E94923DA2DF31F9C0025A7F3 /* FriendsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsService.swift; sourceTree = "<group>"; };
 		E94EC5DD2DE6157E00F28D21 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalendarCell.swift; sourceTree = "<group>"; };
 		E950A8D62DD4E58300928DEB /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		E950A8D92DD4EB3000928DEB /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		E950A8DB2DD4ED5700928DEB /* SignUpModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpModuleBuilder.swift; sourceTree = "<group>"; };
 		E950A8DD2DD50F4300928DEB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		E950A8ED2DD5EFDE00928DEB /* LoginModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModuleBuilder.swift; sourceTree = "<group>"; };
-		E950A8EF2DD6122800928DEB /* HomeModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeModuleBuilder.swift; sourceTree = "<group>"; };
-		E950A8F22DD6131700928DEB /* TabBarModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarModuleBuilder.swift; sourceTree = "<group>"; };
+		E950A8F22DD6131700928DEB /* MainTabBarBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarBuilder.swift; sourceTree = "<group>"; };
 		E950A8F62DD6505300928DEB /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
-		E950A8F82DD650B700928DEB /* FillProfileModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillProfileModuleBuilder.swift; sourceTree = "<group>"; };
 		E950A8FF2DD72A8A00928DEB /* AFNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AFNetworkManager.swift; sourceTree = "<group>"; };
 		E950A90D2DD73E7300928DEB /* NetworkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkType.swift; sourceTree = "<group>"; };
 		E950A90F2DD73E8E00928DEB /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
@@ -144,7 +131,6 @@
 		E98B6B6B2D53C80A005012AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillProfileViewModel.swift; sourceTree = "<group>"; };
 		E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVewModel.swift; sourceTree = "<group>"; };
-		E9A6F1872DD882FE00016F4C /* ProfileModuleBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModuleBuilder.swift; sourceTree = "<group>"; };
 		E9B699792DDD05F7006B05E4 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		E9B6997B2DDD0628006B05E4 /* SampleConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SampleConfig.plist; sourceTree = "<group>"; };
 		E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSearchViewController.swift; sourceTree = "<group>"; };
@@ -188,7 +174,6 @@
 			children = (
 				E9FF40682D93272400FE25F0 /* FillProfileViewController.swift */,
 				E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */,
-				E950A8F82DD650B700928DEB /* FillProfileModuleBuilder.swift */,
 			);
 			path = FillProfile;
 			sourceTree = "<group>";
@@ -199,9 +184,16 @@
 				E92681DB2DA9842A00138259 /* ProfileViewController.swift */,
 				E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */,
 				E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */,
-				E9A6F1872DD882FE00016F4C /* ProfileModuleBuilder.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		E93503E42DF87194009D621D /* DI */ = {
+			isa = PBXGroup;
+			children = (
+				E93503E52DF871AB009D621D /* DIContainer.swift */,
+			);
+			path = DI;
 			sourceTree = "<group>";
 		};
 		E950A8D82DD4EB1A00928DEB /* Services */ = {
@@ -220,7 +212,7 @@
 		E950A8F12DD612F700928DEB /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
-				E950A8F22DD6131700928DEB /* TabBarModuleBuilder.swift */,
+				E950A8F22DD6131700928DEB /* MainTabBarBuilder.swift */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -358,6 +350,7 @@
 			isa = PBXGroup;
 			children = (
 				E950A9082DD73ADC00928DEB /* App */,
+				E93503E42DF87194009D621D /* DI */,
 				E950A8FD2DD72A5E00928DEB /* Networking */,
 				E950A90B2DD73DB300928DEB /* Utilities */,
 				E950A90A2DD73B1600928DEB /* Modules */,
@@ -374,7 +367,6 @@
 				E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */,
 				E94923C82DF23AB90025A7F3 /* ProfileSearchViewModel.swift */,
 				E94923C62DF238AD0025A7F3 /* ProfileCell.swift */,
-				E94923CA2DF2CAB10025A7F3 /* ProfileSearchModuleBuilder.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -394,7 +386,6 @@
 				E9DE97852DB7D1E100832C8B /* NotificationsViewController.swift */,
 				E94923D42DF31D380025A7F3 /* NotificationsViewModel.swift */,
 				E9DE97872DB7D2E600832C8B /* NotificationsCollectionViewCell.swift */,
-				E94923D82DF31DB10025A7F3 /* NotificationsModuleBuilder.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -404,7 +395,6 @@
 			children = (
 				E9DE978A2DB7DACA00832C8B /* StatisticsViewController.swift */,
 				E93F1FEB2DDA947B00966661 /* StatisticsViewModel.swift */,
-				E93F1FED2DDA983D00966661 /* StatisticsModuleBuilder.swift */,
 				E9DE978C2DB7E33500832C8B /* BalloonMarker.swift */,
 			);
 			path = Statistics;
@@ -415,7 +405,6 @@
 			children = (
 				E98B6B612D53C807005012AB /* HomeViewController.swift */,
 				E9D058232D75F76E0003484C /* HomeViewModel.swift */,
-				E950A8EF2DD6122800928DEB /* HomeModuleBuilder.swift */,
 				E9EA79412D94331D00533B85 /* HomePersonCollectionViewCell.swift */,
 			);
 			path = Home;
@@ -436,7 +425,6 @@
 			isa = PBXGroup;
 			children = (
 				E907416F2D7DA49800E7599C /* LoginViewController.swift */,
-				E950A8ED2DD5EFDE00928DEB /* LoginModuleBuilder.swift */,
 				E90741712D7DA5D400E7599C /* LoginViewModel.swift */,
 			);
 			path = Login;
@@ -447,7 +435,6 @@
 			children = (
 				E90741752D7DB60700E7599C /* SignUpViewController.swift */,
 				E950A8D62DD4E58300928DEB /* SignUpViewModel.swift */,
-				E950A8DB2DD4ED5700928DEB /* SignUpModuleBuilder.swift */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -545,13 +532,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				E90741702D7DA49800E7599C /* LoginViewController.swift in Sources */,
-				E9A6F1882DD882FE00016F4C /* ProfileModuleBuilder.swift in Sources */,
 				E90741782D7DBCA700E7599C /* Constants.swift in Sources */,
 				E95460C82DDA0B0C00BB7365 /* SessionModel.swift in Sources */,
 				E95460D72DDA7B7C00BB7365 /* FetchTimeRangeType.swift in Sources */,
 				E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */,
 				E95460D02DDA1EDC00BB7365 /* UIViewExtension.swift in Sources */,
-				E950A8F02DD6122800928DEB /* HomeModuleBuilder.swift in Sources */,
 				E9A6F1862DD7ECA400016F4C /* ProfileVewModel.swift in Sources */,
 				E95460D42DDA1F0600BB7365 /* DateFormatterExtension.swift in Sources */,
 				E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */,
@@ -564,7 +549,6 @@
 				E9DE97882DB7D2E600832C8B /* NotificationsCollectionViewCell.swift in Sources */,
 				E950A9152DD73F5100928DEB /* NetworkConstants.swift in Sources */,
 				E950A9002DD72A8A00928DEB /* AFNetworkManager.swift in Sources */,
-				E950A8EE2DD5EFDE00928DEB /* LoginModuleBuilder.swift in Sources */,
 				E950A9172DD73F7C00928DEB /* ProfileEndpoint.swift in Sources */,
 				E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */,
 				E90741762D7DB60700E7599C /* SignUpViewController.swift in Sources */,
@@ -573,18 +557,15 @@
 				E94923CD2DF30A060025A7F3 /* FriendshipModel.swift in Sources */,
 				E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */,
 				E950A9102DD73E8E00928DEB /* NetworkError.swift in Sources */,
-				E950A8DC2DD4ED5700928DEB /* SignUpModuleBuilder.swift in Sources */,
 				E950A8D72DD4E58400928DEB /* SignUpViewModel.swift in Sources */,
 				E9DE978B2DB7DACA00832C8B /* StatisticsViewController.swift in Sources */,
+				E93503E62DF871AB009D621D /* DIContainer.swift in Sources */,
 				E950A91B2DD7418B00928DEB /* ProfileImageResponse.swift in Sources */,
 				E950A8F72DD6505300928DEB /* ProfileService.swift in Sources */,
 				E94923C72DF238AD0025A7F3 /* ProfileCell.swift in Sources */,
-				E950A8F92DD650B700928DEB /* FillProfileModuleBuilder.swift in Sources */,
-				E94923D92DF31DB10025A7F3 /* NotificationsModuleBuilder.swift in Sources */,
 				E9FF40692D93272400FE25F0 /* FillProfileViewController.swift in Sources */,
 				E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */,
 				E950A90E2DD73E7300928DEB /* NetworkType.swift in Sources */,
-				E93F1FEE2DDA983D00966661 /* StatisticsModuleBuilder.swift in Sources */,
 				E95460CC2DDA0B4F00BB7365 /* StatisticsModel.swift in Sources */,
 				E94923C92DF23AB90025A7F3 /* ProfileSearchViewModel.swift in Sources */,
 				E94923DB2DF31F9C0025A7F3 /* FriendsService.swift in Sources */,
@@ -594,7 +575,6 @@
 				E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */,
 				E94923D32DF310F70025A7F3 /* UIViewControllerExtension.swift in Sources */,
 				E93F1FEC2DDA947B00966661 /* StatisticsViewModel.swift in Sources */,
-				E94923CB2DF2CAB10025A7F3 /* ProfileSearchModuleBuilder.swift in Sources */,
 				E9CBD3F92DBA642300DF9A09 /* ProfileSearchViewController.swift in Sources */,
 				E907417A2D7DE4FF00E7599C /* SettingsViewController.swift in Sources */,
 				E9E2CF6C2D7F2C48007ABC93 /* SettingsModel.swift in Sources */,
@@ -606,7 +586,7 @@
 				E94923D72DF31D520025A7F3 /* NotificationModel.swift in Sources */,
 				E95460C62DDA09BE00BB7365 /* TimerService.swift in Sources */,
 				E950A8DA2DD4EB3000928DEB /* AuthService.swift in Sources */,
-				E950A8F32DD6131700928DEB /* TabBarModuleBuilder.swift in Sources */,
+				E950A8F32DD6131700928DEB /* MainTabBarBuilder.swift in Sources */,
 				E94923D52DF31D380025A7F3 /* NotificationsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

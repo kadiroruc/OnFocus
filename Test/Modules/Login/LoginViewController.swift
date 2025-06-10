@@ -299,14 +299,14 @@ extension LoginViewController: LoginViewInterface{
     }
     
     func navigateToHome() {
-        let tabBar = TabBarModuleBuilder.build()
+        let tabBar = MainTabBarBuilder.makeTabBar(using: DIContainer.shared)
         tabBar.modalPresentationStyle = .fullScreen
         present(tabBar, animated: true)
     }
     
     func navigateToSignUp() {
         // Navigate to sign up screen
-        let signUpVC = SignUpModuleBuilder.build()
+        let signUpVC = DIContainer.shared.makeSignUpViewController()
         signUpVC.modalPresentationStyle = .fullScreen
         present(signUpVC, animated: true)
     }

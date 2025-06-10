@@ -273,7 +273,7 @@ extension ProfileViewController: ProfileViewInterface {
     }
     
     func navigateToLogin() {
-        let loginVC = LoginModuleBuilder.build()
+        let loginVC = DIContainer.shared.makeLoginViewController()
         loginVC.modalPresentationStyle = .fullScreen
         present(loginVC, animated: true, completion: nil)
     }
@@ -326,5 +326,5 @@ extension ProfileViewController: FSCalendarDataSource, FSCalendarDelegate, FSCal
 
 
 #Preview(""){
-    return UINavigationController(rootViewController: ProfileModuleBuilder.build(userId: nil))
+    return UINavigationController(rootViewController: DIContainer.shared.makeProfileViewController())
 }
