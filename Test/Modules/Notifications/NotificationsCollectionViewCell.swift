@@ -21,8 +21,8 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
     
     let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.layer.cornerRadius = 10
+        iv.contentMode = .scaleAspectFill
+        iv.layer.cornerRadius = 20
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
@@ -34,6 +34,7 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         lbl.textColor = .black
         lbl.translatesAutoresizingMaskIntoConstraints = false
         lbl.textColor = UIColor(hex: Constants.Colors.darkGray)
+        lbl.numberOfLines = 0
         return lbl
     }()
     
@@ -74,8 +75,8 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 20),
-            imageView.heightAnchor.constraint(equalToConstant: 20),
+            imageView.widthAnchor.constraint(equalToConstant: 40),
+            imageView.heightAnchor.constraint(equalToConstant: 40),
             
             label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
             label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -98,26 +99,22 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         // Kullanıcı ismini ayarla
         label.text = "\(model.user.nickname) sent you a friend request"
         
-        // Ortak placeholder ayarı
-        let inset: CGFloat = 8
-        let rawPlaceholder = UIImage(systemName: Constants.Icons.person)?
+        // Ortak placeholder
+        let placeholder = UIImage(systemName: Constants.Icons.personCircle)?
             .withTintColor(UIColor(hex: Constants.Colors.darkGray), renderingMode: .alwaysOriginal)
-        let paddedPlaceholder = rawPlaceholder?.withAlignmentRectInsets(
-            UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-        )
-        
-        // Profil resmini yükle (varsa)
+
+        // Profil resmi varsa yükle
         if let urlString = model.user.profileImageURL, let url = URL(string: urlString) {
             imageView.kf.setImage(
                 with: url,
-                placeholder: paddedPlaceholder,
+                placeholder: placeholder,
                 options: [
                     .transition(.fade(0.2)),
-                    .cacheOriginalImage
+                    .cacheOriginalImage,
                 ]
             )
         } else {
-            imageView.image = paddedPlaceholder
+            imageView.image = placeholder
         }
 
         // Eğer pending istekse butonları göster

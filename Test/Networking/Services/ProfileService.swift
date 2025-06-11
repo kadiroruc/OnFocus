@@ -28,6 +28,9 @@ protocol ProfileServiceProtocol {
     
     func fetchRequestProfileFor(userId: String?,
                                 completion: @escaping (Result<ProfileModel, Error>) -> Void)
+    
+    func updateProfileImage(_ image: UIImage,
+                            completion: @escaping (Result<Void, Error>) -> Void)
 
     
     
@@ -120,8 +123,9 @@ extension ProfileService: ProfileServiceProtocol {
                 let nickname = document.get("nickname") as? String ?? ""
                 let profileImageUrl = document.get("profileImageURL") as? String
                 let averageWorkTime = document.get("averageDailyWorkTime") as? Double
+                let totalWorkTime = document.get("totalWorkTime") as? Double
         
-                let profileModel = ProfileModel(nickname: nickname, averageWorkTime: averageWorkTime, currentStreakCount: 0, profileImageURL: profileImageUrl)
+                let profileModel = ProfileModel(nickname: nickname, totalWorkTime: totalWorkTime, currentStreakCount: 0, profileImageURL: profileImageUrl, status: nil)
                 
                 completion(.success(profileModel))
                 
@@ -152,13 +156,15 @@ extension ProfileService: ProfileServiceProtocol {
             
             let nickname = document.get("nickname") as? String ?? ""
             let profileImageURL = document.get("profileImageURL") as? String
+            let status = document.get("status") as? String
             
             // Diğer alanları boş veya varsayılan bırakarak ProfileModel oluşturuyoruz
             let profileModel = ProfileModel(id: document.documentID,
                                             nickname: nickname,
-                                            averageWorkTime: nil,
+                                            totalWorkTime: nil,
                                             currentStreakCount: nil,
-                                            profileImageURL: profileImageURL)
+                                            profileImageURL: profileImageURL,
+                                            status: status)
             
             completion(.success(profileModel))
         }
@@ -186,6 +192,47 @@ extension ProfileService: ProfileServiceProtocol {
                 
                 completion(.success(profiles))
             }
+    }
+    
+    func updateProfileImage(_ image: UIImage, completion: @escaping (Result<Void, Error>) -> Void) {
+        
+        guard let userId = currentUserId else {
+            completion(.failure(NSError(domain: "AuthError",
+                                        code: -1,
+                                        userInfo: [NSLocalizedDescriptionKey: Constants.ValidationMessages.notLoggedIn])))
+            return
+        }
+        
+        print("asd")
+
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            completion(.failure(NSError(domain: "ImageError",
+                                        code: -2,
+                                        userInfo: [NSLocalizedDescriptionKey: "Invalid image data."])))
+            return
+        }
+        print("sdf")
+
+        guard let networkManager = networkManager else {
+            completion(.failure(NSError(domain: "NetworkError",
+                                        code: -3,
+                                        userInfo: [NSLocalizedDescriptionKey: "Network manager not available."])))
+            return
+        }
+        
+        
+
+        // Resmi yükle
+        networkManager.upload(ProfileEndpoint.uploadImage(data: imageData), decodeTo: ProfileImageResponse.self) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let response):
+                // API’den dönen URL'yi Firestore’a kaydet
+                self.saveToFirestore(userId: userId, data: ["profileImageURL" : response.data.url], completion: completion)
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
     

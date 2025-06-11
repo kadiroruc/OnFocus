@@ -11,6 +11,8 @@ import FirebaseAuth
 protocol HomeViewModelInterface: AnyObject {
     var view: HomeViewInterface? { get set }
     var animationRunning: Bool { get set}
+    var friends: [ProfileModel] { get }
+    
     func toggleCountdown()
     func viewDidLoad()
     func startCountdown()
@@ -19,15 +21,20 @@ protocol HomeViewModelInterface: AnyObject {
     func updateCountdown()
     func cancelButtonTapped()
     func cancelConfirmButtonTapped()
+    func numberOfFriends() -> Int
+    func didSelectFriend(at index: Int)
+        
 }
 
 final class HomeViewModel {
     weak var view: HomeViewInterface?
     private let timerService: TimerServiceProtocol
-    private let friends: [ProfileModel] = []
+    private let friendsService: FriendsServiceProtocol
+    private(set) var friends: [ProfileModel] = []
     
-    init(timerService: TimerServiceProtocol) {
+    init(timerService: TimerServiceProtocol, friendsService: FriendsServiceProtocol) {
         self.timerService = timerService
+        self.friendsService = friendsService
     }
     
     var animationRunning = false
@@ -100,13 +107,60 @@ final class HomeViewModel {
         }
         
     }
+    
+    private func fetchFriends(){
+        if let currentUserId = Auth.auth().currentUser?.uid {
+            friendsService.fetchFriends(for: currentUserId) { [weak self] result in
+                guard let self = self else { return }
+
+                switch result {
+                case .success(let friends):
+                    self.friends = friends
+                    
+                    let onlineCount = friends.filter { ($0.status != nil) == true }.count
+                    let totalCount = friends.count
+
+                    self.view?.updateWorkingLabel(online: onlineCount, friends: totalCount)
+                    self.view?.reloadData()
+                case .failure(let error):
+                    print("Error fetching friends: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    private func fetchOnlinePeopleCount() {
+        friendsService.fetchOnlineUserCount { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let count):
+                self.view?.updateOnlinePeopleCount(count)
+            case .failure(let error):
+                print("Error fetching online people count: \(error.localizedDescription)")
+            }
+        }
+    }
         
 }
 
 extension HomeViewModel: HomeViewModelInterface{
+    func didSelectFriend(at index: Int) {
+        view?.navigateToProfileDetail(userId: friends[index].id)
+    }
+    
+    func numberOfFriends() -> Int {
+        return friends.count
+    }
+    
     func viewDidLoad() {
         view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
         
+        fetchFriends()
+        fetchOnlinePeopleCount()
+        
+
+
         
     }
     

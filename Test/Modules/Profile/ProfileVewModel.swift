@@ -20,6 +20,8 @@ protocol ProfileViewModelInterface: AnyObject {
     func signOut()
     func addFriendTapped()
     func cancelFriendRequest()
+    func setSelectedImage(_ image: UIImage)
+        
 }
 
 // MARK: - ProfileViewModel
@@ -64,6 +66,23 @@ final class ProfileViewModel {
 }
 
 extension ProfileViewModel: ProfileViewModelInterface {
+    func setSelectedImage(_ image: UIImage) {
+        profileService.updateProfileImage(image) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success():
+                DispatchQueue.main.async {
+                    self.view?.showMessage(Constants.ValidationMessages.profileImageUpdated, type: .success)
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.view?.showMessage(Constants.ValidationMessages.profileImageUpdateError, type: .error)
+                }
+            }
+        }
+    }
+    
     func cancelFriendRequest() {
         if let currentUserId = Auth.auth().currentUser?.uid, let userId = userId, currentUserId != userId {
             view?.showLoading(true)
@@ -126,9 +145,9 @@ extension ProfileViewModel: ProfileViewModelInterface {
                        let url = URL(string: profileImageUrl) {
                         self.view?.updateProfileImage(with: url)
                     }
-                    if let averageWorkTime = profile.averageWorkTime {
-                        let formatted = String(format: "Average Work Hour: %.2f", (averageWorkTime / 60 / 60))
-                        self.view?.updateAverageWorkTime(formatted)
+                    if let averageWorkTime = profile.totalWorkTime {
+                        let formatted = String(format: "Total Work Hour: %.2f", (averageWorkTime / 60 / 60))
+                        self.view?.updateTotalWorkTime(formatted)
                     }
                 }
             case .failure(_):

@@ -86,39 +86,26 @@ extension TimerService: TimerServiceProtocol{
             }
         }
         
-        //2. Update general average work time of user (total work time / total days)
+        //Update total work time for user
         let userRef = db.collection("users").document(userId)
-        let dailyStatRef = db.collection("users").document(userId)
-            .collection("statistics").document(dayId)
-        
+
         try await db.runTransaction { transaction, errorPointer in
             do {
                 let userSnapshot = try transaction.getDocument(userRef)
                 let userData = userSnapshot.data() ?? [:]
                 
                 let currentTotalWork = userData["totalWorkTime"] as? Int ?? 0
-                let currentDaysWorked = userData["totalDaysWorked"] as? Int ?? 0
-                
-                let dailySnapshot = try transaction.getDocument(dailyStatRef)
-                
                 let newTotal = currentTotalWork + Int(session.duration)
                 
-                let newDays = isNewDay ? (currentDaysWorked + 1) : currentDaysWorked
-                let newAverageDaily = newDays > 0 ? Double(newTotal) / Double(newDays) : 0
-                
-                let updatedData: [String: Any] = [
-                    "totalWorkTime": newTotal,
-                    "totalDaysWorked": newDays,
-                    "averageDailyWorkTime": newAverageDaily
-                ]
-                
-                transaction.setData(updatedData, forDocument: userRef, merge: true)
+                transaction.updateData(["totalWorkTime": newTotal], forDocument: userRef)
                 
             } catch let error {
                 errorPointer?.pointee = error as NSError
             }
             return nil
         }
+        
+
     }
     
     func fetchStatistics(for rangeType: FetchTimeRangeType,

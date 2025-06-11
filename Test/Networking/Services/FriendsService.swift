@@ -34,6 +34,11 @@ protocol FriendsServiceProtocol {
                              to receiverId: String,
                              completion: @escaping (Result<Void, Error>) -> Void)
     
+    func fetchFriends(for userId: String,
+                      completion: @escaping (Result<[ProfileModel], Error>) -> Void)
+    
+    func fetchOnlineUserCount(completion: @escaping (Result<Int, Error>) -> Void)
+    
     
 }
 
@@ -251,6 +256,98 @@ extension FriendsService: FriendsServiceProtocol {
                     }
                 }
             }
+    }
+    
+    func fetchFriends(for userId: String, completion: @escaping (Result<[ProfileModel], Error>) -> Void) {
+        let db = Firestore.firestore()
+        let friendshipsRef = db.collection("friendships")
+        
+        friendshipsRef
+            .whereField("status", isEqualTo: Constants.Firebase.accepted)
+            .whereFilter(Filter.orFilter([
+                Filter.whereField("user1Id", isEqualTo: userId),
+                Filter.whereField("user2Id", isEqualTo: userId)
+            ]))
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else {
+                    completion(.success([]))
+                    return
+                }
+
+                // Tüm arkadaş ID'lerini topla
+                let friendIds: [String] = documents.compactMap { doc in
+                    let data = doc.data()
+                    let user1 = data["user1Id"] as? String
+                    let user2 = data["user2Id"] as? String
+                    return user1 == userId ? user2 : user1
+                }
+
+                // Eğer hiç arkadaş yoksa hemen dön
+                guard !friendIds.isEmpty else {
+                    completion(.success([]))
+                    return
+                }
+                
+                print(friendIds)
+
+                // ID'leri 10'luk gruplara böl (Firestore 'in' sorgusu limiti)
+                let chunks = friendIds.chunked(into: 10)
+                var allProfiles: [ProfileModel] = []
+                let group = DispatchGroup()
+                var fetchError: Error?
+
+                for chunk in chunks {
+                    group.enter()
+                    db.collection("users")
+                        .whereField(FieldPath.documentID(), in: chunk)
+                        .getDocuments { snapshot, error in
+                            if let error = error {
+                                fetchError = error
+                            } else {
+                                let models = snapshot?.documents.compactMap { doc -> ProfileModel? in
+                                    let data = doc.data()
+                                    let profileImageURL = data["profileImageURL"] as? String
+                                    let status = data["status"] as? String
+
+                                    return ProfileModel(id: doc.documentID,
+                                                        nickname: "",
+                                                        totalWorkTime: nil,
+                                                        currentStreakCount: nil,
+                                                        profileImageURL: profileImageURL, status: status)
+                                } ?? []
+                                allProfiles.append(contentsOf: models)
+                            }
+                            group.leave()
+                        }
+                }
+
+                group.notify(queue: .main) {
+                    if let error = fetchError {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(allProfiles))
+                    }
+                }
+            }
+    }
+    
+    func fetchOnlineUserCount(completion: @escaping (Result<Int, Error>) -> Void) {
+        let query = db.collection("users").whereField("status", isEqualTo: "online")
+        
+        query.count.getAggregation(source: .server) { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+            } else if let snapshot = snapshot {
+                completion(.success(Int(snapshot.count)))
+            } else {
+                completion(.success(0))
+            }
+        }
     }
 
 

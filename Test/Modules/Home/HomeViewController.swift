@@ -22,6 +22,10 @@ protocol HomeViewInterface: AnyObject {
     func updateSessionsLabel(text: String)
     func showMessage(_ message: String)
     func showConfirm(_ message: String)
+    func reloadData()
+    func navigateToProfileDetail(userId: String?)
+    func updateWorkingLabel(online: Int, friends: Int)
+    func updateOnlinePeopleCount(_ count: Int)
 }
 
 final class HomeViewController: UIViewController {
@@ -132,10 +136,7 @@ final class HomeViewController: UIViewController {
         setupLayout()
         setupCircleContainerTapGesture()
 
-        
-        onlineLabel.text = "130767 Online"
         sessionsLabel.text = "1 of 4 Session"
-        workingLabel.text = "10/58 Working"
     }
     
     override func viewDidLayoutSubviews() {
@@ -334,6 +335,22 @@ final class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: HomeViewInterface {
+    func updateOnlinePeopleCount(_ count: Int) {
+        onlineLabel.text = "\(count) Online"
+    }
+    
+    func updateWorkingLabel(online: Int, friends: Int) {
+        workingLabel.text = "\(online)/\(friends) Working"
+    }
+    
+    func navigateToProfileDetail(userId: String?) {
+        navigationController?.pushViewController(DIContainer.shared.makeProfileViewController(userId: userId), animated: true)
+    }
+    
+    func reloadData() {
+        listCollectionView.reloadData()
+    }
+    
     func showMessage(_ message: String) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -461,16 +478,17 @@ extension HomeViewController: HomeViewInterface {
 
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return viewModel.numberOfPeople()
-        return 30
+        return viewModel.numberOfFriends()
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.CellIdentifiers.personCell, for: indexPath) as! HomePersonCollectionViewCell
-        
-//        cell.profileImageView.image = viewModel.profileImage(at: indexPath.row)
-        cell.profileImageView.image = UIImage(systemName: Constants.Icons.person)?.withTintColor(UIColor(hex: Constants.Colors.darkGray), renderingMode: .alwaysOriginal)
+        cell.configure(with: viewModel.friends[indexPath.item].profileImageURL ?? "", status: viewModel.friends[indexPath.item].status )
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.didSelectFriend(at: indexPath.item)
     }
 }
 

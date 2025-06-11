@@ -42,4 +42,31 @@ class HomePersonCollectionViewCell: UICollectionViewCell {
             profileImageView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.8),
         ])
     }
+    
+    // MARK: - Configure Method
+    func configure(with imageUrl: String, status: String?) {
+        if let url = URL(string: imageUrl) {
+            profileImageView.kf.setImage(
+                with: url,
+                placeholder: UIImage(systemName: Constants.Icons.personCircle)?.withTintColor(UIColor(hex: Constants.Colors.darkGray), renderingMode: .alwaysOriginal), // isteğe bağlı placeholder
+                options: [
+                    .transition(.fade(0.3)),
+                    .cacheOriginalImage
+                ])
+        } else {
+            profileImageView.image = UIImage(systemName: Constants.Icons.personCircle)?.withTintColor(UIColor(hex: Constants.Colors.darkGray), renderingMode: .alwaysOriginal)
+        }
+        
+        
+        
+        if let status = status {
+            if status == "online" {
+                layer.borderColor = UIColor(hex: Constants.Colors.mintGreen).cgColor
+            } else if status == "offline" {
+                layer.borderColor = UIColor(hex: Constants.Colors.darkGray).cgColor
+            } else {
+                layer.borderColor = UIColor.clear.cgColor
+            }
+        }
+    }
 }

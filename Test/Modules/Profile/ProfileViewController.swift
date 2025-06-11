@@ -14,7 +14,7 @@ protocol ProfileViewInterface: AnyObject {
     func showMessage(_ text: String, type: MessageType)
     func updateStreakCalendar()
     func updateNickname(_ nickname: String)
-    func updateAverageWorkTime(_ time: String)
+    func updateTotalWorkTime(_ time: String)
     func updateStreakDayLabel(_ count: Int)
     func setAddFriendButtonHidden(_ hidden: Bool)
     func setMenuButtonHidden(_ hidden: Bool)
@@ -60,7 +60,7 @@ class ProfileViewController: UIViewController {
         return label
     }()
     
-    private let averageWorkTimeLabel: UILabel = {
+    private let totalWorkTimeLabel: UILabel = {
         let label = UILabel()
         label.text = "Average Work Hour: "
         label.textColor = .white
@@ -134,7 +134,7 @@ class ProfileViewController: UIViewController {
     private func setupViews() {
         view.addSubview(profileImageView)
         view.addSubview(nicknameLabel)
-        view.addSubview(averageWorkTimeLabel)
+        view.addSubview(totalWorkTimeLabel)
         view.addSubview(streakDayLabel)
         view.addSubview(activityIndicator)
         
@@ -173,12 +173,12 @@ class ProfileViewController: UIViewController {
             nicknameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 10),
             nicknameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            averageWorkTimeLabel.topAnchor.constraint(equalTo: nicknameLabel.bottomAnchor, constant: 30),
-            averageWorkTimeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            averageWorkTimeLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
-            averageWorkTimeLabel.heightAnchor.constraint(equalToConstant: 40),
+            totalWorkTimeLabel.topAnchor.constraint(equalTo: nicknameLabel.bottomAnchor, constant: 30),
+            totalWorkTimeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            totalWorkTimeLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
+            totalWorkTimeLabel.heightAnchor.constraint(equalToConstant: 40),
             
-            streakDayLabel.topAnchor.constraint(equalTo: averageWorkTimeLabel.bottomAnchor, constant: 10),
+            streakDayLabel.topAnchor.constraint(equalTo: totalWorkTimeLabel.bottomAnchor, constant: 10),
             streakDayLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             streakDayLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6),
             streakDayLabel.heightAnchor.constraint(equalToConstant: 40),
@@ -207,10 +207,15 @@ class ProfileViewController: UIViewController {
     }
     @objc private func menuBarButtonItemTapped() {
         let alert = UIAlertController(title: "Menu", message: nil, preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Change Profile Photo", style: .default, handler: { _ in
+            self.showPicker()
+        }))
 
         alert.addAction(UIAlertAction(title: "Logout", style: .destructive, handler: { _ in
             self.viewModel.signOut()
         }))
+
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
         present(alert, animated: true)
@@ -246,6 +251,14 @@ class ProfileViewController: UIViewController {
             viewModel.addFriendTapped()
         }
         
+    }
+    
+    private func showPicker() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
     }
 
 }
@@ -317,8 +330,8 @@ extension ProfileViewController: ProfileViewInterface {
         nicknameLabel.text = nickname
     }
 
-    func updateAverageWorkTime(_ time: String) {
-        averageWorkTimeLabel.text = time
+    func updateTotalWorkTime(_ time: String) {
+        totalWorkTimeLabel.text = time
     }
 
     func updateStreakDayLabel(_ count: Int) {
@@ -339,6 +352,24 @@ extension ProfileViewController: FSCalendarDataSource, FSCalendarDelegate, FSCal
 
 
         return cell
+    }
+}
+
+extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true, completion: nil)
+        
+        if let editedImage = info[.editedImage] as? UIImage {
+            profileImageView.image = editedImage
+            viewModel.setSelectedImage(editedImage)
+        } else if let originalImage = info[.originalImage] as? UIImage {
+            profileImageView.image = originalImage
+            viewModel.setSelectedImage(originalImage)
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
     }
 }
 

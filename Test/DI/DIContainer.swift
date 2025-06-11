@@ -17,7 +17,7 @@ final class DIContainer {
     }()
 
     lazy var profileService: ProfileServiceProtocol = {
-        return ProfileService()
+        return ProfileService(networkManager: AFNetworkManager())
     }()
     
     lazy var friendsService: FriendsServiceProtocol = {
@@ -38,7 +38,7 @@ final class DIContainer {
     }
     
     func makeHomeViewModel() -> HomeViewModel {
-        return HomeViewModel(timerService: timerService)
+        return HomeViewModel(timerService: timerService, friendsService: friendsService)
     }
     
 //    func makeLeaderboardViewModel() -> LeaderboardViewModel {

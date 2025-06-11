@@ -70,6 +70,8 @@ struct Constants {
         static let logoutError = "Error logging out. Please try again."
         static let friendRequestCancelled = "Friend request cancelled successfully."
         static let friendRequestCancelledError = "Error cancelling friend request. Please try again."
+        static let profileImageUpdated = "Profile image updated successfully."
+        static let profileImageUpdateError = "Error updating profile image. Please try again."
     }
     
     struct Colors{

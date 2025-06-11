@@ -110,12 +110,12 @@ final class NotificationsViewModel: NotificationsViewModelInterface {
             guard let self = self else { return }
             switch result {
             case .success:
-                print("Friend request accepted successfully")
+                print("Friend request rejected successfully")
                 self.friendshipModels.remove(at: index)
                 self.notifications.remove(at: index)
                 self.view?.reloadData()
             case .failure(let error):
-                print("Friend request acceptance error: \(error.localizedDescription)")
+                print("Friend request reject error: \(error.localizedDescription)")
             }
         }
     }

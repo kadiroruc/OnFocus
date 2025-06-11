@@ -16,6 +16,7 @@
 		E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92681DB2DA9842A00138259 /* ProfileViewController.swift */; };
 		E93503BE2DF8533A009D621D /* PresenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93503BD2DF8533A009D621D /* PresenceService.swift */; };
 		E93503E62DF871AB009D621D /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93503E52DF871AB009D621D /* DIContainer.swift */; };
+		E93503E82DF8D274009D621D /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93503E72DF8D274009D621D /* ArrayExtension.swift */; };
 		E93F1FEC2DDA947B00966661 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93F1FEB2DDA947B00966661 /* StatisticsViewModel.swift */; };
 		E94923C72DF238AD0025A7F3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923C62DF238AD0025A7F3 /* ProfileCell.swift */; };
 		E94923C92DF23AB90025A7F3 /* ProfileSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923C82DF23AB90025A7F3 /* ProfileSearchViewModel.swift */; };
@@ -91,6 +92,7 @@
 		E92681DB2DA9842A00138259 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E93503BD2DF8533A009D621D /* PresenceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenceService.swift; sourceTree = "<group>"; };
 		E93503E52DF871AB009D621D /* DIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainer.swift; sourceTree = "<group>"; };
+		E93503E72DF8D274009D621D /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		E93F1FEB2DDA947B00966661 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		E94923C62DF238AD0025A7F3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		E94923C82DF23AB90025A7F3 /* ProfileSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSearchViewModel.swift; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 				E95460D12DDA1EF100BB7365 /* UIColorExtension.swift */,
 				E95460D32DDA1F0600BB7365 /* DateFormatterExtension.swift */,
 				E94923D22DF310F70025A7F3 /* UIViewControllerExtension.swift */,
+				E93503E72DF8D274009D621D /* ArrayExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -556,6 +559,7 @@
 				E95460CE2DDA1E2800BB7365 /* TimerService+Helpers.swift in Sources */,
 				E94923CD2DF30A060025A7F3 /* FriendshipModel.swift in Sources */,
 				E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */,
+				E93503E82DF8D274009D621D /* ArrayExtension.swift in Sources */,
 				E950A9102DD73E8E00928DEB /* NetworkError.swift in Sources */,
 				E950A8D72DD4E58400928DEB /* SignUpViewModel.swift in Sources */,
 				E9DE978B2DB7DACA00832C8B /* StatisticsViewController.swift in Sources */,

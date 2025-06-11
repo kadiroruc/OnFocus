@@ -32,6 +32,7 @@ struct MainTabBarBuilder {
 
         let homeVC = container.makeHomeViewController()
         let homeNav = UINavigationController(rootViewController: homeVC)
+        homeNav.navigationBar.tintColor = UIColor(hex: Constants.Colors.darkGray)
         homeNav.tabBarItem = UITabBarItem(
             title: nil,
             image: UIImage(systemName: Constants.Icons.clockArrowCirclepath),
