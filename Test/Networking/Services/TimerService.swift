@@ -9,12 +9,23 @@ import FirebaseFirestore
 import FirebaseAuth
 
 protocol TimerServiceProtocol {
-    func saveSession(_ session: SessionModel, userId: String) async throws
-    func updateAggregate(for session: SessionModel, userId: String) async throws
-    func fetchStatistics(for rangeType: FetchTimeRangeType, from date: Date, completion: @escaping (Result<[StatisticModel], Error>) -> Void)
+    func saveSession(_ session: SessionModel,
+                     userId: String) async throws
+    
+    func updateAggregate(for session: SessionModel,
+                         userId: String) async throws
+    
+    func fetchStatistics(for rangeType: FetchTimeRangeType,
+                         from date: Date,
+                         completion: @escaping (Result<[StatisticModel], Error>) -> Void)
+    
     func fetchAverageDuration(for rangeType: FetchTimeRangeType,
                             from date: Date,
                             completion: @escaping (Result<Double, Error>) -> Void)
+    
+    func fetchWeeklyStatistics(for userId: String,
+                               from date: Date,
+                               completion: @escaping (Result<Int, Error>) -> Void)
 }
 
 final class TimerService {
@@ -218,6 +229,24 @@ extension TimerService: TimerServiceProtocol{
             completion(.success(average))
         }
             
+    }
+    
+    func fetchWeeklyStatistics(for userId: String, from date: Date, completion: @escaping (Result<Int, Error>) -> Void) {
+        let period = "weekly_" + weekKey(for: date)
+        let ref = db.collection("users")
+            .document(userId)
+            .collection("statistics")
+            .document(period)
+        
+        ref.getDocument { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            let totalDuration = snapshot?.data()?["totalDuration"] as? Int ?? 0
+            completion(.success(totalDuration))
+        }
     }
 
 

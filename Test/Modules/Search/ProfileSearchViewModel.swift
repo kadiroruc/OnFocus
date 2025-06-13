@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol ProfileSearchViewModelInterface: AnyObject {
+protocol ProfileSearchViewModelInterface {
     var view: ProfileSearchViewInterface? { get set }
     
     var filteredProfiles: [ProfileModel] { get }

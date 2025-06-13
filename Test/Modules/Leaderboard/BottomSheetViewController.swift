@@ -7,10 +7,15 @@
 
 import UIKit
 
-class BottomSheetViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+protocol BottomSheetViewControllerInterface: AnyObject {
+    func updateWithProfiles(_ profiles: [ProfileModel])
+}
+
+class BottomSheetViewController: UIViewController {
 
     private var panGestureRecognizer: UIPanGestureRecognizer!
     private var collectionView: UICollectionView!
+    private var profiles: [ProfileModel] = []
 
 //    private var bottomConstraint: NSLayoutConstraint!
     
@@ -66,7 +71,7 @@ class BottomSheetViewController: UIViewController, UICollectionViewDataSource, U
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        collectionView.register(LeaderboardBottomSheetCollectionViewCell.self, forCellWithReuseIdentifier: LeaderboardBottomSheetCollectionViewCell.reuseIdentifier)
         
         view.addSubview(collectionView)
         NSLayoutConstraint.activate([
@@ -106,23 +111,40 @@ class BottomSheetViewController: UIViewController, UICollectionViewDataSource, U
         }
     }
 
-    // MARK: - UICollectionView
+}
 
+extension BottomSheetViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return 7
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        cell.backgroundColor = .white
-        cell.layer.cornerRadius = 20
-        cell.clipsToBounds = true
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LeaderboardBottomSheetCollectionViewCell.reuseIdentifier, for: indexPath) as? LeaderboardBottomSheetCollectionViewCell else {
+            return UICollectionViewCell()
+        }
         
+        // Rank 4’den başlıyoruz (ilk 3 üstte olduğu için)
+        let rank = indexPath.item + 4
+        let profile = profiles[indexPath.item]
+        cell.configure(rank: rank, profile: profile)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 80)
+    }
+
+}
+
+
+extension BottomSheetViewController: BottomSheetViewControllerInterface {
+    func updateWithProfiles(_ profiles: [ProfileModel]) {
+        self.profiles = profiles
+        collectionView.reloadData()
     }
 }
 
-#Preview("LeaderboardViewController"){
-    LeaderboardViewController()
-}
+//#Preview("LeaderboardViewController"){
+//    LeaderboardViewController()
+//}
 

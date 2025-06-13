@@ -293,7 +293,6 @@ extension FriendsService: FriendsServiceProtocol {
                     return
                 }
                 
-                print(friendIds)
 
                 // ID'leri 10'luk gruplara böl (Firestore 'in' sorgusu limiti)
                 let chunks = friendIds.chunked(into: 10)
@@ -313,9 +312,10 @@ extension FriendsService: FriendsServiceProtocol {
                                     let data = doc.data()
                                     let profileImageURL = data["profileImageURL"] as? String
                                     let status = data["status"] as? String
+                                    let nickname = data["nickname"] as? String ?? ""
 
                                     return ProfileModel(id: doc.documentID,
-                                                        nickname: "",
+                                                        nickname: nickname,
                                                         totalWorkTime: nil,
                                                         currentStreakCount: nil,
                                                         profileImageURL: profileImageURL, status: status)

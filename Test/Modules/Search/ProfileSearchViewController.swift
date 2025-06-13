@@ -15,7 +15,7 @@ protocol ProfileSearchViewInterface: AnyObject {
 
 class ProfileSearchViewController: UIViewController {
     
-    private let viewModel: ProfileSearchViewModelInterface
+    private var viewModel: ProfileSearchViewModelInterface
     
     private let searchBar: UISearchBar = {
         let sb = UISearchBar()
@@ -53,7 +53,7 @@ class ProfileSearchViewController: UIViewController {
     }()
     
     private let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .medium)
+        let indicator = UIActivityIndicatorView(style: .large)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.hidesWhenStopped = true
         indicator.color = .gray

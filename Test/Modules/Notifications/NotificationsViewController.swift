@@ -14,7 +14,7 @@ protocol NotificationsViewInterface: AnyObject {
 
 final class NotificationsViewController: UIViewController {
     
-    private let viewModel: NotificationsViewModelInterface
+    private var viewModel: NotificationsViewModelInterface
     
     init(viewModel: NotificationsViewModelInterface) {
         self.viewModel = viewModel

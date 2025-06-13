@@ -11,8 +11,7 @@ struct MainTabBarBuilder {
     static func makeTabBar(using container: DIContainer) -> UITabBarController {
         let tabBarController = UITabBarController()
 
-        //let leaderboardVC = container.makeLeaderboardViewController()
-        let leaderboardVC = LeaderboardViewController()
+        let leaderboardVC = container.makeLeaderboardViewController()
         leaderboardVC.title = "Leaderboard"
         let leaderboardNav = UINavigationController(rootViewController: leaderboardVC)
         leaderboardNav.tabBarItem = UITabBarItem(

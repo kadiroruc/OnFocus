@@ -26,10 +26,11 @@ protocol HomeViewInterface: AnyObject {
     func navigateToProfileDetail(userId: String?)
     func updateWorkingLabel(online: Int, friends: Int)
     func updateOnlinePeopleCount(_ count: Int)
+    func showLoading(_ isLoading: Bool)
 }
 
 final class HomeViewController: UIViewController {
-    private let viewModel: HomeViewModelInterface
+    private var viewModel: HomeViewModelInterface
 
     private let timeLabel: UILabel = {
         let label = UILabel()
@@ -109,11 +110,18 @@ final class HomeViewController: UIViewController {
         return label
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.color = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
+        return activityIndicator
+    }()
+    
     //MARK: - Initialization
     init(viewModel: HomeViewModelInterface) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        viewModel.view = self
+        self.viewModel.view = self
     }
     
     required init?(coder: NSCoder) {
@@ -170,6 +178,7 @@ final class HomeViewController: UIViewController {
         view.sendSubviewToBack(circleContainer)
         view.addSubview(workingLabel)
         view.addSubview(onlineLabel)
+        view.addSubview(activityIndicator)
 
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
@@ -216,7 +225,12 @@ final class HomeViewController: UIViewController {
             listCollectionView.topAnchor.constraint(equalTo: workingLabel.bottomAnchor, constant: 10),
             listCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             listCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
-            listCollectionView.heightAnchor.constraint(equalToConstant: 270)
+            listCollectionView.heightAnchor.constraint(equalToConstant: 270),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 24),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
 
@@ -335,6 +349,16 @@ final class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: HomeViewInterface {
+    func showLoading(_ isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+            view.isUserInteractionEnabled = false
+        } else {
+            activityIndicator.stopAnimating()
+            view.isUserInteractionEnabled = true
+        }
+    }
+    
     func updateOnlinePeopleCount(_ count: Int) {
         onlineLabel.text = "\(count) Online"
     }

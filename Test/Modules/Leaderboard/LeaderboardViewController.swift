@@ -7,11 +7,20 @@
 
 import UIKit
 
-protocol LeaderboardViewInterface{
+protocol LeaderboardViewInterface: AnyObject{
+    func showTopThreeProfiles(_ topProfiles: [ProfileModel])
+    func showOtherProfiles(_ otherProfiles: [ProfileModel])
+    func showError(message: String)
+    func showLoading(_ isLoading: Bool)
+    func updateStateRankLabel(_ rank: String)
+    func updateStateLabel(_ state: String)
     
 }
 
 class LeaderboardViewController: UIViewController {
+    private var viewModel: LeaderboardViewModelInterface
+    
+    private let sheetVC = BottomSheetViewController()
     
     private let dailyButton: UIButton = {
         let button = UIButton(type: .system)
@@ -91,7 +100,8 @@ class LeaderboardViewController: UIViewController {
         iv.layer.cornerRadius = 35
         iv.backgroundColor = .black
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.backgroundColor = UIColor(hex: Constants.Colors.lightOrange, alpha: 1)
+        iv.backgroundColor = .clear
+        iv.clipsToBounds = true
         return iv
     }()
     
@@ -129,7 +139,8 @@ class LeaderboardViewController: UIViewController {
         iv.layer.cornerRadius = 35
         iv.backgroundColor = .black
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.backgroundColor = UIColor(hex: Constants.Colors.lightOrange, alpha: 1)
+        iv.backgroundColor = .clear
+        iv.clipsToBounds = true
         return iv
     }()
     
@@ -160,7 +171,8 @@ class LeaderboardViewController: UIViewController {
         iv.layer.cornerRadius = 35
         iv.backgroundColor = .black
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.backgroundColor = UIColor(hex: Constants.Colors.lightOrange, alpha: 1)
+        iv.backgroundColor = .clear
+        iv.clipsToBounds = true
         return iv
     }()
     
@@ -193,6 +205,25 @@ class LeaderboardViewController: UIViewController {
         return iv
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        indicator.hidesWhenStopped = true
+        indicator.color = .gray
+        return indicator
+    }()
+    
+    //MARK: - Init
+    init(viewModel: LeaderboardViewModelInterface) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.view = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     
     
@@ -200,9 +231,9 @@ class LeaderboardViewController: UIViewController {
         super.viewDidLoad()
         
         setupView()
-        showSheet()
+        setupBottomSheet()
         
-        stateRankLabel.text = "#1"
+        stateRankLabel.text = "#2"
         stateLabel.text = "You are doing better than 60% of your friends!"
         firstProfileLabel.text = "Abdulkadir Oruç"
         firstProfileTimeLabel.text = "07H 15M"
@@ -210,6 +241,8 @@ class LeaderboardViewController: UIViewController {
         secondProfileTimeLabel.text = "0H 02M"
         thirdProfileLabel.text = "Abdulkadir Oruç"
         thirdProfileTimeLabel.text = "07H 15M"
+        
+        viewModel.viewDidLoad()
     }
     
     override func viewDidLayoutSubviews() {
@@ -243,6 +276,7 @@ class LeaderboardViewController: UIViewController {
         view.addSubview(thirdProfileLabel)
         view.addSubview(thirdProfileTimeLabel)
         view.addSubview(podiumIconImageView)
+        view.addSubview(activityIndicator)
         
         NSLayoutConstraint.activate([
             dailyButton.heightAnchor.constraint(equalToConstant: 42),
@@ -324,7 +358,12 @@ class LeaderboardViewController: UIViewController {
             podiumIconImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             podiumIconImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 20),
             podiumIconImageView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            podiumIconImageView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.3)
+            podiumIconImageView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.3),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: -20),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 40),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 40)
             
             
             
@@ -364,9 +403,7 @@ class LeaderboardViewController: UIViewController {
         weeklyButton.setTitleColor(.white, for: .normal)
     }
     
-    @objc private func showSheet() {
-        let sheetVC = BottomSheetViewController()
-        
+    @objc private func setupBottomSheet() {
         // Add as child
         addChild(sheetVC)
         view.addSubview(sheetVC.view)
@@ -386,8 +423,70 @@ class LeaderboardViewController: UIViewController {
     }
 }
 
+extension LeaderboardViewController: LeaderboardViewInterface {
+    func updateStateLabel(_ state: String) {
+        stateLabel.text = "You are doing better than \(state)% of your friends!"
+    }
+    
+    func updateStateRankLabel(_ rank: String) {
+        stateRankLabel.text = "#\(rank)"
+    }
+    
+    func showLoading(_ isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+            view.isUserInteractionEnabled = false
+        } else {
+            activityIndicator.stopAnimating()
+            view.isUserInteractionEnabled = true
+        }
+    }
+    
+    func showTopThreeProfiles(_ topProfiles: [ProfileModel]) {
+        if topProfiles.indices.contains(0) {
+            firstProfileLabel.text = topProfiles[0].nickname
+            firstProfileTimeLabel.text = topProfiles[0].totalWorkTimeFormatted
+            if let imageUrl = topProfiles[0].profileImageURL {
+                firstProfileImageView.kf.setImage(with: URL(string: imageUrl))
+            } else {
+                firstProfileImageView.image = UIImage(systemName: Constants.Icons.personCircle)?.withTintColor(UIColor(hex: Constants.Colors.darkGray), renderingMode: .alwaysOriginal)
+            }
+        }
 
-#Preview("LeaderboardViewController"){
-    LeaderboardViewController()
+        if topProfiles.indices.contains(1) {
+            secondProfileLabel.text = topProfiles[1].nickname
+            secondProfileTimeLabel.text = topProfiles[1].totalWorkTimeFormatted
+            if let imageUrl = topProfiles[1].profileImageURL {
+                secondProfileImageView.kf.setImage(with: URL(string: imageUrl))
+            } else {
+                secondProfileImageView.image = UIImage(systemName: Constants.Icons.personCircle)?.withTintColor(UIColor(hex: Constants.Colors.darkGray), renderingMode: .alwaysOriginal)
+            }
+        }
+
+        if topProfiles.indices.contains(2) {
+            thirdProfileLabel.text = topProfiles[2].nickname
+            thirdProfileTimeLabel.text = topProfiles[2].totalWorkTimeFormatted
+            if let imageUrl = topProfiles[2].profileImageURL {
+                thirdProfileImageView.kf.setImage(with: URL(string: imageUrl))
+            } else {
+                thirdProfileImageView.image = UIImage(systemName: Constants.Icons.personCircle)?.withTintColor(UIColor(hex: Constants.Colors.darkGray), renderingMode: .alwaysOriginal)
+            }
+        }
+    }
+    
+    func showOtherProfiles(_ otherProfiles: [ProfileModel]) {
+        sheetVC.updateWithProfiles(otherProfiles)
+    }
+    
+    func showError(message: String) {
+        showAlert(message, type: .error)
+    }
+    
+    
 }
+
+
+//#Preview("LeaderboardViewController"){
+//    LeaderboardViewController()
+//}
 

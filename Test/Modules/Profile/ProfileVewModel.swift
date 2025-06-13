@@ -10,7 +10,7 @@ import FirebaseAuth
 
 // MARK: - ProfileViewModelInterface
 
-protocol ProfileViewModelInterface: AnyObject {
+protocol ProfileViewModelInterface {
     var view: ProfileViewInterface? { get set }
     
     func viewDidLoad()

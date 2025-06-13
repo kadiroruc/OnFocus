@@ -8,7 +8,7 @@
 import UIKit
 import FirebaseAuth
 
-protocol HomeViewModelInterface: AnyObject {
+protocol HomeViewModelInterface {
     var view: HomeViewInterface? { get set }
     var animationRunning: Bool { get set}
     var friends: [ProfileModel] { get }
@@ -110,11 +110,13 @@ final class HomeViewModel {
     
     private func fetchFriends(){
         if let currentUserId = Auth.auth().currentUser?.uid {
+            view?.showLoading(true)
             friendsService.fetchFriends(for: currentUserId) { [weak self] result in
                 guard let self = self else { return }
 
                 switch result {
                 case .success(let friends):
+                    self.view?.showLoading(false)
                     self.friends = friends
                     
                     let onlineCount = friends.filter { ($0.status != nil) == true }.count
@@ -123,6 +125,7 @@ final class HomeViewModel {
                     self.view?.updateWorkingLabel(online: onlineCount, friends: totalCount)
                     self.view?.reloadData()
                 case .failure(let error):
+                    self.view?.showLoading(false)
                     print("Error fetching friends: \(error.localizedDescription)")
                 }
             }

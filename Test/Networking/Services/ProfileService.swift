@@ -117,22 +117,25 @@ extension ProfileService: ProfileServiceProtocol {
     func fetchProfile(userId: String?, completion: @escaping (Result<ProfileModel, Error>) -> Void) {
         guard let userId = userId else { return }
         
-        db.collection("users").document(userId).getDocument { document, error in
-            
-            if let document = document, document.exists {
-                let nickname = document.get("nickname") as? String ?? ""
-                let profileImageUrl = document.get("profileImageURL") as? String
-                let averageWorkTime = document.get("averageDailyWorkTime") as? Double
-                let totalWorkTime = document.get("totalWorkTime") as? Double
+        let ref = db.collection("users").document(userId)
         
-                let profileModel = ProfileModel(nickname: nickname, totalWorkTime: totalWorkTime, currentStreakCount: 0, profileImageURL: profileImageUrl, status: nil)
-                
-                completion(.success(profileModel))
-                
-            } else {
-                completion(.failure(NSError(domain: "DataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Profile data could not be fetched."])))
+        ref.getDocument { document, error in
+            if let error = error {
+                completion(.failure(error))
+                return
             }
-
+            
+            guard let document = document else {
+                completion(.failure(NSError(domain: "Firestore", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document not found."])))
+                return
+            }
+            
+            do {
+                let profile = try document.data(as: ProfileModel.self)
+                completion(.success(profile))
+            } catch {
+                completion(.failure(error))
+            }
         }
     }
     

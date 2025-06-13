@@ -19,13 +19,13 @@ protocol ProfileViewInterface: AnyObject {
     func setAddFriendButtonHidden(_ hidden: Bool)
     func setMenuButtonHidden(_ hidden: Bool)
     func navigateToLogin()
-    func showLoading(_ show: Bool)
+    func showLoading(_ isLoading: Bool)
     func configureAddFriendButton(_ status: String?)
     func navigateToFillProfile()
 }
 
 class ProfileViewController: UIViewController {
-    private let viewModel: ProfileViewModelInterface
+    private var viewModel: ProfileViewModelInterface
     private var friendButtonStatus: String?
     
     private let friendBarButtonItem : UIBarButtonItem = {
@@ -101,7 +101,7 @@ class ProfileViewController: UIViewController {
     }()
     
     private let activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .medium)
+        let indicator = UIActivityIndicatorView(style: .large)
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.hidesWhenStopped = true
         indicator.color = .gray

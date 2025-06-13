@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NotificationsViewModelInterface: AnyObject {
+protocol NotificationsViewModelInterface {
     var notifications: [NotificationModel] { get }
     var view: NotificationsViewInterface? { get set }
     
