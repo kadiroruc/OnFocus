@@ -27,10 +27,13 @@ protocol HomeViewInterface: AnyObject {
     func updateWorkingLabel(online: Int, friends: Int)
     func updateOnlinePeopleCount(_ count: Int)
     func showLoading(_ isLoading: Bool)
+    func setCircularAnimation(hidden: Bool)
+    func configurePlayAndStopButton(isPomodoroMode: Bool)
 }
 
 final class HomeViewController: UIViewController {
     private var viewModel: HomeViewModelInterface
+    private var isPomodoroMode: Bool = true
 
     private let timeLabel: UILabel = {
         let label = UILabel()
@@ -55,12 +58,22 @@ final class HomeViewController: UIViewController {
 
     private let playButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: Constants.Icons.play), for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)
         let image = UIImage(systemName: Constants.Icons.play, withConfiguration: config)
         button.setImage(image, for: .normal)
         button.tintColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
+        return button
+    }()
+    
+    private let stopButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let config = UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)
+        let image = UIImage(systemName: Constants.Icons.stop, withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.tintColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
+        button.isHidden = true
         return button
     }()
 
@@ -139,12 +152,13 @@ final class HomeViewController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.viewDidLoad()
         setupUI()
         setupLayout()
         setupCircleContainerTapGesture()
 
         sessionsLabel.text = "1 of 4 Session"
+        
+        viewModel.viewDidLoad()
     }
     
     override func viewDidLayoutSubviews() {
@@ -172,6 +186,7 @@ final class HomeViewController: UIViewController {
         view.addSubview(timeLabel)
         view.addSubview(listCollectionView)
         circleContainer.addSubview(playButton)
+        circleContainer.addSubview(stopButton)
         view.addSubview(cancelButton)
         view.addSubview(sessionsLabel)
         view.addSubview(circleContainer)
@@ -182,6 +197,7 @@ final class HomeViewController: UIViewController {
 
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        stopButton.addTarget(self, action: #selector(stopButtonTapped), for: .touchUpInside)
 
     }
 
@@ -206,7 +222,7 @@ final class HomeViewController: UIViewController {
             circleContainer.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
             circleContainer.widthAnchor.constraint(equalToConstant: 260),
             circleContainer.heightAnchor.constraint(equalTo: circleContainer.widthAnchor),
-
+            
             playButton.centerXAnchor.constraint(equalTo: circleContainer.centerXAnchor),
             playButton.centerYAnchor.constraint(equalTo: circleContainer.centerYAnchor,constant: 75),
             playButton.widthAnchor.constraint(equalToConstant: 52),
@@ -273,8 +289,13 @@ final class HomeViewController: UIViewController {
     }
     
     @objc private func gearButtonTapped() {
-        //viewModel.gearButtonTapped()
-        navigationController?.pushViewController(SettingsViewController(), animated: true)
+        let settingsVC = DIContainer.shared.makeSettingsViewController()
+        settingsVC.delegate = self
+        navigationController?.pushViewController(settingsVC, animated: true)
+    }
+    
+    @objc private func stopButtonTapped(){
+        viewModel.stopButtonTapped()
     }
     
     private func setupCircleContainerTapGesture() {
@@ -300,6 +321,9 @@ final class HomeViewController: UIViewController {
 
                 let playButtonConstraints = playButton.allAttachedConstraints()
                 NSLayoutConstraint.deactivate(playButtonConstraints)
+                
+                let stopButtonConstraints = stopButton.allAttachedConstraints()
+                NSLayoutConstraint.deactivate(stopButtonConstraints)
 
                 let cancelButtonConstraints = cancelButton.allAttachedConstraints()
                 NSLayoutConstraint.deactivate(cancelButtonConstraints)
@@ -318,6 +342,9 @@ final class HomeViewController: UIViewController {
                 
                 
                 setupLayout()
+                if !isPomodoroMode{
+                    configurePlayAndStopButton(isPomodoroMode: isPomodoroMode)
+                }
                 
             }else{
                 NSLayoutConstraint.activate([
@@ -349,6 +376,57 @@ final class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: HomeViewInterface {
+    
+    func configurePlayAndStopButton(isPomodoroMode: Bool) {
+        self.isPomodoroMode = isPomodoroMode
+        let playButtonCons = playButton.allAttachedConstraints()
+        NSLayoutConstraint.deactivate(playButtonCons)
+        
+        let stopButtonCons = stopButton.allAttachedConstraints()
+        NSLayoutConstraint.deactivate(stopButtonCons)
+        
+        if isPomodoroMode{
+            
+            stopButton.isHidden = true
+            NSLayoutConstraint.activate([
+                playButton.centerXAnchor.constraint(equalTo: circleContainer.centerXAnchor),
+                playButton.centerYAnchor.constraint(equalTo: circleContainer.centerYAnchor,constant: 75),
+                playButton.widthAnchor.constraint(equalToConstant: 52),
+                playButton.heightAnchor.constraint(equalToConstant: 52),
+
+            ])
+        }else{
+
+            stopButton.isHidden = false
+            
+            NSLayoutConstraint.activate([
+                playButton.centerXAnchor.constraint(equalTo: circleContainer.centerXAnchor,constant: -30),
+                playButton.centerYAnchor.constraint(equalTo: circleContainer.centerYAnchor,constant: 75),
+                playButton.widthAnchor.constraint(equalToConstant: 52),
+                playButton.heightAnchor.constraint(equalToConstant: 52),
+                
+                stopButton.centerXAnchor.constraint(equalTo: circleContainer.centerXAnchor, constant: 30),
+                stopButton.topAnchor.constraint(equalTo: playButton.topAnchor),
+                stopButton.widthAnchor.constraint(equalToConstant: 52),
+                stopButton.heightAnchor.constraint(equalToConstant: 52),
+            ])
+            
+
+        }
+    }
+    
+    func setCircularAnimation(hidden: Bool){
+        circleLayer.isHidden = hidden
+        movingCircle.isHidden = hidden
+        sessionsLabel.isHidden = hidden
+        
+        if hidden{
+            timeLabel.textColor = UIColor(hex: Constants.Colors.softOrange)
+        }else{
+            timeLabel.textColor = UIColor(hex: Constants.Colors.darkGray)
+        }
+    }
+    
     func showLoading(_ isLoading: Bool) {
         if isLoading {
             activityIndicator.startAnimating()
@@ -513,6 +591,12 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.didSelectFriend(at: indexPath.item)
+    }
+}
+
+extension HomeViewController: SettingsCoordinatorDelegate{
+    func didChangeTimerMode(timeKeeperMode: Bool) {
+        viewModel.didChangeTimerMode(timeKeeperMode: timeKeeperMode)
     }
 }
 

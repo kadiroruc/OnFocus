@@ -45,22 +45,31 @@ final class ProfileViewModel {
         self.friendsService = friendsService
         self.presenceService = presenceService
     }
+    
+    private(set) var streakDateSet: Set<Date> = []
+    
+    private func setStreakDates(from stringDates: [String]) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        self.streakDateSet = Set(stringDates.compactMap { formatter.date(from: $0) })
+    }
+    
+    private func calculateCurrentStreakCount(from streakDays: [String]) -> Int {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        
+        let dateSet: Set<Date> = Set(streakDays.compactMap { formatter.date(from: $0)?.stripTime() })
+        guard !dateSet.isEmpty else { return 0 }
 
-    private func calculateStreakDates(from dates: [Date]) -> [Date] {
-        let sortedDates = dates.sorted()
-        var streak: [Date] = []
-        for i in 1..<sortedDates.count {
-            let previous = sortedDates[i - 1]
-            let current = sortedDates[i]
-            let diff = Calendar.current.dateComponents([.day], from: previous, to: current).day ?? 0
-            if diff == 1 {
-                if !streak.contains(previous) {
-                    streak.append(previous)
-                }
-                streak.append(current)
-            }
+        var count = 0
+        var currentDate = Date().stripTime()
+
+        while dateSet.contains(currentDate) {
+            count += 1
+            currentDate = Calendar.current.date(byAdding: .day, value: -1, to: currentDate)!
         }
-        return streak
+
+        return count
     }
 
 }
@@ -111,7 +120,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
         guard !isFetching else { return }
         
         if userId == nil {
-            if let uid = Auth.auth().currentUser?.uid {
+            if let uid = profileService.currentUserId {
                 userId = uid
                 view?.setAddFriendButtonHidden(true)
                 view?.setMenuButtonHidden(false)
@@ -145,9 +154,15 @@ extension ProfileViewModel: ProfileViewModelInterface {
                        let url = URL(string: profileImageUrl) {
                         self.view?.updateProfileImage(with: url)
                     }
-                    if let averageWorkTime = profile.totalWorkTime {
-                        let formatted = String(format: "Total Work Hour: %.2f", (averageWorkTime / 60 / 60))
-                        self.view?.updateTotalWorkTime(formatted)
+                    if let totalWorkTime = profile.totalWorkTime {
+                        self.view?.updateTotalWorkTime("Total Work Hour: \(profile.totalWorkTimeFormatted)")
+                    }
+                    
+                    if let streakDays = profile.streakDays{
+                        self.setStreakDates(from: streakDays)
+                        self.view?.reloadStreakCalendar()
+                        let currentStreakCount = self.calculateCurrentStreakCount(from: streakDays)
+                        self.view?.updateStreakDayLabel(currentStreakCount)
                     }
                 }
             case .failure(_):
@@ -202,17 +217,17 @@ extension ProfileViewModel: ProfileViewModelInterface {
     }
     
     func isDatePartOfStreak(_ date: Date) -> Bool {
-        return streakDates.contains { Calendar.current.isDate($0, inSameDayAs: date) }
+        return streakDateSet.contains(date.stripTime())
     }
-    
+
     func isDateConnectedLeft(_ date: Date) -> Bool {
-        guard let previous = Calendar.current.date(byAdding: .day, value: -1, to: date) else { return false }
-        return isDatePartOfStreak(previous)
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: date)!
+        return streakDateSet.contains(yesterday.stripTime())
     }
-    
+
     func isDateConnectedRight(_ date: Date) -> Bool {
-        guard let next = Calendar.current.date(byAdding: .day, value: 1, to: date) else { return false }
-        return isDatePartOfStreak(next)
+        let tomorrow = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+        return streakDateSet.contains(tomorrow.stripTime())
     }
     
     

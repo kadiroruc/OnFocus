@@ -22,6 +22,7 @@ protocol ProfileViewInterface: AnyObject {
     func showLoading(_ isLoading: Bool)
     func configureAddFriendButton(_ status: String?)
     func navigateToFillProfile()
+    func reloadStreakCalendar()
 }
 
 class ProfileViewController: UIViewController {
@@ -265,6 +266,10 @@ class ProfileViewController: UIViewController {
 
 // MARK: - ProfileViewInterface
 extension ProfileViewController: ProfileViewInterface {
+    func reloadStreakCalendar() {
+        calendar.reloadData()
+    }
+    
     func navigateToFillProfile() {
         let fillProfileVC = DIContainer.shared.makeFillProfileViewController()
         fillProfileVC.modalPresentationStyle = .fullScreen

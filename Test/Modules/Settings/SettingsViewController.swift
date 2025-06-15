@@ -8,18 +8,34 @@
 import UIKit
 
 protocol SettingsViewInterface: AnyObject {
-    // Gerekirse buraya fonksiyonlar eklenebilir
+    func changeTimerMode(timeKeeperMode: Bool)
+}
+
+protocol SettingsCoordinatorDelegate: AnyObject {
+    func didChangeTimerMode(timeKeeperMode: Bool)
 }
 
 class SettingsViewController: UIViewController {
     
-    private lazy var viewModel = SettingsViewModel()
+    private var viewModel: SettingsViewModelInterface
+    
+    weak var delegate: SettingsCoordinatorDelegate?
+    
+    init(viewModel: SettingsViewModelInterface) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel.view = self
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 10
-        layout.itemSize = CGSize(width: view.frame.width * 0.9, height: 50)
+        layout.itemSize = CGSize(width: view.frame.width * 0.95, height: 50)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
@@ -33,13 +49,13 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
-        title = "Settings"
-        
-        setupLayout()
+        setupUI()
     }
     
-    private func setupLayout() {
+    private func setupUI() {
+        title = "Settings"
+        view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
+        
         view.addSubview(collectionView)
         
         NSLayoutConstraint.activate([
@@ -54,20 +70,18 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 4
+        return viewModel.numberOfSettings()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SettingsCollectionViewCell
-        cell.backgroundColor = .white
-        cell.layer.cornerRadius = 8
-        cell.imageView.backgroundColor = .clear
-        cell.imageView.tintColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
-        cell.imageView.layer.cornerRadius = 4
-        cell.imageView.contentMode = .scaleAspectFit
-        cell.label.textColor = UIColor(hex: Constants.Colors.darkGray)
         
-        viewModel.configureCell(cell: cell, at: indexPath)
+        cell.configureCell(settingsModel: viewModel.getSetting(at: indexPath.item))
+        cell.switchAction = { [weak self] isOn in
+            guard let self = self else { return }
+            
+            self.viewModel.tappedSwitchAction(for: indexPath.item, isOn: isOn)
+        }
         
         return cell
     }
@@ -81,10 +95,16 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
         10
     }
     
+}
+
+extension SettingsViewController: SettingsViewInterface{
+    func changeTimerMode(timeKeeperMode: Bool) {
+        delegate?.didChangeTimerMode(timeKeeperMode: timeKeeperMode)
+    }
     
 }
 
 
-#Preview("SettingsViewController"){
-    SettingsViewController()
-}
+//#Preview("SettingsViewController"){
+//    SettingsViewController()
+//}

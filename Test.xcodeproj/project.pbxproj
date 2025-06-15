@@ -57,6 +57,8 @@
 		E95460D72DDA7B7C00BB7365 /* FetchTimeRangeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460D62DDA7B7C00BB7365 /* FetchTimeRangeType.swift */; };
 		E95460D92DDA7BEF00BB7365 /* TimeRangeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460D82DDA7BEF00BB7365 /* TimeRangeEnum.swift */; };
 		E96ACACE2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACACD2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift */; };
+		E96ACAD22DFDAEEB00E1C191 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACAD12DFDAEEB00E1C191 /* DateExtension.swift */; };
+		E96ACAD42DFF261900E1C191 /* Timestamp Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACAD32DFF261900E1C191 /* Timestamp Extension.swift */; };
 		E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5D2D53C807005012AB /* AppDelegate.swift */; };
 		E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5F2D53C807005012AB /* SceneDelegate.swift */; };
 		E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B612D53C807005012AB /* HomeViewController.swift */; };
@@ -128,6 +130,8 @@
 		E95460D62DDA7B7C00BB7365 /* FetchTimeRangeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchTimeRangeType.swift; sourceTree = "<group>"; };
 		E95460D82DDA7BEF00BB7365 /* TimeRangeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRangeEnum.swift; sourceTree = "<group>"; };
 		E96ACACD2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardBottomSheetCollectionViewCell.swift; sourceTree = "<group>"; };
+		E96ACAD12DFDAEEB00E1C191 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		E96ACAD32DFF261900E1C191 /* Timestamp Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timestamp Extension.swift"; sourceTree = "<group>"; };
 		E98B6B5A2D53C807005012AB /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E98B6B5D2D53C807005012AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E98B6B5F2D53C807005012AB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -334,8 +338,10 @@
 				E95460CF2DDA1EDC00BB7365 /* UIViewExtension.swift */,
 				E95460D12DDA1EF100BB7365 /* UIColorExtension.swift */,
 				E95460D32DDA1F0600BB7365 /* DateFormatterExtension.swift */,
+				E96ACAD12DFDAEEB00E1C191 /* DateExtension.swift */,
 				E94923D22DF310F70025A7F3 /* UIViewControllerExtension.swift */,
 				E93503E72DF8D274009D621D /* ArrayExtension.swift */,
+				E96ACAD32DFF261900E1C191 /* Timestamp Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -426,8 +432,8 @@
 			isa = PBXGroup;
 			children = (
 				E90741792D7DE4FF00E7599C /* SettingsViewController.swift */,
-				E9E2CF672D7F211F007ABC93 /* SettingsCollectionViewCell.swift */,
 				E9E2CF692D7F28A6007ABC93 /* SettingsViewModel.swift */,
+				E9E2CF672D7F211F007ABC93 /* SettingsCollectionViewCell.swift */,
 				E9E2CF6B2D7F2C48007ABC93 /* SettingsModel.swift */,
 			);
 			path = Settings;
@@ -578,6 +584,7 @@
 				E950A91B2DD7418B00928DEB /* ProfileImageResponse.swift in Sources */,
 				E950A8F72DD6505300928DEB /* ProfileService.swift in Sources */,
 				E94923C72DF238AD0025A7F3 /* ProfileCell.swift in Sources */,
+				E96ACAD22DFDAEEB00E1C191 /* DateExtension.swift in Sources */,
 				E9FF40692D93272400FE25F0 /* FillProfileViewController.swift in Sources */,
 				E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */,
 				E950A90E2DD73E7300928DEB /* NetworkType.swift in Sources */,
@@ -592,6 +599,7 @@
 				E9EE06942DF9C2EA0020C56A /* LeaderboardService.swift in Sources */,
 				E93F1FEC2DDA947B00966661 /* StatisticsViewModel.swift in Sources */,
 				E9CBD3F92DBA642300DF9A09 /* ProfileSearchViewController.swift in Sources */,
+				E96ACAD42DFF261900E1C191 /* Timestamp Extension.swift in Sources */,
 				E907417A2D7DE4FF00E7599C /* SettingsViewController.swift in Sources */,
 				E9E2CF6C2D7F2C48007ABC93 /* SettingsModel.swift in Sources */,
 				E93503BE2DF8533A009D621D /* PresenceService.swift in Sources */,

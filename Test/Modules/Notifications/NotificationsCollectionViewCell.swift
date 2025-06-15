@@ -80,7 +80,7 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
             
             label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
             label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            label.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.7),
+            label.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.65),
             
             acceptButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             acceptButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -97,7 +97,21 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         self.delegate = delegate
         
         // Kullanıcı ismini ayarla
-        label.text = "\(model.user.nickname) sent you a friend request"
+        let baseText = "\(model.user.nickname) sent you a friend request"
+        let highlightText = "  \(model.date?.formattedRelativeString() ?? "")"
+
+        let attributedText = NSMutableAttributedString(string: baseText, attributes: [
+            .foregroundColor: UIColor.label,
+            .font: UIFont.systemFont(ofSize: 15)
+        ])
+
+        let highlightedPart = NSAttributedString(string: highlightText, attributes: [
+            .foregroundColor: UIColor(hex: Constants.Colors.softOrange),
+            .font: UIFont.boldSystemFont(ofSize: 15)
+        ])
+
+        attributedText.append(highlightedPart)
+        label.attributedText = attributedText
         
         // Ortak placeholder
         let placeholder = UIImage(systemName: Constants.Icons.personCircle)?

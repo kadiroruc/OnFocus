@@ -107,18 +107,19 @@ extension FriendsService: FriendsServiceProtocol {
                 }
                 
                 // Yeni istek oluştur
-                let request = FriendshipModel(
-                    user1Id: senderId,
-                    user2Id: receiverId,
-                    status: Constants.Firebase.pending,
-                    createdAt: Date()
-                )
-                
-                do {
-                    _ = try friendshipsRef.addDocument(from: request)
-                    completion(.success(()))
-                } catch {
-                    completion(.failure(error))
+                let data: [String: Any] = [
+                    "user1Id": senderId,
+                    "user2Id": receiverId,
+                    "status": "pending",
+                    "createdAt": FieldValue.serverTimestamp()
+                ]
+
+                friendshipsRef.addDocument(data: data) { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
                 }
             }
     }

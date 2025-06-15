@@ -13,9 +13,10 @@ class SettingsCollectionViewCell: UICollectionViewCell {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.tintColor = .white
-        iv.backgroundColor = .systemBlue
+        iv.backgroundColor = .clear
         iv.layer.cornerRadius = 4
         iv.clipsToBounds = true
+        iv.tintColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
     }()
@@ -23,7 +24,7 @@ class SettingsCollectionViewCell: UICollectionViewCell {
     let label: UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.systemFont(ofSize: 17, weight: .medium)
-        lbl.textColor = .black
+        lbl.textColor = UIColor(hex: Constants.Colors.darkGray)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
@@ -35,11 +36,12 @@ class SettingsCollectionViewCell: UICollectionViewCell {
         return sw
     }()
     
-    var switchAction: ((Bool) -> Void)? // Optional action callback
+    var switchAction: ((Bool) -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupViews()
+        
+        setupUI()
         switchButton.addTarget(self, action: #selector(switchTapped(_:)), for: .valueChanged)
     }
     
@@ -47,13 +49,19 @@ class SettingsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupCell(settingsModel: SettingsModel) {
+    func configureCell(settingsModel: SettingsModel, switchAction: ((Bool) -> Void)? = nil) {
         imageView.image = settingsModel.image
         label.text = settingsModel.text
         switchButton.isOn = settingsModel.switchOn
+        self.switchAction = switchAction
     }
     
-    private func setupViews() {
+    private func setupUI() {
+        
+        backgroundColor = .white
+        layer.cornerRadius = 8
+
+        
         contentView.addSubview(imageView)
         contentView.addSubview(label)
         contentView.addSubview(switchButton)
@@ -79,7 +87,7 @@ class SettingsCollectionViewCell: UICollectionViewCell {
     }
 }
 
-#Preview("SettingsViewController"){
-    SettingsViewController()
-}
+//#Preview("SettingsViewController"){
+//    SettingsViewController()
+//}
 

@@ -11,5 +11,5 @@ struct SettingsModel{
     
     let image: UIImage
     let text: String
-    let switchOn: Bool
+    var switchOn: Bool
 }

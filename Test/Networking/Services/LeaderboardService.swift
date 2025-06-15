@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 protocol LeaderboardServiceProtocol{
     var profileUserId: String? { get }
@@ -31,97 +32,49 @@ final class LeaderboardService: LeaderboardServiceProtocol {
     
     func fetchWeeklyLeaderboard(from date: Date, completion: @escaping (Result<[ProfileModel], Error>) -> Void) {
         
-        guard let userId = profileService.currentUserId else {
-            //view?.showError(message: "User not found")
-            return
-        }
-        
+        guard let userId = profileService.currentUserId else { return }
+
         profileService.fetchProfile(userId: userId) { [weak self] result in
             guard let self = self else { return }
-            
+
             switch result {
             case .success(let profile):
                 self.friendsService.fetchFriends(for: userId) { result in
                     switch result {
                     case .success(let friends):
-                        let friendIDs = friends.compactMap { $0.id }
-                        let allUserIDs = friendIDs + [userId]
-                        var results: [ProfileModel] = (friends + [profile]).filter { $0.id != nil }
-                        
+                        let allProfiles = friends + [profile]
+                        var profileDict: [String: ProfileModel] = [:]
+                        allProfiles.forEach { if let id = $0.id { profileDict[id] = $0 } }
+
                         let group = DispatchGroup()
-                        
-                        for (index, uid) in allUserIDs.enumerated() {
+                        for uid in profileDict.keys {
                             group.enter()
-                            
-                            self.timerService.fetchWeeklyStatistics(for: uid, from: date) { result in
+                            self.timerService.fetchWeeklyStatistics(for: uid, from: date) { statResult in
                                 defer { group.leave() }
-                                
-                                switch result {
-                                case .success(let totalDuration):
-                                    results[index].totalWorkTime = totalDuration
-                                case .failure(let error):
-                                    print("Statistic fetch error: \(error.localizedDescription)")
+                                if case .success(let duration) = statResult {
+                                    profileDict[uid]?.totalWorkTime = duration
                                 }
                             }
                         }
-                        
+
                         group.notify(queue: .main) {
-                            let sorted = results
+                            let sorted = profileDict.values
                                 .filter { $0.totalWorkTime != nil }
                                 .sorted { ($0.totalWorkTime ?? 0) > ($1.totalWorkTime ?? 0) }
                                 .prefix(10)
+
                             completion(.success(Array(sorted)))
                         }
-                        
+
                     case .failure(let error):
                         completion(.failure(error))
                     }
                 }
-                
+
             case .failure(let error):
                 completion(.failure(error))
             }
         }
-        
-//        friendsService.fetchFriends(for: userId) { [weak self] result in
-//            guard let self = self else { return }
-//            
-//            switch result {
-//            case .success(let friends):
-//                let friendIDs = friends.map { $0.id } // [String]
-//                let allUsers = friendIDs + [userId]   // [String], user dahil
-//                let results = friends + [ProfileModel(id: userId, nickname: "", totalWorkTime: 0, currentStreakCount: 0, profileImageURL: nil, status: nil)]
-//                
-//                let group = DispatchGroup()
-//                
-//                for (index,uid) in allUsers.enumerated() {
-//                    group.enter()
-//                    if let uid = uid{
-//                        self.timerService.fetchWeeklyStatistics(for: uid, from: date) { statResult in
-//                            switch statResult {
-//                            case .success(let totalDuration):
-//                                results[index].totalWorkTime = totalDuration
-//                                
-//                            case .failure(let error):
-//                                print("Statistic fetch error: \(error.localizedDescription)")
-//                                group.leave()
-//                            }
-//                        }
-//                    }
-//                    
-//                }
-//                
-//                group.notify(queue: .main) {
-//                    let sorted = results
-//                        .filter { $0.totalWorkTime != nil }
-//                        .sorted { ($0.totalWorkTime ?? 0) > ($1.totalWorkTime ?? 0) }
-//                        .prefix(10)
-//                    completion(.success(Array(sorted)))
-//                }
-//            case .failure(let error):
-//                completion(.failure(error))
-//            }
-//        }
     }
     
     

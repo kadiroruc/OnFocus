@@ -18,6 +18,11 @@ protocol PresenceServiceProtocol {
 final class PresenceService: PresenceServiceProtocol {
     
     private let db = Firestore.firestore()
+    private let profileService: ProfileServiceProtocol
+    
+    init(profileService: ProfileServiceProtocol) {
+        self.profileService = profileService
+    }
     
     private var currentUserId: String? {
         Auth.auth().currentUser?.uid
@@ -25,14 +30,14 @@ final class PresenceService: PresenceServiceProtocol {
     
     // MARK: - Kullanıcının durumunu güncelle (online / offline)
     func setUserStatus(online: Bool) {
-        guard let userId = currentUserId else { return }
+        guard let userId = profileService.currentUserId else { return }
         
         let status = online ? "online" : "offline"
         db.collection("users").document(userId).setData(["status": status], merge: true) { error in
             if let error = error {
-                print("Status update failed: \(error.localizedDescription)")
+                
             } else {
-                print("Status updated to \(status)")
+                
             }
         }
 

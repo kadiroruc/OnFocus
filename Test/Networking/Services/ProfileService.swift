@@ -31,6 +31,8 @@ protocol ProfileServiceProtocol {
     
     func updateProfileImage(_ image: UIImage,
                             completion: @escaping (Result<Void, Error>) -> Void)
+    
+    func updateStreakDay(completion: @escaping (Result<Void, Error>) -> Void)
 
     
     
@@ -132,6 +134,7 @@ extension ProfileService: ProfileServiceProtocol {
             
             do {
                 let profile = try document.data(as: ProfileModel.self)
+                print(profile.totalWorkTime)
                 completion(.success(profile))
             } catch {
                 completion(.failure(error))
@@ -237,6 +240,32 @@ extension ProfileService: ProfileServiceProtocol {
             }
         }
     }
+    
+    func updateStreakDay(completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let userId = currentUserId else {
+            let error = NSError(domain: "NoAuth", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+            completion(.failure(error))
+            return
+        }
+
+        let userRef = db.collection("users").document(userId)
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let todayString = formatter.string(from: Date())
+
+        userRef.updateData([
+            "streakDays": FieldValue.arrayUnion([todayString])
+        ]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+    
+    
 }
     
 

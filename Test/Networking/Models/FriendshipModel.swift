@@ -13,5 +13,5 @@ struct FriendshipModel: Codable, Identifiable {
     let user1Id: String
     let user2Id: String
     let status: String  // "pending", "accepted", "rejected"
-    let createdAt: Date
+    let createdAt: Timestamp?
 }

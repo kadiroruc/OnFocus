@@ -55,9 +55,6 @@ extension TimerService: TimerServiceProtocol{
         let yearId = "yearly_" + yearKey(for: date)
         let fiveYearsId = "fiveYears_" + fiveYearsKey(for: date)
         
-        //Daily record control for second update (general daily average)
-        var isNewDay: Bool = true
-        
         let statInfos: [(id: String, divisor: Int?)] = [
             (dayId, nil),            // daily: sadece total tutulur
             (weekId, 7),
@@ -75,9 +72,7 @@ extension TimerService: TimerServiceProtocol{
             try await db.runTransaction { transaction, errorPointer in
                 do {
                     let snapshot = try transaction.getDocument(ref)
-                    if statId == dayId {
-                        isNewDay = !snapshot.exists
-                    }
+
                     let existing = snapshot.data() ?? [:]
                     let oldTotal = existing["totalDuration"] as? Int ?? 0
                     
@@ -96,8 +91,8 @@ extension TimerService: TimerServiceProtocol{
                 return nil
             }
         }
-        
-        //Update total work time for user
+
+        // 2. Update totalWorkTime field in users collection
         let userRef = db.collection("users").document(userId)
 
         try await db.runTransaction { transaction, errorPointer in
@@ -107,16 +102,13 @@ extension TimerService: TimerServiceProtocol{
                 
                 let currentTotalWork = userData["totalWorkTime"] as? Int ?? 0
                 let newTotal = currentTotalWork + Int(session.duration)
-                
+
                 transaction.updateData(["totalWorkTime": newTotal], forDocument: userRef)
-                
             } catch let error {
                 errorPointer?.pointee = error as NSError
             }
             return nil
         }
-        
-
     }
     
     func fetchStatistics(for rangeType: FetchTimeRangeType,

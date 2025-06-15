@@ -49,7 +49,7 @@ struct Constants {
         static let checkmark = "checkmark"
         static let personBadgeClockFill = "person.badge.clock.fill"
         static let personFillCheckmark = "person.fill.checkmark"
-        
+        static let stop = "stop"
     }
     
     struct CellIdentifiers{
@@ -72,6 +72,7 @@ struct Constants {
         static let friendRequestCancelledError = "Error cancelling friend request. Please try again."
         static let profileImageUpdated = "Profile image updated successfully."
         static let profileImageUpdateError = "Error updating profile image. Please try again."
+        static let resetTimeKeeperConfirmation = "Are you sure you want to cancel the timekeeper?"
     }
     
     struct Colors{

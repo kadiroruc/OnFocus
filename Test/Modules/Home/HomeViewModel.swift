@@ -23,6 +23,11 @@ protocol HomeViewModelInterface {
     func cancelConfirmButtonTapped()
     func numberOfFriends() -> Int
     func didSelectFriend(at index: Int)
+    func didChangeTimerMode(timeKeeperMode: Bool)
+    func startTimeKeeper()
+    func pauseTimeKeeper()
+    func updateTimeKeeper()
+    func stopButtonTapped()
         
 }
 
@@ -30,24 +35,36 @@ final class HomeViewModel {
     weak var view: HomeViewInterface?
     private let timerService: TimerServiceProtocol
     private let friendsService: FriendsServiceProtocol
-    private(set) var friends: [ProfileModel] = []
+    private let profileService: ProfileServiceProtocol
     
-    init(timerService: TimerServiceProtocol, friendsService: FriendsServiceProtocol) {
+    init(timerService: TimerServiceProtocol, friendsService: FriendsServiceProtocol, profileService: ProfileServiceProtocol) {
         self.timerService = timerService
         self.friendsService = friendsService
+        self.profileService = profileService
     }
     
+    private(set) var friends: [ProfileModel] = []
     var animationRunning = false
-    
-    private var countdownMinutes = 0
-    private var countdownSeconds = 1
+    private var countdownMinutes = 25
+    private var countdownSeconds = 0
     private var splitSeconds = 59
-    
     private var isPaused: Bool = true
     private var countdownTimer: Timer?
     private var sessionCount = 1
     private var isSessionCompleted = true
     private var isBreak = false
+    private var isPomodoroMode: Bool {
+        get {
+            return !UserDefaults.standard.bool(forKey: "isTimeKeeperModeOn")
+        }
+        set {
+            UserDefaults.standard.set(!newValue, forKey: "isTimeKeeperModeOn")
+        }
+    }
+    private var timeKeeperStartDate: Date?
+    private var timeKeeperElapsedTime: TimeInterval = 0
+    private var timeKeeperTimer: Timer?
+
     
     
     func resetTimer() {
@@ -61,25 +78,27 @@ final class HomeViewModel {
             sessionCount += 1
             view?.updateSessionsLabel(text: "Break")
             if sessionCount == 5 {
-                countdownMinutes = 0
-                countdownSeconds = 3
+                // 4 Pomodoro completed 15 minute break
+                countdownMinutes = 15
+                countdownSeconds = 0
                 splitSeconds = 59
                 
                 sessionCount = 1
                 view?.updateSessionsLabel(text: "Break")
             }else{
-                countdownMinutes = 0
-                countdownSeconds = 1
+                // 25 minute session completed 5 minute break
+                countdownMinutes = 5
+                countdownSeconds = 0
                 splitSeconds = 59
             }
             isSessionCompleted = false
             isBreak = true
                 
         }else{
-            
+            //Sessions
             view?.updateSessionsLabel(text: "\(sessionCount) of 4 Sessions")
-            countdownMinutes = 0
-            countdownSeconds = 2
+            countdownMinutes = 25
+            countdownSeconds = 0
             splitSeconds = 59
             isSessionCompleted = true
             isBreak = false
@@ -90,21 +109,30 @@ final class HomeViewModel {
     
     func saveTimeToDatabase(if session:Bool) {
         guard session else { return }
-        guard let userId = Auth.auth().currentUser?.uid else { return }
+        guard let userId = profileService.currentUserId else { return }
         
-        let test = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+        //let test = Calendar.current.date(byAdding: .day, value: 1, to: Date())!
         
-        let session = SessionModel(id: UUID().uuidString, duration: TimeInterval(25*60), timestamp: Date())
+        let session: SessionModel
+        if isPomodoroMode{
+            session = SessionModel(id: UUID().uuidString, duration: TimeInterval(25*60), timestamp: Date())
+        }else{
+            session = SessionModel(id: UUID().uuidString, duration: TimeInterval(timeKeeperElapsedTime), timestamp: Date())
+        }
+        
             
             
         Task {
             do {
                 try await timerService.saveSession(session, userId: userId)
                 try await timerService.updateAggregate(for: session, userId: userId)
+                checkAndUpdateProfileStreak()
             } catch {
                 print("Error: \(error.localizedDescription)")
             }
         }
+        
+        
         
     }
     
@@ -119,7 +147,7 @@ final class HomeViewModel {
                     self.view?.showLoading(false)
                     self.friends = friends
                     
-                    let onlineCount = friends.filter { ($0.status != nil) == true }.count
+                    let onlineCount = friends.filter { ($0.status == "online") }.count
                     let totalCount = friends.count
 
                     self.view?.updateWorkingLabel(online: onlineCount, friends: totalCount)
@@ -144,10 +172,82 @@ final class HomeViewModel {
             }
         }
     }
+    
+    private func checkAndUpdateProfileStreak(){
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let todayString = formatter.string(from: Date())
+
+        let lastUpdateKey = "lastStreakUpdateDate"
+        let lastUpdated = UserDefaults.standard.string(forKey: lastUpdateKey)
+
+        if lastUpdated != todayString {
+            profileService.updateStreakDay { result in
+                switch result {
+                case .success:
+                    UserDefaults.standard.set(todayString, forKey: lastUpdateKey)
+                case .failure(let error):
+                    print("Streak update error: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    private func resetTimeKeeper() {
+        timeKeeperTimer?.invalidate()
+        timeKeeperStartDate = nil
+        timeKeeperElapsedTime = 0
+        animationRunning = false
+        view?.updateCountdownLabel(minutes: 0, seconds: 0)
+        view?.updatePlayButton(isPaused: true)
+
+    }
         
 }
 
 extension HomeViewModel: HomeViewModelInterface{
+    func stopButtonTapped() {
+        saveTimeToDatabase(if: true)
+        resetTimeKeeper()
+    }
+    
+    func didChangeTimerMode(timeKeeperMode: Bool) {
+        if timeKeeperMode {
+            countdownTimer?.invalidate()
+            isPaused = true
+            animationRunning = false
+            
+            countdownMinutes = 0
+            countdownSeconds = 0
+            splitSeconds = 0
+            
+            view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
+            view?.updatePlayButton(isPaused: true)
+            view?.resetCircularAnimationToStart(isSessionCompleted)
+            
+            view?.setCircularAnimation(hidden: true)
+            view?.configurePlayAndStopButton(isPomodoroMode: isPomodoroMode)
+        } else {
+            countdownTimer?.invalidate()
+            isPaused = true
+            animationRunning = false
+            isSessionCompleted = false
+            
+            countdownMinutes = 25
+            countdownSeconds = 0
+            splitSeconds = 59
+            
+            view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
+            view?.updatePlayButton(isPaused: true)
+            view?.resetCircularAnimationToStart(isSessionCompleted)
+            view?.setCircularAnimation(hidden: false)
+            view?.configurePlayAndStopButton(isPomodoroMode: isPomodoroMode)
+            
+        }
+        
+        self.isPomodoroMode = !timeKeeperMode
+    }
+    
     func didSelectFriend(at index: Int) {
         view?.navigateToProfileDetail(userId: friends[index].id)
     }
@@ -162,23 +262,33 @@ extension HomeViewModel: HomeViewModelInterface{
         fetchFriends()
         fetchOnlinePeopleCount()
         
-
-
+        if !isPomodoroMode{
+            didChangeTimerMode(timeKeeperMode: true)
+        }
         
     }
     
     func toggleCountdown() {
-        if isPaused {
-            if animationRunning{
-                resumeCountdown()
-            }else{
-                startCountdown()
+        if isPomodoroMode{
+            if isPaused {
+                if animationRunning{
+                    resumeCountdown()
+                }else{
+                    startCountdown()
+                }
+            } else {
+                pauseCountdown()
             }
-        } else {
-            pauseCountdown()
+        }else{
+            //Timekeeper mode
+            if isPaused {
+                startTimeKeeper()
+            } else {
+                pauseTimeKeeper()
+            }
         }
-        isPaused.toggle()
 
+        isPaused.toggle()
         view?.updatePlayButton(isPaused: isPaused)
     }
     
@@ -225,21 +335,67 @@ extension HomeViewModel: HomeViewModelInterface{
     }
     
     func cancelButtonTapped(){
-        if !isBreak{
-            if !animationRunning{
-                view?.showMessage(Constants.ValidationMessages.pleaseStartTimer)
-                return
+        if isPomodoroMode{
+            if !isBreak{
+                if !animationRunning{
+                    view?.showMessage(Constants.ValidationMessages.pleaseStartTimer)
+                    return
+                }else{
+                    view?.showConfirm(Constants.ValidationMessages.skipSessionConfirmation)
+                }
             }else{
-                view?.showConfirm(Constants.ValidationMessages.skipSessionConfirmation)
+                resetTimer()
             }
         }else{
+            print("asd")
+            if !animationRunning {
+                view?.showMessage(Constants.ValidationMessages.pleaseStartTimer)
+                return
+            } else {
+                view?.showConfirm(Constants.ValidationMessages.resetTimeKeeperConfirmation)
+            }
+        }
+
+    }
+    
+    func cancelConfirmButtonTapped() {
+        if isPomodoroMode{
             resetTimer()
+        }else{
+            resetTimeKeeper()
         }
         
     }
     
-    func cancelConfirmButtonTapped() {
-        resetTimer()
+    
+    func startTimeKeeper() {
+        timeKeeperStartDate = Date()
+        timeKeeperTimer = Timer.scheduledTimer(
+            timeInterval: 0.1,
+            target: self,
+            selector: #selector(updateTimeKeeper),
+            userInfo: nil,
+            repeats: true
+        )
+        animationRunning = true
+    }
+
+    func pauseTimeKeeper() {
+        timeKeeperTimer?.invalidate()
+        if let start = timeKeeperStartDate {
+            timeKeeperElapsedTime += Date().timeIntervalSince(start)
+        }
+        animationRunning = false
+    }
+
+    @objc func updateTimeKeeper() {
+        guard let start = timeKeeperStartDate else { return }
+        let elapsed = timeKeeperElapsedTime + Date().timeIntervalSince(start)
+        let totalSeconds = Int(elapsed)
+        let minutes = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        
+        view?.updateCountdownLabel(minutes: minutes, seconds: seconds)
     }
         
     

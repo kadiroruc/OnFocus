@@ -80,6 +80,7 @@ final class LoginViewController: UIViewController {
         tf.isSecureTextEntry = true
         tf.leftViewMode = .always
         tf.rightViewMode = .always
+        tf.textContentType = .oneTimeCode
         return tf
     }()
     

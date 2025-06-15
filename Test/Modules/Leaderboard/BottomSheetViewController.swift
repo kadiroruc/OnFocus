@@ -29,8 +29,8 @@ class BottomSheetViewController: UIViewController {
         setupCollectionView()
         setupPanGesture()
         
-        maxHeight = view.bounds.height * 0.73
-        minHeight = view.bounds.height * 0.26
+        maxHeight = view.bounds.height * 0.88
+        minHeight = view.bounds.height * 0.30
         
     }
 
@@ -115,7 +115,7 @@ class BottomSheetViewController: UIViewController {
 
 extension BottomSheetViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 7
+        return profiles.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

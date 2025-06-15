@@ -10,28 +10,72 @@ import UIKit
 protocol SettingsViewModelInterface{
     var view: SettingsViewInterface? { get set }
     //func viewDidLoad()
-    func configureCell(cell: SettingsCollectionViewCell, at indexPath: IndexPath)
-    
+    func getSetting(at index: Int) -> SettingsModel
+    func numberOfSettings() -> Int
+    func tappedSwitchAction(for index: Int, isOn: Bool)
+
 }
 
 final class SettingsViewModel{
     weak var view: SettingsViewInterface?
     
-    private let settingsData: [SettingsModel] = [SettingsModel(image: UIImage(systemName: Constants.Icons.deskClock)!, text: "Serbest Mod", switchOn: false), SettingsModel(image: UIImage(systemName: Constants.Icons.arrowCirclePath)!, text: "Otomatik Başlatma", switchOn: false ), SettingsModel(image: UIImage(systemName: Constants.Icons.bell)!, text: "Bildirimler", switchOn: true), SettingsModel(image: UIImage(systemName: Constants.Icons.speakerWave2)!, text: "Sesli Uyarılar", switchOn: true)]
     
-    func getSetting(at index: Int) -> SettingsModel {
-        return settingsData[index]
+    var isTimeKeeperModeOn: Bool {
+        get { UserDefaults.standard.bool(forKey: "isTimeKeeperModeOn") }
+        set { UserDefaults.standard.set(newValue, forKey: "isTimeKeeperModeOn") }
+    }
+    
+    private var settingsData: [SettingsModel] {
+        return [
+            SettingsModel(
+                image: UIImage(systemName: Constants.Icons.deskClock)!,
+                text: "Timekeeper Mode",
+                switchOn: isTimeKeeperModeOn
+            ),
+//            SettingsModel(
+//                image: UIImage(
+//                    systemName: Constants.Icons.arrowCirclePath
+//                )!,
+//                text: "Auto Start",
+//                switchOn: false
+//            ),
+//            SettingsModel(
+//                image: UIImage(
+//                    systemName: Constants.Icons.bell
+//                )!,
+//                text: "Notifications",
+//                switchOn: false
+//            ),
+//            SettingsModel(
+//                image: UIImage(
+//                    systemName: Constants.Icons.speakerWave2
+//                )!,
+//                text: "Audible Alerts",
+//                switchOn: false
+//            )
+        ]
     }
     
 }
 
 extension SettingsViewModel: SettingsViewModelInterface{
-//    func viewDidLoad() {
-//        
-//    }
+    func tappedSwitchAction(for index: Int, isOn: Bool) {
+        switch index{
+        case 0:
+            isTimeKeeperModeOn = isOn
+            view?.changeTimerMode(timeKeeperMode: isOn)
+        default:
+            return
+        }
+    }
     
-    func configureCell(cell: SettingsCollectionViewCell, at indexPath: IndexPath) {
-        cell.setupCell(settingsModel: getSetting(at: indexPath.item))
+    
+    func getSetting(at index: Int) -> SettingsModel {
+        return settingsData[index]
+    }
+    
+    func numberOfSettings() -> Int {
+        return settingsData.count
     }
     
 }

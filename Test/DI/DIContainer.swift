@@ -29,7 +29,7 @@ final class DIContainer {
     }()
     
     lazy var presenceService: PresenceServiceProtocol = {
-        return PresenceService()
+        return PresenceService(profileService: profileService)
     }()
     
     lazy var leaderboardService: LeaderboardServiceProtocol = {
@@ -38,11 +38,11 @@ final class DIContainer {
 
     // MARK: - ViewModels
     func makeFillProfileViewModel() -> FillProfileViewModel {
-        return FillProfileViewModel(service: profileService, presenceService: PresenceService())
+        return FillProfileViewModel(service: profileService, presenceService: PresenceService(profileService: profileService))
     }
     
     func makeHomeViewModel() -> HomeViewModel {
-        return HomeViewModel(timerService: timerService, friendsService: friendsService)
+        return HomeViewModel(timerService: timerService, friendsService: friendsService, profileService: profileService)
     }
     
     func makeLeaderboardViewModel() -> LeaderboardViewModel {
@@ -114,9 +114,9 @@ final class DIContainer {
         return ProfileSearchViewController(viewModel: makeProfileSearchViewModel())
     }
 
-//    func makeSettingsViewController() -> SettingsViewController {
-//        return SettingsViewController(viewModel: makeSettingsViewModel())
-//    }
+    func makeSettingsViewController() -> SettingsViewController {
+        return SettingsViewController(viewModel: makeSettingsViewModel())
+    }
 
     func makeSignUpViewController() -> SignUpViewController {
         return SignUpViewController(viewModel: makeSignUpViewModel())

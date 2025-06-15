@@ -16,6 +16,7 @@ struct ProfileModel: Codable, Identifiable {
     //let streakRawDates: [Date]
     var profileImageURL: String?
     var status: String?
+    var streakDays: [String]?
 }
 
 extension ProfileModel {
