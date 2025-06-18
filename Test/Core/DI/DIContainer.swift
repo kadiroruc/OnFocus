@@ -17,7 +17,7 @@ final class DIContainer {
     }()
 
     lazy var profileService: ProfileServiceProtocol = {
-        return ProfileService(networkManager: AFNetworkManager())
+        return ProfileService(networkManager: URLSessionNetworkManager.shared)
     }()
     
     lazy var friendsService: FriendsServiceProtocol = {

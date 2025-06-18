@@ -41,10 +41,10 @@ protocol ProfileServiceProtocol {
 final class ProfileService {
     
     private let db = Firestore.firestore()
-    private let networkManager: NetworkManaging?
+    private let networkManager: NetworkManager?
     
     //MARK: - Init
-    init(networkManager: NetworkManaging? = nil) {
+    init(networkManager: NetworkManager) {
         self.networkManager = networkManager
     }
     
@@ -84,16 +84,22 @@ extension ProfileService: ProfileServiceProtocol {
         if let image = image, let imageData = image.jpegData(compressionQuality: 0.8) {
             // Resmi API üzerinden yükle
             guard let networkManager = networkManager else { return }
-            networkManager.upload(ProfileEndpoint.uploadImage(data: imageData), decodeTo: ProfileImageResponse.self) { [weak self] result in
-                switch result {
-                case .success(let response):
-                    // API’den dönen URL'yi Firestore’a kaydet
-                    userData["profileImageURL"] = response.data.url
-                    self?.saveToFirestore(userId: userId, data: userData, completion: completion)
-                case .failure(let error):
+            let baseUserData = userData
+            Task {
+                do {
+                    let endpoint = ImageUploadEndpoint.uploadImage(data: imageData)
+                    
+                    let response = try await networkManager.sendRequest(endpoint, responseType: ProfileImageResponse.self)
+                    var updatedUserData = baseUserData
+                    updatedUserData["profileImageURL"] = response.data.url
+                    saveToFirestore(userId: userId, data: updatedUserData, completion: completion)
+
+                } catch {
                     completion(.failure(error))
                 }
             }
+            
+           
         } else {
             // Resim yoksa sadece Firestore kaydı yap
             saveToFirestore(userId: userId, data: userData, completion: completion)
@@ -134,7 +140,7 @@ extension ProfileService: ProfileServiceProtocol {
             
             do {
                 let profile = try document.data(as: ProfileModel.self)
-                print(profile.totalWorkTime)
+                
                 completion(.success(profile))
             } catch {
                 completion(.failure(error))
@@ -209,7 +215,6 @@ extension ProfileService: ProfileServiceProtocol {
             return
         }
         
-        print("asd")
 
         guard let imageData = image.jpegData(compressionQuality: 0.8) else {
             completion(.failure(NSError(domain: "ImageError",
@@ -217,7 +222,6 @@ extension ProfileService: ProfileServiceProtocol {
                                         userInfo: [NSLocalizedDescriptionKey: "Invalid image data."])))
             return
         }
-        print("sdf")
 
         guard let networkManager = networkManager else {
             completion(.failure(NSError(domain: "NetworkError",
@@ -229,13 +233,14 @@ extension ProfileService: ProfileServiceProtocol {
         
 
         // Resmi yükle
-        networkManager.upload(ProfileEndpoint.uploadImage(data: imageData), decodeTo: ProfileImageResponse.self) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let response):
-                // API’den dönen URL'yi Firestore’a kaydet
-                self.saveToFirestore(userId: userId, data: ["profileImageURL" : response.data.url], completion: completion)
-            case .failure(let error):
+        
+        Task {
+            do {
+                let endpoint = ImageUploadEndpoint.uploadImage(data: imageData)
+                let response = try await networkManager.sendRequest(endpoint, responseType: ProfileImageResponse.self)
+                saveToFirestore(userId: userId, data: ["profileImageURL" : response.data.url], completion: completion)
+
+            } catch {
                 completion(.failure(error))
             }
         }

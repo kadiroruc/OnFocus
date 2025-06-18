@@ -8,7 +8,7 @@
 import Foundation
 
 struct NetworkConstants {
-    static let baseURL = "https://api.imgbb.com/1/"
+    static let baseURL = "https://api.imgbb.com/1"
     static var imgBBApiKey: String {
         guard
             let url = Bundle.main.url(forResource: "Config", withExtension: "plist"),

@@ -347,7 +347,7 @@ extension HomeViewModel: HomeViewModelInterface{
                 resetTimer()
             }
         }else{
-            print("asd")
+            
             if !animationRunning {
                 view?.showMessage(Constants.ValidationMessages.pleaseStartTimer)
                 return

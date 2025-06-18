@@ -39,13 +39,10 @@
 		E950A8F32DD6131700928DEB /* MainTabBarBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8F22DD6131700928DEB /* MainTabBarBuilder.swift */; };
 		E950A8F72DD6505300928DEB /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8F62DD6505300928DEB /* ProfileService.swift */; };
 		E950A8FB2DD653D800928DEB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8FA2DD653D800928DEB /* FirebaseStorage */; };
-		E950A9002DD72A8A00928DEB /* AFNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8FF2DD72A8A00928DEB /* AFNetworkManager.swift */; };
+		E950A9002DD72A8A00928DEB /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8FF2DD72A8A00928DEB /* NetworkManager.swift */; };
 		E950A9032DD72F0700928DEB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E950A9022DD72F0700928DEB /* Alamofire */; };
 		E950A9052DD72F0700928DEB /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E950A9042DD72F0700928DEB /* AlamofireDynamic */; };
-		E950A90E2DD73E7300928DEB /* NetworkType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A90D2DD73E7300928DEB /* NetworkType.swift */; };
-		E950A9102DD73E8E00928DEB /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A90F2DD73E8E00928DEB /* NetworkError.swift */; };
 		E950A9152DD73F5100928DEB /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A9142DD73F5100928DEB /* NetworkConstants.swift */; };
-		E950A9172DD73F7C00928DEB /* ProfileEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A9162DD73F7C00928DEB /* ProfileEndpoint.swift */; };
 		E950A91B2DD7418B00928DEB /* ProfileImageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A91A2DD7418B00928DEB /* ProfileImageResponse.swift */; };
 		E95460C62DDA09BE00BB7365 /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460C52DDA09BE00BB7365 /* TimerService.swift */; };
 		E95460C82DDA0B0C00BB7365 /* SessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460C72DDA0B0C00BB7365 /* SessionModel.swift */; };
@@ -56,6 +53,8 @@
 		E95460D42DDA1F0600BB7365 /* DateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460D32DDA1F0600BB7365 /* DateFormatterExtension.swift */; };
 		E95460D72DDA7B7C00BB7365 /* FetchTimeRangeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460D62DDA7B7C00BB7365 /* FetchTimeRangeType.swift */; };
 		E95460D92DDA7BEF00BB7365 /* TimeRangeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460D82DDA7BEF00BB7365 /* TimeRangeEnum.swift */; };
+		E965182B2E02D20F00865163 /* EndpointHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E965182A2E02D20F00865163 /* EndpointHelpers.swift */; };
+		E965182D2E02D27400865163 /* ImageUploadEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E965182C2E02D27400865163 /* ImageUploadEndpoint.swift */; };
 		E96ACACE2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACACD2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift */; };
 		E96ACAD22DFDAEEB00E1C191 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACAD12DFDAEEB00E1C191 /* DateExtension.swift */; };
 		E96ACAD42DFF261900E1C191 /* Timestamp Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACAD32DFF261900E1C191 /* Timestamp Extension.swift */; };
@@ -114,11 +113,8 @@
 		E950A8DD2DD50F4300928DEB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E950A8F22DD6131700928DEB /* MainTabBarBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarBuilder.swift; sourceTree = "<group>"; };
 		E950A8F62DD6505300928DEB /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
-		E950A8FF2DD72A8A00928DEB /* AFNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AFNetworkManager.swift; sourceTree = "<group>"; };
-		E950A90D2DD73E7300928DEB /* NetworkType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkType.swift; sourceTree = "<group>"; };
-		E950A90F2DD73E8E00928DEB /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		E950A8FF2DD72A8A00928DEB /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		E950A9142DD73F5100928DEB /* NetworkConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConstants.swift; sourceTree = "<group>"; };
-		E950A9162DD73F7C00928DEB /* ProfileEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEndpoint.swift; sourceTree = "<group>"; };
 		E950A91A2DD7418B00928DEB /* ProfileImageResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageResponse.swift; sourceTree = "<group>"; };
 		E95460C52DDA09BE00BB7365 /* TimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerService.swift; sourceTree = "<group>"; };
 		E95460C72DDA0B0C00BB7365 /* SessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionModel.swift; sourceTree = "<group>"; };
@@ -129,6 +125,8 @@
 		E95460D32DDA1F0600BB7365 /* DateFormatterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatterExtension.swift; sourceTree = "<group>"; };
 		E95460D62DDA7B7C00BB7365 /* FetchTimeRangeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchTimeRangeType.swift; sourceTree = "<group>"; };
 		E95460D82DDA7BEF00BB7365 /* TimeRangeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeRangeEnum.swift; sourceTree = "<group>"; };
+		E965182A2E02D20F00865163 /* EndpointHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndpointHelpers.swift; sourceTree = "<group>"; };
+		E965182C2E02D27400865163 /* ImageUploadEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploadEndpoint.swift; sourceTree = "<group>"; };
 		E96ACACD2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardBottomSheetCollectionViewCell.swift; sourceTree = "<group>"; };
 		E96ACAD12DFDAEEB00E1C191 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		E96ACAD32DFF261900E1C191 /* Timestamp Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timestamp Extension.swift"; sourceTree = "<group>"; };
@@ -208,20 +206,6 @@
 			path = DI;
 			sourceTree = "<group>";
 		};
-		E950A8D82DD4EB1A00928DEB /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				E950A8D92DD4EB3000928DEB /* AuthService.swift */,
-				E950A8F62DD6505300928DEB /* ProfileService.swift */,
-				E94923DA2DF31F9C0025A7F3 /* FriendsService.swift */,
-				E95460C52DDA09BE00BB7365 /* TimerService.swift */,
-				E95460CD2DDA1E2800BB7365 /* TimerService+Helpers.swift */,
-				E93503BD2DF8533A009D621D /* PresenceService.swift */,
-				E9EE06932DF9C2EA0020C56A /* LeaderboardService.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
 		E950A8F12DD612F700928DEB /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,24 +214,11 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
-		E950A8FD2DD72A5E00928DEB /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				E950A9132DD73EF400928DEB /* Config */,
-				E950A9122DD73EEB00928DEB /* Models */,
-				E950A9112DD73E9A00928DEB /* Endpoints */,
-				E950A90C2DD73E5000928DEB /* Core */,
-				E950A8D82DD4EB1A00928DEB /* Services */,
-			);
-			path = Networking;
-			sourceTree = "<group>";
-		};
 		E950A9082DD73ADC00928DEB /* App */ = {
 			isa = PBXGroup;
 			children = (
 				E98B6B5D2D53C807005012AB /* AppDelegate.swift */,
 				E98B6B5F2D53C807005012AB /* SceneDelegate.swift */,
-				E98B6B682D53C80A005012AB /* LaunchScreen.storyboard */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -255,6 +226,7 @@
 		E950A9092DD73AF400928DEB /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E98B6B682D53C80A005012AB /* LaunchScreen.storyboard */,
 				E98B6B662D53C809005012AB /* Assets.xcassets */,
 				E9B699792DDD05F7006B05E4 /* Config.plist */,
 				E9B6997B2DDD0628006B05E4 /* SampleConfig.plist */,
@@ -283,27 +255,17 @@
 		E950A90B2DD73DB300928DEB /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				E90741772D7DBCA700E7599C /* Constants.swift */,
 				E95460D52DDA1FD500BB7365 /* Extensions */,
 				E94923D02DF30F930025A7F3 /* AlertMessageModel.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		E950A90C2DD73E5000928DEB /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				E950A8FF2DD72A8A00928DEB /* AFNetworkManager.swift */,
-				E950A90D2DD73E7300928DEB /* NetworkType.swift */,
-				E950A90F2DD73E8E00928DEB /* NetworkError.swift */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
 		E950A9112DD73E9A00928DEB /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
-				E950A9162DD73F7C00928DEB /* ProfileEndpoint.swift */,
+				E965182A2E02D20F00865163 /* EndpointHelpers.swift */,
+				E965182C2E02D27400865163 /* ImageUploadEndpoint.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -311,7 +273,6 @@
 		E950A9122DD73EEB00928DEB /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E950A91A2DD7418B00928DEB /* ProfileImageResponse.swift */,
 				E95460C72DDA0B0C00BB7365 /* SessionModel.swift */,
 				E95460D82DDA7BEF00BB7365 /* TimeRangeEnum.swift */,
 				E95460D62DDA7B7C00BB7365 /* FetchTimeRangeType.swift */,
@@ -321,14 +282,6 @@
 				E94923D62DF31D520025A7F3 /* NotificationModel.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		E950A9132DD73EF400928DEB /* Config */ = {
-			isa = PBXGroup;
-			children = (
-				E950A9142DD73F5100928DEB /* NetworkConstants.swift */,
-			);
-			path = Config;
 			sourceTree = "<group>";
 		};
 		E95460D52DDA1FD500BB7365 /* Extensions */ = {
@@ -344,6 +297,58 @@
 				E96ACAD32DFF261900E1C191 /* Timestamp Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E96518252E02D06600865163 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E93503E42DF87194009D621D /* DI */,
+				E96518272E02D0AA00865163 /* Network */,
+				E96518262E02D06D00865163 /* Firebase */,
+				E950A90B2DD73DB300928DEB /* Utilities */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		E96518262E02D06D00865163 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				E950A8D92DD4EB3000928DEB /* AuthService.swift */,
+				E950A8F62DD6505300928DEB /* ProfileService.swift */,
+				E94923DA2DF31F9C0025A7F3 /* FriendsService.swift */,
+				E95460C52DDA09BE00BB7365 /* TimerService.swift */,
+				E95460CD2DDA1E2800BB7365 /* TimerService+Helpers.swift */,
+				E93503BD2DF8533A009D621D /* PresenceService.swift */,
+				E9EE06932DF9C2EA0020C56A /* LeaderboardService.swift */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		E96518272E02D0AA00865163 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				E950A8FF2DD72A8A00928DEB /* NetworkManager.swift */,
+				E950A9142DD73F5100928DEB /* NetworkConstants.swift */,
+				E950A9112DD73E9A00928DEB /* Endpoints */,
+				E96518292E02D1EB00865163 /* Models */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		E96518282E02D13200865163 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				E90741772D7DBCA700E7599C /* Constants.swift */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		E96518292E02D1EB00865163 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E950A91A2DD7418B00928DEB /* ProfileImageResponse.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		E98B6B512D53C807005012AB = {
@@ -365,10 +370,10 @@
 		E98B6B5C2D53C807005012AB /* Test */ = {
 			isa = PBXGroup;
 			children = (
+				E96518282E02D13200865163 /* Config */,
+				E96518252E02D06600865163 /* Core */,
 				E950A9082DD73ADC00928DEB /* App */,
-				E93503E42DF87194009D621D /* DI */,
-				E950A8FD2DD72A5E00928DEB /* Networking */,
-				E950A90B2DD73DB300928DEB /* Utilities */,
+				E950A9122DD73EEB00928DEB /* Models */,
 				E950A90A2DD73B1600928DEB /* Modules */,
 				E950A9092DD73AF400928DEB /* Resources */,
 				E98B6B6B2D53C80A005012AB /* Info.plist */,
@@ -553,6 +558,7 @@
 				E90741782D7DBCA700E7599C /* Constants.swift in Sources */,
 				E95460C82DDA0B0C00BB7365 /* SessionModel.swift in Sources */,
 				E95460D72DDA7B7C00BB7365 /* FetchTimeRangeType.swift in Sources */,
+				E965182B2E02D20F00865163 /* EndpointHelpers.swift in Sources */,
 				E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */,
 				E95460D02DDA1EDC00BB7365 /* UIViewExtension.swift in Sources */,
 				E9A6F1862DD7ECA400016F4C /* ProfileVewModel.swift in Sources */,
@@ -566,8 +572,7 @@
 				E950A8CF2DD27DD400928DEB /* StreakCalendarCell.swift in Sources */,
 				E9DE97882DB7D2E600832C8B /* NotificationsCollectionViewCell.swift in Sources */,
 				E950A9152DD73F5100928DEB /* NetworkConstants.swift in Sources */,
-				E950A9002DD72A8A00928DEB /* AFNetworkManager.swift in Sources */,
-				E950A9172DD73F7C00928DEB /* ProfileEndpoint.swift in Sources */,
+				E950A9002DD72A8A00928DEB /* NetworkManager.swift in Sources */,
 				E96ACACE2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift in Sources */,
 				E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */,
 				E90741762D7DB60700E7599C /* SignUpViewController.swift in Sources */,
@@ -577,7 +582,6 @@
 				E94923CD2DF30A060025A7F3 /* FriendshipModel.swift in Sources */,
 				E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */,
 				E93503E82DF8D274009D621D /* ArrayExtension.swift in Sources */,
-				E950A9102DD73E8E00928DEB /* NetworkError.swift in Sources */,
 				E950A8D72DD4E58400928DEB /* SignUpViewModel.swift in Sources */,
 				E9DE978B2DB7DACA00832C8B /* StatisticsViewController.swift in Sources */,
 				E93503E62DF871AB009D621D /* DIContainer.swift in Sources */,
@@ -587,13 +591,13 @@
 				E96ACAD22DFDAEEB00E1C191 /* DateExtension.swift in Sources */,
 				E9FF40692D93272400FE25F0 /* FillProfileViewController.swift in Sources */,
 				E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */,
-				E950A90E2DD73E7300928DEB /* NetworkType.swift in Sources */,
 				E95460CC2DDA0B4F00BB7365 /* StatisticsModel.swift in Sources */,
 				E94923C92DF23AB90025A7F3 /* ProfileSearchViewModel.swift in Sources */,
 				E94923DB2DF31F9C0025A7F3 /* FriendsService.swift in Sources */,
 				E95460D92DDA7BEF00BB7365 /* TimeRangeEnum.swift in Sources */,
 				E90741742D7DA9A200E7599C /* UITextFieldExtension.swift in Sources */,
 				E9EA79422D94331D00533B85 /* HomePersonCollectionViewCell.swift in Sources */,
+				E965182D2E02D27400865163 /* ImageUploadEndpoint.swift in Sources */,
 				E9D058242D75F76E0003484C /* HomeViewModel.swift in Sources */,
 				E94923D32DF310F70025A7F3 /* UIViewControllerExtension.swift in Sources */,
 				E9EE06942DF9C2EA0020C56A /* LeaderboardService.swift in Sources */,
