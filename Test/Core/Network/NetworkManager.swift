@@ -24,7 +24,6 @@ class URLSessionNetworkManager: NetworkManager {
     
     func sendRequest<T: Decodable>(_ endpoint: EndpointProtocol, responseType: T.Type) async throws -> T {
         let request = endpoint.makeUrlRequest()
-        print(request)
         
         do {
             let (data, response) = try await URLSession.shared.data(for: request)

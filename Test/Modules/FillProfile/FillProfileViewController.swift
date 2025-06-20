@@ -33,7 +33,7 @@ final class FillProfileViewController: UIViewController {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Don't worry, you can change it later, or you can skip it for now."
+        label.text = "Don't worry, you can change your profile photo later, you can skip it for now."
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -127,6 +127,11 @@ final class FillProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true) // Klavyeyi kapatır
     }
     
     override func viewDidLayoutSubviews() {
@@ -268,6 +273,6 @@ extension  FillProfileViewController: UIImagePickerControllerDelegate, UINavigat
     
 
 
-#Preview(""){
-    return UINavigationController(rootViewController: DIContainer.shared.makeFillProfileViewController())
-}
+//#Preview(""){
+//    return UINavigationController(rootViewController: DIContainer.shared.makeFillProfileViewController())
+//}

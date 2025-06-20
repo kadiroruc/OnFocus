@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIViewController {
-    func showAlert(_ text: String, type: MessageType) {
+    func showAlert(_ text: String, type: MessageType, completion: (() -> Void)? = nil) {
         let title: String
         switch type {
         case .success:
@@ -31,7 +31,11 @@ extension UIViewController {
             }
         }()
 
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            completion?()
+        }
+
+        alert.addAction(okAction)
         present(alert, animated: true)
     }
 }

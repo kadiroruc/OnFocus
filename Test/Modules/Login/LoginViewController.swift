@@ -17,6 +17,7 @@ protocol LoginViewInterface: AnyObject {
     
     // Navigasyon
     func navigateToHome()
+    func navigateToFillProfile()
     func navigateToSignUp()
 }
 
@@ -93,25 +94,6 @@ final class LoginViewController: UIViewController {
         return btn
     }()
     
-    private let rememberMeCheckbox: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setImage(UIImage(systemName: Constants.Icons.square), for: .normal)
-        btn.setImage(UIImage(systemName: Constants.Icons.checkmarkSquareFill), for: .selected)
-        btn.tintColor = UIColor(hex: Constants.Colors.darkGray)
-        btn.backgroundColor = .clear
-        return btn
-    }()
-    
-    private let rememberMeLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Remember me"
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = UIColor(hex: Constants.Colors.darkGray)
-        return label
-    }()
-    
     private let signInButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -176,6 +158,11 @@ final class LoginViewController: UIViewController {
         setupUI()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true) // Klavyeyi kapatır
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.setGradientBackground(colors: [UIColor(hex: Constants.Colors.lightPeach), .white])
@@ -184,7 +171,7 @@ final class LoginViewController: UIViewController {
     // MARK: - Setup
     private func setupUI() {
         [titleLabel, emailTextField, passwordTextField,
-         showPasswordButton, rememberMeCheckbox, rememberMeLabel,
+         showPasswordButton,
          signInButton, forgotPasswordButton, bottomLabel, signUpButton,activityIndicator].forEach {
             view.addSubview($0)
         }
@@ -193,7 +180,6 @@ final class LoginViewController: UIViewController {
         passwordTextField.rightView = showPasswordButton
         
         showPasswordButton.addTarget(self, action: #selector(showPasswordButtonTapped), for: .touchUpInside)
-        rememberMeCheckbox.addTarget(self, action: #selector(rememberMeCheckboxTapped), for: .touchUpInside)
         signInButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         forgotPasswordButton.addTarget(self, action: #selector(forgotPasswordTapped), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
@@ -220,16 +206,9 @@ final class LoginViewController: UIViewController {
             showPasswordButton.widthAnchor.constraint(equalToConstant: 30),
             showPasswordButton.heightAnchor.constraint(equalToConstant: 30),
             
-            // Remember Me
-            rememberMeCheckbox.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 30),
-            rememberMeCheckbox.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor,constant: 2),
-            rememberMeCheckbox.widthAnchor.constraint(equalToConstant: 24),
-            rememberMeCheckbox.heightAnchor.constraint(equalToConstant: 24),
-            rememberMeLabel.centerYAnchor.constraint(equalTo: rememberMeCheckbox.centerYAnchor),
-            rememberMeLabel.leadingAnchor.constraint(equalTo: rememberMeCheckbox.trailingAnchor, constant: 4),
             
             // Sign In Button
-            signInButton.topAnchor.constraint(equalTo: rememberMeCheckbox.bottomAnchor, constant: 30),
+            signInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 50),
             signInButton.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
             signInButton.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
             signInButton.heightAnchor.constraint(equalToConstant: 50),
@@ -259,10 +238,6 @@ final class LoginViewController: UIViewController {
         showPasswordButton.setImage(UIImage(systemName: name, withConfiguration: config), for: .normal)
     }
     
-    @objc private func rememberMeCheckboxTapped() {
-        rememberMeCheckbox.isSelected.toggle()
-        viewModel.rememberMeTapped(isSelected: rememberMeCheckbox.isSelected)
-    }
 
     @objc private func loginButtonTapped() {
         viewModel.loginButtonTapped(email: emailTextField.text ?? "", password: passwordTextField.text ?? "")
@@ -303,6 +278,13 @@ extension LoginViewController: LoginViewInterface{
         let tabBar = MainTabBarBuilder.makeTabBar(using: DIContainer.shared)
         tabBar.modalPresentationStyle = .fullScreen
         present(tabBar, animated: true)
+    }
+    
+    func navigateToFillProfile() {
+        // Navigate to fill profile screen
+        let fillProfileVC = DIContainer.shared.makeFillProfileViewController()
+        fillProfileVC.modalPresentationStyle = .fullScreen
+        present(fillProfileVC, animated: true)
     }
     
     func navigateToSignUp() {

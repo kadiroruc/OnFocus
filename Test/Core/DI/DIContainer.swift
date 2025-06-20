@@ -50,7 +50,7 @@ final class DIContainer {
     }
     
     func makeLoginViewModel() -> LoginViewModel {
-        return LoginViewModel(authService: authService, presenceService: presenceService)
+        return LoginViewModel(authService: authService, presenceService: presenceService, profileService: profileService)
     }
     
     func makeNotificationsViewModel() -> NotificationsViewModel {

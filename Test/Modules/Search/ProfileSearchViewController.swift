@@ -70,6 +70,8 @@ class ProfileSearchViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -196,6 +198,6 @@ extension ProfileSearchViewController: ProfileSearchViewInterface{
 
     
 
-#Preview(""){
-    return UINavigationController(rootViewController: DIContainer.shared.makeProfileSearchViewController())
-}
+//#Preview(""){
+//    return UINavigationController(rootViewController: DIContainer.shared.makeProfileSearchViewController())
+//}

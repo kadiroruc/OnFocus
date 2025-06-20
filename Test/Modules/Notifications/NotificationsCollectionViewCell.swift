@@ -12,6 +12,7 @@ import Kingfisher
 protocol NotificationsCellDelegate: AnyObject {
     func didTapAccept(at indexPath: IndexPath)
     func didTapDecline(at indexPath: IndexPath)
+    func didTapProfileImage(at indexPath: IndexPath)
 }
 
 class NotificationsCollectionViewCell: UICollectionViewCell {
@@ -25,6 +26,7 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         iv.layer.cornerRadius = 20
         iv.clipsToBounds = true
         iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.isUserInteractionEnabled = true
         return iv
     }()
     
@@ -72,6 +74,9 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(declineButton)
         contentView.addSubview(acceptButton)
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(profileImageTapped))
+        imageView.addGestureRecognizer(tapGesture)
+        
         NSLayoutConstraint.activate([
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             imageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -80,15 +85,13 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
             
             label.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: 16),
             label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            label.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.65),
+            label.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.58),
             
             acceptButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             acceptButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             
             declineButton.trailingAnchor.constraint(equalTo: acceptButton.leadingAnchor, constant: -12),
             declineButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            
-            
         ])
     }
     
@@ -146,6 +149,11 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
     @objc private func declineTapped() {
         guard let indexPath = indexPath else { return }
         delegate?.didTapDecline(at: indexPath)
+    }
+    
+    @objc private func profileImageTapped(){
+        guard let indexPath = indexPath else { return }
+        delegate?.didTapProfileImage(at: indexPath)
     }
 
         

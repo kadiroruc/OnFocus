@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 struct ProfileModel: Codable, Identifiable {
     @DocumentID var id: String?
-    var nickname: String
+    var nickname: String?
     var totalWorkTime: Int?
     var currentStreakCount: Int?
     //let streakRawDates: [Date]

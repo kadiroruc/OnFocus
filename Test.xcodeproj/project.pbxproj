@@ -13,6 +13,7 @@
 		E90741762D7DB60700E7599C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741752D7DB60700E7599C /* SignUpViewController.swift */; };
 		E90741782D7DBCA700E7599C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741772D7DBCA700E7599C /* Constants.swift */; };
 		E907417A2D7DE4FF00E7599C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741792D7DE4FF00E7599C /* SettingsViewController.swift */; };
+		E90F83D62E030AAA00BE05C0 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = E90F83D52E030AAA00BE05C0 /* DGCharts */; };
 		E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E92681DB2DA9842A00138259 /* ProfileViewController.swift */; };
 		E93503BE2DF8533A009D621D /* PresenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93503BD2DF8533A009D621D /* PresenceService.swift */; };
 		E93503E62DF871AB009D621D /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93503E52DF871AB009D621D /* DIContainer.swift */; };
@@ -40,8 +41,6 @@
 		E950A8F72DD6505300928DEB /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8F62DD6505300928DEB /* ProfileService.swift */; };
 		E950A8FB2DD653D800928DEB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8FA2DD653D800928DEB /* FirebaseStorage */; };
 		E950A9002DD72A8A00928DEB /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8FF2DD72A8A00928DEB /* NetworkManager.swift */; };
-		E950A9032DD72F0700928DEB /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = E950A9022DD72F0700928DEB /* Alamofire */; };
-		E950A9052DD72F0700928DEB /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E950A9042DD72F0700928DEB /* AlamofireDynamic */; };
 		E950A9152DD73F5100928DEB /* NetworkConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A9142DD73F5100928DEB /* NetworkConstants.swift */; };
 		E950A91B2DD7418B00928DEB /* ProfileImageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A91A2DD7418B00928DEB /* ProfileImageResponse.swift */; };
 		E95460C62DDA09BE00BB7365 /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95460C52DDA09BE00BB7365 /* TimerService.swift */; };
@@ -78,8 +77,6 @@
 		E9E2CF682D7F211F007ABC93 /* SettingsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2CF672D7F211F007ABC93 /* SettingsCollectionViewCell.swift */; };
 		E9E2CF6A2D7F28A6007ABC93 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2CF692D7F28A6007ABC93 /* SettingsViewModel.swift */; };
 		E9E2CF6C2D7F2C48007ABC93 /* SettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E2CF6B2D7F2C48007ABC93 /* SettingsModel.swift */; };
-		E9E2CF792D805CD6007ABC93 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = E9E2CF782D805CD6007ABC93 /* DGCharts */; };
-		E9E2CF7B2D805CD6007ABC93 /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = E9E2CF7A2D805CD6007ABC93 /* DGChartsDynamic */; };
 		E9EA79422D94331D00533B85 /* HomePersonCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9EA79412D94331D00533B85 /* HomePersonCollectionViewCell.swift */; };
 		E9EE06922DF9BEEF0020C56A /* LeaderboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9EE06912DF9BEEF0020C56A /* LeaderboardViewModel.swift */; };
 		E9EE06942DF9C2EA0020C56A /* LeaderboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9EE06932DF9C2EA0020C56A /* LeaderboardService.swift */; };
@@ -163,15 +160,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E9E2CF7B2D805CD6007ABC93 /* DGChartsDynamic in Frameworks */,
-				E950A9032DD72F0700928DEB /* Alamofire in Frameworks */,
 				E950A8EA2DD5ED4D00928DEB /* FirebaseCore in Frameworks */,
 				E950A8CD2DD2724700928DEB /* FSCalendar in Frameworks */,
 				E94EC5E12DE7597E00F28D21 /* Kingfisher in Frameworks */,
-				E9E2CF792D805CD6007ABC93 /* DGCharts in Frameworks */,
 				E950A8FB2DD653D800928DEB /* FirebaseStorage in Frameworks */,
 				E950A8E82DD5ED4D00928DEB /* FirebaseAuth in Frameworks */,
-				E950A9052DD72F0700928DEB /* AlamofireDynamic in Frameworks */,
+				E90F83D62E030AAA00BE05C0 /* DGCharts in Frameworks */,
 				E950A8EC2DD5ED4D00928DEB /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -479,16 +473,13 @@
 			);
 			name = Test;
 			packageProductDependencies = (
-				E9E2CF782D805CD6007ABC93 /* DGCharts */,
-				E9E2CF7A2D805CD6007ABC93 /* DGChartsDynamic */,
 				E950A8CC2DD2724700928DEB /* FSCalendar */,
 				E950A8E72DD5ED4D00928DEB /* FirebaseAuth */,
 				E950A8E92DD5ED4D00928DEB /* FirebaseCore */,
 				E950A8EB2DD5ED4D00928DEB /* FirebaseFirestore */,
 				E950A8FA2DD653D800928DEB /* FirebaseStorage */,
-				E950A9022DD72F0700928DEB /* Alamofire */,
-				E950A9042DD72F0700928DEB /* AlamofireDynamic */,
 				E94EC5E02DE7597E00F28D21 /* Kingfisher */,
+				E90F83D52E030AAA00BE05C0 /* DGCharts */,
 			);
 			productName = Test;
 			productReference = E98B6B5A2D53C807005012AB /* Test.app */;
@@ -519,11 +510,10 @@
 			);
 			mainGroup = E98B6B512D53C807005012AB;
 			packageReferences = (
-				E9E2CF772D805CD6007ABC93 /* XCRemoteSwiftPackageReference "Charts" */,
 				E950A8CB2DD2724700928DEB /* XCRemoteSwiftPackageReference "FSCalendar" */,
 				E950A8E62DD5ED4D00928DEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
-				E950A9012DD72F0700928DEB /* XCRemoteSwiftPackageReference "Alamofire" */,
 				E94EC5DF2DE7597E00F28D21 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				E90F83D42E030AAA00BE05C0 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = E98B6B5B2D53C807005012AB /* Products */;
 			projectDirPath = "";
@@ -685,7 +675,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -742,7 +732,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -766,6 +756,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -793,6 +784,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -830,6 +822,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		E90F83D42E030AAA00BE05C0 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 		E94EC5DF2DE7597E00F28D21 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -854,25 +854,14 @@
 				version = 11.11.0;
 			};
 		};
-		E950A9012DD72F0700928DEB /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.10.2;
-			};
-		};
-		E9E2CF772D805CD6007ABC93 /* XCRemoteSwiftPackageReference "Charts" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/danielgindi/Charts";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.1.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		E90F83D52E030AAA00BE05C0 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E90F83D42E030AAA00BE05C0 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
 		E94EC5E02DE7597E00F28D21 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E94EC5DF2DE7597E00F28D21 /* XCRemoteSwiftPackageReference "Kingfisher" */;
@@ -902,26 +891,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E950A8E62DD5ED4D00928DEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
-		};
-		E950A9022DD72F0700928DEB /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E950A9012DD72F0700928DEB /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-		E950A9042DD72F0700928DEB /* AlamofireDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E950A9012DD72F0700928DEB /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = AlamofireDynamic;
-		};
-		E9E2CF782D805CD6007ABC93 /* DGCharts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E9E2CF772D805CD6007ABC93 /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = DGCharts;
-		};
-		E9E2CF7A2D805CD6007ABC93 /* DGChartsDynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E9E2CF772D805CD6007ABC93 /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = DGChartsDynamic;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

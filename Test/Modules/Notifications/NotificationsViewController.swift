@@ -10,6 +10,8 @@ import UIKit
 protocol NotificationsViewInterface: AnyObject {
     func reloadData()
     func showMessage(_ text: String, type: MessageType)
+    func setNoNotificationsLabel(hidden: Bool)
+    func navigateToProfileDetail(userId: String)
 }
 
 final class NotificationsViewController: UIViewController {
@@ -40,6 +42,15 @@ final class NotificationsViewController: UIViewController {
         cv.register(NotificationsCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         return cv
     }()
+    
+    private lazy var noNotificationsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "No Notifications Yet"
+        label.textColor = .gray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = false
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,17 +61,31 @@ final class NotificationsViewController: UIViewController {
     private func setupView(){
         view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
         view.addSubview(collectionView)
+        view.addSubview(noNotificationsLabel)
+        
+        navigationController?.navigationBar.tintColor = UIColor(hex: Constants.Colors.darkGray)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            noNotificationsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noNotificationsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 }
 
 extension NotificationsViewController: NotificationsViewInterface {
+    func navigateToProfileDetail(userId: String) {
+        navigationController?.pushViewController(DIContainer.shared.makeProfileViewController(userId: userId), animated: true)
+    }
+    
+    func setNoNotificationsLabel(hidden: Bool) {
+        noNotificationsLabel.isHidden = hidden
+    }
+    
     func showMessage(_ text: String, type: MessageType) {
         showAlert(text, type: type)
     }
@@ -88,6 +113,10 @@ extension NotificationsViewController: UICollectionViewDelegate, UICollectionVie
 }
 
 extension NotificationsViewController: NotificationsCellDelegate {
+    func didTapProfileImage(at indexPath: IndexPath) {
+        viewModel.didTapProfileImage(at: indexPath)
+    }
+    
     
     func didTapAccept(at indexPath: IndexPath) {
         viewModel.acceptNotification(at: indexPath.item)

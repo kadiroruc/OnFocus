@@ -11,7 +11,6 @@ protocol SignUpViewModelInterface {
     
     func signUpTapped(email: String, password: String)
     func signInTapped()
-    func rememberMeTapped(isSelected: Bool)
 }
 
 final class SignUpViewModel {
@@ -29,11 +28,11 @@ extension SignUpViewModel: SignUpViewModelInterface {
     
     func signUpTapped(email: String, password: String) {
         if email == "" || !email.contains("@") {
-            view?.showError(message: Constants.ValidationMessages.invalidEmail)
+            view?.showMessage(text: Constants.ValidationMessages.invalidEmail, type: .error, nil)
             return
         }
         if password == "" {
-            view?.showError(message: Constants.ValidationMessages.invalidPassword)
+            view?.showMessage(text: Constants.ValidationMessages.invalidPassword, type: .error, nil)
             return
         }
         
@@ -47,10 +46,12 @@ extension SignUpViewModel: SignUpViewModelInterface {
 
                 switch result {
                 case .success:
-                    self.view?.navigateToFillProfile()
+                    self.view?.showMessage(text: "We’ve sent you a verification email. Please check your inbox and also your spam/junk folder if you don’t see it.", type: .info) {
+                        self.view?.navigateToLogin()
+                    }
                 case .failure(let error):
                     self.view?.enableSignUpButton(true)
-                    self.view?.showError(message: error.localizedDescription)
+                    self.view?.showMessage(text: error.localizedDescription, type: .error, nil)
                 }
             }
         }
@@ -59,11 +60,6 @@ extension SignUpViewModel: SignUpViewModelInterface {
     func signInTapped() {
         view?.navigateToLogin()
     }
-    
-    func rememberMeTapped(isSelected: Bool) {
-        // Handle remember me action here
-        // For example, save the selection to UserDefaults or perform any other action
-        
-    }
+
 }
     

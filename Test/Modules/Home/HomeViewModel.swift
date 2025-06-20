@@ -207,6 +207,7 @@ final class HomeViewModel {
 
 extension HomeViewModel: HomeViewModelInterface{
     func stopButtonTapped() {
+        pauseTimeKeeper()
         saveTimeToDatabase(if: true)
         resetTimeKeeper()
     }

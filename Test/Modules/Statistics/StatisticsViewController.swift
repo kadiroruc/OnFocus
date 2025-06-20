@@ -184,8 +184,8 @@ class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         
-        averageLabel.text = "Ortalama: "
-        progressLabel.text = "İlerleme: "
+        averageLabel.text = "Average: "
+        progressLabel.text = "Progress: "
     }
     
     override func viewDidLayoutSubviews() {
@@ -307,8 +307,12 @@ extension StatisticsViewController: StatisticsViewInterface {
         chartView.xAxis.granularityEnabled = true
         chartView.xAxis.labelCount = statistics.count
         
+        if let greatest = values.max(){
+            chartView.leftAxis.axisMaximum = Double(greatest <= 8 ? 8 : greatest)
+        }else{
+            chartView.leftAxis.axisMaximum = 8
+        }
         chartView.leftAxis.axisMinimum = 0
-        chartView.leftAxis.axisMaximum = Double(statistics.count <= 8 ? 8 : statistics.count)
         chartView.leftAxis.granularity = 1
         chartView.leftAxis.granularityEnabled = true
         chartView.leftAxis.labelCount = statistics.count <= 8 ? 8 : statistics.count

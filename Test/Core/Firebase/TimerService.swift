@@ -75,7 +75,6 @@ extension TimerService: TimerServiceProtocol{
 
                     let existing = snapshot.data() ?? [:]
                     let oldTotal = existing["totalDuration"] as? Int ?? 0
-                    
                     let newTotal = oldTotal + Int(session.duration)
                     var data: [String: Any] = ["totalDuration": newTotal]
                     

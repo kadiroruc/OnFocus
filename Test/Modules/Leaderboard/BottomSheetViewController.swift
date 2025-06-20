@@ -115,7 +115,11 @@ class BottomSheetViewController: UIViewController {
 
 extension BottomSheetViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return profiles.count
+        if profiles.count == 0{
+            return 1
+        }else{
+            return profiles.count
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -125,7 +129,13 @@ extension BottomSheetViewController: UICollectionViewDataSource, UICollectionVie
         
         // Rank 4’den başlıyoruz (ilk 3 üstte olduğu için)
         let rank = indexPath.item + 4
-        let profile = profiles[indexPath.item]
+        let profile: ProfileModel
+        if profiles.count == 0{
+            profile = ProfileModel(nickname: "user")
+        }else{
+            profile = profiles[indexPath.item]
+        }
+        
         cell.configure(rank: rank, profile: profile)
         return cell
     }

@@ -63,7 +63,7 @@ class ProfileViewController: UIViewController {
     
     private let totalWorkTimeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Average Work Hour: "
+        label.text = "Total Work Hour: "
         label.textColor = .white
         label.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         label.textAlignment = .center
@@ -239,7 +239,7 @@ class ProfileViewController: UIViewController {
                 
             case Constants.Firebase.accepted:
                 let alert = UIAlertController(title: "Do you want to remove your friend?", message: nil, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Cancel Request", style: .destructive, handler: { _ in
+                alert.addAction(UIAlertAction(title: "Delete Friend", style: .destructive, handler: { _ in
                     self.viewModel.cancelFriendRequest()
                 }))
                 alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
@@ -379,6 +379,6 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
 }
 
 
-#Preview(""){
-    return UINavigationController(rootViewController: DIContainer.shared.makeProfileViewController())
-}
+//#Preview(""){
+//    return UINavigationController(rootViewController: DIContainer.shared.makeProfileViewController())
+//}

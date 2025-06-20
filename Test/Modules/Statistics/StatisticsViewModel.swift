@@ -16,6 +16,10 @@ protocol StatisticsViewModelInterface {
 final class StatisticsViewModel {
     weak var view: StatisticsViewInterface?
     private let timerService: TimerServiceProtocol
+    
+    private var statisticsCache: [FetchTimeRangeType: [StatisticModel]] = [:]
+    private var averageCache: [FetchTimeRangeType: Double] = [:]
+    private var previousAverageCache: [FetchTimeRangeType: Double] = [:]
 
     init(service: TimerServiceProtocol) {
         self.timerService = service
@@ -30,70 +34,83 @@ final class StatisticsViewModel {
         }
         return string
     }
+    
+    private func updateAverageDisplay(currentAverage: Double, type: FetchTimeRangeType) {
+        let totalMinutes = Int(currentAverage) / 60
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+
+        var formatted = ""
+        if hours > 0 { formatted += "\(hours)H" }
+        if minutes > 0 || hours == 0 {
+            if !formatted.isEmpty { formatted += " " }
+            formatted += "\(minutes)M"
+        }
+
+        self.view?.updateAverageLabel(with: formatted)
+
+        // Önceki ortalama cache kontrolü
+        if let previous = previousAverageCache[type] {
+            if previous != 0 {
+                let percent = (currentAverage - previous) / previous * 100
+                self.view?.updateProgressLabel(with: "\(String(format: "%.1f", percent))%")
+            } else {
+                self.view?.updateProgressLabel(with: "-")
+            }
+        } else {
+            let previousDate = Calendar.current.date(byAdding: type.asCalendarComponent, value: type.offsetValue, to: Date())!
+            timerService.fetchAverageDuration(for: type, from: previousDate) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let previous):
+                    self.previousAverageCache[type] = previous
+                    if previous != 0 {
+                        let percent = (currentAverage - previous) / previous * 100
+                        self.view?.updateProgressLabel(with: "\(String(format: "%.1f", percent))%")
+                    } else {
+                        self.view?.updateProgressLabel(with: "-")
+                    }
+                case .failure(let error):
+                    print("Geçmiş ortalama alınamadı: \(error)")
+                }
+            }
+        }
+    }
 }
     
 extension StatisticsViewModel: StatisticsViewModelInterface {
     func loadStatistics(for type: FetchTimeRangeType) {
-        timerService.fetchStatistics(for: type, from: Date()) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let statistics):
-                self.view?.updateChart(with: statistics)
-                
-            case .failure(let error):
-                print("İstatistikler alınamadı: \(error)")
+        // 1. Cache kontrolü
+        if let cachedStats = statisticsCache[type] {
+            self.view?.updateChart(with: cachedStats)
+        } else {
+            timerService.fetchStatistics(for: type, from: Date()) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let statistics):
+                    self.statisticsCache[type] = statistics // Cache'e yaz
+                    self.view?.updateChart(with: statistics)
+                case .failure(let error):
+                    print("İstatistikler alınamadı: \(error)")
+                }
             }
         }
         
-        
-        timerService.fetchAverageDuration(for: type, from: Date()) {[weak self] result in
-            guard let self = self else { return }
-            
-            var currentAverage: Double = 0
-            switch result{
-            case.success(let average):
-                currentAverage = average
-                let totalMinutes = Int(average) / 60
-                let hours = totalMinutes / 60
-                let minutes = totalMinutes % 60
-                
-                var formatted = ""
-                if hours > 0 {
-                    formatted += "\(hours) saat"
+        // 2. Ortalama kontrolü
+        if let cachedAvg = averageCache[type] {
+            self.updateAverageDisplay(currentAverage: cachedAvg, type: type)
+        } else {
+            timerService.fetchAverageDuration(for: type, from: Date()) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let avg):
+                    self.averageCache[type] = avg
+                    self.updateAverageDisplay(currentAverage: avg, type: type)
+                case .failure(let error):
+                    print("Güncel ortalama alınamadı: \(error)")
                 }
-                if minutes > 0 || hours == 0 {
-                    if !formatted.isEmpty { formatted += " " }
-                    formatted += "\(minutes) dakika"
-                }
-                self.view?.updateAverageLabel(with: formatted)
-                
-                //Önceki zaman diliminin ortalaması:
-                
-                let previous = Calendar.current.date(byAdding: type.asCalendarComponent , value: type.offsetValue, to: Date())!
-                
-                timerService.fetchAverageDuration(for: type, from: previous) { [weak self] result in
-                    guard let self = self else { return }
-                    
-                    switch result{
-                    case.success(let average):
-                        if average != 0 {
-                            let percentageChange = (Double(currentAverage - average) / Double(average)) * 100
-                            self.view?.updateProgressLabel(with: "\(String(format: "%.1f", percentageChange))%")
-                        }else{
-                            self.view?.updateProgressLabel(with: "-")
-                        }
-                        
-                    case .failure(let error):
-                        print("Geçmiş ortalama değer alınamadı: \(error)")
-                    }
-                }
-
-            case .failure(let error):
-                print("Güncel ortalama değer alınamadı: \(error)")
             }
         }
-        
-
     }
     
     

@@ -12,7 +12,6 @@ protocol LoginViewModelInterface {
     
     func loginButtonTapped(email: String, password: String)
     func signUpTapped()
-    func rememberMeTapped(isSelected: Bool)
 
 }
 
@@ -20,10 +19,12 @@ final class LoginViewModel{
     weak var view: LoginViewInterface?
     private let authService: AuthServiceProtocol
     private let presenceService: PresenceServiceProtocol
+    private let profileService: ProfileServiceProtocol
     
-    init(authService: AuthServiceProtocol, presenceService: PresenceServiceProtocol) {
+    init(authService: AuthServiceProtocol, presenceService: PresenceServiceProtocol, profileService: ProfileServiceProtocol) {
         self.authService = authService
         self.presenceService = presenceService
+        self.profileService = profileService
     }
     
     
@@ -51,8 +52,20 @@ extension LoginViewModel: LoginViewModelInterface{
 
                 switch result {
                 case .success:
+                    self.profileService.didUserFillProfile { result in
+                        
+                        switch result {
+                        case .success(let filled):
+                            if filled {
+                                self.view?.navigateToHome()
+                            } else {
+                                self.view?.navigateToFillProfile()
+                            }
+                        case .failure(let error):
+                            self.view?.showError(message: error.localizedDescription)
+                        }
+                    }
                     self.presenceService.setUserStatus(online: true)
-                    self.view?.navigateToHome()
                 case .failure(let error):
                     self.view?.enableLoginButton(true)
                     self.view?.showError(message: error.localizedDescription)
@@ -63,11 +76,6 @@ extension LoginViewModel: LoginViewModelInterface{
     
     func signUpTapped() {
         view?.navigateToSignUp()
-    }
-    
-    func rememberMeTapped(isSelected: Bool) {
-        // Handle remember me action
-        
     }
 
     

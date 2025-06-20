@@ -10,8 +10,7 @@ import UIKit
 protocol SignUpViewInterface: AnyObject{
     // UI güncellemeleri
     func showLoading(_ isLoading: Bool)
-    func showError(message: String)
-    
+    func showMessage(text: String, type: MessageType, _ completion: (() -> Void)?)
     // Form ile ilgili işlemler
     func enableSignUpButton(_ isEnabled: Bool)
     
@@ -93,25 +92,6 @@ final class SignUpViewController: UIViewController{
         return btn
     }()
     
-    private let rememberMeCheckbox: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setImage(UIImage(systemName: Constants.Icons.square), for: .normal)
-        btn.setImage(UIImage(systemName: Constants.Icons.checkmarkSquareFill), for: .selected)
-        btn.tintColor = UIColor(hex: Constants.Colors.darkGray)
-        btn.backgroundColor = .clear
-        return btn
-    }()
-    
-    private let rememberMeLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Remember me"
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textColor = UIColor(hex: Constants.Colors.darkGray)
-        return label
-    }()
-    
     private let signUpButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -168,6 +148,11 @@ final class SignUpViewController: UIViewController{
         setupUI()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true) // Klavyeyi kapatır
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.setGradientBackground(colors: [UIColor(hex: Constants.Colors.lightPeach), .white])
@@ -183,8 +168,6 @@ final class SignUpViewController: UIViewController{
         view.addSubview(titleLabel)
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
-        view.addSubview(rememberMeCheckbox)
-        view.addSubview(rememberMeLabel)
         view.addSubview(signUpButton)
         view.addSubview(bottomLabel)
         view.addSubview(signInLinkButton)
@@ -192,7 +175,6 @@ final class SignUpViewController: UIViewController{
         
         //Setup Actions
         showPasswordButton.addTarget(self, action: #selector(showPasswordButtonTapped), for: .touchUpInside)
-        rememberMeCheckbox.addTarget(self, action: #selector(rememberMeCheckboxTapped), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
         signInLinkButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
         
@@ -219,16 +201,9 @@ final class SignUpViewController: UIViewController{
             showPasswordButton.widthAnchor.constraint(equalToConstant: 30),
             showPasswordButton.heightAnchor.constraint(equalToConstant: 30),
             
-            // Remember Me
-            rememberMeCheckbox.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 30),
-            rememberMeCheckbox.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor,constant: 2),
-            rememberMeCheckbox.widthAnchor.constraint(equalToConstant: 24),
-            rememberMeCheckbox.heightAnchor.constraint(equalToConstant: 24),
-            rememberMeLabel.centerYAnchor.constraint(equalTo: rememberMeCheckbox.centerYAnchor),
-            rememberMeLabel.leadingAnchor.constraint(equalTo: rememberMeCheckbox.trailingAnchor, constant: 6),
             
             // Sign In Button
-            signUpButton.topAnchor.constraint(equalTo: rememberMeCheckbox.bottomAnchor, constant: 30),
+            signUpButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 50),
             signUpButton.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
             signUpButton.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
             signUpButton.heightAnchor.constraint(equalToConstant: 50),
@@ -256,11 +231,6 @@ final class SignUpViewController: UIViewController{
         showPasswordButton.setImage(image, for: .normal)
     }
 
-    @objc private func rememberMeCheckboxTapped() {
-        rememberMeCheckbox.isSelected.toggle()
-        viewModel.rememberMeTapped(isSelected: rememberMeCheckbox.isSelected)
-    }
-
     @objc private func signUpTapped() {
         viewModel.signUpTapped(email: emailTextField.text ?? "", password: passwordTextField.text ?? "")
     }
@@ -282,10 +252,8 @@ extension SignUpViewController: SignUpViewInterface{
         }
     }
     
-    func showError(message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
-        present(alert, animated: true)
+    func showMessage(text: String, type: MessageType, _ completion: (() -> Void)? = nil) {
+        showAlert(text, type: type, completion: completion)
     }
     
     func enableSignUpButton(_ isEnabled: Bool) {

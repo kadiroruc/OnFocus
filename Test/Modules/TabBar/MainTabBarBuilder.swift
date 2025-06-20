@@ -12,7 +12,7 @@ struct MainTabBarBuilder {
         let tabBarController = UITabBarController()
 
         let leaderboardVC = container.makeLeaderboardViewController()
-        leaderboardVC.title = "Leaderboard"
+        leaderboardVC.title = "Weekly Leaderboard"
         let leaderboardNav = UINavigationController(rootViewController: leaderboardVC)
         leaderboardNav.tabBarItem = UITabBarItem(
             title: nil,

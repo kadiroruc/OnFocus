@@ -33,6 +33,8 @@ protocol ProfileServiceProtocol {
                             completion: @escaping (Result<Void, Error>) -> Void)
     
     func updateStreakDay(completion: @escaping (Result<Void, Error>) -> Void)
+    
+    func didUserFillProfile(completion: @escaping (Result<Bool, Error>) -> Void)
 
     
     
@@ -76,7 +78,7 @@ extension ProfileService: ProfileServiceProtocol {
             return
         }
         
-        var userData: [String: Any] = [
+        let userData: [String: Any] = [
             "name": name,
             "nickname": nickname
         ]
@@ -95,7 +97,9 @@ extension ProfileService: ProfileServiceProtocol {
                     saveToFirestore(userId: userId, data: updatedUserData, completion: completion)
 
                 } catch {
-                    completion(.failure(error))
+                    completion(.failure(NSError(domain: "NetworkError",
+                                        code: -2,
+                                        userInfo: [NSLocalizedDescriptionKey: "Failed to upload image."])))
                 }
             }
             
@@ -222,7 +226,7 @@ extension ProfileService: ProfileServiceProtocol {
                                         userInfo: [NSLocalizedDescriptionKey: "Invalid image data."])))
             return
         }
-
+        
         guard let networkManager = networkManager else {
             completion(.failure(NSError(domain: "NetworkError",
                                         code: -3,
@@ -268,6 +272,30 @@ extension ProfileService: ProfileServiceProtocol {
                 completion(.success(()))
             }
         }
+    }
+    
+    func didUserFillProfile(completion: @escaping (Result<Bool, Error>) -> Void){
+        guard let userId = currentUserId else { return }
+        
+        db.collection("users").document(userId).getDocument { document, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let document = document, document.exists else {
+                completion(.failure(error ?? NSError(domain: "Firestore", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document not found."])))
+                return
+            }
+            
+            // Profil verilerini kontrol et
+            if let name = document.get("name") as? String{
+                completion(.success((true)))
+            } else {
+                completion(.success(false))
+            }
+        }
+
     }
     
     

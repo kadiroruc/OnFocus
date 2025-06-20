@@ -84,7 +84,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
                 DispatchQueue.main.async {
                     self.view?.showMessage(Constants.ValidationMessages.profileImageUpdated, type: .success)
                 }
-            case .failure(let error):
+            case .failure(_):
                 DispatchQueue.main.async {
                     self.view?.showMessage(Constants.ValidationMessages.profileImageUpdateError, type: .error)
                 }
@@ -105,7 +105,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
                         self.view?.showMessage(Constants.ValidationMessages.friendRequestCancelled, type: .success)
                         self.view?.configureAddFriendButton("")
                     case .failure:
-                        self.view?.showMessage(Constants.ValidationMessages.friendRequestError, type: .error)
+                        self.view?.showMessage(Constants.ValidationMessages.friendRequestCancelledError, type: .error)
                     }
                 }
             }
@@ -145,11 +145,11 @@ extension ProfileViewModel: ProfileViewModelInterface {
             switch result {
             case .success(let profile):
                 DispatchQueue.main.async {
-                    if profile.nickname == ""{
+                    if let nickname = profile.nickname{
+                        self.view?.updateNickname(nickname)
+                    }else{
                         self.view?.navigateToFillProfile()
-                        return
                     }
-                    self.view?.updateNickname(profile.nickname)
                     if let profileImageUrl = profile.profileImageURL,
                        let url = URL(string: profileImageUrl) {
                         self.view?.updateProfileImage(with: url)
@@ -166,6 +166,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
                     }
                 }
             case .failure(_):
+                
                 print("Profile fetch error")
             }
             group.leave()

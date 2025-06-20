@@ -16,9 +16,10 @@ protocol NotificationsViewModelInterface {
     func notification(at index: Int) -> NotificationModel
     func acceptNotification(at index: Int)
     func declineNotification(at index: Int)
+    func didTapProfileImage(at indexPath: IndexPath)
 }
 
-final class NotificationsViewModel: NotificationsViewModelInterface {
+final class NotificationsViewModel{
     
     weak var view: NotificationsViewInterface?
     
@@ -32,6 +33,16 @@ final class NotificationsViewModel: NotificationsViewModelInterface {
         self.friendsService = friendsService
         self.profileService = profileService
     }
+    
+ 
+}
+
+extension NotificationsViewModel: NotificationsViewModelInterface{
+    func didTapProfileImage(at indexPath: IndexPath) {
+        guard let userId = notifications[indexPath.item].user.id else {return}
+        view?.navigateToProfileDetail(userId: userId)
+    }
+    
     
     func viewDidLoad() {
         guard let userId = profileService.currentUserId else {
@@ -47,6 +58,7 @@ final class NotificationsViewModel: NotificationsViewModelInterface {
                     self.friendshipModels = []
                     self.notifications = []
                     self.view?.reloadData()
+                    self.view?.setNoNotificationsLabel(hidden: false)
                     return
                 }
 
@@ -71,6 +83,9 @@ final class NotificationsViewModel: NotificationsViewModelInterface {
                 }
 
                 group.notify(queue: .main) {
+                    if !self.notifications.isEmpty{
+                        self.view?.setNoNotificationsLabel(hidden: true)
+                    }
                     self.view?.reloadData()
                 }
 
@@ -97,6 +112,9 @@ final class NotificationsViewModel: NotificationsViewModelInterface {
                 print("Friend request accepted successfully")
                 self.friendshipModels.remove(at: index)
                 self.notifications.remove(at: index)
+                if self.notifications.isEmpty{
+                    self.view?.setNoNotificationsLabel(hidden: false)
+                }
                 self.view?.reloadData()
             case .failure(let error):
                 print("Friend request acceptance error: \(error.localizedDescription)")
@@ -113,6 +131,9 @@ final class NotificationsViewModel: NotificationsViewModelInterface {
                 print("Friend request rejected successfully")
                 self.friendshipModels.remove(at: index)
                 self.notifications.remove(at: index)
+                if self.notifications.isEmpty{
+                    self.view?.setNoNotificationsLabel(hidden: false)
+                }
                 self.view?.reloadData()
             case .failure(let error):
                 print("Friend request reject error: \(error.localizedDescription)")
