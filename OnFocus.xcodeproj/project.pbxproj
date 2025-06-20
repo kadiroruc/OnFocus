@@ -348,7 +348,7 @@
 		E98B6B512D53C807005012AB = {
 			isa = PBXGroup;
 			children = (
-				E98B6B5C2D53C807005012AB /* Test */,
+				E98B6B5C2D53C807005012AB /* OnFocus */,
 				E98B6B5B2D53C807005012AB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -361,7 +361,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		E98B6B5C2D53C807005012AB /* Test */ = {
+		E98B6B5C2D53C807005012AB /* OnFocus */ = {
 			isa = PBXGroup;
 			children = (
 				E96518282E02D13200865163 /* Config */,
@@ -373,7 +373,7 @@
 				E98B6B6B2D53C80A005012AB /* Info.plist */,
 				E950A8DD2DD50F4300928DEB /* GoogleService-Info.plist */,
 			);
-			path = Test;
+			path = OnFocus;
 			sourceTree = "<group>";
 		};
 		E9CBD3F72DBA641200DF9A09 /* Search */ = {
@@ -751,7 +751,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Test/Info.plist;
+				INFOPLIST_FILE = OnFocus/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -762,7 +762,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.Test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -779,7 +779,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Test/Info.plist;
+				INFOPLIST_FILE = OnFocus/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -790,7 +790,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.Test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
