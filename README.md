@@ -15,8 +15,9 @@ Core functionalities are being actively implemented and tested.
 
 - `Swift` & `UIKit`
 - **MVVM Architecture** (work in progress)
-- **Programmatic UI** with Auto Layout
-- [`Alamofire`](https://github.com/Alamofire/Alamofire) – Networking
+- **Programmatic UI**
+- Generic Network Layer - URL Session
+- DIContainer
 - [`DGCharts`](https://github.com/danielgindi/Charts) – Charting library
 - [`FSCalendar`](https://github.com/WenchaoD/FSCalendar) – Calendar integration
 - **Firebase** – Authentication & Cloud Firestore
