@@ -12,4 +12,5 @@ struct SettingsModel{
     let image: UIImage
     let text: String
     var switchOn: Bool
+    var isSwitchHidden: Bool = false
 }

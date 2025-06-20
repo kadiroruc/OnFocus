@@ -309,9 +309,17 @@ extension ProfileViewController: ProfileViewInterface {
     }
     
     func navigateToLogin() {
+        guard let scene = view.window?.windowScene else { return }
+        
         let loginVC = DIContainer.shared.makeLoginViewController()
-        loginVC.modalPresentationStyle = .fullScreen
-        present(loginVC, animated: true, completion: nil)
+        
+        if let delegate = scene.delegate as? SceneDelegate,
+           let window = delegate.window {
+            
+            UIView.transition(with: window, duration: 0.4, options: .transitionFlipFromRight) {
+                window.rootViewController = loginVC
+            }
+        }
     }
     
     func setAddFriendButtonHidden(_ hidden: Bool) {

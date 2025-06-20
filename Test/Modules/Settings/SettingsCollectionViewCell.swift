@@ -53,6 +53,7 @@ class SettingsCollectionViewCell: UICollectionViewCell {
         imageView.image = settingsModel.image
         label.text = settingsModel.text
         switchButton.isOn = settingsModel.switchOn
+        switchButton.isHidden = settingsModel.isSwitchHidden
         self.switchAction = switchAction
     }
     

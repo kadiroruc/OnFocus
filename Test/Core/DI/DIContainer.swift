@@ -66,7 +66,7 @@ final class DIContainer {
     }
     
     func makeSettingsViewModel() -> SettingsViewModel {
-        return SettingsViewModel()
+        return SettingsViewModel(profileService: profileService)
     }
     
     func makeSignUpViewModel() -> SignUpViewModel {

@@ -50,6 +50,7 @@ struct Constants {
         static let personBadgeClockFill = "person.badge.clock.fill"
         static let personFillCheckmark = "person.fill.checkmark"
         static let stop = "stop"
+        static let xmarkBin = "xmark.bin"
     }
     
     struct CellIdentifiers{

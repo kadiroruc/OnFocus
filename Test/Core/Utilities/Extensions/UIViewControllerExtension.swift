@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIViewController {
-    func showAlert(_ text: String, type: MessageType, completion: (() -> Void)? = nil) {
+    func showAlert(_ text: String, type: MessageType, _ isCancelEnabled: Bool? = nil, completion: (() -> Void)? = nil) {
         let title: String
         switch type {
         case .success:
@@ -34,6 +34,11 @@ extension UIViewController {
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             completion?()
         }
+        if let isCancelEnabled = isCancelEnabled, isCancelEnabled {
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            alert.addAction(cancelAction)
+        }
+       
 
         alert.addAction(okAction)
         present(alert, animated: true)

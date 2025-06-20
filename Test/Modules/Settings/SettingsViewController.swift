@@ -9,6 +9,8 @@ import UIKit
 
 protocol SettingsViewInterface: AnyObject {
     func changeTimerMode(timeKeeperMode: Bool)
+    func showMessage(_ text: String, type: MessageType, isCancelEnabled:Bool,  _ completion: (() -> Void)?)
+    func navigateToLogin()
 }
 
 protocol SettingsCoordinatorDelegate: AnyObject {
@@ -95,9 +97,31 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
         10
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.tappedSetting(at: indexPath.item)
+    }
+    
 }
 
 extension SettingsViewController: SettingsViewInterface{
+    func navigateToLogin() {
+        guard let scene = view.window?.windowScene else { return }
+        
+        let loginVC = DIContainer.shared.makeLoginViewController()
+        
+        if let delegate = scene.delegate as? SceneDelegate,
+           let window = delegate.window {
+            
+            UIView.transition(with: window, duration: 0.4, options: .transitionFlipFromRight) {
+                window.rootViewController = loginVC
+            }
+        }
+    }
+    
+    func showMessage(_ text: String, type: MessageType, isCancelEnabled:Bool, _ completion: (() -> Void)?) {
+        showAlert(text, type: type, isCancelEnabled, completion: completion)
+    }
+    
     func changeTimerMode(timeKeeperMode: Bool) {
         delegate?.didChangeTimerMode(timeKeeperMode: timeKeeperMode)
     }

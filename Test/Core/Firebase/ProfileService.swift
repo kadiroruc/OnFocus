@@ -35,6 +35,8 @@ protocol ProfileServiceProtocol {
     func updateStreakDay(completion: @escaping (Result<Void, Error>) -> Void)
     
     func didUserFillProfile(completion: @escaping (Result<Bool, Error>) -> Void)
+    
+    func deleteProfile(completion: @escaping (Result<Void, Error>) -> Void)
 
     
     
@@ -296,6 +298,23 @@ extension ProfileService: ProfileServiceProtocol {
             }
         }
 
+    }
+    
+    func deleteProfile(completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let userId = currentUserId else {
+            completion(.failure(NSError(domain: "AuthError",
+                                        code: -1,
+                                        userInfo: [NSLocalizedDescriptionKey: Constants.ValidationMessages.notLoggedIn])))
+            return
+        }
+        
+        db.collection("users").document(userId).delete { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
     }
     
     
