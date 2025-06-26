@@ -1,4 +1,4 @@
-# 🕒 Online Work Timer App (In Development)
+# 🕒 Social Study Timer Mobile App
 
 An **iOS productivity app** designed to enhance focus through structured work sessions, extended statistics, and social features — inspired by the Pomodoro technique.
 
