@@ -14,7 +14,7 @@ Core functionalities are being actively implemented and tested.
 ## 🛠️ Technologies Used
 
 - `Swift` & `UIKit`
-- **MVVM Architecture** (work in progress)
+- **MVVM Architecture**
 - **Programmatic UI**
 - Generic Network Layer - URL Session
 - DIContainer
