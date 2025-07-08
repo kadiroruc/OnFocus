@@ -33,7 +33,6 @@
 		E950A8CF2DD27DD400928DEB /* StreakCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */; };
 		E950A8D72DD4E58400928DEB /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8D62DD4E58300928DEB /* SignUpViewModel.swift */; };
 		E950A8DA2DD4EB3000928DEB /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E950A8D92DD4EB3000928DEB /* AuthService.swift */; };
-		E950A8DE2DD50F4300928DEB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E950A8DD2DD50F4300928DEB /* GoogleService-Info.plist */; };
 		E950A8E82DD5ED4D00928DEB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8E72DD5ED4D00928DEB /* FirebaseAuth */; };
 		E950A8EA2DD5ED4D00928DEB /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8E92DD5ED4D00928DEB /* FirebaseCore */; };
 		E950A8EC2DD5ED4D00928DEB /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8EB2DD5ED4D00928DEB /* FirebaseFirestore */; };
@@ -57,6 +56,12 @@
 		E96ACACE2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACACD2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift */; };
 		E96ACAD22DFDAEEB00E1C191 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACAD12DFDAEEB00E1C191 /* DateExtension.swift */; };
 		E96ACAD42DFF261900E1C191 /* Timestamp Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACAD32DFF261900E1C191 /* Timestamp Extension.swift */; };
+		E96BE0462E100D8500CE0651 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96BE0452E100D8500CE0651 /* AppDelegate.swift */; };
+		E96BE0482E100D8500CE0651 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96BE0472E100D8500CE0651 /* ViewController.swift */; };
+		E96BE04A2E100D8700CE0651 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E96BE0492E100D8700CE0651 /* Assets.xcassets */; };
+		E96BE04D2E100D8700CE0651 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E96BE04C2E100D8700CE0651 /* Base */; };
+		E96BE0552E100EAC00CE0651 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E96BE0542E100EAC00CE0651 /* GoogleService-Info.plist */; };
+		E96BE0562E100EAC00CE0651 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E96BE0542E100EAC00CE0651 /* GoogleService-Info.plist */; };
 		E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5D2D53C807005012AB /* AppDelegate.swift */; };
 		E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5F2D53C807005012AB /* SceneDelegate.swift */; };
 		E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B612D53C807005012AB /* HomeViewController.swift */; };
@@ -64,6 +69,8 @@
 		E98B6B6A2D53C80A005012AB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B692D53C80A005012AB /* Base */; };
 		E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */; };
 		E9A6F1862DD7ECA400016F4C /* ProfileVewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */; };
+		E9B3E3D42E1D619E0097A5BE /* EULAModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B3E3D32E1D619E0097A5BE /* EULAModalViewController.swift */; };
+		E9B3E3D62E1D61CA0097A5BE /* EULA.html in Resources */ = {isa = PBXBuildFile; fileRef = E9B3E3D52E1D61CA0097A5BE /* EULA.html */; };
 		E9B6997A2DDD05F7006B05E4 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9B699792DDD05F7006B05E4 /* Config.plist */; };
 		E9B6997C2DDD0628006B05E4 /* SampleConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9B6997B2DDD0628006B05E4 /* SampleConfig.plist */; };
 		E9CBD3F92DBA642300DF9A09 /* ProfileSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */; };
@@ -107,7 +114,6 @@
 		E950A8CE2DD27DD400928DEB /* StreakCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakCalendarCell.swift; sourceTree = "<group>"; };
 		E950A8D62DD4E58300928DEB /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		E950A8D92DD4EB3000928DEB /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		E950A8DD2DD50F4300928DEB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E950A8F22DD6131700928DEB /* MainTabBarBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarBuilder.swift; sourceTree = "<group>"; };
 		E950A8F62DD6505300928DEB /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		E950A8FF2DD72A8A00928DEB /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -127,7 +133,14 @@
 		E96ACACD2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardBottomSheetCollectionViewCell.swift; sourceTree = "<group>"; };
 		E96ACAD12DFDAEEB00E1C191 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		E96ACAD32DFF261900E1C191 /* Timestamp Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timestamp Extension.swift"; sourceTree = "<group>"; };
-		E98B6B5A2D53C807005012AB /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E96BE0432E100D8500CE0651 /* OnFocusMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnFocusMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E96BE0452E100D8500CE0651 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		E96BE0472E100D8500CE0651 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E96BE0492E100D8700CE0651 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E96BE04C2E100D8700CE0651 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		E96BE04E2E100D8700CE0651 /* OnFocus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OnFocus.entitlements; sourceTree = "<group>"; };
+		E96BE0542E100EAC00CE0651 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E98B6B5A2D53C807005012AB /* OnFocus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnFocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E98B6B5D2D53C807005012AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E98B6B5F2D53C807005012AB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E98B6B612D53C807005012AB /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -136,6 +149,8 @@
 		E98B6B6B2D53C80A005012AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillProfileViewModel.swift; sourceTree = "<group>"; };
 		E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVewModel.swift; sourceTree = "<group>"; };
+		E9B3E3D32E1D619E0097A5BE /* EULAModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAModalViewController.swift; sourceTree = "<group>"; };
+		E9B3E3D52E1D61CA0097A5BE /* EULA.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = EULA.html; sourceTree = "<group>"; };
 		E9B699792DDD05F7006B05E4 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		E9B6997B2DDD0628006B05E4 /* SampleConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SampleConfig.plist; sourceTree = "<group>"; };
 		E9CBD3F82DBA642300DF9A09 /* ProfileSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSearchViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +171,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		E96BE0402E100D8500CE0651 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E98B6B572D53C807005012AB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -224,6 +246,7 @@
 				E98B6B662D53C809005012AB /* Assets.xcassets */,
 				E9B699792DDD05F7006B05E4 /* Config.plist */,
 				E9B6997B2DDD0628006B05E4 /* SampleConfig.plist */,
+				E9B3E3D52E1D61CA0097A5BE /* EULA.html */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -345,10 +368,23 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		E96BE0442E100D8500CE0651 /* OnFocus */ = {
+			isa = PBXGroup;
+			children = (
+				E96BE0452E100D8500CE0651 /* AppDelegate.swift */,
+				E96BE0472E100D8500CE0651 /* ViewController.swift */,
+				E96BE0492E100D8700CE0651 /* Assets.xcassets */,
+				E96BE04B2E100D8700CE0651 /* Main.storyboard */,
+				E96BE04E2E100D8700CE0651 /* OnFocus.entitlements */,
+			);
+			path = OnFocus;
+			sourceTree = "<group>";
+		};
 		E98B6B512D53C807005012AB = {
 			isa = PBXGroup;
 			children = (
 				E98B6B5C2D53C807005012AB /* OnFocus */,
+				E96BE0442E100D8500CE0651 /* OnFocus */,
 				E98B6B5B2D53C807005012AB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -356,7 +392,8 @@
 		E98B6B5B2D53C807005012AB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E98B6B5A2D53C807005012AB /* Test.app */,
+				E98B6B5A2D53C807005012AB /* OnFocus.app */,
+				E96BE0432E100D8500CE0651 /* OnFocusMac.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -364,14 +401,14 @@
 		E98B6B5C2D53C807005012AB /* OnFocus */ = {
 			isa = PBXGroup;
 			children = (
-				E96518282E02D13200865163 /* Config */,
-				E96518252E02D06600865163 /* Core */,
 				E950A9082DD73ADC00928DEB /* App */,
+				E96518252E02D06600865163 /* Core */,
+				E96518282E02D13200865163 /* Config */,
 				E950A9122DD73EEB00928DEB /* Models */,
 				E950A90A2DD73B1600928DEB /* Modules */,
 				E950A9092DD73AF400928DEB /* Resources */,
 				E98B6B6B2D53C80A005012AB /* Info.plist */,
-				E950A8DD2DD50F4300928DEB /* GoogleService-Info.plist */,
+				E96BE0542E100EAC00CE0651 /* GoogleService-Info.plist */,
 			);
 			path = OnFocus;
 			sourceTree = "<group>";
@@ -451,6 +488,7 @@
 			isa = PBXGroup;
 			children = (
 				E90741752D7DB60700E7599C /* SignUpViewController.swift */,
+				E9B3E3D32E1D619E0097A5BE /* EULAModalViewController.swift */,
 				E950A8D62DD4E58300928DEB /* SignUpViewModel.swift */,
 			);
 			path = SignUp;
@@ -459,9 +497,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E98B6B592D53C807005012AB /* Test */ = {
+		E96BE0422E100D8500CE0651 /* OnFocusMac */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E98B6B6E2D53C80A005012AB /* Build configuration list for PBXNativeTarget "Test" */;
+			buildConfigurationList = E96BE0512E100D8700CE0651 /* Build configuration list for PBXNativeTarget "OnFocusMac" */;
+			buildPhases = (
+				E96BE03F2E100D8500CE0651 /* Sources */,
+				E96BE0402E100D8500CE0651 /* Frameworks */,
+				E96BE0412E100D8500CE0651 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OnFocusMac;
+			productName = OnFocus;
+			productReference = E96BE0432E100D8500CE0651 /* OnFocusMac.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E98B6B592D53C807005012AB /* OnFocus */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E98B6B6E2D53C80A005012AB /* Build configuration list for PBXNativeTarget "OnFocus" */;
 			buildPhases = (
 				E98B6B562D53C807005012AB /* Sources */,
 				E98B6B572D53C807005012AB /* Frameworks */,
@@ -471,7 +526,7 @@
 			);
 			dependencies = (
 			);
-			name = Test;
+			name = OnFocus;
 			packageProductDependencies = (
 				E950A8CC2DD2724700928DEB /* FSCalendar */,
 				E950A8E72DD5ED4D00928DEB /* FirebaseAuth */,
@@ -482,7 +537,7 @@
 				E90F83D52E030AAA00BE05C0 /* DGCharts */,
 			);
 			productName = Test;
-			productReference = E98B6B5A2D53C807005012AB /* Test.app */;
+			productReference = E98B6B5A2D53C807005012AB /* OnFocus.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -495,6 +550,9 @@
 				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
+					E96BE0422E100D8500CE0651 = {
+						CreatedOnToolsVersion = 15.3;
+					};
 					E98B6B592D53C807005012AB = {
 						CreatedOnToolsVersion = 15.3;
 					};
@@ -519,27 +577,48 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E98B6B592D53C807005012AB /* Test */,
+				E98B6B592D53C807005012AB /* OnFocus */,
+				E96BE0422E100D8500CE0651 /* OnFocusMac */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		E96BE0412E100D8500CE0651 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E96BE04A2E100D8700CE0651 /* Assets.xcassets in Resources */,
+				E96BE04D2E100D8700CE0651 /* Base in Resources */,
+				E96BE0562E100EAC00CE0651 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E98B6B582D53C807005012AB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				E9B6997A2DDD05F7006B05E4 /* Config.plist in Resources */,
+				E9B3E3D62E1D61CA0097A5BE /* EULA.html in Resources */,
 				E98B6B672D53C809005012AB /* Assets.xcassets in Resources */,
+				E96BE0552E100EAC00CE0651 /* GoogleService-Info.plist in Resources */,
 				E98B6B6A2D53C80A005012AB /* Base in Resources */,
 				E9B6997C2DDD0628006B05E4 /* SampleConfig.plist in Resources */,
-				E950A8DE2DD50F4300928DEB /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		E96BE03F2E100D8500CE0651 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E96BE0482E100D8500CE0651 /* ViewController.swift in Sources */,
+				E96BE0462E100D8500CE0651 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E98B6B562D53C807005012AB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -552,6 +631,7 @@
 				E92681DC2DA9842A00138259 /* ProfileViewController.swift in Sources */,
 				E95460D02DDA1EDC00BB7365 /* UIViewExtension.swift in Sources */,
 				E9A6F1862DD7ECA400016F4C /* ProfileVewModel.swift in Sources */,
+				E9B3E3D42E1D619E0097A5BE /* EULAModalViewController.swift in Sources */,
 				E95460D42DDA1F0600BB7365 /* DateFormatterExtension.swift in Sources */,
 				E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */,
 				E9DE97862DB7D1E100832C8B /* NotificationsViewController.swift in Sources */,
@@ -612,6 +692,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		E96BE04B2E100D8700CE0651 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E96BE04C2E100D8700CE0651 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		E98B6B682D53C80A005012AB /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -623,6 +711,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		E96BE04F2E100D8700CE0651 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OnFocus/OnFocus.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocus;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		E96BE0502E100D8700CE0651 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OnFocus/OnFocus.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocus;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		E98B6B6C2D53C80A005012AB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -752,10 +898,12 @@
 				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OnFocus/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need to access your photo library.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -780,10 +928,12 @@
 				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OnFocus/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need to access your photo library.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -801,6 +951,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		E96BE0512E100D8700CE0651 /* Build configuration list for PBXNativeTarget "OnFocusMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E96BE04F2E100D8700CE0651 /* Debug */,
+				E96BE0502E100D8700CE0651 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E98B6B552D53C807005012AB /* Build configuration list for PBXProject "OnFocus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -810,7 +969,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E98B6B6E2D53C80A005012AB /* Build configuration list for PBXNativeTarget "Test" */ = {
+		E98B6B6E2D53C80A005012AB /* Build configuration list for PBXNativeTarget "OnFocus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E98B6B6F2D53C80A005012AB /* Debug */,

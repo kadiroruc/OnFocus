@@ -100,6 +100,8 @@ final class SignUpViewController: UIViewController{
         btn.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         btn.layer.cornerRadius = 17
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        btn.isEnabled = false
+        btn.alpha = 0.5
         return btn
     }()
 
@@ -129,6 +131,32 @@ final class SignUpViewController: UIViewController{
         indicator.color = .gray
         return indicator
     }()
+    
+    private let termsCheckbox: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(systemName: "square"), for: .normal)
+        btn.setImage(UIImage(systemName: "checkmark.square.fill"), for: .selected)
+        btn.tintColor = UIColor(hex: Constants.Colors.mintGreen)
+        return btn
+    }()
+    
+    private let termsLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "I agree to the Terms and Conditions"
+        label.textColor = UIColor(hex: Constants.Colors.darkGray)
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.isUserInteractionEnabled = true
+        return label
+    }()
+    
+    private var isTermsChecked = false {
+        didSet {
+            termsCheckbox.isSelected = isTermsChecked
+            updateSignUpButtonState()
+        }
+    }
     
     //MARK: - Init Functions
     init(viewModel : SignUpViewModelInterface) {
@@ -172,11 +200,16 @@ final class SignUpViewController: UIViewController{
         view.addSubview(bottomLabel)
         view.addSubview(signInLinkButton)
         view.addSubview(activityIndicator)
+        view.addSubview(termsCheckbox)
+        view.addSubview(termsLabel)
         
         //Setup Actions
         showPasswordButton.addTarget(self, action: #selector(showPasswordButtonTapped), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(signUpTapped), for: .touchUpInside)
         signInLinkButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(termsLabelTapped))
+        termsLabel.addGestureRecognizer(tapGesture)
+        termsCheckbox.addTarget(self, action: #selector(termsCheckboxTapped), for: .touchUpInside)
         
         
         NSLayoutConstraint.activate([
@@ -201,13 +234,21 @@ final class SignUpViewController: UIViewController{
             showPasswordButton.widthAnchor.constraint(equalToConstant: 30),
             showPasswordButton.heightAnchor.constraint(equalToConstant: 30),
             
+            // Terms Checkbox and Label
+            termsCheckbox.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
+            termsCheckbox.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
+            termsCheckbox.widthAnchor.constraint(equalToConstant: 24),
+            termsCheckbox.heightAnchor.constraint(equalToConstant: 24),
             
-            // Sign In Button
-            signUpButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 50),
+            termsLabel.centerYAnchor.constraint(equalTo: termsCheckbox.centerYAnchor),
+            termsLabel.leadingAnchor.constraint(equalTo: termsCheckbox.trailingAnchor, constant: 8),
+            termsLabel.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
+            
+            // Move signUpButton below terms
+            signUpButton.topAnchor.constraint(equalTo: termsCheckbox.bottomAnchor, constant: 30),
             signUpButton.leadingAnchor.constraint(equalTo: emailTextField.leadingAnchor),
             signUpButton.trailingAnchor.constraint(equalTo: emailTextField.trailingAnchor),
             signUpButton.heightAnchor.constraint(equalToConstant: 50),
-            
             
             // Bottom Sign Up
             bottomLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
@@ -232,11 +273,35 @@ final class SignUpViewController: UIViewController{
     }
 
     @objc private func signUpTapped() {
+        guard isTermsChecked else {
+            showMessage(text: "You must agree to the Terms and Conditions.", type: .error, nil)
+            return
+        }
         viewModel.signUpTapped(email: emailTextField.text ?? "", password: passwordTextField.text ?? "")
     }
 
     @objc private func signInTapped() {
         viewModel.signInTapped()
+    }
+
+    @objc private func termsCheckboxTapped() {
+        // Show EULA modal when checkbox is tapped
+        let eulaVC = EULAModalViewController()
+        eulaVC.modalPresentationStyle = .formSheet
+        eulaVC.delegate = self
+        present(eulaVC, animated: true)
+    }
+    
+    @objc private func termsLabelTapped() {
+        let eulaVC = EULAModalViewController()
+        eulaVC.modalPresentationStyle = .formSheet
+        eulaVC.delegate = self
+        present(eulaVC, animated: true)
+    }
+    
+    private func updateSignUpButtonState() {
+        let isFormValid = isTermsChecked // Add other form validations if needed
+        enableSignUpButton(isFormValid)
     }
 }
 
@@ -274,6 +339,15 @@ extension SignUpViewController: SignUpViewInterface{
     
 }
 
+extension SignUpViewController: EULAModalDelegate {
+    func eulaDidAccept() {
+        isTermsChecked = true
+    }
+    func eulaDidReject() {
+        isTermsChecked = false
+    }
+}
+
 //#Preview("SignUpViewController"){
-//    
+//
 //}

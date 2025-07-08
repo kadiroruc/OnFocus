@@ -14,8 +14,8 @@ protocol SignUpViewModelInterface {
 }
 
 final class SignUpViewModel {
-    
     weak var view: SignUpViewInterface?
+    
     private let authService: AuthServiceProtocol
     
     init(authService: AuthServiceProtocol) {
@@ -46,7 +46,7 @@ extension SignUpViewModel: SignUpViewModelInterface {
 
                 switch result {
                 case .success:
-                    self.view?.showMessage(text: "We’ve sent you a verification email. Please check your inbox and also your spam/junk folder if you don’t see it.", type: .info) {
+                    self.view?.showMessage(text: Constants.ValidationMessages.emailVerificationSent, type: .info) {
                         self.view?.navigateToLogin()
                     }
                 case .failure(let error):

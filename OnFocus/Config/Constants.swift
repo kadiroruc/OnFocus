@@ -74,6 +74,7 @@ struct Constants {
         static let profileImageUpdated = "Profile image updated successfully."
         static let profileImageUpdateError = "Error updating profile image. Please try again."
         static let resetTimeKeeperConfirmation = "Are you sure you want to cancel the timekeeper?"
+        static let emailVerificationSent = "We’ve sent you a verification email. Please check your inbox and also your spam/junk folder if you don’t see it."
     }
     
     struct Colors{

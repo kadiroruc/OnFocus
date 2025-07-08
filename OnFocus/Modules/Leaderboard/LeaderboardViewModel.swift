@@ -35,10 +35,15 @@ final class LeaderboardViewModel {
         // Daha az süreye sahip kaç kişi var?
         let countLess = validTimes.filter { currentUserTime > $0 }.count
 
+        if others.count == 0 {
+            return 100 // Eğer hiç kimse yoksa, kullanıcı en iyidir :)
+        }
+            
         // Yüzdeyi hesapla
-        let percentage = Double(countLess) / Double(validTimes.count) * 100
+        let percentage = Double(countLess) / Double(validTimes.count - 1) * 100 //Kendisi hariç
         return Int(percentage.rounded())
     }
+    
     
 }
 

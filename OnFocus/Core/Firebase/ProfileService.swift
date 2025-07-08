@@ -89,6 +89,7 @@ extension ProfileService: ProfileServiceProtocol {
             // Resmi API üzerinden yükle
             guard let networkManager = networkManager else { return }
             let baseUserData = userData
+            
             Task {
                 do {
                     let endpoint = ImageUploadEndpoint.uploadImage(data: imageData)

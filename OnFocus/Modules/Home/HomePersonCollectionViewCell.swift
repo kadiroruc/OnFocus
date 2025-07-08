@@ -38,8 +38,8 @@ class HomePersonCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             profileImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             profileImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            profileImageView.widthAnchor.constraint(equalTo: self.widthAnchor,multiplier: 0.8),
-            profileImageView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.8),
+            profileImageView.widthAnchor.constraint(equalTo: self.widthAnchor,multiplier: 0.9),
+            profileImageView.heightAnchor.constraint(equalTo: self.heightAnchor,multiplier: 0.9),
         ])
     }
     

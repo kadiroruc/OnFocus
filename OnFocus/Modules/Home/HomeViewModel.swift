@@ -41,6 +41,9 @@ final class HomeViewModel {
         self.timerService = timerService
         self.friendsService = friendsService
         self.profileService = profileService
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     private(set) var friends: [ProfileModel] = []
@@ -64,6 +67,8 @@ final class HomeViewModel {
     private var timeKeeperStartDate: Date?
     private var timeKeeperElapsedTime: TimeInterval = 0
     private var timeKeeperTimer: Timer?
+    private var backgroundEnteredDate: Date?
+    private var remainingTimeWhenBackground: TimeInterval?
 
     
     
@@ -398,6 +403,47 @@ extension HomeViewModel: HomeViewModelInterface{
         
         view?.updateCountdownLabel(minutes: minutes, seconds: seconds)
     }
-        
+    
+    @objc private func appWillResignActive() {
+        // Eğer timer çalışıyorsa kalan süreyi ve zamanı kaydet
+        if !isPaused && animationRunning {
+            if isPomodoroMode {
+                // Pomodoro modunda kalan süreyi hesapla
+                let totalSeconds = countdownMinutes * 60 + countdownSeconds + splitSeconds / 60
+                remainingTimeWhenBackground = TimeInterval(totalSeconds)
+            } else {
+                // TimeKeeper modunda geçen süreyi kaydet
+                if let start = timeKeeperStartDate {
+                    timeKeeperElapsedTime += Date().timeIntervalSince(start)
+                    timeKeeperStartDate = Date()
+                }
+            }
+            backgroundEnteredDate = Date()
+        }
+    }
+    // Uygulama tekrar öne gelince çağrılır
+    @objc private func appDidBecomeActive() {
+        guard let backgroundDate = backgroundEnteredDate else { return }
+        let now = Date()
+        let diff = now.timeIntervalSince(backgroundDate)
+        if !isPaused && animationRunning {
+            if isPomodoroMode {
+                // Pomodoro modunda kalan süreyi güncelle
+                if let remaining = remainingTimeWhenBackground {
+                    let newRemaining = max(0, remaining - diff)
+                    countdownMinutes = Int(newRemaining) / 60
+                    countdownSeconds = Int(newRemaining) % 60
+                    splitSeconds = 59
+                    view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
+                    if newRemaining == 0 {
+                        saveTimeToDatabase(if: isSessionCompleted)
+                        resetTimer()
+                    }
+                }
+            }
+        }
+        backgroundEnteredDate = nil
+        remainingTimeWhenBackground = nil
+    }
     
 }

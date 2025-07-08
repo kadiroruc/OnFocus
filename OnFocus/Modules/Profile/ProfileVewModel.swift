@@ -119,7 +119,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
     func viewDidLoad() {
         guard !isFetching else { return }
         
-        if userId == nil {
+        if userId == nil || userId == profileService.currentUserId {
             if let uid = profileService.currentUserId {
                 userId = uid
                 view?.setAddFriendButtonHidden(true)
@@ -128,7 +128,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
                 view?.showMessage(Constants.ValidationMessages.friendRequestSent, type: .success)
                 return
             }
-        } else if userId != Auth.auth().currentUser?.uid {
+        } else if userId != profileService.currentUserId {
             view?.setAddFriendButtonHidden(false)
             view?.setMenuButtonHidden(true)
         }
@@ -154,7 +154,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
                        let url = URL(string: profileImageUrl) {
                         self.view?.updateProfileImage(with: url)
                     }
-                    if let totalWorkTime = profile.totalWorkTime {
+                    if profile.totalWorkTime != nil {
                         self.view?.updateTotalWorkTime("Total Work Hour: \(profile.totalWorkTimeFormatted)")
                     }
                     

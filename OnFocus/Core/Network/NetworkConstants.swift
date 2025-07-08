@@ -21,3 +21,4 @@ struct NetworkConstants {
         return key
     }
 }
+
