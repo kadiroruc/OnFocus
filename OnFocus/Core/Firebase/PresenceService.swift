@@ -34,11 +34,7 @@ final class PresenceService: PresenceServiceProtocol {
         
         let status = online ? "online" : "offline"
         db.collection("users").document(userId).setData(["status": status], merge: true) { error in
-            if let error = error {
-                
-            } else {
-                
-            }
+            
         }
 
     }

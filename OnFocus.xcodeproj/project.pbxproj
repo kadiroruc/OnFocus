@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -90,6 +90,16 @@
 		E9FF40692D93272400FE25F0 /* FillProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9FF40682D93272400FE25F0 /* FillProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E9B3E1B42E28560A0026F85B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E98B6B522D53C807005012AB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E98B6B592D53C807005012AB;
+			remoteInfo = OnFocus;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		E907416F2D7DA49800E7599C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E90741712D7DA5D400E7599C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -149,6 +159,7 @@
 		E98B6B6B2D53C80A005012AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillProfileViewModel.swift; sourceTree = "<group>"; };
 		E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVewModel.swift; sourceTree = "<group>"; };
+		E9B3E1B02E28560A0026F85B /* OnFocusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OnFocusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9B3E3D32E1D619E0097A5BE /* EULAModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAModalViewController.swift; sourceTree = "<group>"; };
 		E9B3E3D52E1D61CA0097A5BE /* EULA.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = EULA.html; sourceTree = "<group>"; };
 		E9B699792DDD05F7006B05E4 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -170,6 +181,10 @@
 		E9FF40682D93272400FE25F0 /* FillProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		E9B3E1B12E28560A0026F85B /* OnFocusTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = OnFocusTests; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		E96BE0402E100D8500CE0651 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -189,6 +204,13 @@
 				E950A8E82DD5ED4D00928DEB /* FirebaseAuth in Frameworks */,
 				E90F83D62E030AAA00BE05C0 /* DGCharts in Frameworks */,
 				E950A8EC2DD5ED4D00928DEB /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9B3E1AD2E28560A0026F85B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +407,7 @@
 			children = (
 				E98B6B5C2D53C807005012AB /* OnFocus */,
 				E96BE0442E100D8500CE0651 /* OnFocus */,
+				E9B3E1B12E28560A0026F85B /* OnFocusTests */,
 				E98B6B5B2D53C807005012AB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -394,6 +417,7 @@
 			children = (
 				E98B6B5A2D53C807005012AB /* OnFocus.app */,
 				E96BE0432E100D8500CE0651 /* OnFocusMac.app */,
+				E9B3E1B02E28560A0026F85B /* OnFocusTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -540,6 +564,29 @@
 			productReference = E98B6B5A2D53C807005012AB /* OnFocus.app */;
 			productType = "com.apple.product-type.application";
 		};
+		E9B3E1AF2E28560A0026F85B /* OnFocusTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E9B3E1B82E28560A0026F85B /* Build configuration list for PBXNativeTarget "OnFocusTests" */;
+			buildPhases = (
+				E9B3E1AC2E28560A0026F85B /* Sources */,
+				E9B3E1AD2E28560A0026F85B /* Frameworks */,
+				E9B3E1AE2E28560A0026F85B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E9B3E1B52E28560A0026F85B /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				E9B3E1B12E28560A0026F85B /* OnFocusTests */,
+			);
+			name = OnFocusTests;
+			packageProductDependencies = (
+			);
+			productName = OnFocusTests;
+			productReference = E9B3E1B02E28560A0026F85B /* OnFocusTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -547,7 +594,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1530;
+				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					E96BE0422E100D8500CE0651 = {
@@ -555,6 +602,10 @@
 					};
 					E98B6B592D53C807005012AB = {
 						CreatedOnToolsVersion = 15.3;
+					};
+					E9B3E1AF2E28560A0026F85B = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = E98B6B592D53C807005012AB;
 					};
 				};
 			};
@@ -579,6 +630,7 @@
 			targets = (
 				E98B6B592D53C807005012AB /* OnFocus */,
 				E96BE0422E100D8500CE0651 /* OnFocusMac */,
+				E9B3E1AF2E28560A0026F85B /* OnFocusTests */,
 			);
 		};
 /* End PBXProject section */
@@ -604,6 +656,13 @@
 				E96BE0552E100EAC00CE0651 /* GoogleService-Info.plist in Resources */,
 				E98B6B6A2D53C80A005012AB /* Base in Resources */,
 				E9B6997C2DDD0628006B05E4 /* SampleConfig.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9B3E1AE2E28560A0026F85B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -689,7 +748,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E9B3E1AC2E28560A0026F85B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E9B3E1B52E28560A0026F85B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E98B6B592D53C807005012AB /* OnFocus */;
+			targetProxy = E9B3E1B42E28560A0026F85B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		E96BE04B2E100D8700CE0651 /* Main.storyboard */ = {
@@ -954,6 +1028,45 @@
 			};
 			name = Release;
 		};
+		E9B3E1B62E28560A0026F85B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocusTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OnFocus.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OnFocus";
+			};
+			name = Debug;
+		};
+		E9B3E1B72E28560A0026F85B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocusTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/OnFocus.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/OnFocus";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -980,6 +1093,15 @@
 			buildConfigurations = (
 				E98B6B6F2D53C80A005012AB /* Debug */,
 				E98B6B702D53C80A005012AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E9B3E1B82E28560A0026F85B /* Build configuration list for PBXNativeTarget "OnFocusTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9B3E1B62E28560A0026F85B /* Debug */,
+				E9B3E1B72E28560A0026F85B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

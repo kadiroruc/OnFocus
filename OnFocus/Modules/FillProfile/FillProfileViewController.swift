@@ -17,7 +17,7 @@ protocol FillProfileViewInterface: AnyObject{
 }
 
 final class FillProfileViewController: UIViewController {
-    private var viewModel: FillProfileViewModelInterface
+    var viewModel: FillProfileViewModelInterface
     
     // MARK: - UI Components
     
