@@ -28,7 +28,7 @@ protocol ProfileViewModelInterface {
 
 final class ProfileViewModel {
     weak var view: ProfileViewInterface?
-    private var userId: String?
+    var userId: String?
     private let profileService: ProfileServiceProtocol
     private let friendsService: FriendsServiceProtocol
     private let presenceService: PresenceServiceProtocol

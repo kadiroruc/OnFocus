@@ -37,6 +37,8 @@ protocol ProfileServiceProtocol {
     func didUserFillProfile(completion: @escaping (Result<Bool, Error>) -> Void)
     
     func deleteProfile(completion: @escaping (Result<Void, Error>) -> Void)
+    
+    func deleteStatisticsAndFriendships(completion: @escaping (Result<Void, Error>) -> Void)
 
     
     
@@ -60,6 +62,21 @@ final class ProfileService {
                 completion(.failure(error))
             } else {
                 completion(.success(()))
+            }
+        }
+    }
+    
+    private func deleteCollection(collectionRef: CollectionReference, batch: WriteBatch) {
+        collectionRef.getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error fetching documents: \(error)")
+                return
+            }
+            
+            guard let documents = snapshot?.documents else { return }
+            
+            for document in documents {
+                batch.deleteDocument(document.reference)
             }
         }
     }
@@ -292,7 +309,7 @@ extension ProfileService: ProfileServiceProtocol {
             }
             
             // Profil verilerini kontrol et
-            if let name = document.get("name") as? String{
+            if document.get("name") is String{
                 completion(.success((true)))
             } else {
                 completion(.success(false))
@@ -308,16 +325,147 @@ extension ProfileService: ProfileServiceProtocol {
                                         userInfo: [NSLocalizedDescriptionKey: Constants.ValidationMessages.notLoggedIn])))
             return
         }
+
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(userId)
+        let batch = db.batch()
+
+        // Delete the user document from 'users' collection
+        batch.deleteDocument(userRef)
+
+        // Delete the 'friendships' collection documents where userId is involved as user1Id or user2Id
+        let friendshipsRef = db.collection("friendships")
         
-        db.collection("users").document(userId).delete { error in
+        // Query for friendships where the current userId is involved as either user1Id or user2Id
+        let query1 = friendshipsRef.whereField("user1Id", isEqualTo: userId)
+        let query2 = friendshipsRef.whereField("user2Id", isEqualTo: userId)
+        
+        // Perform the query for user1Id
+        query1.getDocuments { (snapshot, error) in
             if let error = error {
                 completion(.failure(error))
-            } else {
-                completion(.success(()))
+                return
+            }
+            
+            guard let documents = snapshot?.documents else { return }
+            
+            // Add delete operations for all documents matching user1Id
+            for document in documents {
+                batch.deleteDocument(document.reference)
+            }
+            
+            // Perform the query for user2Id
+            query2.getDocuments { (snapshot, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else { return }
+                
+                // Add delete operations for all documents matching user2Id
+                for document in documents {
+                    batch.deleteDocument(document.reference)
+                }
+                
+                // Commit the batch operation after processing all documents
+                batch.commit { error in
+                    if let error = error {
+                        completion(.failure(error))
+                        return
+                    }
+
+                    // After successfully deleting from Firestore, now delete from Firebase Authentication
+                    Auth.auth().currentUser?.delete { error in
+                        if let error = error {
+                            completion(.failure(error)) // If there's an error deleting from Auth, return that error
+                        } else {
+                            completion(.success(())) // If everything is successful, complete the process
+                        }
+                    }
+                }
             }
         }
     }
+
+
     
+    func deleteStatisticsAndFriendships(completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let userId = currentUserId else {
+            completion(.failure(NSError(domain: "AuthError",
+                                        code: -1,
+                                        userInfo: [NSLocalizedDescriptionKey: Constants.ValidationMessages.notLoggedIn])))
+            return
+        }
+        
+        let userRef = db.collection("users").document(userId)
+        
+        // Set streakDays and totalWorkTime to default values
+        let dataToUpdate: [String: Any] = [
+            "streakDays": [],
+            "totalWorkTime": 0
+        ]
+        
+        // Start batch write operation
+        let batch = db.batch()
+        
+        // Update user document
+        batch.updateData(dataToUpdate, forDocument: userRef)
+        
+        // Delete 'sessions' and 'statistics' subcollections
+        let sessionsRef = userRef.collection("sessions")
+        let statisticsRef = userRef.collection("statistics")
+        
+        // Delete documents in sessions and statistics collections
+        deleteCollection(collectionRef: sessionsRef, batch: batch)
+        deleteCollection(collectionRef: statisticsRef, batch: batch)
+        
+        // Delete 'friendships' collection documents where userId is either user1Id or user2Id
+        let friendshipsRef = db.collection("friendships")
+        
+        // Query for friendships where the current userId is involved as either user1Id or user2Id
+        let query1 = friendshipsRef.whereField("user1Id", isEqualTo: userId)
+        let query2 = friendshipsRef.whereField("user2Id", isEqualTo: userId)
+        
+        // Fetch documents matching user1Id
+        query1.getDocuments { (snapshot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let documents = snapshot?.documents else { return }
+            
+            for document in documents {
+                batch.deleteDocument(document.reference)
+            }
+            
+            // Now, fetch documents matching user2Id (after the first query is done)
+            query2.getDocuments { (snapshot, error) in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                guard let documents = snapshot?.documents else { return }
+                
+                for document in documents {
+                    batch.deleteDocument(document.reference)
+                }
+                
+                // Commit the batch operation after processing all documents
+                batch.commit { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            }
+        }
+    }
+
+
     
 }
     

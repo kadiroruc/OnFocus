@@ -27,8 +27,8 @@ final class LeaderboardViewModel {
     private func calculatePercentile(currentUserTime: Int, others: [ProfileModel]) -> Int {
         // Geçerli olmayan verileri filtrele
         let validTimes = others.compactMap { $0.totalWorkTime }
-
-        guard !validTimes.isEmpty else {
+        
+        guard validTimes.count > 1 else {
             return 100 // Eğer kimse yoksa, kullanıcı en iyidir :)
         }
 

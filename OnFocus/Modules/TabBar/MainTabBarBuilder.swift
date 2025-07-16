@@ -11,7 +11,7 @@ struct MainTabBarBuilder {
     static func makeTabBar(using container: DIContainer) -> UITabBarController {
         let tabBarController = UITabBarController()
 
-        let leaderboardVC = container.makeLeaderboardViewController()
+        let leaderboardVC: LeaderboardViewController = container.resolve()
         leaderboardVC.title = "Weekly Leaderboard"
         let leaderboardNav = UINavigationController(rootViewController: leaderboardVC)
         leaderboardNav.tabBarItem = UITabBarItem(
@@ -20,7 +20,7 @@ struct MainTabBarBuilder {
             selectedImage: UIImage(systemName: Constants.Icons.person2Fill)
         )
 
-        let statisticsVC = container.makeStatisticsViewController()
+        let statisticsVC: StatisticsViewController = container.resolve()
         statisticsVC.title = "Statistics"
         let statisticsNav = UINavigationController(rootViewController: statisticsVC)
         statisticsNav.tabBarItem = UITabBarItem(
@@ -29,7 +29,7 @@ struct MainTabBarBuilder {
             tag: 1
         )
 
-        let homeVC = container.makeHomeViewController()
+        let homeVC: HomeViewController = container.resolve()
         let homeNav = UINavigationController(rootViewController: homeVC)
         homeNav.navigationBar.tintColor = UIColor(hex: Constants.Colors.darkGray)
         homeNav.tabBarItem = UITabBarItem(
@@ -38,7 +38,7 @@ struct MainTabBarBuilder {
             tag: 2
         )
 
-        let notificationsVC = container.makeNotificationsViewController()
+        let notificationsVC: NotificationsViewController = container.resolve()
         notificationsVC.title = "Notifications"
         let notificationsNav = UINavigationController(rootViewController: notificationsVC)
         notificationsNav.tabBarItem = UITabBarItem(
@@ -47,7 +47,7 @@ struct MainTabBarBuilder {
             selectedImage: UIImage(systemName: Constants.Icons.bellFill)
         )
 
-        let profileVC = container.makeProfileViewController(userId: nil)
+        let profileVC: ProfileViewController = container.resolve()
         profileVC.title = "Profile"
         let profileNav = UINavigationController(rootViewController: profileVC)
         profileNav.tabBarItem = UITabBarItem(

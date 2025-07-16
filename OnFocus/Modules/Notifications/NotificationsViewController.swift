@@ -79,7 +79,7 @@ final class NotificationsViewController: UIViewController {
 
 extension NotificationsViewController: NotificationsViewInterface {
     func navigateToProfileDetail(userId: String) {
-        navigationController?.pushViewController(DIContainer.shared.makeProfileViewController(userId: userId), animated: true)
+        navigationController?.pushViewController(ProfileViewController(viewModel: ProfileViewModel(profileService: DIContainer.shared.resolve(), friendsService: DIContainer.shared.resolve(), presenceService: DIContainer.shared.resolve(), userId: userId)), animated: true)
     }
     
     func setNoNotificationsLabel(hidden: Bool) {

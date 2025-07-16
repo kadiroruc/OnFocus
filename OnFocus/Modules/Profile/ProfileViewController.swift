@@ -271,7 +271,7 @@ extension ProfileViewController: ProfileViewInterface {
     }
     
     func navigateToFillProfile() {
-        let fillProfileVC = DIContainer.shared.makeFillProfileViewController()
+        let fillProfileVC: FillProfileViewController = DIContainer.shared.resolve()
         fillProfileVC.modalPresentationStyle = .fullScreen
         present(fillProfileVC, animated: true, completion: nil)
     }
@@ -311,7 +311,7 @@ extension ProfileViewController: ProfileViewInterface {
     func navigateToLogin() {
         guard let scene = view.window?.windowScene else { return }
         
-        let loginVC = DIContainer.shared.makeLoginViewController()
+        let loginVC: LoginViewController = DIContainer.shared.resolve()
         
         if let delegate = scene.delegate as? SceneDelegate,
            let window = delegate.window {

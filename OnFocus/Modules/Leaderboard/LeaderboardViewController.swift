@@ -334,7 +334,8 @@ class LeaderboardViewController: UIViewController {
     }
     
     @objc func searchBarButtonItemTapped(){
-        navigationController?.pushViewController(DIContainer.shared.makeProfileSearchViewController(), animated: true)
+        let searchViewController: ProfileSearchViewController = DIContainer.shared.resolve()
+        navigationController?.pushViewController(searchViewController, animated: true)
     }
 }
 

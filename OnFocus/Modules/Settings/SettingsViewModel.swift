@@ -26,8 +26,6 @@ final class SettingsViewModel{
         self.profileService = profileService
     }
     
-    
-    
     var isTimeKeeperModeOn: Bool {
         get { UserDefaults.standard.bool(forKey: "isTimeKeeperModeOn") }
         set { UserDefaults.standard.set(newValue, forKey: "isTimeKeeperModeOn") }
@@ -45,17 +43,18 @@ final class SettingsViewModel{
                 image: UIImage(
                     systemName: Constants.Icons.xmarkBin
                 )!,
-                text: "Delete Profile",
+                text: "Delete Account",
                 switchOn: false,
                 isSwitchHidden: true
             ),
-//            SettingsModel(
-//                image: UIImage(
-//                    systemName: Constants.Icons.bell
-//                )!,
-//                text: "Notifications",
-//                switchOn: false
-//            ),
+            SettingsModel(
+                image: UIImage(
+                    systemName: Constants.Icons.xmarkIcloud
+                )!,
+                text: "Delete Data",
+                switchOn: false,
+                isSwitchHidden: true
+            ),
 //            SettingsModel(
 //                image: UIImage(
 //                    systemName: Constants.Icons.speakerWave2
@@ -72,16 +71,31 @@ extension SettingsViewModel: SettingsViewModelInterface{
     func tappedSetting(at: Int) {
         switch at {
         case 1:
-            view?.showMessage("Are you sure you want to delete your profile? This action cannot be undone.", type: .warning, isCancelEnabled: true) { [weak self] in
+            view?.showMessage("Are you sure you want to delete your account? This action cannot be undone.", type: .warning, isCancelEnabled: true) { [weak self] in
                 guard let self = self else { return }
                 
                 self.profileService.deleteProfile { result in
                     DispatchQueue.main.async {
                         switch result {
                         case .success:
-                            self.view?.showMessage("Profile deleted successfully.", type: .success, isCancelEnabled: false) {
+                            self.view?.showMessage("Account deleted successfully.", type: .success, isCancelEnabled: false) {
                                 self.view?.navigateToLogin()
                             }
+                        case .failure(let error):
+                            self.view?.showMessage(error.localizedDescription, type: .error, isCancelEnabled: false, nil)
+                        }
+                    }
+                }
+            }
+            case 2:
+            view?.showMessage("Are you sure you want to delete your data? This action cannot be undone.", type: .warning, isCancelEnabled: true) { [weak self] in
+                guard let self = self else { return }
+                
+                self.profileService.deleteStatisticsAndFriendships { result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success:
+                            self.view?.showMessage("Data deleted successfully.", type: .success, isCancelEnabled: false, nil)
                         case .failure(let error):
                             self.view?.showMessage(error.localizedDescription, type: .error, isCancelEnabled: false, nil)
                         }

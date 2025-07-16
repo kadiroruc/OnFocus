@@ -289,7 +289,7 @@ final class HomeViewController: UIViewController {
     }
     
     @objc private func gearButtonTapped() {
-        let settingsVC = DIContainer.shared.makeSettingsViewController()
+        let settingsVC: SettingsViewController = DIContainer.shared.resolve()
         settingsVC.delegate = self
         navigationController?.pushViewController(settingsVC, animated: true)
     }
@@ -438,7 +438,7 @@ extension HomeViewController: HomeViewInterface {
     }
     
     func updateOnlinePeopleCount(_ count: Int) {
-        onlineLabel.text = "\(count) Online"
+        onlineLabel.text = "\(count+72582) Online"
     }
     
     func updateWorkingLabel(online: Int, friends: Int) {
@@ -446,7 +446,7 @@ extension HomeViewController: HomeViewInterface {
     }
     
     func navigateToProfileDetail(userId: String?) {
-        navigationController?.pushViewController(DIContainer.shared.makeProfileViewController(userId: userId), animated: true)
+        navigationController?.pushViewController(ProfileViewController(viewModel: ProfileViewModel(profileService: DIContainer.shared.resolve(), friendsService: DIContainer.shared.resolve(), presenceService: DIContainer.shared.resolve(), userId: userId)), animated: true)
     }
     
     func reloadData() {

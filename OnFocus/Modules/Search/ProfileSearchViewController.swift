@@ -171,7 +171,8 @@ extension ProfileSearchViewController: UISearchBarDelegate {
 
 extension ProfileSearchViewController: ProfileSearchViewInterface{
     func navigateToProfileDetail(profile: ProfileModel) {
-        navigationController?.pushViewController(DIContainer.shared.makeProfileViewController(userId: profile.id), animated: true)
+        
+        navigationController?.pushViewController(ProfileViewController(viewModel: ProfileViewModel(profileService: DIContainer.shared.resolve(), friendsService: DIContainer.shared.resolve(), presenceService: DIContainer.shared.resolve(), userId: profile.id)), animated: true)
     }
     
     func showLoading(_ isLoading: Bool) {

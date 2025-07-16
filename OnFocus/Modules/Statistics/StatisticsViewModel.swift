@@ -21,8 +21,8 @@ final class StatisticsViewModel {
     private var averageCache: [FetchTimeRangeType: Double] = [:]
     private var previousAverageCache: [FetchTimeRangeType: Double] = [:]
 
-    init(service: TimerServiceProtocol) {
-        self.timerService = service
+    init(timerService: TimerServiceProtocol) {
+        self.timerService = timerService
     }
     
     private func formatDate(from string: String, format: String, to outputFormat: String) -> String {

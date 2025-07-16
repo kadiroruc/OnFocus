@@ -51,6 +51,7 @@ struct Constants {
         static let personFillCheckmark = "person.fill.checkmark"
         static let stop = "stop"
         static let xmarkBin = "xmark.bin"
+        static let xmarkIcloud = "xmark.icloud"
     }
     
     struct CellIdentifiers{

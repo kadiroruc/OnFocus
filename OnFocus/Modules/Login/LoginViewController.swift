@@ -151,11 +151,17 @@ final class LoginViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name("userEmailNotification"), object: nil)
+    }
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleEmailNotification(_:)), name: Notification.Name("userEmailNotification"), object: nil)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -250,6 +256,12 @@ final class LoginViewController: UIViewController {
     @objc private func forgotPasswordTapped() {
         //viewModel.forgotPasswordTapped()
     }
+    
+    @objc func handleEmailNotification(_ notification: Notification) {
+        if let email = notification.object as? String {
+            emailTextField.text = email
+        }
+    }
 }
 
 extension LoginViewController: LoginViewInterface{
@@ -282,14 +294,14 @@ extension LoginViewController: LoginViewInterface{
     
     func navigateToFillProfile() {
         // Navigate to fill profile screen
-        let fillProfileVC = DIContainer.shared.makeFillProfileViewController()
+        let fillProfileVC: FillProfileViewController = DIContainer.shared.resolve()
         fillProfileVC.modalPresentationStyle = .fullScreen
         present(fillProfileVC, animated: true)
     }
     
     func navigateToSignUp() {
         // Navigate to sign up screen
-        let signUpVC = DIContainer.shared.makeSignUpViewController()
+        let signUpVC: SignUpViewController = DIContainer.shared.resolve()
         signUpVC.modalPresentationStyle = .fullScreen
         present(signUpVC, animated: true)
     }

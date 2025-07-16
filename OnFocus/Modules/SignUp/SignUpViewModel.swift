@@ -47,7 +47,7 @@ extension SignUpViewModel: SignUpViewModelInterface {
                 switch result {
                 case .success:
                     self.view?.showMessage(text: Constants.ValidationMessages.emailVerificationSent, type: .info) {
-                        self.view?.navigateToLogin()
+                        self.view?.navigateToLogin(email)
                     }
                 case .failure(let error):
                     self.view?.enableSignUpButton(true)
@@ -58,7 +58,7 @@ extension SignUpViewModel: SignUpViewModelInterface {
     }
     
     func signInTapped() {
-        view?.navigateToLogin()
+        view?.navigateToLogin(nil)
     }
 
 }

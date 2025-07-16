@@ -107,13 +107,13 @@ extension SettingsViewController: SettingsViewInterface{
     func navigateToLogin() {
         guard let scene = view.window?.windowScene else { return }
         
-        let loginVC = DIContainer.shared.makeLoginViewController()
+        let loginViewController: LoginViewController = DIContainer.shared.resolve()
         
         if let delegate = scene.delegate as? SceneDelegate,
            let window = delegate.window {
             
             UIView.transition(with: window, duration: 0.4, options: .transitionFlipFromRight) {
-                window.rootViewController = loginVC
+                window.rootViewController = loginViewController
             }
         }
     }

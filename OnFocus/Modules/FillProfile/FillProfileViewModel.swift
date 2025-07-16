@@ -19,8 +19,8 @@ final class FillProfileViewModel {
     private let presenceService: PresenceServiceProtocol
     private var selectedImage: UIImage?
     
-    init(service: ProfileServiceProtocol, presenceService: PresenceServiceProtocol) {
-        self.profileService = service
+    init(profileService: ProfileServiceProtocol, presenceService: PresenceServiceProtocol) {
+        self.profileService = profileService
         self.presenceService = presenceService
     }
 }

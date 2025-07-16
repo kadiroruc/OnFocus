@@ -15,7 +15,7 @@ protocol SignUpViewInterface: AnyObject{
     func enableSignUpButton(_ isEnabled: Bool)
     
     // Navigasyon
-    func navigateToLogin()
+    func navigateToLogin(_ currentUserEmail: String?)
     func navigateToFillProfile()
 }
 
@@ -326,12 +326,17 @@ extension SignUpViewController: SignUpViewInterface{
         signUpButton.alpha = isEnabled ? 1.0 : 0.5
     }
     
-    func navigateToLogin() {
+
+    
+    func navigateToLogin(_ currentUserEmail: String?) {
+        if let userEmail = currentUserEmail {
+            NotificationCenter.default.post(name: Notification.Name("userEmailNotification"), object: userEmail)
+        }
         dismiss(animated: true)
     }
     
     func navigateToFillProfile() {
-        let fillProfileVC = DIContainer.shared.makeFillProfileViewController()
+        let fillProfileVC: FillProfileViewController = DIContainer.shared.resolve()
         fillProfileVC.modalPresentationStyle = .fullScreen
         present(fillProfileVC, animated: true)
     }

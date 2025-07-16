@@ -21,20 +21,94 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-                
+        
+        registerServices()
+        registerViewModels()
+        registerViewControllers()
+            
+            
+        
         
         if Auth.auth().currentUser != nil {
             // Kullanıcı giriş yapmışsa ana sayfaya git
             window.rootViewController = MainTabBarBuilder.makeTabBar(using: container)
         } else {
             // Giriş yapmamışsa login ekranına git
-            let loginVC = container.makeLoginViewController()
+            let loginVC: LoginViewController = container.resolve()
             window.rootViewController = UINavigationController(rootViewController: loginVC)
         }
 
         window.makeKeyAndVisible()
         self.window = window
     }
+    
+    func registerServices() {
+        
+        container.register { AuthService() as AuthServiceProtocol }
+        
+        container.register {
+            ProfileService(networkManager: URLSessionNetworkManager.shared) as ProfileServiceProtocol
+        }
+        
+        container.register {
+            PresenceService(profileService: self.container.resolve()) as PresenceServiceProtocol
+        }
+        
+        container.register { FriendsService() as FriendsServiceProtocol }
+        container.register { TimerService() as TimerServiceProtocol }
+        
+        container.register {
+            LeaderboardService(profileService: self.container.resolve(), friendsService: self.container.resolve(), timerService: self.container.resolve()) as LeaderboardServiceProtocol
+        }
+    }
+    
+    func registerViewModels(){
+        
+        container.register {
+            LoginViewModel(authService: self.container.resolve(), presenceService: self.container.resolve(), profileService: self.container.resolve()) as LoginViewModelInterface
+        }
+        container.register {
+            FillProfileViewModel(profileService: self.container.resolve(), presenceService: self.container.resolve()) as FillProfileViewModelInterface
+        }
+        container.register {
+            HomeViewModel(timerService: self.container.resolve(), friendsService: self.container.resolve(), profileService: self.container.resolve()) as HomeViewModelInterface
+        }
+        container.register {
+            LeaderboardViewModel(leaderboardService: self.container.resolve()) as LeaderboardViewModelInterface
+        }
+        container.register {
+            NotificationsViewModel(friendsService: self.container.resolve(), profileService: self.container.resolve()) as NotificationsViewModelInterface
+        }
+        container.register {
+            ProfileViewModel(profileService: self.container.resolve(), friendsService: self.container.resolve(), presenceService: self.container.resolve(), userId: nil) as ProfileViewModelInterface
+        }
+        container.register {
+            ProfileSearchViewModel(profileService: self.container.resolve()) as ProfileSearchViewModelInterface
+        }
+        container.register {
+            SettingsViewModel(profileService: self.container.resolve()) as SettingsViewModelInterface
+        }
+        container.register {
+            SignUpViewModel(authService: self.container.resolve()) as SignUpViewModelInterface
+        }
+        container.register {
+            StatisticsViewModel(timerService: self.container.resolve()) as StatisticsViewModelInterface
+        }
+    }
+    
+    func registerViewControllers() {
+        container.register { FillProfileViewController(viewModel: self.container.resolve()) }
+        container.register { HomeViewController(viewModel: self.container.resolve()) }
+        container.register { LeaderboardViewController(viewModel: self.container.resolve()) }
+        container.register { LoginViewController(viewModel: self.container.resolve()) }
+        container.register { NotificationsViewController(viewModel: self.container.resolve()) }
+        container.register { ProfileViewController(viewModel: self.container.resolve()) }
+        container.register { ProfileSearchViewController(viewModel: self.container.resolve()) }
+        container.register { SettingsViewController(viewModel: self.container.resolve()) }
+        container.register { SignUpViewController(viewModel: self.container.resolve()) }
+        container.register { StatisticsViewController(viewModel: self.container.resolve()) }
+    }
+        
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
@@ -58,7 +132,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to undo the changes made on entering the background.
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             guard let self = self else { return }
-            self.container.presenceService.setUserStatus(online: true)
+            let presenceService: PresenceServiceProtocol = DIContainer.shared.resolve()
+            presenceService.setUserStatus(online: true)
         }
     }
 
@@ -67,7 +142,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
         
-        self.container.presenceService.setUserStatus(online: false)
+        let presenceService: PresenceServiceProtocol = DIContainer.shared.resolve()
+        presenceService.setUserStatus(online: false)
     }
 
 
