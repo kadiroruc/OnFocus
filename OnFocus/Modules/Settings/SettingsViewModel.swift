@@ -73,15 +73,18 @@ extension SettingsViewModel: SettingsViewModelInterface{
         case 1:
             view?.showMessage("Are you sure you want to delete your account? This action cannot be undone.", type: .warning, isCancelEnabled: true) { [weak self] in
                 guard let self = self else { return }
+                self.view?.showLoading(true)
                 
                 self.profileService.deleteProfile { result in
                     DispatchQueue.main.async {
                         switch result {
                         case .success:
+                            self.view?.showLoading(false)
                             self.view?.showMessage("Account deleted successfully.", type: .success, isCancelEnabled: false) {
                                 self.view?.navigateToLogin()
                             }
                         case .failure(let error):
+                            self.view?.showLoading(false)
                             self.view?.showMessage(error.localizedDescription, type: .error, isCancelEnabled: false, nil)
                         }
                     }
@@ -90,13 +93,16 @@ extension SettingsViewModel: SettingsViewModelInterface{
             case 2:
             view?.showMessage("Are you sure you want to delete your data? This action cannot be undone.", type: .warning, isCancelEnabled: true) { [weak self] in
                 guard let self = self else { return }
+                self.view?.showLoading(true)
                 
                 self.profileService.deleteStatisticsAndFriendships { result in
                     DispatchQueue.main.async {
                         switch result {
                         case .success:
+                            self.view?.showLoading(false)
                             self.view?.showMessage("Data deleted successfully.", type: .success, isCancelEnabled: false, nil)
                         case .failure(let error):
+                            self.view?.showLoading(false)
                             self.view?.showMessage(error.localizedDescription, type: .error, isCancelEnabled: false, nil)
                         }
                     }

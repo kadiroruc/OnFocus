@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import UserNotifications
 
 protocol HomeViewModelInterface {
     var view: HomeViewInterface? { get set }
@@ -44,6 +45,13 @@ final class HomeViewModel {
         
         NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        
+        // Request notification permission
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
+            if let error = error {
+                print("Notification permission error: \(error.localizedDescription)")
+            }
+        }
     }
     
     private(set) var friends: [ProfileModel] = []
@@ -78,6 +86,7 @@ final class HomeViewModel {
         animationRunning = false
         view?.updatePlayButton(isPaused: true)
         view?.resetCircularAnimationToStart(isSessionCompleted)
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["timer_expired"])
         
         if isSessionCompleted {
             sessionCount += 1
@@ -207,6 +216,24 @@ final class HomeViewModel {
         view?.updatePlayButton(isPaused: true)
 
     }
+    private func scheduleTimerNotification(seconds: TimeInterval) {
+        let content = UNMutableNotificationContent()
+        if isSessionCompleted {
+            content.title = "Session Complete!"
+            content.body = "Time for a break."
+        } else {
+            content.title = "Break Over!"
+            content.body = "Time to focus."
+        }
+        content.sound = .default
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: false)
+        let request = UNNotificationRequest(identifier: "timer_expired", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Failed to schedule notification: \(error.localizedDescription)")
+            }
+        }
+    }
         
 }
 
@@ -303,16 +330,23 @@ extension HomeViewModel: HomeViewModelInterface{
         countdownTimer = Timer.scheduledTimer(timeInterval: 0.016, target: self, selector: #selector(updateCountdown), userInfo: nil, repeats: true)
         view?.startCircularAnimation(duration: TimeInterval(countdownMinutes * 60 + countdownSeconds))
         
+        scheduleTimerNotification(seconds: TimeInterval(countdownMinutes * 60 + countdownSeconds))
+        
     }
     
     func pauseCountdown() {
         countdownTimer?.invalidate()
         view?.pauseCircularAnimation()
+        
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["timer_expired"])
     }
     
     func resumeCountdown() {
         countdownTimer = Timer.scheduledTimer(timeInterval: 0.016, target: self, selector: #selector(updateCountdown), userInfo: nil, repeats: true)
         view?.resumeCircularAnimation()
+        
+        let totalSeconds = countdownMinutes * 60 + countdownSeconds + splitSeconds / 60
+        scheduleTimerNotification(seconds: TimeInterval(totalSeconds))
     }
     
     @objc func updateCountdown() {

@@ -11,6 +11,7 @@ protocol SettingsViewInterface: AnyObject {
     func changeTimerMode(timeKeeperMode: Bool)
     func showMessage(_ text: String, type: MessageType, isCancelEnabled:Bool,  _ completion: (() -> Void)?)
     func navigateToLogin()
+    func showLoading(_ isLoading: Bool)
 }
 
 protocol SettingsCoordinatorDelegate: AnyObject {
@@ -48,6 +49,13 @@ class SettingsViewController: UIViewController {
         return cv
     }()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.color = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
+        return activityIndicator
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -59,12 +67,18 @@ class SettingsViewController: UIViewController {
         view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
         
         view.addSubview(collectionView)
+        view.addSubview(activityIndicator)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 24),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 24)
         ])
     }
 }
@@ -104,6 +118,14 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
 }
 
 extension SettingsViewController: SettingsViewInterface{
+    func showLoading(_ isLoading: Bool) {
+        if isLoading {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
+    }
+    
     func navigateToLogin() {
         guard let scene = view.window?.windowScene else { return }
         

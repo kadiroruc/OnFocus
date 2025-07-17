@@ -52,6 +52,7 @@ struct Constants {
         static let stop = "stop"
         static let xmarkBin = "xmark.bin"
         static let xmarkIcloud = "xmark.icloud"
+        static let timer = "timer"
     }
     
     struct CellIdentifiers{
