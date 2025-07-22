@@ -7,6 +7,8 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
+import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -25,8 +27,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         registerServices()
         registerViewModels()
         registerViewControllers()
-            
-            
         
         
         if Auth.auth().currentUser != nil {
@@ -40,6 +40,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         window.makeKeyAndVisible()
         self.window = window
+        
+        checkAppVersion()
     }
     
     func registerServices() {
@@ -108,6 +110,56 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         container.register { SignUpViewController(viewModel: self.container.resolve()) }
         container.register { StatisticsViewController(viewModel: self.container.resolve()) }
     }
+    
+    // Firestore ile bağlantı ve sürüm kontrolü
+    func checkAppVersion() {
+        // Mevcut sürüm
+        let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        let db = Firestore.firestore()
+        
+        // Firestore'dan sürüm bilgisini al
+        db.collection("app_versions").document("version_info").getDocument { (document, error) in
+            if let document = document, document.exists {
+                let data = document.data()
+                let minimumVersion = data?["minimum_version"] as? String
+                let appStoreURL = data?["app_store_url"] as? String
+
+                // Eğer mevcut sürüm minimum sürümden küçükse, kullanıcıyı güncellemeye yönlendir
+                if let minimumVersion = minimumVersion, let currentVersion = currentVersion, currentVersion < minimumVersion {
+                    // Active view controller'ı al
+                    if let rootViewController = self.getRootViewController() {
+                        self.promptUserToUpdate(appStoreURL: appStoreURL ?? "", from: rootViewController)
+                    }
+                }
+            } else {
+                print("Error getting document: \(String(describing: error))")
+            }
+        }
+    }
+
+    // Kullanıcıya güncelleme bildirimi gösterme
+    func promptUserToUpdate(appStoreURL: String, from viewController: UIViewController) {
+        let alert = UIAlertController(title: "Update Required", message: "Please update the app to the latest version.", preferredStyle: .alert)
+        let updateAction = UIAlertAction(title: "Update", style: .default) { _ in
+            if let url = URL(string: appStoreURL) {
+                UIApplication.shared.open(url)
+            }
+        }
+        alert.addAction(updateAction)
+        viewController.present(alert, animated: true)
+    }
+
+    // Mevcut root view controller'ı almak için yardımcı metot
+    func getRootViewController() -> UIViewController? {
+        // iOS 15 ve sonrası için, doğru UIWindowScene üzerinden erişim sağla
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            // En aktif (key) olan pencereyi al
+            if let window = scene.windows.first(where: { $0.isKeyWindow }) {
+                return window.rootViewController
+            }
+        }
+        return nil
+    }
         
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -131,7 +183,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the background to the foreground.
         // Use this method to undo the changes made on entering the background.
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let self = self else { return }
+            guard self != nil else { return }
             let presenceService: PresenceServiceProtocol = DIContainer.shared.resolve()
             presenceService.setUserStatus(online: true)
         }

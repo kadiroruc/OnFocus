@@ -69,6 +69,7 @@
 		E98B6B6A2D53C80A005012AB /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E98B6B692D53C80A005012AB /* Base */; };
 		E9A6F1842DD76CA300016F4C /* FillProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */; };
 		E9A6F1862DD7ECA400016F4C /* ProfileVewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */; };
+		E9B3E1F82E2991C90026F85B /* VersionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B3E1F72E2991C90026F85B /* VersionService.swift */; };
 		E9B3E3D42E1D619E0097A5BE /* EULAModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9B3E3D32E1D619E0097A5BE /* EULAModalViewController.swift */; };
 		E9B3E3D62E1D61CA0097A5BE /* EULA.html in Resources */ = {isa = PBXBuildFile; fileRef = E9B3E3D52E1D61CA0097A5BE /* EULA.html */; };
 		E9B6997A2DDD05F7006B05E4 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9B699792DDD05F7006B05E4 /* Config.plist */; };
@@ -160,6 +161,7 @@
 		E9A6F1832DD76CA300016F4C /* FillProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FillProfileViewModel.swift; sourceTree = "<group>"; };
 		E9A6F1852DD7ECA400016F4C /* ProfileVewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVewModel.swift; sourceTree = "<group>"; };
 		E9B3E1B02E28560A0026F85B /* OnFocusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OnFocusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9B3E1F72E2991C90026F85B /* VersionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VersionService.swift; sourceTree = "<group>"; };
 		E9B3E3D32E1D619E0097A5BE /* EULAModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EULAModalViewController.swift; sourceTree = "<group>"; };
 		E9B3E3D52E1D61CA0097A5BE /* EULA.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = EULA.html; sourceTree = "<group>"; };
 		E9B699792DDD05F7006B05E4 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 				E95460CD2DDA1E2800BB7365 /* TimerService+Helpers.swift */,
 				E93503BD2DF8533A009D621D /* PresenceService.swift */,
 				E9EE06932DF9C2EA0020C56A /* LeaderboardService.swift */,
+				E9B3E1F72E2991C90026F85B /* VersionService.swift */,
 			);
 			path = Firebase;
 			sourceTree = "<group>";
@@ -720,6 +723,7 @@
 				E96ACAD22DFDAEEB00E1C191 /* DateExtension.swift in Sources */,
 				E9FF40692D93272400FE25F0 /* FillProfileViewController.swift in Sources */,
 				E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */,
+				E9B3E1F82E2991C90026F85B /* VersionService.swift in Sources */,
 				E95460CC2DDA0B4F00BB7365 /* StatisticsModel.swift in Sources */,
 				E94923C92DF23AB90025A7F3 /* ProfileSearchViewModel.swift in Sources */,
 				E94923DB2DF31F9C0025A7F3 /* FriendsService.swift in Sources */,
@@ -983,7 +987,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1016,7 +1020,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

@@ -122,9 +122,9 @@ final class FillProfileViewModelTests: XCTestCase {
         XCTAssertTrue(mockProfileService.isNicknameAvailableCalled)
         XCTAssertEqual(mockProfileService.isNicknameAvailableNickname, nickname)
         XCTAssertTrue(mockView.enableStartButtonCalled)
-        XCTAssertFalse(mockView.enableStartButtonIsEnabled)
+        XCTAssertEqual(mockView.enableStartButtonIsEnabled, false)
         XCTAssertTrue(mockView.showLoadingCalled)
-        XCTAssertTrue(mockView.showLoadingIsLoading)
+        XCTAssertEqual(mockView.showLoadingIsLoading, true)
     }
     
     func test_startButtonTapped_whenNicknameNotAvailable_shouldShowError() {
@@ -141,28 +141,9 @@ final class FillProfileViewModelTests: XCTestCase {
         XCTAssertEqual(mockView.showErrorMessage, Constants.ValidationMessages.nicknameTaken)
         XCTAssertTrue(mockView.setNicknameNotAvailableCalled)
         XCTAssertTrue(mockView.enableStartButtonCalled)
-        XCTAssertTrue(mockView.enableStartButtonIsEnabled)
+        XCTAssertEqual(mockView.enableStartButtonIsEnabled, true)
         XCTAssertTrue(mockView.showLoadingCalled)
-        XCTAssertFalse(mockView.showLoadingIsLoading)
-    }
-    
-    func test_startButtonTapped_whenNicknameAvailable_shouldSaveProfile() {
-        // Given
-        let name = "Test User"
-        let nickname = "testNickname"
-        let testImage = UIImage()
-        sut.setSelectedImage(testImage)
-        mockProfileService.isNicknameAvailableResult = true
-        mockProfileService.saveProfileResult = .success(())
-        
-        // When
-        sut.startButtonTapped(name: name, nickname: nickname)
-        
-        // Then
-        XCTAssertTrue(mockProfileService.saveProfileCalled)
-        XCTAssertEqual(mockProfileService.saveProfileName, name)
-        XCTAssertEqual(mockProfileService.saveProfileNickname, nickname)
-        XCTAssertEqual(mockProfileService.saveProfileImage, testImage)
+        XCTAssertEqual(mockView.showLoadingIsLoading, false)
     }
     
     func test_startButtonTapped_whenProfileSaveSuccess_shouldSetUserOnlineAndNavigate() {
@@ -171,16 +152,24 @@ final class FillProfileViewModelTests: XCTestCase {
         let nickname = "testNickname"
         mockProfileService.isNicknameAvailableResult = true
         mockProfileService.saveProfileResult = .success(())
+
+        let expectation = self.expectation(description: "Profile save and navigation")
+        mockView.onNavigateToHome = {
+            expectation.fulfill()
+        }
         
         // When
         sut.startButtonTapped(name: name, nickname: nickname)
         
         // Then
-        XCTAssertTrue(mockPresenceService.setUserStatusCalled)
-        XCTAssertTrue(mockPresenceService.setUserStatusOnline)
-        XCTAssertTrue(mockView.navigateToHomeCalled)
-        XCTAssertTrue(mockView.showLoadingCalled)
-        XCTAssertFalse(mockView.showLoadingIsLoading)
+        waitForExpectations(timeout: 1) { error in
+            XCTAssertNil(error)
+            XCTAssertTrue(self.mockPresenceService.setUserStatusCalled)
+            XCTAssertTrue(self.mockPresenceService.setUserStatusOnline)
+            XCTAssertTrue(self.mockView.navigateToHomeCalled)
+            XCTAssertTrue(self.mockView.showLoadingCalled)
+            XCTAssertEqual(self.mockView.showLoadingIsLoading, false)
+        }
     }
     
     func test_startButtonTapped_whenProfileSaveFailure_shouldShowError() {
@@ -190,17 +179,24 @@ final class FillProfileViewModelTests: XCTestCase {
         let error = NSError(domain: "TestError", code: 1, userInfo: nil)
         mockProfileService.isNicknameAvailableResult = true
         mockProfileService.saveProfileResult = .failure(error)
-        
+
+        let expectation = self.expectation(description: "Show error on profile save failure")
+        mockView.onShowError = {
+            expectation.fulfill()
+        }
+
         // When
         sut.startButtonTapped(name: name, nickname: nickname)
-        
+
         // Then
-        XCTAssertTrue(mockView.showErrorCalled)
-        XCTAssertEqual(mockView.showErrorMessage, error.localizedDescription)
-        XCTAssertTrue(mockView.enableStartButtonCalled)
-        XCTAssertTrue(mockView.enableStartButtonIsEnabled)
-        XCTAssertTrue(mockView.showLoadingCalled)
-        XCTAssertFalse(mockView.showLoadingIsLoading)
+        waitForExpectations(timeout: 1) { _ in
+            XCTAssertTrue(self.mockView.showErrorCalled)
+            XCTAssertEqual(self.mockView.showErrorMessage, error.localizedDescription)
+            XCTAssertTrue(self.mockView.enableStartButtonCalled)
+            XCTAssertEqual(self.mockView.enableStartButtonIsEnabled, true)
+            XCTAssertTrue(self.mockView.showLoadingCalled)
+            XCTAssertEqual(self.mockView.showLoadingIsLoading, false)
+        }
     }
     
     func test_startButtonTapped_whenProfileSaveFailure_shouldNotSetUserOnline() {

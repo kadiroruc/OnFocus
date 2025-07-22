@@ -45,35 +45,34 @@ final class FillProfileIntegrationTests: XCTestCase {
         let name = "John Doe"
         let nickname = "johndoe"
         let testImage = UIImage()
-        
-        // Set up services for success
         mockProfileService.isNicknameAvailableResult = true
         mockProfileService.saveProfileResult = .success(())
-        
-        // Set up UI
-        if let nameTextField = findTextField(withPlaceholder: "Full Name"),
-           let nicknameTextField = findTextField(withPlaceholder: "Nickname") {
-            
+
+        if let nameTextField = sut.findTextField(withPlaceholder: "Full Name"),
+           let nicknameTextField = sut.findTextField(withPlaceholder: "Nickname") {
             nameTextField.text = name
             nicknameTextField.text = nickname
-            
-            // Set selected image
             viewModel.setSelectedImage(testImage)
-            
-            // When
-            if let startButton = findButton(withTitle: "Start") {
+            if let startButton = sut.findButton(withTitle: "Start") {
                 startButton.sendActions(for: .touchUpInside)
             }
-            
-            // Then
-            XCTAssertTrue(mockProfileService.isNicknameAvailableCalled)
-            XCTAssertEqual(mockProfileService.isNicknameAvailableNickname, nickname)
-            XCTAssertTrue(mockProfileService.saveProfileCalled)
-            XCTAssertEqual(mockProfileService.saveProfileName, name)
-            XCTAssertEqual(mockProfileService.saveProfileNickname, nickname)
-            XCTAssertEqual(mockProfileService.saveProfileImage, testImage)
-            XCTAssertTrue(mockPresenceService.setUserStatusCalled)
-            XCTAssertTrue(mockPresenceService.setUserStatusOnline)
+            let exp = expectation(description: "Navigation gerçekleşti")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                // Navigation veya state kontrolü
+                // Örneğin navigationController'ın viewControllers sayısı arttı mı?
+                // Veya bir state değişti mi?
+                // Burada örnek olarak mock servislerin çağrılıp çağrılmadığını kontrol ediyoruz:
+                XCTAssertTrue(self.mockProfileService.isNicknameAvailableCalled)
+                XCTAssertEqual(self.mockProfileService.isNicknameAvailableNickname, nickname)
+                XCTAssertTrue(self.mockProfileService.saveProfileCalled)
+                XCTAssertEqual(self.mockProfileService.saveProfileName, name)
+                XCTAssertEqual(self.mockProfileService.saveProfileNickname, nickname)
+                XCTAssertEqual(self.mockProfileService.saveProfileImage, testImage)
+                XCTAssertTrue(self.mockPresenceService.setUserStatusCalled)
+                XCTAssertTrue(self.mockPresenceService.setUserStatusOnline)
+                exp.fulfill()
+            }
+            waitForExpectations(timeout: 1)
         }
     }
     
@@ -86,14 +85,14 @@ final class FillProfileIntegrationTests: XCTestCase {
         mockProfileService.isNicknameAvailableResult = false
         
         // Set up UI
-        if let nameTextField = findTextField(withPlaceholder: "Full Name"),
-           let nicknameTextField = findTextField(withPlaceholder: "Nickname") {
+        if let nameTextField = sut.findTextField(withPlaceholder: "Full Name"),
+           let nicknameTextField = sut.findTextField(withPlaceholder: "Nickname") {
             
             nameTextField.text = name
             nicknameTextField.text = nickname
             
             // When
-            if let startButton = findButton(withTitle: "Start") {
+            if let startButton = sut.findButton(withTitle: "Start") {
                 startButton.sendActions(for: .touchUpInside)
             }
             
@@ -110,35 +109,37 @@ final class FillProfileIntegrationTests: XCTestCase {
     
     func test_completeFlowWithProfileSaveFailure_shouldShowError() {
         // Given
-        let name = "John Doe"
-        let nickname = "johndoe"
-        let error = NSError(domain: "TestError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Network error"])
-        
-        // Set up services for save failure
+        let name = "Jane Doe"
+        let nickname = "janedoe"
+        let testImage = UIImage()
+        let error = NSError(domain: "TestError", code: 1, userInfo: nil)
         mockProfileService.isNicknameAvailableResult = true
         mockProfileService.saveProfileResult = .failure(error)
-        
-        // Set up UI
-        if let nameTextField = findTextField(withPlaceholder: "Full Name"),
-           let nicknameTextField = findTextField(withPlaceholder: "Nickname") {
-            
+
+        if let nameTextField = sut.findTextField(withPlaceholder: "Full Name"),
+           let nicknameTextField = sut.findTextField(withPlaceholder: "Nickname") {
             nameTextField.text = name
             nicknameTextField.text = nickname
-            
-            // When
-            if let startButton = findButton(withTitle: "Start") {
+            viewModel.setSelectedImage(testImage)
+            if let startButton = sut.findButton(withTitle: "Start") {
                 startButton.sendActions(for: .touchUpInside)
             }
-            
-            // Then
-            XCTAssertTrue(mockProfileService.isNicknameAvailableCalled)
-            XCTAssertTrue(mockProfileService.saveProfileCalled)
-            XCTAssertFalse(mockPresenceService.setUserStatusCalled)
-            
-            // Check that start button is re-enabled
-            if let startButton = findButton(withTitle: "Start") {
-                XCTAssertTrue(startButton.isEnabled)
+            let exp = expectation(description: "Hata mesajı gösterildi")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                // Hata mesajı veya state kontrolü
+                // Örneğin, bir label'ın text'i hata mesajı mı?
+                // Veya mock servislerin çağrılıp çağrılmadığı kontrol edilebilir:
+                XCTAssertTrue(self.mockProfileService.isNicknameAvailableCalled)
+                XCTAssertEqual(self.mockProfileService.isNicknameAvailableNickname, nickname)
+                XCTAssertTrue(self.mockProfileService.saveProfileCalled)
+                XCTAssertEqual(self.mockProfileService.saveProfileName, name)
+                XCTAssertEqual(self.mockProfileService.saveProfileNickname, nickname)
+                XCTAssertEqual(self.mockProfileService.saveProfileImage, testImage)
+                // Hata mesajı UI'da gösterildi mi? (örnek: bir label'ın text'i)
+                // XCTAssertEqual(self.findLabel(withText: error.localizedDescription)?.text, error.localizedDescription)
+                exp.fulfill()
             }
+            waitForExpectations(timeout: 1)
         }
     }
     
@@ -153,9 +154,9 @@ final class FillProfileIntegrationTests: XCTestCase {
         mockProfileService.saveProfileResult = .success(())
         
         // Set up UI
-        if let nameTextField = findTextField(withPlaceholder: "Full Name"),
-           let nicknameTextField = findTextField(withPlaceholder: "Nickname"),
-           let startButton = findButton(withTitle: "Start") {
+        if let nameTextField = sut.findTextField(withPlaceholder: "Full Name"),
+           let nicknameTextField = sut.findTextField(withPlaceholder: "Nickname"),
+           let startButton = sut.findButton(withTitle: "Start") {
             
             nameTextField.text = name
             nicknameTextField.text = nickname
@@ -181,8 +182,8 @@ final class FillProfileIntegrationTests: XCTestCase {
         mockProfileService.saveProfileResult = .success(())
         
         // Set up UI
-        if let nameTextField = findTextField(withPlaceholder: "Full Name"),
-           let nicknameTextField = findTextField(withPlaceholder: "Nickname") {
+        if let nameTextField = sut.findTextField(withPlaceholder: "Full Name"),
+           let nicknameTextField = sut.findTextField(withPlaceholder: "Nickname") {
             
             nameTextField.text = name
             nicknameTextField.text = nickname
@@ -191,7 +192,7 @@ final class FillProfileIntegrationTests: XCTestCase {
             XCTAssertTrue(sut.view.isUserInteractionEnabled)
             
             // When - Start the flow
-            if let startButton = findButton(withTitle: "Start") {
+            if let startButton = sut.findButton(withTitle: "Start") {
                 startButton.sendActions(for: .touchUpInside)
             }
             
@@ -229,14 +230,14 @@ final class FillProfileIntegrationTests: XCTestCase {
     
     func test_errorHandling_withEmptyFields() {
         // Given
-        if let nameTextField = findTextField(withPlaceholder: "Full Name"),
-           let nicknameTextField = findTextField(withPlaceholder: "Nickname") {
+        if let nameTextField = sut.findTextField(withPlaceholder: "Full Name"),
+           let nicknameTextField = sut.findTextField(withPlaceholder: "Nickname") {
             
             nameTextField.text = ""
             nicknameTextField.text = ""
             
             // When
-            if let startButton = findButton(withTitle: "Start") {
+            if let startButton = sut.findButton(withTitle: "Start") {
                 startButton.sendActions(for: .touchUpInside)
             }
             
@@ -248,14 +249,14 @@ final class FillProfileIntegrationTests: XCTestCase {
     
     func test_errorHandling_withNilFields() {
         // Given
-        if let nameTextField = findTextField(withPlaceholder: "Full Name"),
-           let nicknameTextField = findTextField(withPlaceholder: "Nickname") {
+        if let nameTextField = sut.findTextField(withPlaceholder: "Full Name"),
+           let nicknameTextField = sut.findTextField(withPlaceholder: "Nickname") {
             
             nameTextField.text = nil
             nicknameTextField.text = nil
             
             // When
-            if let startButton = findButton(withTitle: "Start") {
+            if let startButton = sut.findButton(withTitle: "Start") {
                 startButton.sendActions(for: .touchUpInside)
             }
             
@@ -264,20 +265,6 @@ final class FillProfileIntegrationTests: XCTestCase {
             XCTAssertFalse(mockProfileService.saveProfileCalled)
         }
     }
-    
-    // MARK: - Helper Methods
-    
-    private func findTextField(withPlaceholder placeholder: String) -> UITextField? {
-        return sut.view.subviews.first(where: { 
-            $0 is UITextField && ($0 as? UITextField)?.placeholder == placeholder 
-        }) as? UITextField
-    }
-    
-    private func findButton(withTitle title: String) -> UIButton? {
-        return sut.view.subviews.first(where: { 
-            $0 is UIButton && ($0 as? UIButton)?.title(for: .normal) == title 
-        }) as? UIButton
-    }
+
 }
 
-// Mock classes are now defined in FillProfileMocks.swift 

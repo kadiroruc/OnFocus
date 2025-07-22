@@ -25,12 +25,12 @@ final class PresenceService: PresenceServiceProtocol {
     }
     
     private var currentUserId: String? {
-        Auth.auth().currentUser?.uid
+        profileService.currentUserId
     }
     
     // MARK: - Kullanıcının durumunu güncelle (online / offline)
     func setUserStatus(online: Bool) {
-        guard let userId = profileService.currentUserId else { return }
+        guard let userId = currentUserId else { return }
         
         let status = online ? "online" : "offline"
         db.collection("users").document(userId).setData(["status": status], merge: true) { error in

@@ -70,6 +70,13 @@ extension FillProfileViewController {
         }) as? UIButton
     }
     
+    func findButton(withImage image: UIImage?) -> UIButton? {
+        return view.subviews.first(where: {
+            guard let button = $0 as? UIButton else { return false }
+            return button.image(for: .normal) == image
+        }) as? UIButton
+    }
+    
     /// Helper method to find profile image view
     func findProfileImageView() -> UIImageView? {
         return view.subviews.first(where: { $0 is UIImageView }) as? UIImageView

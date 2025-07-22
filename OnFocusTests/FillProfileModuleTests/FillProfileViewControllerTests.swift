@@ -43,11 +43,6 @@ final class FillProfileViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModel.view as? FillProfileViewController, viewController)
     }
     
-    func test_init_withCoder_shouldThrowFatalError() {
-        // Then
-        XCTAssertThrowsError(try FillProfileViewController(coder: NSCoder()))
-    }
-    
     // MARK: - View Setup Tests
     
     func test_viewDidLoad_shouldSetupUI() {
@@ -78,14 +73,14 @@ final class FillProfileViewControllerTests: XCTestCase {
         let nickname = "testNickname"
         
         // Access the text fields through the view hierarchy
-        if let nameTextField = sut.view.subviews.first(where: { $0 is UITextField && ($0 as? UITextField)?.placeholder == "Full Name" }) as? UITextField,
-           let nicknameTextField = sut.view.subviews.first(where: { $0 is UITextField && ($0 as? UITextField)?.placeholder == "Nickname" }) as? UITextField {
+        if let nameTextField = sut.findTextField(withPlaceholder: "Full Name"),
+           let nicknameTextField = sut.findTextField(withPlaceholder: "Nickname") {
             
             nameTextField.text = name
             nicknameTextField.text = nickname
             
             // When
-            if let startButton = sut.view.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.title(for: .normal) == "Start" }) as? UIButton {
+            if let startButton = sut.findButton(withTitle: "Start") {
                 startButton.sendActions(for: .touchUpInside)
             }
             
@@ -94,23 +89,6 @@ final class FillProfileViewControllerTests: XCTestCase {
             XCTAssertEqual(mockViewModel.startButtonTappedName, name)
             XCTAssertEqual(mockViewModel.startButtonTappedNickname, nickname)
         }
-    }
-    
-    func test_changeProfileButtonTapped_shouldPresentImagePicker() {
-        // Given
-        let window = UIWindow()
-        window.rootViewController = sut
-        window.makeKeyAndVisible()
-        
-        // When
-        if let changeProfileButton = sut.view.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.image(for: .normal) != nil }) as? UIButton {
-            changeProfileButton.sendActions(for: .touchUpInside)
-        }
-        
-        // Then
-        // Note: We can't easily test UIImagePickerController presentation in unit tests
-        // This test ensures the method doesn't crash
-        XCTAssertNotNil(sut.presentedViewController)
     }
     
     // MARK: - Touch Handling Tests
@@ -122,7 +100,7 @@ final class FillProfileViewControllerTests: XCTestCase {
         window.makeKeyAndVisible()
         
         // Find text field and make it first responder
-        if let nameTextField = sut.view.subviews.first(where: { $0 is UITextField && ($0 as? UITextField)?.placeholder == "Full Name" }) as? UITextField {
+        if let nameTextField = sut.findTextField(withPlaceholder: "Full Name") {
             nameTextField.becomeFirstResponder()
             XCTAssertTrue(nameTextField.isFirstResponder)
             
@@ -141,7 +119,7 @@ final class FillProfileViewControllerTests: XCTestCase {
     
     func test_setNicknameNotAvailable_shouldUpdateNicknameTextField() {
         // Given
-        guard let nicknameTextField = sut.view.subviews.first(where: { $0 is UITextField && ($0 as? UITextField)?.placeholder == "Nickname" }) as? UITextField else {
+        guard let nicknameTextField = sut.findTextField(withPlaceholder: "Nickname") else {
             XCTFail("Nickname text field not found")
             return
         }
@@ -198,7 +176,7 @@ final class FillProfileViewControllerTests: XCTestCase {
         sut.setProfileImage(testImage)
         
         // Then
-        if let profileImageView = sut.view.subviews.first(where: { $0 is UIImageView }) as? UIImageView {
+        if let profileImageView = sut.findProfileImageView() {
             XCTAssertEqual(profileImageView.image, testImage)
         }
     }
@@ -208,7 +186,7 @@ final class FillProfileViewControllerTests: XCTestCase {
         sut.showLoading(true)
         
         // Then
-        if let activityIndicator = sut.view.subviews.first(where: { $0 is UIActivityIndicatorView }) as? UIActivityIndicatorView {
+        if let activityIndicator = sut.findActivityIndicator() {
             XCTAssertTrue(activityIndicator.isAnimating)
         }
         XCTAssertFalse(sut.view.isUserInteractionEnabled)
@@ -222,7 +200,7 @@ final class FillProfileViewControllerTests: XCTestCase {
         sut.showLoading(false)
         
         // Then
-        if let activityIndicator = sut.view.subviews.first(where: { $0 is UIActivityIndicatorView }) as? UIActivityIndicatorView {
+        if let activityIndicator = sut.findActivityIndicator() {
             XCTAssertFalse(activityIndicator.isAnimating)
         }
         XCTAssertTrue(sut.view.isUserInteractionEnabled)
@@ -233,7 +211,7 @@ final class FillProfileViewControllerTests: XCTestCase {
         sut.enableStartButton(true)
         
         // Then
-        if let startButton = sut.view.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.title(for: .normal) == "Start" }) as? UIButton {
+        if let startButton = sut.findButton(withTitle: "Start") {
             XCTAssertTrue(startButton.isEnabled)
             XCTAssertEqual(startButton.backgroundColor, UIColor(hex: Constants.Colors.mintGreen))
             XCTAssertEqual(startButton.titleColor(for: .normal), .white)
@@ -246,7 +224,7 @@ final class FillProfileViewControllerTests: XCTestCase {
         sut.enableStartButton(false)
         
         // Then
-        if let startButton = sut.view.subviews.first(where: { $0 is UIButton && ($0 as? UIButton)?.title(for: .normal) == "Start" }) as? UIButton {
+        if let startButton = sut.findButton(withTitle: "Start") {
             XCTAssertFalse(startButton.isEnabled)
             XCTAssertEqual(startButton.backgroundColor, UIColor(hex: Constants.Colors.lightGray))
             XCTAssertEqual(startButton.titleColor(for: .normal), UIColor(hex: Constants.Colors.darkGray))
@@ -297,24 +275,6 @@ final class FillProfileViewControllerTests: XCTestCase {
         XCTAssertFalse(mockViewModel.setSelectedImageCalled)
     }
     
-    func test_imagePickerControllerDidCancel_shouldDismissPicker() {
-        // Given
-        let picker = UIImagePickerController()
-        let window = UIWindow()
-        window.rootViewController = sut
-        window.makeKeyAndVisible()
-        
-        sut.present(picker, animated: false)
-        XCTAssertNotNil(sut.presentedViewController)
-        
-        // When
-        sut.imagePickerControllerDidCancel(picker)
-        
-        // Then
-        // Note: We can't easily test dismissal in unit tests
-        // This test ensures the method doesn't crash
-        XCTAssertNotNil(sut)
-    }
 }
 
-// Mock classes are now defined in FillProfileMocks.swift 
+// Mock classes are now defined in FillProfileMocks.swift

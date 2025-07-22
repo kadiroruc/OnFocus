@@ -105,43 +105,46 @@ class MockPresenceService: PresenceServiceProtocol {
 // MARK: - Mock Fill Profile View
 
 class MockFillProfileView: FillProfileViewInterface {
-    var navigateToHomeCalled = false
-    var showErrorCalled = false
-    var showErrorMessage: String?
     var setProfileImageCalled = false
     var setProfileImageImage: UIImage?
-    var showLoadingCalled = false
-    var showLoadingIsLoading = false
-    var enableStartButtonCalled = false
-    var enableStartButtonIsEnabled = false
-    var setNicknameNotAvailableCalled = false
-    
-    func navigateToHome() {
-        navigateToHomeCalled = true
-    }
-    
-    func showError(message: String) {
-        showErrorCalled = true
-        showErrorMessage = message
-    }
-    
     func setProfileImage(_ image: UIImage) {
         setProfileImageCalled = true
         setProfileImageImage = image
     }
-    
+
+    var showErrorCalled = false
+    var showErrorMessage: String?
+    var onShowError: (() -> Void)?
+    func showError(message: String) {
+        showErrorCalled = true
+        showErrorMessage = message
+        onShowError?()
+    }
+
+    var setNicknameNotAvailableCalled = false
+    func setNicknameNotAvailable() {
+        setNicknameNotAvailableCalled = true
+    }
+
+    var showLoadingCalled = false
+    var showLoadingIsLoading: Bool?
     func showLoading(_ isLoading: Bool) {
         showLoadingCalled = true
         showLoadingIsLoading = isLoading
     }
-    
+
+    var enableStartButtonCalled = false
+    var enableStartButtonIsEnabled: Bool?
     func enableStartButton(_ isEnabled: Bool) {
         enableStartButtonCalled = true
         enableStartButtonIsEnabled = isEnabled
     }
-    
-    func setNicknameNotAvailable() {
-        setNicknameNotAvailableCalled = true
+
+    var navigateToHomeCalled = false
+    var onNavigateToHome: (() -> Void)?
+    func navigateToHome() {
+        navigateToHomeCalled = true
+        onNavigateToHome?()
     }
 }
 
