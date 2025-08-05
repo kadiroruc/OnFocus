@@ -285,11 +285,15 @@ final class SignUpViewController: UIViewController{
     }
 
     @objc private func termsCheckboxTapped() {
-        // Show EULA modal when checkbox is tapped
-        let eulaVC = EULAModalViewController()
-        eulaVC.modalPresentationStyle = .formSheet
-        eulaVC.delegate = self
-        present(eulaVC, animated: true)
+//        // Show EULA modal when checkbox is tapped
+//        let eulaVC = EULAModalViewController()
+//        eulaVC.modalPresentationStyle = .formSheet
+//        eulaVC.delegate = self
+//        present(eulaVC, animated: true)
+        
+        isTermsChecked.toggle()
+        
+            
     }
     
     @objc private func termsLabelTapped() {

@@ -16,18 +16,12 @@ final class AuthService: AuthServiceProtocol {
         
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             if let user = authResult?.user, error == nil {
-                user.sendEmailVerification { error in
-                    if let error = error {
-                        completion(.failure(error))
-                    } else {
-                        completion(.success(()))
-                    }
-                }
+                
+                completion(.success(()))
             } else {
                 completion(.failure(error ?? NSError(domain: "AuthService", code: 0, userInfo: [NSLocalizedDescriptionKey: "The user could not be created."])))
             }
         }
-        
     }
     
     func signIn(email: String, password: String, completion: @escaping (Result<Void, Error>) -> Void) {

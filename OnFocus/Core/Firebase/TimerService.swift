@@ -83,6 +83,7 @@ extension TimerService: TimerServiceProtocol{
                         data["averageDuration"] = average
                     }
                     
+                    
                     transaction.setData(data, forDocument: ref, merge: true)
                 } catch let error {
                     errorPointer?.pointee = error as NSError
@@ -101,7 +102,6 @@ extension TimerService: TimerServiceProtocol{
                 
                 let currentTotalWork = userData["totalWorkTime"] as? Int ?? 0
                 let newTotal = currentTotalWork + Int(session.duration)
-
                 transaction.updateData(["totalWorkTime": newTotal], forDocument: userRef)
             } catch let error {
                 errorPointer?.pointee = error as NSError
@@ -137,6 +137,7 @@ extension TimerService: TimerServiceProtocol{
         case .year:
             ids = (0..<12).map { offset in
                 let targetDate = Calendar.current.date(byAdding: .month, value: -offset, to: date)!
+                
                 return "monthly_" + monthKey(for: targetDate)
             }
 

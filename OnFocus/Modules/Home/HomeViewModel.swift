@@ -209,6 +209,7 @@ final class HomeViewModel {
     
     private func resetTimeKeeper() {
         timeKeeperTimer?.invalidate()
+        isPaused = true
         timeKeeperStartDate = nil
         timeKeeperElapsedTime = 0
         animationRunning = false
@@ -239,7 +240,14 @@ final class HomeViewModel {
 
 extension HomeViewModel: HomeViewModelInterface{
     func stopButtonTapped() {
-        pauseTimeKeeper()
+        if animationRunning{
+            pauseTimeKeeper()
+        }
+        if !isPomodoroMode && timeKeeperElapsedTime == 0{
+            self.view?.showMessage(Constants.ValidationMessages.pleaseStartTimer)
+            return
+        }
+
         saveTimeToDatabase(if: true)
         resetTimeKeeper()
     }
@@ -298,8 +306,8 @@ extension HomeViewModel: HomeViewModelInterface{
         if !isPomodoroMode{
             didChangeTimerMode(timeKeeperMode: true)
         }
-        
     }
+    
     
     func toggleCountdown() {
         if isPomodoroMode{

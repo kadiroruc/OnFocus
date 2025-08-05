@@ -438,7 +438,7 @@ extension HomeViewController: HomeViewInterface {
     }
     
     func updateOnlinePeopleCount(_ count: Int) {
-        onlineLabel.text = "\(count+72582) Online"
+        onlineLabel.text = "\(count+587) Online"
     }
     
     func updateWorkingLabel(online: Int, friends: Int) {

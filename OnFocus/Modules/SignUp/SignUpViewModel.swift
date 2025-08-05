@@ -46,9 +46,7 @@ extension SignUpViewModel: SignUpViewModelInterface {
 
                 switch result {
                 case .success:
-                    self.view?.showMessage(text: Constants.ValidationMessages.emailVerificationSent, type: .info) {
-                        self.view?.navigateToLogin(email)
-                    }
+                    self.view?.navigateToFillProfile()
                 case .failure(let error):
                     self.view?.enableSignUpButton(true)
                     self.view?.showMessage(text: error.localizedDescription, type: .error, nil)
