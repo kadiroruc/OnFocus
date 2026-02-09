@@ -11,6 +11,7 @@ protocol NotificationsViewInterface: AnyObject {
     func reloadData()
     func showMessage(_ text: String, type: MessageType)
     func setNoNotificationsLabel(hidden: Bool)
+    func setBadgeCount(_ count: Int)
     func navigateToProfileDetail(userId: String)
 }
 
@@ -58,6 +59,16 @@ final class NotificationsViewController: UIViewController {
         viewModel.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.viewWillAppear()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.viewWillDisappear()
+    }
+    
     private func setupView(){
         view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
         view.addSubview(collectionView)
@@ -78,6 +89,11 @@ final class NotificationsViewController: UIViewController {
 }
 
 extension NotificationsViewController: NotificationsViewInterface {
+    func setBadgeCount(_ count: Int) {
+        let badgeValue = count > 0 ? String(count) : nil
+        navigationController?.tabBarItem .badgeValue = badgeValue
+    }
+    
     func navigateToProfileDetail(userId: String) {
         navigationController?.pushViewController(ProfileViewController(viewModel: ProfileViewModel(profileService: DIContainer.shared.resolve(), friendsService: DIContainer.shared.resolve(), presenceService: DIContainer.shared.resolve(), userId: userId)), animated: true)
     }

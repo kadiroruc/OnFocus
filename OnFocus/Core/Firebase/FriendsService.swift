@@ -18,6 +18,9 @@ protocol FriendsServiceProtocol {
     func fetchFriendRequests(for userId: String,
                                   completion: @escaping (Result<[FriendshipModel], Error>) -> Void)
     
+    func observeFriendRequests(for userId: String,
+                               completion: @escaping (Result<[FriendshipModel], Error>) -> Void) -> ListenerRegistration
+    
     func checkFriendshipStatus(between user1Id: String,
                                and user2Id: String,
                                completion: @escaping (Result<String?, Error>) -> Void)
@@ -39,7 +42,24 @@ protocol FriendsServiceProtocol {
     
     func fetchOnlineUserCount(completion: @escaping (Result<Int, Error>) -> Void)
     
+    func observeFriends(for userId: String,
+                        completion: @escaping (Result<[ProfileModel], Error>) -> Void) -> FriendsListenerToken
     
+    func observeOnlineUserCount(completion: @escaping (Result<Int, Error>) -> Void) -> ListenerRegistration
+    
+    
+}
+
+final class FriendsListenerToken {
+    private let removeHandler: () -> Void
+    
+    init(removeHandler: @escaping () -> Void) {
+        self.removeHandler = removeHandler
+    }
+    
+    func remove() {
+        removeHandler()
+    }
 }
 
 final class FriendsService  {
@@ -132,6 +152,27 @@ extension FriendsService: FriendsServiceProtocol {
             .whereField("user2Id", isEqualTo: userId)
             .whereField("status", isEqualTo: Constants.Firebase.pending)
             .getDocuments { snapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                let requests = snapshot?.documents.compactMap({ doc -> FriendshipModel? in
+                    try? doc.data(as: FriendshipModel.self)
+                }) ?? []
+                
+                completion(.success(requests))
+            }
+    }
+    
+    func observeFriendRequests(for userId: String,
+                               completion: @escaping (Result<[FriendshipModel], Error>) -> Void) -> ListenerRegistration {
+        let friendshipsRef = db.collection("friendships")
+        
+        return friendshipsRef
+            .whereField("user2Id", isEqualTo: userId)
+            .whereField("status", isEqualTo: Constants.Firebase.pending)
+            .addSnapshotListener { snapshot, error in
                 if let error = error {
                     completion(.failure(error))
                     return
@@ -350,10 +391,100 @@ extension FriendsService: FriendsServiceProtocol {
             }
         }
     }
+    
+    func observeFriends(for userId: String,
+                        completion: @escaping (Result<[ProfileModel], Error>) -> Void) -> FriendsListenerToken {
+        let friendshipsRef = db.collection("friendships")
+        
+        var userListeners: [ListenerRegistration] = []
+        var profilesById: [String: ProfileModel] = [:]
+        
+        let friendshipsListener = friendshipsRef
+            .whereField("status", isEqualTo: Constants.Firebase.accepted)
+            .whereFilter(Filter.orFilter([
+                Filter.whereField("user1Id", isEqualTo: userId),
+                Filter.whereField("user2Id", isEqualTo: userId)
+            ]))
+            .addSnapshotListener { [weak self] snapshot, error in
+                guard let self = self else { return }
+                
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                let documents = snapshot?.documents ?? []
+                let friendIds: [String] = documents.compactMap { doc in
+                    let data = doc.data()
+                    let user1 = data["user1Id"] as? String
+                    let user2 = data["user2Id"] as? String
+                    return user1 == userId ? user2 : user1
+                }
+                
+                userListeners.forEach { $0.remove() }
+                userListeners.removeAll()
+                profilesById.removeAll()
+                
+                guard !friendIds.isEmpty else {
+                    completion(.success([]))
+                    return
+                }
+                
+                for friendId in friendIds {
+                    let listener = self.db.collection("users").document(friendId)
+                        .addSnapshotListener { snapshot, error in
+                            if let error = error {
+                                completion(.failure(error))
+                                return
+                            }
+                            
+                            guard let data = snapshot?.data() else {
+                                profilesById.removeValue(forKey: friendId)
+                                completion(.success(friendIds.compactMap { profilesById[$0] }))
+                                return
+                            }
+                            
+                            let profileImageURL = data["profileImageURL"] as? String
+                            let status = data["status"] as? String
+                            let nickname = data["nickname"] as? String ?? ""
+                            
+                            let model = ProfileModel(
+                                id: friendId,
+                                nickname: nickname,
+                                totalWorkTime: nil,
+                                currentStreakCount: nil,
+                                profileImageURL: profileImageURL,
+                                status: status
+                            )
+                            profilesById[friendId] = model
+                            completion(.success(friendIds.compactMap { profilesById[$0] }))
+                        }
+                    userListeners.append(listener)
+                }
+            }
+        
+        return FriendsListenerToken { [weak friendshipsListener] in
+            friendshipsListener?.remove()
+            userListeners.forEach { $0.remove() }
+            userListeners.removeAll()
+        }
+    }
+    
+    func observeOnlineUserCount(completion: @escaping (Result<Int, Error>) -> Void) -> ListenerRegistration {
+        let query = db.collection("users").whereField("status", isEqualTo: "online")
+        return query.addSnapshotListener { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            let count = snapshot?.documents.count ?? 0
+            completion(.success(count))
+        }
+    }
 
 
 }
 
     
     
-

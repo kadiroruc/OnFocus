@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 import UserNotifications
 
 protocol HomeViewModelInterface {
@@ -16,6 +17,8 @@ protocol HomeViewModelInterface {
     
     func toggleCountdown()
     func viewDidLoad()
+    func viewWillAppear()
+    func viewWillDisappear()
     func startCountdown()
     func pauseCountdown()
     func resumeCountdown()
@@ -77,6 +80,8 @@ final class HomeViewModel {
     private var timeKeeperTimer: Timer?
     private var backgroundEnteredDate: Date?
     private var remainingTimeWhenBackground: TimeInterval?
+    private var friendsListener: FriendsListenerToken?
+    private var onlineCountListener: ListenerRegistration?
 
     
     
@@ -185,6 +190,56 @@ final class HomeViewModel {
                 print("Error fetching online people count: \(error.localizedDescription)")
             }
         }
+    }
+    
+    private func startObservers() {
+        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+        
+        if friendsListener == nil {
+            view?.showLoading(true)
+            friendsListener = friendsService.observeFriends(for: currentUserId) { [weak self] result in
+                guard let self = self else { return }
+                
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let friends):
+                        self.view?.showLoading(false)
+                        self.friends = friends
+                        
+                        let onlineCount = friends.filter { ($0.status == "online") }.count
+                        let totalCount = friends.count
+                        self.view?.updateWorkingLabel(online: onlineCount, friends: totalCount)
+                        self.view?.reloadData()
+                    case .failure(let error):
+                        self.view?.showLoading(false)
+                        print("Error observing friends: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
+        
+        if onlineCountListener == nil {
+            onlineCountListener = friendsService.observeOnlineUserCount { [weak self] result in
+                guard let self = self else { return }
+                
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let count):
+                        self.view?.updateOnlinePeopleCount(count)
+                    case .failure(let error):
+                        print("Error observing online people count: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
+    }
+    
+    private func stopObservers() {
+        friendsListener?.remove()
+        friendsListener = nil
+        
+        onlineCountListener?.remove()
+        onlineCountListener = nil
     }
     
     private func checkAndUpdateProfileStreak(){
@@ -299,13 +354,17 @@ extension HomeViewModel: HomeViewModelInterface{
     
     func viewDidLoad() {
         view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
-        
-        fetchFriends()
-        fetchOnlinePeopleCount()
-        
         if !isPomodoroMode{
             didChangeTimerMode(timeKeeperMode: true)
         }
+    }
+    
+    func viewWillAppear() {
+        startObservers()
+    }
+    
+    func viewWillDisappear() {
+        stopObservers()
     }
     
     
@@ -397,7 +456,7 @@ extension HomeViewModel: HomeViewModelInterface{
         }else{
             
             if !animationRunning {
-                view?.showMessage(Constants.ValidationMessages.pleaseStartTimer)
+                resetTimeKeeper()
                 return
             } else {
                 view?.showConfirm(Constants.ValidationMessages.resetTimeKeeperConfirmation)

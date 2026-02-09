@@ -161,6 +161,16 @@ final class HomeViewController: UIViewController {
         viewModel.viewDidLoad()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.viewWillAppear()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.viewWillDisappear()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
             
@@ -603,4 +613,3 @@ extension HomeViewController: SettingsCoordinatorDelegate{
 //#Preview("HomeViewController"){
 //    HomeViewController()
 //}
-
