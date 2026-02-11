@@ -23,6 +23,14 @@ protocol TimerServiceProtocol {
                             from date: Date,
                             completion: @escaping (Result<Double, Error>) -> Void)
     
+    func observeStatistics(for rangeType: FetchTimeRangeType,
+                           from date: Date,
+                           completion: @escaping (Result<[StatisticModel], Error>) -> Void) -> StatisticsListenerToken
+    
+    func observeAverageDuration(for rangeType: FetchTimeRangeType,
+                                from date: Date,
+                                completion: @escaping (Result<Double, Error>) -> Void) -> ListenerRegistration
+    
     func fetchWeeklyStatistics(for userId: String,
                                from date: Date,
                                completion: @escaping (Result<Int, Error>) -> Void)
@@ -31,6 +39,22 @@ protocol TimerServiceProtocol {
 final class TimerService {
     private let db = Firestore.firestore()
     let calendar = Calendar.current
+}
+
+final class StatisticsListenerToken {
+    private let removeHandler: () -> Void
+    
+    init(removeHandler: @escaping () -> Void) {
+        self.removeHandler = removeHandler
+    }
+    
+    func remove() {
+        removeHandler()
+    }
+}
+
+final class DummyListenerRegistration: NSObject, ListenerRegistration {
+    func remove() {}
 }
 
 extension TimerService: TimerServiceProtocol{
@@ -240,7 +264,108 @@ extension TimerService: TimerServiceProtocol{
             completion(.success(totalDuration))
         }
     }
+    
+    func observeStatistics(for rangeType: FetchTimeRangeType,
+                           from date: Date,
+                           completion: @escaping (Result<[StatisticModel], Error>) -> Void) -> StatisticsListenerToken {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(.failure(NSError(domain: "User not authenticated", code: 401, userInfo: nil)))
+            return StatisticsListenerToken(removeHandler: {})
+        }
+        
+        var ids: [String] = []
+        
+        switch rangeType {
+        case .week:
+            ids = (0..<7).map { offset in
+                let targetDate = Calendar.current.date(byAdding: .day, value: -offset, to: date)!
+                return "daily_" + DateFormatter.yyyyMMdd.string(from: targetDate)
+            }
+        case .month:
+            ids = (0..<4).map { offset in
+                let targetDate = Calendar.current.date(byAdding: .weekOfYear, value: -offset, to: date)!
+                return "weekly_" + weekKey(for: targetDate)
+            }
+        case .year:
+            ids = (0..<12).map { offset in
+                let targetDate = Calendar.current.date(byAdding: .month, value: -offset, to: date)!
+                return "monthly_" + monthKey(for: targetDate)
+            }
+        case .fiveYears:
+            ids = (0..<5).map { offset in
+                let targetDate = Calendar.current.date(byAdding: .year, value: -offset, to: date)!
+                return "yearly_" + yearKey(for: targetDate)
+            }
+        }
+        
+        var listeners: [ListenerRegistration] = []
+        var resultsById: [String: StatisticModel] = [:]
+        let orderedIds = ids.reversed()
+        
+        for id in orderedIds {
+            let ref = db.collection("users")
+                .document(userId)
+                .collection("statistics")
+                .document(id)
+            
+            let listener = ref.addSnapshotListener { snapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+                
+                let totalDuration = snapshot?.data()?["totalDuration"] as? Int ?? 0
+                resultsById[id] = StatisticModel(totalDuration: totalDuration, documentName: id)
+                
+                let orderedResults = orderedIds.map { resultsById[$0] ?? StatisticModel(totalDuration: 0, documentName: $0) }
+                completion(.success(orderedResults))
+            }
+            
+            listeners.append(listener)
+        }
+        
+        return StatisticsListenerToken {
+            listeners.forEach { $0.remove() }
+            listeners.removeAll()
+        }
+    }
+    
+    func observeAverageDuration(for rangeType: FetchTimeRangeType,
+                                from date: Date,
+                                completion: @escaping (Result<Double, Error>) -> Void) -> ListenerRegistration {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(.failure(NSError(domain: "User not authenticated", code: 401, userInfo: nil)))
+            return DummyListenerRegistration()
+        }
+        
+        let parentId: String
+        
+        switch rangeType {
+        case .week:
+            parentId = "weekly_" + weekKey(for: date)
+        case .month:
+            parentId = "monthly_" + monthKey(for: date)
+        case .year:
+            parentId = "yearly_" + yearKey(for: date)
+        case .fiveYears:
+            parentId = "fiveYears_" + fiveYearsKey(for: date)
+        }
+        
+        let ref = db.collection("users")
+            .document(userId)
+            .collection("statistics")
+            .document(parentId)
+        
+        return ref.addSnapshotListener { snapshot, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            let average = snapshot?.data()?["averageDuration"] as? Double ?? 0
+            completion(.success(average))
+        }
+    }
 
 
 }
-

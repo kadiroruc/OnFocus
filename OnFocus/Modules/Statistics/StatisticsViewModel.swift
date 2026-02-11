@@ -5,11 +5,14 @@
 //  Created by Abdulkadir Oruç on 19.05.2025.
 //
 import Foundation
+import FirebaseFirestore
 
 protocol StatisticsViewModelInterface {
     var view: StatisticsViewInterface? { get set }
     func loadStatistics(for type: FetchTimeRangeType)
     func generateXLabels(from statistics: [StatisticModel]) -> [String]
+    func viewWillAppear()
+    func viewWillDisappear()
     
 }
 
@@ -20,6 +23,9 @@ final class StatisticsViewModel {
     private var statisticsCache: [FetchTimeRangeType: [StatisticModel]] = [:]
     private var averageCache: [FetchTimeRangeType: Double] = [:]
     private var previousAverageCache: [FetchTimeRangeType: Double] = [:]
+    private var currentRangeType: FetchTimeRangeType?
+    private var statisticsListener: StatisticsListenerToken?
+    private var averageListener: ListenerRegistration?
 
     init(timerService: TimerServiceProtocol) {
         self.timerService = timerService
@@ -76,41 +82,77 @@ final class StatisticsViewModel {
             }
         }
     }
-}
     
-extension StatisticsViewModel: StatisticsViewModelInterface {
-    func loadStatistics(for type: FetchTimeRangeType) {
-        // 1. Cache kontrolü
-        if let cachedStats = statisticsCache[type] {
-            self.view?.updateChart(with: cachedStats)
-        } else {
-            timerService.fetchStatistics(for: type, from: Date()) { [weak self] result in
-                guard let self = self else { return }
+    private func startObservers(for type: FetchTimeRangeType) {
+        stopObservers()
+        
+        statisticsListener = timerService.observeStatistics(for: type, from: Date()) { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let statistics):
-                    self.statisticsCache[type] = statistics // Cache'e yaz
+                    if let cached = self.statisticsCache[type], cached == statistics {
+                        return
+                    }
+                    self.statisticsCache[type] = statistics
                     self.view?.updateChart(with: statistics)
                 case .failure(let error):
-                    print("İstatistikler alınamadı: \(error)")
+                    print("İstatistik gözlem hatası: \(error)")
                 }
             }
         }
         
-        // 2. Ortalama kontrolü
-        if let cachedAvg = averageCache[type] {
-            self.updateAverageDisplay(currentAverage: cachedAvg, type: type)
-        } else {
-            timerService.fetchAverageDuration(for: type, from: Date()) { [weak self] result in
-                guard let self = self else { return }
+        averageListener = timerService.observeAverageDuration(for: type, from: Date()) { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let avg):
+                    if let cachedAvg = self.averageCache[type], cachedAvg == avg {
+                        return
+                    }
                     self.averageCache[type] = avg
                     self.updateAverageDisplay(currentAverage: avg, type: type)
                 case .failure(let error):
-                    print("Güncel ortalama alınamadı: \(error)")
+                    print("Ortalama gözlem hatası: \(error)")
                 }
             }
         }
+    }
+    
+    private func stopObservers() {
+        statisticsListener?.remove()
+        statisticsListener = nil
+        
+        averageListener?.remove()
+        averageListener = nil
+    }
+}
+    
+extension StatisticsViewModel: StatisticsViewModelInterface {
+    func loadStatistics(for type: FetchTimeRangeType) {
+        if currentRangeType == type, statisticsListener != nil {
+            return
+        }
+        currentRangeType = type
+        startObservers(for: type)
+        // Cache kontrolü
+        if let cachedStats = statisticsCache[type] {
+            self.view?.updateChart(with: cachedStats)
+        }
+        // Ortalama kontrolü
+        if let cachedAvg = averageCache[type] {
+            self.updateAverageDisplay(currentAverage: cachedAvg, type: type)
+        }
+    }
+    
+    func viewWillAppear() {
+        if let currentRangeType {
+            startObservers(for: currentRangeType)
+        }
+    }
+    
+    func viewWillDisappear() {
+        stopObservers()
     }
     
     

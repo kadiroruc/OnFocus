@@ -12,6 +12,7 @@ protocol ProfileSearchViewModelInterface {
     
     var filteredProfiles: [ProfileModel] { get }
     func searchBarSearchButtonClicked(_ searchText: String)
+    func searchTextChanged(_ searchText: String)
     func didSelectItemAt(indexPath: IndexPath)
 }
     
@@ -35,26 +36,30 @@ extension ProfileSearchViewModel: ProfileSearchViewModelInterface {
     }
     
     func searchBarSearchButtonClicked(_ searchText: String) {
+        searchTextChanged(searchText)
+    }
+    
+    func searchTextChanged(_ searchText: String) {
         if searchText.isEmpty {
             filteredProfiles = []
             view?.setNoResultsHidden(false)
             view?.reloadData()
-        } else {
-            view?.showLoading(true)
-            view?.setNoResultsHidden(true)
-            profileService.searchProfiles(matching: searchText) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(let profiles):
-                    self.filteredProfiles = profiles
-                    self.view?.reloadData()
-                    self.view?.showLoading(false)
-                    self.view?.setNoResultsHidden(!filteredProfiles.isEmpty)
-                    
-                case .failure(let error):
-                    print("Profile Search Error: \(error)")
-                    self.view?.showLoading(false)
-                }
+            return
+        }
+        
+        view?.showLoading(true)
+        view?.setNoResultsHidden(true)
+        profileService.searchProfiles(matching: searchText) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let profiles):
+                self.filteredProfiles = profiles
+                self.view?.reloadData()
+                self.view?.showLoading(false)
+                self.view?.setNoResultsHidden(!filteredProfiles.isEmpty)
+            case .failure(let error):
+                print("Profile Search Error: \(error)")
+                self.view?.showLoading(false)
             }
         }
     }

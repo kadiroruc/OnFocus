@@ -60,7 +60,7 @@ final class HomeViewController: UIViewController {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)
-        let image = UIImage(systemName: Constants.Icons.play, withConfiguration: config)
+        let image = UIImage(systemName: Constants.Icons.playCircle, withConfiguration: config)
         button.setImage(image, for: .normal)
         button.tintColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return button
@@ -70,7 +70,7 @@ final class HomeViewController: UIViewController {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)
-        let image = UIImage(systemName: Constants.Icons.stop, withConfiguration: config)
+        let image = UIImage(systemName: Constants.Icons.stopCircle, withConfiguration: config)
         button.setImage(image, for: .normal)
         button.tintColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         button.isHidden = true
@@ -580,7 +580,7 @@ extension HomeViewController: HomeViewInterface {
 
     func updatePlayButton(isPaused: Bool) {
 
-        let buttonImage = isPaused ? UIImage(systemName: Constants.Icons.play, withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)) : UIImage(systemName: Constants.Icons.pause, withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold))
+        let buttonImage = isPaused ? UIImage(systemName: Constants.Icons.playCircle, withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)) : UIImage(systemName: Constants.Icons.pauseCircle, withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold))
         playButton.setImage(buttonImage, for: .normal)
     }
     

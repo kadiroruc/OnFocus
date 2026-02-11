@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct StatisticModel: Codable {
+struct StatisticModel: Codable, Equatable {
     let totalDuration: Int
     var documentName: String?
 }

@@ -186,6 +186,18 @@ class StatisticsViewController: UIViewController {
         
         averageLabel.text = "Average: "
         progressLabel.text = "Progress: "
+        updateButtonStates(selectedButton: oneWeekButton)
+        viewModel.loadStatistics(for: .week)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.viewWillAppear()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.viewWillDisappear()
     }
     
     override func viewDidLayoutSubviews() {
@@ -349,4 +361,3 @@ extension StatisticsViewController: StatisticsViewInterface {
 //#Preview("StatisticsViewController"){
 //    StatisticsViewController()
 //}
-

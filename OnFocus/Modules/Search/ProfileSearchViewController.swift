@@ -16,6 +16,7 @@ protocol ProfileSearchViewInterface: AnyObject {
 class ProfileSearchViewController: UIViewController {
     
     private var viewModel: ProfileSearchViewModelInterface
+    private var searchDebounceTimer: Timer?
     
     private let searchBar: UISearchBar = {
         let sb = UISearchBar()
@@ -162,10 +163,18 @@ extension ProfileSearchViewController: UICollectionViewDataSource, UICollectionV
 }
 
 extension ProfileSearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchDebounceTimer?.invalidate()
+        searchDebounceTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { [weak self] _ in
+            self?.viewModel.searchTextChanged(searchText)
+        }
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let query = searchBar.text else { return }
+        searchDebounceTimer?.invalidate()
         viewModel.searchBarSearchButtonClicked(query)
-        searchBar.resignFirstResponder() // klavyeyi kapatmak için
+        searchBar.resignFirstResponder()
     }
 }
 
