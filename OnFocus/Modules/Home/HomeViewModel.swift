@@ -466,7 +466,7 @@ extension HomeViewModel: HomeViewModelInterface{
     
     func cancelConfirmButtonTapped() {
         if isPomodoroMode{
-            resetTimer()
+            resetPomodoroWithoutAdvancing()
         }else{
             resetTimeKeeper()
         }
@@ -502,6 +502,24 @@ extension HomeViewModel: HomeViewModelInterface{
         let seconds = totalSeconds % 60
         
         view?.updateCountdownLabel(minutes: minutes, seconds: seconds)
+    }
+
+    private func resetPomodoroWithoutAdvancing() {
+        countdownTimer?.invalidate()
+        isPaused = true
+        animationRunning = false
+        isBreak = false
+        isSessionCompleted = false
+
+        countdownMinutes = 0
+        countdownSeconds = 7
+        splitSeconds = 59
+
+        view?.updateSessionsLabel(text: "\(sessionCount) of 4 Sessions")
+        view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
+        view?.updatePlayButton(isPaused: true)
+        view?.resetCircularAnimationToStart(isSessionCompleted)
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["timer_expired"])
     }
     
     @objc private func appWillResignActive() {

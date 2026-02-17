@@ -148,6 +148,9 @@ final class HomeViewController: UIViewController {
 
     var pausedTime: CFTimeInterval = 0
     private var isContainerFullScreen = false
+    private var normalConstraints: [NSLayoutConstraint] = []
+    private var fullScreenConstraints: [NSLayoutConstraint] = []
+    private var staticConstraints: [NSLayoutConstraint] = []
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -212,31 +215,26 @@ final class HomeViewController: UIViewController {
     }
 
     private func setupLayout() {
-        NSLayoutConstraint.activate([
+        normalConstraints = [
             onlineLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             onlineLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             onlineLabel.widthAnchor.constraint(equalToConstant: 120),
             onlineLabel.heightAnchor.constraint(equalToConstant: 20),
-            
+
             sessionsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             sessionsLabel.topAnchor.constraint(equalTo: onlineLabel.bottomAnchor, constant: 80),
             sessionsLabel.widthAnchor.constraint(equalToConstant: 120),
             sessionsLabel.heightAnchor.constraint(equalToConstant: 20),
-            
+
             timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             timeLabel.topAnchor.constraint(equalTo: sessionsLabel.bottomAnchor, constant: 20),
             timeLabel.widthAnchor.constraint(equalToConstant: 210),
             timeLabel.heightAnchor.constraint(equalToConstant: 60),
-            
+
             circleContainer.centerXAnchor.constraint(equalTo: timeLabel.centerXAnchor),
             circleContainer.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
             circleContainer.widthAnchor.constraint(equalToConstant: 260),
             circleContainer.heightAnchor.constraint(equalTo: circleContainer.widthAnchor),
-            
-            playButton.centerXAnchor.constraint(equalTo: circleContainer.centerXAnchor),
-            playButton.centerYAnchor.constraint(equalTo: circleContainer.centerYAnchor,constant: 75),
-            playButton.widthAnchor.constraint(equalToConstant: 52),
-            playButton.heightAnchor.constraint(equalToConstant: 52),
 
             cancelButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -48),
             cancelButton.topAnchor.constraint(equalTo: circleContainer.topAnchor),
@@ -244,20 +242,66 @@ final class HomeViewController: UIViewController {
             cancelButton.heightAnchor.constraint(equalToConstant: 38),
 
             workingLabel.topAnchor.constraint(equalTo: circleContainer.bottomAnchor, constant: 50),
-            workingLabel.centerXAnchor.constraint(equalTo:view.centerXAnchor),
+            workingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             workingLabel.heightAnchor.constraint(equalToConstant: 30),
             workingLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
 
             listCollectionView.topAnchor.constraint(equalTo: workingLabel.bottomAnchor, constant: 10),
             listCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             listCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
-            listCollectionView.heightAnchor.constraint(equalToConstant: 270),
-            
+            listCollectionView.heightAnchor.constraint(equalToConstant: 270)
+        ]
+
+        fullScreenConstraints = [
+            onlineLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            onlineLabel.bottomAnchor.constraint(equalTo: circleContainer.topAnchor, constant: -24),
+            onlineLabel.widthAnchor.constraint(equalToConstant: 120),
+            onlineLabel.heightAnchor.constraint(equalToConstant: 20),
+
+            sessionsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            sessionsLabel.bottomAnchor.constraint(equalTo: timeLabel.topAnchor, constant: -12),
+            sessionsLabel.widthAnchor.constraint(equalToConstant: 120),
+            sessionsLabel.heightAnchor.constraint(equalToConstant: 20),
+
+            timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20),
+            timeLabel.widthAnchor.constraint(equalToConstant: 210),
+            timeLabel.heightAnchor.constraint(equalToConstant: 60),
+
+            circleContainer.centerXAnchor.constraint(equalTo: timeLabel.centerXAnchor),
+            circleContainer.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
+            circleContainer.widthAnchor.constraint(equalToConstant: 260),
+            circleContainer.heightAnchor.constraint(equalTo: circleContainer.widthAnchor),
+
+            cancelButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -48),
+            cancelButton.topAnchor.constraint(equalTo: circleContainer.topAnchor),
+            cancelButton.widthAnchor.constraint(equalToConstant: 38),
+            cancelButton.heightAnchor.constraint(equalToConstant: 38),
+
+            workingLabel.topAnchor.constraint(equalTo: circleContainer.bottomAnchor, constant: 40),
+            workingLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            workingLabel.heightAnchor.constraint(equalToConstant: 30),
+            workingLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
+
+            listCollectionView.topAnchor.constraint(equalTo: workingLabel.bottomAnchor, constant: 10),
+            listCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            listCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9),
+            listCollectionView.heightAnchor.constraint(equalToConstant: 270)
+        ]
+
+        staticConstraints = [
+            playButton.centerXAnchor.constraint(equalTo: circleContainer.centerXAnchor),
+            playButton.centerYAnchor.constraint(equalTo: circleContainer.centerYAnchor, constant: 75),
+            playButton.widthAnchor.constraint(equalToConstant: 52),
+            playButton.heightAnchor.constraint(equalToConstant: 52),
+
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             activityIndicator.widthAnchor.constraint(equalToConstant: 24),
             activityIndicator.heightAnchor.constraint(equalToConstant: 24)
-        ])
+        ]
+
+        NSLayoutConstraint.activate(normalConstraints + staticConstraints)
     }
 
     private func createCircularPath() {
@@ -321,57 +365,12 @@ final class HomeViewController: UIViewController {
         if !timeLabel.bounds.contains(cancelButtonLocation) {
             listCollectionView.isHidden.toggle()
             
-            if isContainerFullScreen{
-                
-                let timeLabelConstraints = timeLabel.allAttachedConstraints()
-                NSLayoutConstraint.deactivate(timeLabelConstraints)
-
-                let collectionViewConstraints = listCollectionView.allAttachedConstraints()
-                NSLayoutConstraint.deactivate(collectionViewConstraints)
-
-                let playButtonConstraints = playButton.allAttachedConstraints()
-                NSLayoutConstraint.deactivate(playButtonConstraints)
-                
-                let stopButtonConstraints = stopButton.allAttachedConstraints()
-                NSLayoutConstraint.deactivate(stopButtonConstraints)
-
-                let cancelButtonConstraints = cancelButton.allAttachedConstraints()
-                NSLayoutConstraint.deactivate(cancelButtonConstraints)
-
-                let onlineLabelConstraints = onlineLabel.allAttachedConstraints()
-                NSLayoutConstraint.deactivate(onlineLabelConstraints)
-
-                let sessionsLabelConstraints = sessionsLabel.allAttachedConstraints()
-                NSLayoutConstraint.deactivate(sessionsLabelConstraints)
-
-                let circleContainerConstraints = circleContainer.allAttachedConstraints()
-                NSLayoutConstraint.deactivate(circleContainerConstraints)
-
-                let workingLabelConstraints = workingLabel.allAttachedConstraints()
-                NSLayoutConstraint.deactivate(workingLabelConstraints)
-                
-                
-                setupLayout()
-                if !isPomodoroMode{
-                    configurePlayAndStopButton(isPomodoroMode: isPomodoroMode)
-                }
-                
-            }else{
-                NSLayoutConstraint.activate([
-                    
-                    sessionsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor,constant: -60),
-                    
-                    timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                    timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                    onlineLabel.centerYAnchor.constraint(equalTo: circleContainer.centerYAnchor,constant: -170),
-                    
-                    cancelButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -48),
-                    cancelButton.topAnchor.constraint(equalTo: circleContainer.topAnchor),
-                    cancelButton.widthAnchor.constraint(equalToConstant: 38),
-                    cancelButton.heightAnchor.constraint(equalToConstant: 38),
-
-                ])
-                
+            if isContainerFullScreen {
+                NSLayoutConstraint.deactivate(fullScreenConstraints)
+                NSLayoutConstraint.activate(normalConstraints)
+            } else {
+                NSLayoutConstraint.deactivate(normalConstraints)
+                NSLayoutConstraint.activate(fullScreenConstraints)
             }
             
             isContainerFullScreen.toggle()
