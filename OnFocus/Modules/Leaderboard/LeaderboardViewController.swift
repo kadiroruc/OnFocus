@@ -114,7 +114,7 @@ class LeaderboardViewController: UIViewController {
         label.textAlignment = .center
         label.numberOfLines = 2
         label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
-        label.text = "user"
+        label.text = "Example User"
         return label
     }()
     
@@ -149,7 +149,7 @@ class LeaderboardViewController: UIViewController {
         label.textAlignment = .center
         label.numberOfLines = 2
         label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
-        label.text = "user"
+        label.text = "Example User"
         return label
     }()
     

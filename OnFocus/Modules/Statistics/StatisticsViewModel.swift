@@ -6,6 +6,7 @@
 //
 import Foundation
 import FirebaseFirestore
+import UIKit
 
 protocol StatisticsViewModelInterface {
     var view: StatisticsViewInterface? { get set }
@@ -29,6 +30,13 @@ final class StatisticsViewModel {
 
     init(timerService: TimerServiceProtocol) {
         self.timerService = timerService
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(significantTimeChange), name: UIApplication.significantTimeChangeNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func formatDate(from string: String, format: String, to outputFormat: String) -> String {
@@ -47,10 +55,10 @@ final class StatisticsViewModel {
         let minutes = totalMinutes % 60
 
         var formatted = ""
-        if hours > 0 { formatted += "\(hours)H" }
+        if hours > 0 { formatted += "\(hours)h" }
         if minutes > 0 || hours == 0 {
             if !formatted.isEmpty { formatted += " " }
-            formatted += "\(minutes)M"
+            formatted += "\(minutes)m"
         }
 
         self.view?.updateAverageLabel(with: formatted)
@@ -125,6 +133,19 @@ final class StatisticsViewModel {
         
         averageListener?.remove()
         averageListener = nil
+    }
+    
+    @objc private func appDidBecomeActive() {
+        refreshObserversIfNeeded()
+    }
+    
+    @objc private func significantTimeChange() {
+        refreshObserversIfNeeded()
+    }
+    
+    private func refreshObserversIfNeeded() {
+        guard let currentRangeType, statisticsListener != nil else { return }
+        startObservers(for: currentRangeType)
     }
 }
     

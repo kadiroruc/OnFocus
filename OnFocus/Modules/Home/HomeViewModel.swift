@@ -143,8 +143,7 @@ final class HomeViewModel {
             
         Task {
             do {
-                try await timerService.saveSession(session, userId: userId)
-                try await timerService.updateAggregate(for: session, userId: userId)
+                try await timerService.saveSessionAndUpdateAggregates(session, userId: userId)
                 checkAndUpdateProfileStreak()
             } catch {
                 print("Error: \(error.localizedDescription)")

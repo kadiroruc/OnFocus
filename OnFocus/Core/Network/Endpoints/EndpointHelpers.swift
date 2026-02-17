@@ -14,7 +14,6 @@ enum HTTPMethod: String {
     case DELETE
 }
 
-//All endpoint group will confirm this protocol
 protocol EndpointProtocol {
     var baseURL: String { get }
     var path: String { get }

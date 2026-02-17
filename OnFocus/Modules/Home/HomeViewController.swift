@@ -60,7 +60,7 @@ final class HomeViewController: UIViewController {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)
-        let image = UIImage(systemName: Constants.Icons.playCircle, withConfiguration: config)
+        let image = UIImage(systemName: Constants.Icons.play, withConfiguration: config)
         button.setImage(image, for: .normal)
         button.tintColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return button
@@ -246,7 +246,7 @@ final class HomeViewController: UIViewController {
             workingLabel.topAnchor.constraint(equalTo: circleContainer.bottomAnchor, constant: 50),
             workingLabel.centerXAnchor.constraint(equalTo:view.centerXAnchor),
             workingLabel.heightAnchor.constraint(equalToConstant: 30),
-            workingLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.4),
+            workingLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),
 
             listCollectionView.topAnchor.constraint(equalTo: workingLabel.bottomAnchor, constant: 10),
             listCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -395,6 +395,10 @@ extension HomeViewController: HomeViewInterface {
         let stopButtonCons = stopButton.allAttachedConstraints()
         NSLayoutConstraint.deactivate(stopButtonCons)
         
+        let config = UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)
+        let playIcon = isPomodoroMode ? Constants.Icons.play : Constants.Icons.playCircle
+        playButton.setImage(UIImage(systemName: playIcon, withConfiguration: config), for: .normal)
+        
         if isPomodoroMode{
             
             stopButton.isHidden = true
@@ -452,7 +456,7 @@ extension HomeViewController: HomeViewInterface {
     }
     
     func updateWorkingLabel(online: Int, friends: Int) {
-        workingLabel.text = "\(online)/\(friends) Working"
+        workingLabel.text = "\(online)/\(friends) Friends Working"
     }
     
     func navigateToProfileDetail(userId: String?) {
@@ -579,8 +583,12 @@ extension HomeViewController: HomeViewInterface {
     }
 
     func updatePlayButton(isPaused: Bool) {
-
-        let buttonImage = isPaused ? UIImage(systemName: Constants.Icons.playCircle, withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)) : UIImage(systemName: Constants.Icons.pauseCircle, withConfiguration: UIImage.SymbolConfiguration(pointSize: 52, weight: .bold))
+        let config = UIImage.SymbolConfiguration(pointSize: 52, weight: .bold)
+        let playIcon = isPomodoroMode ? Constants.Icons.play : Constants.Icons.playCircle
+        let pauseIcon = isPomodoroMode ? Constants.Icons.pause : Constants.Icons.pauseCircle
+        let buttonImage = isPaused
+            ? UIImage(systemName: playIcon, withConfiguration: config)
+            : UIImage(systemName: pauseIcon, withConfiguration: config)
         playButton.setImage(buttonImage, for: .normal)
     }
     

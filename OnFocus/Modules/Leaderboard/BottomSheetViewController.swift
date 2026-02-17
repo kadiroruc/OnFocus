@@ -131,7 +131,7 @@ extension BottomSheetViewController: UICollectionViewDataSource, UICollectionVie
         let rank = indexPath.item + 4
         let profile: ProfileModel
         if profiles.count == 0{
-            profile = ProfileModel(nickname: "user")
+            profile = ProfileModel(nickname: "Example User")
         }else{
             profile = profiles[indexPath.item]
         }

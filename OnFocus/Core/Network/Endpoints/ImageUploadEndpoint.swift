@@ -14,7 +14,7 @@ enum ImageUploadEndpoint {
 extension ImageUploadEndpoint: EndpointProtocol {
     
     var baseURL: String {
-        return NetworkConstants.baseURL // örn: "https://api.imgbb.com/1/"
+        return NetworkConstants.baseURL
     }
     
     var path: String {

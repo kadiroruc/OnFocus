@@ -44,7 +44,8 @@ extension TimerService {
     
     func fiveYearsKey(for date: Date) -> String {
         let year = calendar.component(.year, from: date)
-        return "\(year)-\(year - 5)"
+        let startYear = year - 4
+        return "\(startYear)-\(year)"
     }
 
     func datesInWeek(containing date: Date) -> [Date] {
@@ -75,6 +76,47 @@ extension TimerService {
     func yearsInFiveYears(containing date: Date) -> [String] {
         let currentYear = calendar.component(.year, from: date)
         return (0..<5).map { "\(currentYear - $0)" }.reversed()
+    }
+    
+    func daysInYear(for date: Date) -> Int {
+        let year = calendar.component(.year, from: date)
+        return daysInYear(year)
+    }
+    
+    func daysInYear(_ year: Int) -> Int {
+        var comps = DateComponents()
+        comps.year = year
+        guard let date = calendar.date(from: comps) else { return 365 }
+        return calendar.range(of: .day, in: .year, for: date)?.count ?? 365
+    }
+    
+    func elapsedDaysInWeek(for date: Date) -> Int {
+        guard let weekInterval = calendar.dateInterval(of: .weekOfYear, for: date) else { return 1 }
+        let start = weekInterval.start
+        let dayStart = calendar.startOfDay(for: date)
+        let days = calendar.dateComponents([.day], from: start, to: dayStart).day ?? 0
+        return min(7, max(1, days + 1))
+    }
+    
+    func elapsedDaysInMonth(for date: Date) -> Int {
+        let day = calendar.component(.day, from: date)
+        return max(1, day)
+    }
+    
+    func elapsedDaysInYear(for date: Date) -> Int {
+        let dayOfYear = calendar.ordinality(of: .day, in: .year, for: date) ?? 1
+        return max(1, dayOfYear)
+    }
+    
+    func elapsedDaysInFiveYears(for date: Date) -> Int {
+        let year = calendar.component(.year, from: date)
+        let startYear = year - 4
+        var totalDays = 0
+        for y in startYear..<year {
+            totalDays += daysInYear(y)
+        }
+        totalDays += elapsedDaysInYear(for: date)
+        return max(1, totalDays)
     }
     
     func daysInMonth(for date: Date) -> Int {

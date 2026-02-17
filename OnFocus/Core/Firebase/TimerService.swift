@@ -15,6 +15,9 @@ protocol TimerServiceProtocol {
     func updateAggregate(for session: SessionModel,
                          userId: String) async throws
     
+    func saveSessionAndUpdateAggregates(_ session: SessionModel,
+                                        userId: String) async throws
+    
     func fetchStatistics(for rangeType: FetchTimeRangeType,
                          from date: Date,
                          completion: @escaping (Result<[StatisticModel], Error>) -> Void)
@@ -80,11 +83,11 @@ extension TimerService: TimerServiceProtocol{
         let fiveYearsId = "fiveYears_" + fiveYearsKey(for: date)
         
         let statInfos: [(id: String, divisor: Int?)] = [
-            (dayId, nil),            // daily: sadece total tutulur
-            (weekId, 7),
-            (monthId, daysInMonth(for: date)),
-            (yearId, 365),
-            (fiveYearsId, 5 * 365)
+            (dayId, nil), // daily: sadece total tutulur
+            (weekId, max(1, elapsedDaysInWeek(for: date))),
+            (monthId, max(1, elapsedDaysInMonth(for: date))),
+            (yearId, max(1, elapsedDaysInYear(for: date))),
+            (fiveYearsId, max(1, elapsedDaysInFiveYears(for: date)))
         ]
         
         // 1. Sessions and statistics(daily, weekly, monthly...)
@@ -99,7 +102,7 @@ extension TimerService: TimerServiceProtocol{
 
                     let existing = snapshot.data() ?? [:]
                     let oldTotal = existing["totalDuration"] as? Int ?? 0
-                    let newTotal = oldTotal + Int(session.duration)
+                    let newTotal = oldTotal + Int(session.duration.rounded())
                     var data: [String: Any] = ["totalDuration": newTotal]
                     
                     if let divisor {
@@ -125,8 +128,73 @@ extension TimerService: TimerServiceProtocol{
                 let userData = userSnapshot.data() ?? [:]
                 
                 let currentTotalWork = userData["totalWorkTime"] as? Int ?? 0
-                let newTotal = currentTotalWork + Int(session.duration)
+                let newTotal = currentTotalWork + Int(session.duration.rounded())
                 transaction.updateData(["totalWorkTime": newTotal], forDocument: userRef)
+            } catch let error {
+                errorPointer?.pointee = error as NSError
+            }
+            return nil
+        }
+    }
+    
+    func saveSessionAndUpdateAggregates(_ session: SessionModel, userId: String) async throws {
+        let sessionData = try Firestore.Encoder().encode(session)
+        let date = session.timestamp
+        let dateKey = DateFormatter.yyyyMMdd.string(from: date)
+        
+        let dayId = "daily_" + dateKey
+        let weekId = "weekly_" + weekKey(for: date)
+        let monthId = "monthly_" + monthKey(for: date)
+        let yearId = "yearly_" + yearKey(for: date)
+        let fiveYearsId = "fiveYears_" + fiveYearsKey(for: date)
+        
+        let statInfos: [(id: String, divisor: Int?)] = [
+            (dayId, nil), // daily: sadece total tutulur
+            (weekId, max(1, elapsedDaysInWeek(for: date))),
+            (monthId, max(1, elapsedDaysInMonth(for: date))),
+            (yearId, max(1, elapsedDaysInYear(for: date))),
+            (fiveYearsId, max(1, elapsedDaysInFiveYears(for: date)))
+        ]
+        
+        let userRef = db.collection("users").document(userId)
+        let sessionRef = userRef.collection("sessions").document(session.id)
+        
+        try await db.runTransaction { transaction, errorPointer in
+            do {
+                let sessionSnapshot = try transaction.getDocument(sessionRef)
+                if sessionSnapshot.exists {
+                    return nil
+                }
+                
+                let userSnapshot = try transaction.getDocument(userRef)
+                
+                var statSnapshots: [(ref: DocumentReference, snapshot: DocumentSnapshot, divisor: Int?)] = []
+                for (statId, divisor) in statInfos {
+                    let ref = userRef.collection("statistics").document(statId)
+                    let snapshot = try transaction.getDocument(ref)
+                    statSnapshots.append((ref: ref, snapshot: snapshot, divisor: divisor))
+                }
+                
+                let userData = userSnapshot.data() ?? [:]
+                let currentTotalWork = userData["totalWorkTime"] as? Int ?? 0
+                let newTotalWork = currentTotalWork + Int(session.duration.rounded())
+                
+                for item in statSnapshots {
+                    let existing = item.snapshot.data() ?? [:]
+                    let oldTotal = existing["totalDuration"] as? Int ?? 0
+                    let newTotal = oldTotal + Int(session.duration.rounded())
+                    var data: [String: Any] = ["totalDuration": newTotal]
+                    
+                    if let divisor = item.divisor {
+                        let average = Double(newTotal) / Double(divisor)
+                        data["averageDuration"] = average
+                    }
+                    
+                    transaction.setData(data, forDocument: item.ref, merge: true)
+                }
+                
+                transaction.setData(sessionData, forDocument: sessionRef, merge: false)
+                transaction.updateData(["totalWorkTime": newTotalWork], forDocument: userRef)
             } catch let error {
                 errorPointer?.pointee = error as NSError
             }

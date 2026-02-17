@@ -138,6 +138,16 @@ class StatisticsViewController: UIViewController {
         return label
     }()
     
+    private let averageInfoButton: UIButton = {
+        let button = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 16, weight: .regular)
+        let image = UIImage(systemName: "info.circle", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.tintColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let averageTimeLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18)
@@ -156,6 +166,16 @@ class StatisticsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         return label
+    }()
+    
+    private let progressInfoButton: UIButton = {
+        let button = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 16, weight: .regular)
+        let image = UIImage(systemName: "info.circle", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.tintColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
     }()
     
     private let progressPercentageLabel: UILabel = {
@@ -216,9 +236,11 @@ class StatisticsViewController: UIViewController {
         view.addSubview(statisticsContainerView)
         statisticsContainerView.addArrangedSubview(averageView)
         averageView.addSubview(averageLabel)
+        averageView.addSubview(averageInfoButton)
         averageView.addSubview(averageTimeLabel)
         statisticsContainerView.addArrangedSubview(progressView)
         progressView.addSubview(progressLabel)
+        progressView.addSubview(progressInfoButton)
         progressView.addSubview(progressPercentageLabel)
         
         
@@ -238,10 +260,15 @@ class StatisticsViewController: UIViewController {
             statisticsContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             statisticsContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             statisticsContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            averageInfoButton.centerYAnchor.constraint(equalTo: averageView.centerYAnchor),
+            averageInfoButton.leadingAnchor.constraint(equalTo: averageView.leadingAnchor, constant:10),
+            averageInfoButton.widthAnchor.constraint(equalToConstant: 20),
+            averageInfoButton.heightAnchor.constraint(equalToConstant: 20),
 
             
             averageLabel.centerYAnchor.constraint(equalTo: averageView.centerYAnchor),
-            averageLabel.leadingAnchor.constraint(equalTo: averageView.leadingAnchor, constant: 30),
+            averageLabel.leadingAnchor.constraint(equalTo: averageInfoButton.trailingAnchor),
             averageLabel.widthAnchor.constraint(equalToConstant: 100),
             
             
@@ -250,8 +277,13 @@ class StatisticsViewController: UIViewController {
             averageTimeLabel.widthAnchor.constraint(equalToConstant: 100),
             averageTimeLabel.heightAnchor.constraint(equalToConstant: 50),
             
+            progressInfoButton.centerYAnchor.constraint(equalTo: progressView.centerYAnchor),
+            progressInfoButton.leadingAnchor.constraint(equalTo: progressView.leadingAnchor, constant:10),
+            progressInfoButton.widthAnchor.constraint(equalToConstant: 20),
+            progressInfoButton.heightAnchor.constraint(equalToConstant: 20),
+            
             progressLabel.centerYAnchor.constraint(equalTo: progressView.centerYAnchor),
-            progressLabel.leadingAnchor.constraint(equalTo: progressView.leadingAnchor, constant: 30),
+            progressLabel.leadingAnchor.constraint(equalTo: progressInfoButton.trailingAnchor),
             progressLabel.widthAnchor.constraint(equalToConstant: 100),
             
             
@@ -262,6 +294,9 @@ class StatisticsViewController: UIViewController {
             
             
         ])
+        
+        averageInfoButton.addTarget(self, action: #selector(averageInfoTapped), for: .touchUpInside)
+        progressInfoButton.addTarget(self, action: #selector(progressInfoTapped), for: .touchUpInside)
         
     }
     
@@ -293,6 +328,22 @@ class StatisticsViewController: UIViewController {
             default:
                 break
         }
+    }
+    
+    @objc private func averageInfoTapped() {
+        //TR:"Average, seçili zaman aralığında bugüne kadar kaydedilen toplam çalışma süresinin, aynı aralıkta geçen gün sayısına bölünmesiyle hesaplanır. Bu yüzden dönem ilerledikçe ortalama güncellenir."
+        let message = "Average is calculated by dividing the total recorded working time up to today within the selected time range by the number of days that have elapsed in that same range. Therefore, as the period progresses, the average is continuously updated."
+        let alert = UIAlertController(title: "Average", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true)
+    }
+    
+    @objc private func progressInfoTapped() {
+        //TR:"Progress, seçili zaman aralığındaki ortalamanın bir önceki aynı aralığa göre yüzde değişimini gösterir."
+        let message = "Progress shows the percentage change of the average in the selected time range compared to the previous equivalent period."
+        let alert = UIAlertController(title: "Progress", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true)
     }
     
 }
