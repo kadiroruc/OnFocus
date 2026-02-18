@@ -9,6 +9,7 @@ import FirebaseAuth
 protocol AuthServiceProtocol {
     func signUp(email: String, password: String, completion: @escaping (Result<Void, Error>) -> Void)
     func signIn(email: String, password: String, completion: @escaping (Result<Void, Error>) -> Void)
+    func sendPasswordReset(email: String, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 final class AuthService: AuthServiceProtocol {
@@ -38,6 +39,16 @@ final class AuthService: AuthServiceProtocol {
                 }
             } else {
                 completion(.failure(NSError(domain: "AuthService", code: 2, userInfo: [NSLocalizedDescriptionKey: "The user could not be found."])))
+            }
+        }
+    }
+    
+    func sendPasswordReset(email: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
             }
         }
     }

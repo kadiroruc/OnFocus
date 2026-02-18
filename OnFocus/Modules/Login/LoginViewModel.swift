@@ -12,6 +12,7 @@ protocol LoginViewModelInterface {
     
     func loginButtonTapped(email: String, password: String)
     func signUpTapped()
+    func forgotPasswordTapped(email: String)
 
 }
 
@@ -76,6 +77,30 @@ extension LoginViewModel: LoginViewModelInterface{
     
     func signUpTapped() {
         view?.navigateToSignUp()
+    }
+
+    func forgotPasswordTapped(email: String) {
+        if email == "" || !email.contains("@") {
+            view?.showError(message: Constants.ValidationMessages.invalidEmail)
+            return
+        }
+
+        view?.enableLoginButton(false)
+        view?.showLoading(true)
+
+        authService.sendPasswordReset(email: email) { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                self.view?.showLoading(false)
+                self.view?.enableLoginButton(true)
+                switch result {
+                case .success:
+                    self.view?.showMessage(message: "Password reset email sent. Please check your inbox and SPAMS.")
+                case .failure(let error):
+                    self.view?.showError(message: error.localizedDescription)
+                }
+            }
+        }
     }
 
     

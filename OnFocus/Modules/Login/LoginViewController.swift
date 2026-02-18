@@ -11,6 +11,7 @@ protocol LoginViewInterface: AnyObject {
     // UI güncellemeleri
     func showLoading(_ isLoading: Bool)
     func showError(message: String)
+    func showMessage(message: String)
     
     // Form ile ilgili işlemler
     func enableLoginButton(_ isEnabled: Bool)
@@ -254,7 +255,7 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func forgotPasswordTapped() {
-        //viewModel.forgotPasswordTapped()
+        viewModel.forgotPasswordTapped(email: emailTextField.text ?? "")
     }
     
     @objc func handleEmailNotification(_ notification: Notification) {
@@ -277,6 +278,12 @@ extension LoginViewController: LoginViewInterface{
     
     func showError(message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
+    func showMessage(message: String) {
+        let alert = UIAlertController(title: "Info", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
