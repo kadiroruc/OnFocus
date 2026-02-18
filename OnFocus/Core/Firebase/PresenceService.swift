@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseAuth
+import FirebaseDatabase
 
 
 protocol PresenceServiceProtocol {
@@ -18,7 +19,10 @@ protocol PresenceServiceProtocol {
 final class PresenceService: PresenceServiceProtocol {
     
     private let db = Firestore.firestore()
+    private let rtdb = Database.database().reference()
     private let profileService: ProfileServiceProtocol
+    private var connectedHandle: DatabaseHandle?
+    private var isTrackingPresence = false
     
     init(profileService: ProfileServiceProtocol) {
         self.profileService = profileService
@@ -31,29 +35,45 @@ final class PresenceService: PresenceServiceProtocol {
     // MARK: - Kullanıcının durumunu güncelle (online / offline)
     func setUserStatus(online: Bool) {
         guard let userId = currentUserId else { return }
+        let statusRef = rtdb.child("status").child(userId)
+        let connectedRef = rtdb.child(".info/connected")
         
-        let status = online ? "online" : "offline"
-        db.collection("users").document(userId).setData(["status": status], merge: true) { error in
-            
+        if online {
+            guard !isTrackingPresence else { return }
+            isTrackingPresence = true
+            connectedHandle = connectedRef.observe(.value) { snapshot in
+                guard let isConnected = snapshot.value as? Bool, isConnected else { return }
+                statusRef.onDisconnectSetValue([
+                    "state": "offline",
+                    "last_changed": ServerValue.timestamp()
+                ])
+                statusRef.setValue([
+                    "state": "online",
+                    "last_changed": ServerValue.timestamp()
+                ])
+            }
+        } else {
+            isTrackingPresence = false
+            if let handle = connectedHandle {
+                connectedRef.removeObserver(withHandle: handle)
+                connectedHandle = nil
+            }
+            statusRef.setValue([
+                "state": "offline",
+                "last_changed": ServerValue.timestamp()
+            ])
         }
-
     }
     
     // MARK: - Belirli bir kullanıcının durumunu dinle
     func observeUserStatus(userId: String, completion: @escaping (Result<Bool, Error>) -> Void) {
-        db.collection("users").document(userId).addSnapshotListener { snapshot, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            guard let data = snapshot?.data(),
-                  let status = data["status"] as? String else {
+        rtdb.child("status").child(userId).observe(.value) { snapshot in
+            guard let data = snapshot.value as? [String: Any],
+                  let state = data["state"] as? String else {
                 completion(.success(false))
                 return
             }
-            
-            completion(.success(status == "online"))
+            completion(.success(state == "online"))
         }
     }
 }

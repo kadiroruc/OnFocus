@@ -93,7 +93,7 @@
 "profile.remove_friend_title" = "Do you want to remove your friend?";
 "profile.delete_friend" = "Delete Friend";
 "profile.total_work_hour" = "Total Work Hour: %@";
-"profile.current_streak_day" = "Current Streak Day: %d";
+"profile.current_streak_day" = "Current Streak: %d";
 
 /* Search */
 "search.title" = "Search Profile";

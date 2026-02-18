@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseAuth
+import FirebaseDatabase
 
 protocol FriendsServiceProtocol {
 
@@ -62,8 +63,21 @@ final class FriendsListenerToken {
     }
 }
 
+final class RTDBListenerRegistration: NSObject, ListenerRegistration {
+    private let removeHandler: () -> Void
+
+    init(removeHandler: @escaping () -> Void) {
+        self.removeHandler = removeHandler
+    }
+
+    func remove() {
+        removeHandler()
+    }
+}
+
 final class FriendsService  {
     private let db = Firestore.firestore()
+    private let rtdb = Database.database().reference()
     
 }
 
@@ -353,14 +367,14 @@ extension FriendsService: FriendsServiceProtocol {
                                 let models = snapshot?.documents.compactMap { doc -> ProfileModel? in
                                     let data = doc.data()
                                     let profileImageURL = data["profileImageURL"] as? String
-                                    let status = data["status"] as? String
                                     let nickname = data["nickname"] as? String ?? ""
 
                                     return ProfileModel(id: doc.documentID,
                                                         nickname: nickname,
                                                         totalWorkTime: nil,
                                                         currentStreakCount: nil,
-                                                        profileImageURL: profileImageURL, status: status)
+                                                        profileImageURL: profileImageURL,
+                                                        status: nil)
                                 } ?? []
                                 allProfiles.append(contentsOf: models)
                             }
@@ -371,24 +385,41 @@ extension FriendsService: FriendsServiceProtocol {
                 group.notify(queue: .main) {
                     if let error = fetchError {
                         completion(.failure(error))
-                    } else {
-                        completion(.success(allProfiles))
+                        return
+                    }
+
+                    var profilesWithStatus = allProfiles
+                    let statusGroup = DispatchGroup()
+
+                    for index in profilesWithStatus.indices {
+                        guard let friendId = profilesWithStatus[index].id else { continue }
+                        statusGroup.enter()
+                        self.rtdb.child("status").child(friendId).observeSingleEvent(of: .value) { snapshot in
+                            if let data = snapshot.value as? [String: Any],
+                               let state = data["state"] as? String {
+                                profilesWithStatus[index].status = state
+                            } else {
+                                profilesWithStatus[index].status = "offline"
+                            }
+                            statusGroup.leave()
+                        } withCancel: { _ in
+                            statusGroup.leave()
+                        }
+                    }
+
+                    statusGroup.notify(queue: .main) {
+                        completion(.success(profilesWithStatus))
                     }
                 }
             }
     }
     
     func fetchOnlineUserCount(completion: @escaping (Result<Int, Error>) -> Void) {
-        let query = db.collection("users").whereField("status", isEqualTo: "online")
-        
-        query.count.getAggregation(source: .server) { snapshot, error in
-            if let error = error {
-                completion(.failure(error))
-            } else if let snapshot = snapshot {
-                completion(.success(Int(snapshot.count)))
-            } else {
-                completion(.success(0))
-            }
+        let query = rtdb.child("status").queryOrdered(byChild: "state").queryEqual(toValue: "online")
+        query.observeSingleEvent(of: .value) { snapshot in
+            completion(.success(Int(snapshot.childrenCount)))
+        } withCancel: { error in
+            completion(.failure(error))
         }
     }
     
@@ -398,6 +429,9 @@ extension FriendsService: FriendsServiceProtocol {
         
         var userListeners: [ListenerRegistration] = []
         var profilesById: [String: ProfileModel] = [:]
+        var statusById: [String: String] = [:]
+        var rtdbHandles: [DatabaseHandle] = []
+        var rtdbRefs: [DatabaseReference] = []
         
         let friendshipsListener = friendshipsRef
             .whereField("status", isEqualTo: Constants.Firebase.accepted)
@@ -424,6 +458,14 @@ extension FriendsService: FriendsServiceProtocol {
                 userListeners.forEach { $0.remove() }
                 userListeners.removeAll()
                 profilesById.removeAll()
+                statusById.removeAll()
+                
+                for (index, handle) in rtdbHandles.enumerated() {
+                    let ref = rtdbRefs[index]
+                    ref.removeObserver(withHandle: handle)
+                }
+                rtdbHandles.removeAll()
+                rtdbRefs.removeAll()
                 
                 guard !friendIds.isEmpty else {
                     completion(.success([]))
@@ -445,8 +487,8 @@ extension FriendsService: FriendsServiceProtocol {
                             }
                             
                             let profileImageURL = data["profileImageURL"] as? String
-                            let status = data["status"] as? String
                             let nickname = data["nickname"] as? String ?? ""
+                            let status = statusById[friendId] ?? "offline"
                             
                             let model = ProfileModel(
                                 id: friendId,
@@ -460,6 +502,19 @@ extension FriendsService: FriendsServiceProtocol {
                             completion(.success(friendIds.compactMap { profilesById[$0] }))
                         }
                     userListeners.append(listener)
+                    
+                    let statusRef = self.rtdb.child("status").child(friendId)
+                    let handle = statusRef.observe(.value) { snapshot in
+                        let state = (snapshot.value as? [String: Any])?["state"] as? String ?? "offline"
+                        statusById[friendId] = state
+                        if var model = profilesById[friendId] {
+                            model.status = state
+                            profilesById[friendId] = model
+                            completion(.success(friendIds.compactMap { profilesById[$0] }))
+                        }
+                    }
+                    rtdbRefs.append(statusRef)
+                    rtdbHandles.append(handle)
                 }
             }
         
@@ -467,19 +522,22 @@ extension FriendsService: FriendsServiceProtocol {
             friendshipsListener?.remove()
             userListeners.forEach { $0.remove() }
             userListeners.removeAll()
+            for (index, handle) in rtdbHandles.enumerated() {
+                let ref = rtdbRefs[index]
+                ref.removeObserver(withHandle: handle)
+            }
+            rtdbHandles.removeAll()
+            rtdbRefs.removeAll()
         }
     }
     
     func observeOnlineUserCount(completion: @escaping (Result<Int, Error>) -> Void) -> ListenerRegistration {
-        let query = db.collection("users").whereField("status", isEqualTo: "online")
-        return query.addSnapshotListener { snapshot, error in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            let count = snapshot?.documents.count ?? 0
-            completion(.success(count))
+        let query = rtdb.child("status").queryOrdered(byChild: "state").queryEqual(toValue: "online")
+        let handle = query.observe(.value) { snapshot in
+            completion(.success(Int(snapshot.childrenCount)))
+        }
+        return RTDBListenerRegistration { [weak query] in
+            query?.removeObserver(withHandle: handle)
         }
     }
 

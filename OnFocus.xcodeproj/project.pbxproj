@@ -21,6 +21,7 @@
 		E93503BE2DF8533A009D621D /* PresenceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93503BD2DF8533A009D621D /* PresenceService.swift */; };
 		E93503E62DF871AB009D621D /* DIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93503E52DF871AB009D621D /* DIContainer.swift */; };
 		E93503E82DF8D274009D621D /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93503E72DF8D274009D621D /* ArrayExtension.swift */; };
+		E93EF57C2F4605F900AF352F /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = E93EF57B2F4605F900AF352F /* FirebaseDatabase */; };
 		E93F1FEC2DDA947B00966661 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93F1FEB2DDA947B00966661 /* StatisticsViewModel.swift */; };
 		E94923C72DF238AD0025A7F3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923C62DF238AD0025A7F3 /* ProfileCell.swift */; };
 		E94923C92DF23AB90025A7F3 /* ProfileSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94923C82DF23AB90025A7F3 /* ProfileSearchViewModel.swift */; };
@@ -211,6 +212,7 @@
 				E950A8FB2DD653D800928DEB /* FirebaseStorage in Frameworks */,
 				E950A8E82DD5ED4D00928DEB /* FirebaseAuth in Frameworks */,
 				E90F83D62E030AAA00BE05C0 /* DGCharts in Frameworks */,
+				E93EF57C2F4605F900AF352F /* FirebaseDatabase in Frameworks */,
 				E950A8EC2DD5ED4D00928DEB /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,6 +285,13 @@
 				E93503E52DF871AB009D621D /* DIContainer.swift */,
 			);
 			path = DI;
+			sourceTree = "<group>";
+		};
+		E93EF57A2F4605F900AF352F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		E950A8F12DD612F700928DEB /* TabBar */ = {
@@ -452,6 +461,7 @@
 				E98B6B5C2D53C807005012AB /* OnFocus */,
 				E96BE0442E100D8500CE0651 /* OnFocus */,
 				E9B3E1B12E28560A0026F85B /* OnFocusTests */,
+				E93EF57A2F4605F900AF352F /* Frameworks */,
 				E98B6B5B2D53C807005012AB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -603,6 +613,7 @@
 				E950A8FA2DD653D800928DEB /* FirebaseStorage */,
 				E94EC5E02DE7597E00F28D21 /* Kingfisher */,
 				E90F83D52E030AAA00BE05C0 /* DGCharts */,
+				E93EF57B2F4605F900AF352F /* FirebaseDatabase */,
 			);
 			productName = Test;
 			productReference = E98B6B5A2D53C807005012AB /* OnFocus.app */;
@@ -1213,6 +1224,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E90F83D42E030AAA00BE05C0 /* XCRemoteSwiftPackageReference "Charts" */;
 			productName = DGCharts;
+		};
+		E93EF57B2F4605F900AF352F /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E950A8E62DD5ED4D00928DEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
 		};
 		E94EC5E02DE7597E00F28D21 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

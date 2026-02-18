@@ -93,7 +93,7 @@
 "profile.remove_friend_title" = "Arkadaşını kaldırmak istiyor musun?";
 "profile.delete_friend" = "Arkadaşı Sil";
 "profile.total_work_hour" = "Toplam Çalışma Saati: %@";
-"profile.current_streak_day" = "Mevcut Seri Günü: %d";
+"profile.current_streak_day" = "Mevcut Seri: %d";
 
 /* Search */
 "search.title" = "Profil Ara";

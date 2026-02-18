@@ -40,7 +40,7 @@ final class LoginViewController: UIViewController {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 40))
         let imageView = UIImageView(image: UIImage(systemName: Constants.Icons.envelopeFill))
         imageView.tintColor = .gray
-        imageView.frame = CGRect(x: 15, y: 10, width: 24, height: 20)
+        imageView.frame = CGRect(x: 15, y: 11, width: 24, height: 18)
         view.addSubview(imageView)
         return view
     }()
