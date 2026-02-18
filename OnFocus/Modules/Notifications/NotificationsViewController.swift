@@ -46,7 +46,7 @@ final class NotificationsViewController: UIViewController {
     
     private lazy var noNotificationsLabel: UILabel = {
         let label = UILabel()
-        label.text = "No Notifications Yet"
+        label.text = L10n.Notifications.emptyState
         label.textColor = .gray
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isHidden = false

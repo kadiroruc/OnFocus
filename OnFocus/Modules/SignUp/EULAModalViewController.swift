@@ -42,7 +42,7 @@ class EULAModalViewController: UIViewController, WKNavigationDelegate, UIScrollV
     }
 
     private func setupButtons() {
-        acceptButton.setTitle("Accept", for: .normal)
+        acceptButton.setTitle(L10n.EULA.accept, for: .normal)
         acceptButton.isEnabled = false
         acceptButton.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         acceptButton.alpha = 0.5
@@ -52,7 +52,7 @@ class EULAModalViewController: UIViewController, WKNavigationDelegate, UIScrollV
         acceptButton.addTarget(self, action: #selector(acceptTapped), for: .touchUpInside)
         view.addSubview(acceptButton)
 
-        rejectButton.setTitle("Reject", for: .normal)
+        rejectButton.setTitle(L10n.EULA.reject, for: .normal)
         rejectButton.isEnabled = true
         rejectButton.backgroundColor = UIColor(hex: Constants.Colors.softOrange)
         rejectButton.setTitleColor(.white, for: .normal)
@@ -78,7 +78,7 @@ class EULAModalViewController: UIViewController, WKNavigationDelegate, UIScrollV
         if let url = Bundle.main.url(forResource: "EULA", withExtension: "html") {
             webView.loadFileURL(url, allowingReadAccessTo: url)
         } else {
-            let html = "<html><body><h2>End User License Agreement</h2><p>This is a placeholder EULA. Replace this with your actual terms.</p></body></html>"
+            let html = L10n.EULA.fallbackHtml
             webView.loadHTMLString(html, baseURL: nil)
         }
         hasScrolledToBottom = false

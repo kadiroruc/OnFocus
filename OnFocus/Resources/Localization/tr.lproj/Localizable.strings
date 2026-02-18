@@ -1,0 +1,146 @@
+/* Validation messages */
+"validation.invalid_email" = "Lütfen geçerli bir e-posta adresi girin.";
+"validation.invalid_password" = "Lütfen geçerli bir şifre girin.";
+"validation.not_logged_in" = "Kullanıcı giriş yapmadı.";
+"validation.please_start_timer" = "Lütfen önce zamanlayıcıyı başlatın.";
+"validation.skip_session_confirmation" = "Mevcut oturumu iptal etmek istediğinizden emin misiniz?";
+"validation.nickname_taken" = "Kullanıcı adı zaten alınmış. Lütfen başka bir tane seçin.";
+"validation.fill_all_fields" = "Lütfen tüm alanları doldurun.";
+"validation.select_image" = "Lütfen bir görsel seçin.";
+"validation.friend_request_sent" = "Arkadaşlık isteği başarıyla gönderildi.";
+"validation.friend_request_error" = "Arkadaşlık isteği gönderilirken hata oluştu. Lütfen tekrar deneyin.";
+"validation.logout_error" = "Çıkış yapılırken hata oluştu. Lütfen tekrar deneyin.";
+"validation.friend_request_cancelled" = "Arkadaşlık isteği başarıyla iptal edildi.";
+"validation.friend_request_cancelled_error" = "Arkadaşlık isteği iptal edilirken hata oluştu. Lütfen tekrar deneyin.";
+"validation.profile_image_updated" = "Profil fotoğrafı başarıyla güncellendi.";
+"validation.profile_image_update_error" = "Profil fotoğrafı güncellenirken hata oluştu. Lütfen tekrar deneyin.";
+"validation.reset_timekeeper_confirmation" = "Kronometre iptal edilsin mi?";
+"validation.email_verification_sent" = "Doğrulama e-postası gönderildi. Gelen kutunuzu ve gerekirse spam/önemsiz klasörünü kontrol edin.";
+
+/* Login */
+"login.title" = "Hesabına Giriş Yap";
+"login.email_placeholder" = "E-posta";
+"login.password_placeholder" = "Şifre";
+"login.sign_in" = "Giriş Yap";
+"login.forgot_password" = "Şifrenizi mi unuttunuz?";
+"login.new_here" = "Burada yeni misin?";
+"login.sign_up" = "Kayıt Ol";
+"login.reset_email_sent" = "Şifre sıfırlama e-postası gönderildi. Lütfen gelen kutunuzu kontrol edin.";
+
+/* Alerts */
+"alert.ok" = "Tamam";
+"alert.error_title" = "Hata";
+"alert.info_title" = "Bilgi";
+"alert.success_title" = "Başarılı";
+"alert.warning_title" = "Uyarı";
+"alert.cancel" = "İptal";
+
+/* Home */
+"home.break" = "Mola";
+"home.sessions" = "%d / 4 Oturum";
+"home.online_count" = "%d Çevrimiçi";
+"home.friends_working" = "%d/%d Arkadaş Çalışıyor";
+"home.session_complete_title" = "Oturum Tamamlandı!";
+"home.session_complete_body" = "Mola zamanı.";
+"home.break_over_title" = "Mola Bitti!";
+"home.break_over_body" = "Odaklanma zamanı.";
+
+/* Fill Profile */
+"fill_profile.title" = "Profilini Doldur";
+"fill_profile.subtitle" = "Merak etme, profil fotoğrafını daha sonra değiştirebilirsin. Şimdilik atlayabilirsin.";
+"fill_profile.full_name_placeholder" = "Ad Soyad";
+"fill_profile.nickname_placeholder" = "Kullanıcı Adı";
+"fill_profile.start_button" = "Başla";
+"fill_profile.error_title" = "Hata!";
+
+/* Sign Up */
+"sign_up.title" = "Hesabını\nOluştur";
+"sign_up.email_placeholder" = "E-posta";
+"sign_up.password_placeholder" = "Şifre";
+"sign_up.sign_up" = "Kayıt Ol";
+"sign_up.have_account" = "Hesabın var mı?";
+"sign_up.sign_in" = "Giriş Yap";
+"sign_up.terms" = "Kullanım Koşullarını kabul ediyorum";
+"sign_up.must_agree" = "Kullanım Koşullarını kabul etmelisin.";
+
+/* EULA */
+"eula.accept" = "Kabul Et";
+"eula.reject" = "Reddet";
+"eula.fallback_html" = "<html><body><h2>Son Kullanıcı Lisans Sözleşmesi</h2><p>Bu bir örnek EULA metnidir. Lütfen kendi şartlarınızla değiştirin.</p></body></html>";
+
+/* Settings */
+"settings.title" = "Ayarlar";
+"settings.timekeeper_mode" = "Kronometre Modu";
+"settings.delete_account" = "Hesabı Sil";
+"settings.delete_data" = "Verileri Sil";
+"settings.confirm_delete_account" = "Hesabınızı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.";
+"settings.account_deleted" = "Hesap başarıyla silindi.";
+"settings.confirm_delete_data" = "Verilerinizi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.";
+"settings.data_deleted" = "Veriler başarıyla silindi.";
+
+/* Notifications */
+"notifications.empty_state" = "Henüz Bildirim Yok";
+"notifications.friend_request" = "%@ sana arkadaşlık isteği gönderdi";
+
+/* Profile */
+"profile.menu_title" = "Menü";
+"profile.change_photo" = "Profil Fotoğrafını Değiştir";
+"profile.logout" = "Çıkış Yap";
+"profile.cancel" = "İptal";
+"profile.friend_request_pending_title" = "Arkadaşlık İsteği Beklemede";
+"profile.friend_request_pending_message" = "İsteği iptal etmek istiyor musun?";
+"profile.cancel_request" = "İsteği İptal Et";
+"profile.remove_friend_title" = "Arkadaşını kaldırmak istiyor musun?";
+"profile.delete_friend" = "Arkadaşı Sil";
+"profile.total_work_hour" = "Toplam Çalışma Saati: %@";
+"profile.current_streak_day" = "Mevcut Seri Günü: %d";
+
+/* Search */
+"search.title" = "Profil Ara";
+"search.placeholder" = "Profil Ara";
+"search.no_results" = "Sonuç Yok";
+
+/* Leaderboard */
+"leaderboard.example_user" = "Örnek Kullanıcı";
+"leaderboard.zero_time" = "0S 0D";
+"leaderboard.state_label" = "Arkadaşlarının %d%%'ünden öndesin!";
+"leaderboard.rank_label" = "#%@";
+
+/* Statistics */
+"statistics.average_label" = "Ortalama: ";
+"statistics.progress_label" = "İlerleme: ";
+"statistics.average_info_title" = "Ortalama";
+"statistics.average_info_message" = "Ortalama, seçili zaman aralığında bugüne kadar kaydedilen toplam çalışma süresinin, aynı aralıkta geçen gün sayısına bölünmesiyle hesaplanır. Bu yüzden dönem ilerledikçe ortalama sürekli güncellenir.";
+"statistics.progress_info_title" = "İlerleme";
+"statistics.progress_info_message" = "İlerleme, seçili zaman aralığındaki ortalamanın bir önceki eşdeğer döneme göre yüzde değişimini gösterir.";
+"statistics.chart_label" = "Çalışma Süresi (Saat)";
+"statistics.range_one_week" = "1H";
+"statistics.range_one_month" = "1A";
+"statistics.range_one_year" = "1Y";
+"statistics.range_five_years" = "5Y";
+
+/* Tab Bar */
+"tab.leaderboard_title" = "Haftalık Sıralama";
+"tab.statistics_title" = "İstatistikler";
+"tab.notifications_title" = "Bildirimler";
+"tab.profile_title" = "Profil";
+
+/* Auth */
+"auth.user_creation_failed" = "Kullanıcı oluşturulamadı.";
+"auth.email_not_verified" = "E-posta doğrulanmamış. Lütfen gelen kutunuzu kontrol edin.";
+"auth.user_not_found" = "Kullanıcı bulunamadı.";
+
+/* Errors */
+"errors.image_upload_failed" = "Görsel yüklenemedi.";
+"errors.document_not_found" = "Belge bulunamadı.";
+"errors.user_id_nil" = "Kullanıcı kimliği boş.";
+"errors.profile_data_not_found" = "Profil verisi bulunamadı.";
+"errors.invalid_image_data" = "Geçersiz görsel verisi.";
+"errors.network_manager_unavailable" = "Ağ yöneticisi kullanılamıyor.";
+"errors.user_not_authenticated" = "Kullanıcı doğrulanmadı.";
+"errors.version_info_not_found" = "Sürüm bilgisi bulunamadı.";
+
+/* Update */
+"update.title" = "Güncelleme Gerekli";
+"update.message" = "Lütfen uygulamayı en son sürüme güncelleyin.";
+"update.action" = "Güncelle";

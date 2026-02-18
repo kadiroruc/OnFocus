@@ -63,7 +63,7 @@ class SettingsViewController: UIViewController {
     }
     
     private func setupUI() {
-        title = "Settings"
+        title = L10n.Settings.title
         view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
         
         view.addSubview(collectionView)

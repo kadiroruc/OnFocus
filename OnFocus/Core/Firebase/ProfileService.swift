@@ -119,7 +119,7 @@ extension ProfileService: ProfileServiceProtocol {
                 } catch {
                     completion(.failure(NSError(domain: "NetworkError",
                                         code: -2,
-                                        userInfo: [NSLocalizedDescriptionKey: "Failed to upload image."])))
+                                        userInfo: [NSLocalizedDescriptionKey: L10n.Errors.imageUploadFailed])))
                 }
             }
             
@@ -158,7 +158,7 @@ extension ProfileService: ProfileServiceProtocol {
             }
             
             guard let document = document else {
-                completion(.failure(NSError(domain: "Firestore", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document not found."])))
+                completion(.failure(NSError(domain: "Firestore", code: -1, userInfo: [NSLocalizedDescriptionKey: L10n.Errors.documentNotFound])))
                 return
             }
             
@@ -174,7 +174,7 @@ extension ProfileService: ProfileServiceProtocol {
     
     func fetchRequestProfileFor(userId: String?, completion: @escaping (Result<ProfileModel, Error>) -> Void) {
         guard let userId = userId else {
-            completion(.failure(NSError(domain: "InvalidUserId", code: -1, userInfo: [NSLocalizedDescriptionKey: "User ID is nil."])))
+            completion(.failure(NSError(domain: "InvalidUserId", code: -1, userInfo: [NSLocalizedDescriptionKey: L10n.Errors.userIdNil])))
             return
         }
         
@@ -186,7 +186,7 @@ extension ProfileService: ProfileServiceProtocol {
             }
             
             guard let document = document, document.exists else {
-                completion(.failure(NSError(domain: "DataError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Profile data not found."])))
+                completion(.failure(NSError(domain: "DataError", code: -1, userInfo: [NSLocalizedDescriptionKey: L10n.Errors.profileDataNotFound])))
                 return
             }
             
@@ -243,14 +243,14 @@ extension ProfileService: ProfileServiceProtocol {
         guard let imageData = image.jpegData(compressionQuality: 0.8) else {
             completion(.failure(NSError(domain: "ImageError",
                                         code: -2,
-                                        userInfo: [NSLocalizedDescriptionKey: "Invalid image data."])))
+                                        userInfo: [NSLocalizedDescriptionKey: L10n.Errors.invalidImageData])))
             return
         }
         
         guard let networkManager = networkManager else {
             completion(.failure(NSError(domain: "NetworkError",
                                         code: -3,
-                                        userInfo: [NSLocalizedDescriptionKey: "Network manager not available."])))
+                                        userInfo: [NSLocalizedDescriptionKey: L10n.Errors.networkManagerUnavailable])))
             return
         }
         
@@ -272,7 +272,7 @@ extension ProfileService: ProfileServiceProtocol {
     
     func updateStreakDay(completion: @escaping (Result<Void, Error>) -> Void) {
         guard let userId = currentUserId else {
-            let error = NSError(domain: "NoAuth", code: -1, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+            let error = NSError(domain: "NoAuth", code: -1, userInfo: [NSLocalizedDescriptionKey: L10n.Errors.userNotAuthenticated])
             completion(.failure(error))
             return
         }
@@ -304,7 +304,7 @@ extension ProfileService: ProfileServiceProtocol {
             }
             
             guard let document = document, document.exists else {
-                completion(.failure(error ?? NSError(domain: "Firestore", code: -1, userInfo: [NSLocalizedDescriptionKey: "Document not found."])))
+                completion(.failure(error ?? NSError(domain: "Firestore", code: -1, userInfo: [NSLocalizedDescriptionKey: L10n.Errors.documentNotFound])))
                 return
             }
             

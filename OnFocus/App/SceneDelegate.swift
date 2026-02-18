@@ -139,8 +139,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     // Kullanıcıya güncelleme bildirimi gösterme
     func promptUserToUpdate(appStoreURL: String, from viewController: UIViewController) {
-        let alert = UIAlertController(title: "Update Required", message: "Please update the app to the latest version.", preferredStyle: .alert)
-        let updateAction = UIAlertAction(title: "Update", style: .default) { _ in
+        let alert = UIAlertController(title: L10n.Update.title, message: L10n.Update.message, preferredStyle: .alert)
+        let updateAction = UIAlertAction(title: L10n.Update.action, style: .default) { _ in
             if let url = URL(string: appStoreURL) {
                 UIApplication.shared.open(url)
             }

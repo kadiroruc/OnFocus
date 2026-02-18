@@ -100,7 +100,7 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
         self.delegate = delegate
         
         // Kullanıcı ismini ayarla
-        let baseText = "\(model.user.nickname!) sent you a friend request"
+        let baseText = L10n.Notifications.friendRequest(from: model.user.nickname ?? "")
         let highlightText = "  \(model.date?.formattedRelativeString() ?? "")"
 
         let attributedText = NSMutableAttributedString(string: baseText, attributes: [
@@ -158,6 +158,5 @@ class NotificationsCollectionViewCell: UICollectionViewCell {
 
         
 }
-
 
 

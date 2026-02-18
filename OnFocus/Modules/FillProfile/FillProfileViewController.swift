@@ -23,7 +23,7 @@ final class FillProfileViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Fill Your Profile"
+        label.text = L10n.FillProfile.title
         label.font = UIFont.systemFont(ofSize: 28)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +33,7 @@ final class FillProfileViewController: UIViewController {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Don't worry, you can change your profile photo later, you can skip it for now."
+        label.text = L10n.FillProfile.subtitle
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -67,7 +67,7 @@ final class FillProfileViewController: UIViewController {
     
     private let nameTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Full Name"
+        tf.placeholder = L10n.FillProfile.fullNamePlaceholder
         tf.textColor = UIColor(hex: Constants.Colors.darkGray)
         tf.layer.borderWidth = 1
         tf.layer.borderColor = UIColor(hex: Constants.Colors.darkGray).cgColor
@@ -81,7 +81,7 @@ final class FillProfileViewController: UIViewController {
     
     private let nicknameTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Nickname"
+        tf.placeholder = L10n.FillProfile.nicknamePlaceholder
         tf.textColor = UIColor(hex: Constants.Colors.darkGray)
         tf.layer.borderWidth = 1
         tf.layer.borderColor = UIColor(hex: Constants.Colors.darkGray).cgColor
@@ -96,7 +96,7 @@ final class FillProfileViewController: UIViewController {
     
     private let startButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Start", for: .normal)
+        button.setTitle(L10n.FillProfile.startButton, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         button.layer.cornerRadius = 17
@@ -224,8 +224,8 @@ extension FillProfileViewController: FillProfileViewInterface {
     }
     
     func showError(message: String) {
-        let alert = UIAlertController(title: "Error!", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let alert = UIAlertController(title: L10n.FillProfile.errorTitle, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default))
         present(alert, animated: true)
     }
     

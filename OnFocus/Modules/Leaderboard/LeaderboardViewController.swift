@@ -13,7 +13,7 @@ protocol LeaderboardViewInterface: AnyObject{
     func showError(message: String)
     func showLoading(_ isLoading: Bool)
     func updateStateRankLabel(_ rank: String)
-    func updateStateLabel(_ state: String)
+    func updateStateLabel(_ percentile: Int)
     
 }
 
@@ -72,7 +72,7 @@ class LeaderboardViewController: UIViewController {
         label.textAlignment = .center
         label.numberOfLines = 2
         label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
-        label.text = "user"
+        label.text = ""
         return label
     }()
     
@@ -85,7 +85,7 @@ class LeaderboardViewController: UIViewController {
         label.clipsToBounds = true
         label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
-        label.text = "0H 0M"
+        label.text = L10n.Leaderboard.zeroTime
         return label
     }()
     
@@ -114,7 +114,7 @@ class LeaderboardViewController: UIViewController {
         label.textAlignment = .center
         label.numberOfLines = 2
         label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
-        label.text = "Example User"
+        label.text = L10n.Leaderboard.exampleUser
         return label
     }()
     
@@ -127,7 +127,7 @@ class LeaderboardViewController: UIViewController {
         label.clipsToBounds = true
         label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
-        label.text = "0H 0M"
+        label.text = L10n.Leaderboard.zeroTime
         return label
     }()
     
@@ -149,7 +149,7 @@ class LeaderboardViewController: UIViewController {
         label.textAlignment = .center
         label.numberOfLines = 2
         label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
-        label.text = "Example User"
+        label.text = L10n.Leaderboard.exampleUser
         return label
     }()
     
@@ -162,7 +162,7 @@ class LeaderboardViewController: UIViewController {
         label.clipsToBounds = true
         label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
-        label.text = "0H 0M"
+        label.text = L10n.Leaderboard.zeroTime
         return label
     }()
     
@@ -340,12 +340,12 @@ class LeaderboardViewController: UIViewController {
 }
 
 extension LeaderboardViewController: LeaderboardViewInterface {
-    func updateStateLabel(_ state: String) {
-        stateLabel.text = "You are doing better than \(state)% of your friends!"
+    func updateStateLabel(_ percentile: Int) {
+        stateLabel.text = L10n.Leaderboard.stateLabel(percentile)
     }
     
     func updateStateRankLabel(_ rank: String) {
-        stateRankLabel.text = "#\(rank)"
+        stateRankLabel.text = L10n.Leaderboard.rankLabel(rank)
     }
     
     func showLoading(_ isLoading: Bool) {
@@ -405,4 +405,3 @@ extension LeaderboardViewController: LeaderboardViewInterface {
 //#Preview("LeaderboardViewController"){
 //    DIContainer.shared.makeLeaderboardViewController()
 //}
-

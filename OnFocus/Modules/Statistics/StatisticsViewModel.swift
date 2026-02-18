@@ -189,35 +189,16 @@ extension StatisticsViewModel: StatisticsViewModelInterface {
                 return String(name.dropFirst(12))
                 
             } else if name.starts(with: "monthly_") {
-                let name = String(name.dropFirst(13))
-                switch name{
-                case "01":
-                    return "Jan"
-                case "02":
-                    return "Feb"
-                case "03":
-                    return "Mar"
-                case "04":
-                    return "Apr"
-                case "05":
-                    return "May"
-                case "06":
-                    return "Jun"
-                case "07":
-                    return "Jul"
-                case "08":
-                    return "Aug"
-                case "09":
-                    return "Sep"
-                case "10":
-                    return "Oct"
-                case "11":
-                    return "Nov"
-                case "12":
-                    return "Dec"
-                default:
-                    return name
+                let monthString = String(name.dropFirst(13))
+                if let monthIndex = Int(monthString), (1...12).contains(monthIndex) {
+                    let formatter = DateFormatter()
+                    formatter.locale = Locale.current
+                    let symbols = formatter.shortMonthSymbols ?? []
+                    if symbols.indices.contains(monthIndex - 1) {
+                        return symbols[monthIndex - 1]
+                    }
                 }
+                return monthString
 
             } else if name.starts(with: "yearly_") {
                 return String(name.dropFirst(7)) // Örn: "2025"

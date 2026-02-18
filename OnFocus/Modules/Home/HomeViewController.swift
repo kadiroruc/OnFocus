@@ -159,7 +159,7 @@ final class HomeViewController: UIViewController {
         setupLayout()
         setupCircleContainerTapGesture()
 
-        sessionsLabel.text = "1 of 4 Session"
+        sessionsLabel.text = L10n.Home.sessions(count: 1)
         
         viewModel.viewDidLoad()
     }
@@ -451,11 +451,11 @@ extension HomeViewController: HomeViewInterface {
     }
     
     func updateOnlinePeopleCount(_ count: Int) {
-        onlineLabel.text = "\(count+587) Online"
+        onlineLabel.text = L10n.Home.onlineCount(count + 587)
     }
     
     func updateWorkingLabel(online: Int, friends: Int) {
-        workingLabel.text = "\(online)/\(friends) Friends Working"
+        workingLabel.text = L10n.Home.friendsWorking(online: online, total: friends)
     }
     
     func navigateToProfileDetail(userId: String?) {
@@ -468,15 +468,15 @@ extension HomeViewController: HomeViewInterface {
     
     func showMessage(_ message: String) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default, handler: nil))
         present(alert, animated: true)
     }
     func showConfirm(_ message: String) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default, handler: { _ in
             self.viewModel.cancelConfirmButtonTapped()
         }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: L10n.Alert.cancel, style: .cancel, handler: nil))
         present(alert, animated: true)
     }
     

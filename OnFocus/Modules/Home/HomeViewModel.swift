@@ -95,7 +95,7 @@ final class HomeViewModel {
         
         if isSessionCompleted {
             sessionCount += 1
-            view?.updateSessionsLabel(text: "Break")
+            view?.updateSessionsLabel(text: L10n.Home.breakLabel)
             if sessionCount == 5 {
                 // 4 Pomodoro completed 15 minute break
                 countdownMinutes = 15
@@ -103,7 +103,7 @@ final class HomeViewModel {
                 splitSeconds = 59
                 
                 sessionCount = 1
-                view?.updateSessionsLabel(text: "Break")
+                view?.updateSessionsLabel(text: L10n.Home.breakLabel)
             }else{
                 // 25 minute session completed 5 minute break
                 countdownMinutes = 5
@@ -115,7 +115,7 @@ final class HomeViewModel {
                 
         }else{
             //Sessions
-            view?.updateSessionsLabel(text: "\(sessionCount) of 4 Sessions")
+            view?.updateSessionsLabel(text: L10n.Home.sessions(count: sessionCount))
             countdownMinutes = 25
             countdownSeconds = 0
             splitSeconds = 59
@@ -274,11 +274,11 @@ final class HomeViewModel {
     private func scheduleTimerNotification(seconds: TimeInterval) {
         let content = UNMutableNotificationContent()
         if isSessionCompleted {
-            content.title = "Session Complete!"
-            content.body = "Time for a break."
+            content.title = L10n.Home.sessionCompleteTitle
+            content.body = L10n.Home.sessionCompleteBody
         } else {
-            content.title = "Break Over!"
-            content.body = "Time to focus."
+            content.title = L10n.Home.breakOverTitle
+            content.body = L10n.Home.breakOverBody
         }
         content.sound = .default
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: false)
@@ -515,7 +515,7 @@ extension HomeViewModel: HomeViewModelInterface{
         countdownSeconds = 7
         splitSeconds = 59
 
-        view?.updateSessionsLabel(text: "\(sessionCount) of 4 Sessions")
+        view?.updateSessionsLabel(text: L10n.Home.sessions(count: sessionCount))
         view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
         view?.updatePlayButton(isPaused: true)
         view?.resetCircularAnimationToStart(isSessionCompleted)

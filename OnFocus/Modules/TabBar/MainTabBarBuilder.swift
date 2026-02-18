@@ -12,7 +12,7 @@ struct MainTabBarBuilder {
         let tabBarController = UITabBarController()
 
         let leaderboardVC: LeaderboardViewController = container.resolve()
-        leaderboardVC.title = "Weekly Leaderboard"
+        leaderboardVC.title = L10n.TabBar.leaderboardTitle
         let leaderboardNav = UINavigationController(rootViewController: leaderboardVC)
         leaderboardNav.tabBarItem = UITabBarItem(
             title: nil,
@@ -21,7 +21,7 @@ struct MainTabBarBuilder {
         )
 
         let statisticsVC: StatisticsViewController = container.resolve()
-        statisticsVC.title = "Statistics"
+        statisticsVC.title = L10n.TabBar.statisticsTitle
         let statisticsNav = UINavigationController(rootViewController: statisticsVC)
         statisticsNav.tabBarItem = UITabBarItem(
             title: nil,
@@ -39,7 +39,7 @@ struct MainTabBarBuilder {
         )
 
         let notificationsVC: NotificationsViewController = container.resolve()
-        notificationsVC.title = "Notifications"
+        notificationsVC.title = L10n.TabBar.notificationsTitle
         let notificationsNav = UINavigationController(rootViewController: notificationsVC)
         notificationsNav.tabBarItem = UITabBarItem(
             title: nil,
@@ -48,7 +48,7 @@ struct MainTabBarBuilder {
         )
 
         let profileVC: ProfileViewController = container.resolve()
-        profileVC.title = "Profile"
+        profileVC.title = L10n.TabBar.profileTitle
         let profileNav = UINavigationController(rootViewController: profileVC)
         profileNav.tabBarItem = UITabBarItem(
             title: nil,

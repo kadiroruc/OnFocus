@@ -62,23 +62,23 @@ struct Constants {
     }
     
     struct ValidationMessages{
-        static let invalidEmail = "Please enter a valid email address"
-        static let invalidPassword = "Please enter a valid password"
-        static let notLoggedIn = "User not logged in."
-        static let pleaseStartTimer = "Please start the timer first."
-        static let skipSessionConfirmation = "Are you sure you want to skip the current session?"
-        static let nicknameTaken = "Nickname is already taken. Please choose another one."
-        static let fillAllFields = "Please fill in all fields."
-        static let selectImage = "Please select an image."
-        static let friendRequestSent = "Friend request sent successfully."
-        static let friendRequestError = "Error sending friend request. Please try again."
-        static let logoutError = "Error logging out. Please try again."
-        static let friendRequestCancelled = "Friend request cancelled successfully."
-        static let friendRequestCancelledError = "Error cancelling friend request. Please try again."
-        static let profileImageUpdated = "Profile image updated successfully."
-        static let profileImageUpdateError = "Error updating profile image. Please try again."
-        static let resetTimeKeeperConfirmation = "Are you sure you want to cancel the timekeeper?"
-        static let emailVerificationSent = "We’ve sent you a verification email. Please check your inbox and also your spam/junk folder if you don’t see it."
+        static var invalidEmail: String { L10n.Validation.invalidEmail }
+        static var invalidPassword: String { L10n.Validation.invalidPassword }
+        static var notLoggedIn: String { L10n.Validation.notLoggedIn }
+        static var pleaseStartTimer: String { L10n.Validation.pleaseStartTimer }
+        static var skipSessionConfirmation: String { L10n.Validation.skipSessionConfirmation }
+        static var nicknameTaken: String { L10n.Validation.nicknameTaken }
+        static var fillAllFields: String { L10n.Validation.fillAllFields }
+        static var selectImage: String { L10n.Validation.selectImage }
+        static var friendRequestSent: String { L10n.Validation.friendRequestSent }
+        static var friendRequestError: String { L10n.Validation.friendRequestError }
+        static var logoutError: String { L10n.Validation.logoutError }
+        static var friendRequestCancelled: String { L10n.Validation.friendRequestCancelled }
+        static var friendRequestCancelledError: String { L10n.Validation.friendRequestCancelledError }
+        static var profileImageUpdated: String { L10n.Validation.profileImageUpdated }
+        static var profileImageUpdateError: String { L10n.Validation.profileImageUpdateError }
+        static var resetTimeKeeperConfirmation: String { L10n.Validation.resetTimekeeperConfirmation }
+        static var emailVerificationSent: String { L10n.Validation.emailVerificationSent }
     }
     
     struct Colors{

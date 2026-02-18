@@ -25,7 +25,7 @@ final class SignUpViewController: UIViewController{
     // MARK: - UI Components
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Create your\nAccount"
+        label.text = L10n.SignUp.title
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 42,weight: .bold)
         label.textColor = UIColor(hex: Constants.Colors.darkGray)
@@ -45,7 +45,7 @@ final class SignUpViewController: UIViewController{
     private let emailTextField: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.placeholder = "Email"
+        tf.placeholder = L10n.SignUp.emailPlaceholder
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.layer.cornerRadius = 14
         tf.layer.borderWidth = 1
@@ -69,7 +69,7 @@ final class SignUpViewController: UIViewController{
     private let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.placeholder = "Password"
+        tf.placeholder = L10n.SignUp.passwordPlaceholder
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.layer.cornerRadius = 14
         tf.layer.borderWidth = 1
@@ -95,7 +95,7 @@ final class SignUpViewController: UIViewController{
     private let signUpButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Sign up", for: .normal)
+        btn.setTitle(L10n.SignUp.signUpButton, for: .normal)
         btn.setTitleColor(.white, for: .normal)
         btn.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         btn.layer.cornerRadius = 17
@@ -108,8 +108,7 @@ final class SignUpViewController: UIViewController{
     private let bottomLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        let text = "Have an account?"
-        label.text = text
+        label.text = L10n.SignUp.haveAccount
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = UIColor(hex: Constants.Colors.mediumDarkGray)
         return label
@@ -118,7 +117,7 @@ final class SignUpViewController: UIViewController{
     private let signInLinkButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Sign in", for: .normal)
+        btn.setTitle(L10n.SignUp.signIn, for: .normal)
         btn.setTitleColor(UIColor(hex: Constants.Colors.softOrange), for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         return btn
@@ -144,7 +143,7 @@ final class SignUpViewController: UIViewController{
     private let termsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "I agree to the Terms and Conditions"
+        label.text = L10n.SignUp.terms
         label.textColor = UIColor(hex: Constants.Colors.darkGray)
         label.font = UIFont.systemFont(ofSize: 14)
         label.isUserInteractionEnabled = true
@@ -274,7 +273,7 @@ final class SignUpViewController: UIViewController{
 
     @objc private func signUpTapped() {
         guard isTermsChecked else {
-            showMessage(text: "You must agree to the Terms and Conditions.", type: .error, nil)
+            showMessage(text: L10n.SignUp.mustAgree, type: .error, nil)
             return
         }
         viewModel.signUpTapped(email: emailTextField.text ?? "", password: passwordTextField.text ?? "")

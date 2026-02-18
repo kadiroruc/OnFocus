@@ -45,7 +45,7 @@ final class VersionService: VersionServiceProtocol {
                 }
             } else {
                 // Eğer belge bulunamazsa hata döndür
-                let error = NSError(domain: "FirestoreError", code: 404, userInfo: [NSLocalizedDescriptionKey: "Version information not found"])
+                let error = NSError(domain: "FirestoreError", code: 404, userInfo: [NSLocalizedDescriptionKey: L10n.Errors.versionInfoNotFound])
                 completion(.failure(error))
             }
         }

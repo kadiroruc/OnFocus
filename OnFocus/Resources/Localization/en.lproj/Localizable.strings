@@ -1,0 +1,146 @@
+/* Validation messages */
+"validation.invalid_email" = "Please enter a valid email address";
+"validation.invalid_password" = "Please enter a valid password";
+"validation.not_logged_in" = "User not logged in.";
+"validation.please_start_timer" = "Please start the timer first.";
+"validation.skip_session_confirmation" = "Are you sure you want to skip the current session?";
+"validation.nickname_taken" = "Nickname is already taken. Please choose another one.";
+"validation.fill_all_fields" = "Please fill in all fields.";
+"validation.select_image" = "Please select an image.";
+"validation.friend_request_sent" = "Friend request sent successfully.";
+"validation.friend_request_error" = "Error sending friend request. Please try again.";
+"validation.logout_error" = "Error logging out. Please try again.";
+"validation.friend_request_cancelled" = "Friend request cancelled successfully.";
+"validation.friend_request_cancelled_error" = "Error cancelling friend request. Please try again.";
+"validation.profile_image_updated" = "Profile image updated successfully.";
+"validation.profile_image_update_error" = "Error updating profile image. Please try again.";
+"validation.reset_timekeeper_confirmation" = "Are you sure you want to cancel the timekeeper?";
+"validation.email_verification_sent" = "We've sent you a verification email. Please check your inbox and also your spam/junk folder if you don't see it.";
+
+/* Login */
+"login.title" = "Login to your Account";
+"login.email_placeholder" = "Email";
+"login.password_placeholder" = "Password";
+"login.sign_in" = "Sign in";
+"login.forgot_password" = "Forgot the password?";
+"login.new_here" = "New Here?";
+"login.sign_up" = "Sign Up";
+"login.reset_email_sent" = "Password reset email sent. Please check your inbox.";
+
+/* Alerts */
+"alert.ok" = "OK";
+"alert.error_title" = "Error";
+"alert.info_title" = "Info";
+"alert.success_title" = "Success";
+"alert.warning_title" = "Warning";
+"alert.cancel" = "Cancel";
+
+/* Home */
+"home.break" = "Break";
+"home.sessions" = "%d of 4 Sessions";
+"home.online_count" = "%d Online";
+"home.friends_working" = "%d/%d Friends Working";
+"home.session_complete_title" = "Session Complete!";
+"home.session_complete_body" = "Time for a break.";
+"home.break_over_title" = "Break Over!";
+"home.break_over_body" = "Time to focus.";
+
+/* Fill Profile */
+"fill_profile.title" = "Fill Your Profile";
+"fill_profile.subtitle" = "Don't worry, you can change your profile photo later, you can skip it for now.";
+"fill_profile.full_name_placeholder" = "Full Name";
+"fill_profile.nickname_placeholder" = "Nickname";
+"fill_profile.start_button" = "Start";
+"fill_profile.error_title" = "Error!";
+
+/* Sign Up */
+"sign_up.title" = "Create your\nAccount";
+"sign_up.email_placeholder" = "Email";
+"sign_up.password_placeholder" = "Password";
+"sign_up.sign_up" = "Sign up";
+"sign_up.have_account" = "Have an account?";
+"sign_up.sign_in" = "Sign in";
+"sign_up.terms" = "I agree to the Terms and Conditions";
+"sign_up.must_agree" = "You must agree to the Terms and Conditions.";
+
+/* EULA */
+"eula.accept" = "Accept";
+"eula.reject" = "Reject";
+"eula.fallback_html" = "<html><body><h2>End User License Agreement</h2><p>This is a placeholder EULA. Replace this with your actual terms.</p></body></html>";
+
+/* Settings */
+"settings.title" = "Settings";
+"settings.timekeeper_mode" = "Timekeeper Mode";
+"settings.delete_account" = "Delete Account";
+"settings.delete_data" = "Delete Data";
+"settings.confirm_delete_account" = "Are you sure you want to delete your account? This action cannot be undone.";
+"settings.account_deleted" = "Account deleted successfully.";
+"settings.confirm_delete_data" = "Are you sure you want to delete your data? This action cannot be undone.";
+"settings.data_deleted" = "Data deleted successfully.";
+
+/* Notifications */
+"notifications.empty_state" = "No Notifications Yet";
+"notifications.friend_request" = "%@ sent you a friend request";
+
+/* Profile */
+"profile.menu_title" = "Menu";
+"profile.change_photo" = "Change Profile Photo";
+"profile.logout" = "Logout";
+"profile.cancel" = "Cancel";
+"profile.friend_request_pending_title" = "Friend Request Pending";
+"profile.friend_request_pending_message" = "Do you want to cancel the request?";
+"profile.cancel_request" = "Cancel Request";
+"profile.remove_friend_title" = "Do you want to remove your friend?";
+"profile.delete_friend" = "Delete Friend";
+"profile.total_work_hour" = "Total Work Hour: %@";
+"profile.current_streak_day" = "Current Streak Day: %d";
+
+/* Search */
+"search.title" = "Search Profile";
+"search.placeholder" = "Search Profiles";
+"search.no_results" = "No Results";
+
+/* Leaderboard */
+"leaderboard.example_user" = "Example User";
+"leaderboard.zero_time" = "0H 0M";
+"leaderboard.state_label" = "You are doing better than %d%% of your friends!";
+"leaderboard.rank_label" = "#%@";
+
+/* Statistics */
+"statistics.average_label" = "Average: ";
+"statistics.progress_label" = "Progress: ";
+"statistics.average_info_title" = "Average";
+"statistics.average_info_message" = "Average is calculated by dividing the total recorded working time up to today within the selected time range by the number of days that have elapsed in that same range. Therefore, as the period progresses, the average is continuously updated.";
+"statistics.progress_info_title" = "Progress";
+"statistics.progress_info_message" = "Progress shows the percentage change of the average in the selected time range compared to the previous equivalent period.";
+"statistics.chart_label" = "Work Time (Hour)";
+"statistics.range_one_week" = "1W";
+"statistics.range_one_month" = "1M";
+"statistics.range_one_year" = "1Y";
+"statistics.range_five_years" = "5Y";
+
+/* Tab Bar */
+"tab.leaderboard_title" = "Weekly Leaderboard";
+"tab.statistics_title" = "Statistics";
+"tab.notifications_title" = "Notifications";
+"tab.profile_title" = "Profile";
+
+/* Auth */
+"auth.user_creation_failed" = "The user could not be created.";
+"auth.email_not_verified" = "Your email is not verified. Please check your inbox.";
+"auth.user_not_found" = "The user could not be found.";
+
+/* Errors */
+"errors.image_upload_failed" = "Failed to upload image.";
+"errors.document_not_found" = "Document not found.";
+"errors.user_id_nil" = "User ID is nil.";
+"errors.profile_data_not_found" = "Profile data not found.";
+"errors.invalid_image_data" = "Invalid image data.";
+"errors.network_manager_unavailable" = "Network manager not available.";
+"errors.user_not_authenticated" = "User not authenticated";
+"errors.version_info_not_found" = "Version information not found";
+
+/* Update */
+"update.title" = "Update Required";
+"update.message" = "Please update the app to the latest version.";
+"update.action" = "Update";

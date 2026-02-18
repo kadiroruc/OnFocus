@@ -20,7 +20,7 @@ final class AuthService: AuthServiceProtocol {
                 
                 completion(.success(()))
             } else {
-                completion(.failure(error ?? NSError(domain: "AuthService", code: 0, userInfo: [NSLocalizedDescriptionKey: "The user could not be created."])))
+                completion(.failure(error ?? NSError(domain: "AuthService", code: 0, userInfo: [NSLocalizedDescriptionKey: L10n.Auth.userCreationFailed])))
             }
         }
     }
@@ -28,17 +28,19 @@ final class AuthService: AuthServiceProtocol {
     func signIn(email: String, password: String, completion: @escaping (Result<Void, Error>) -> Void) {
         
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            if let user = authResult?.user, error == nil {
-                user.reload { verificationError in
-                    if user.isEmailVerified {
-                        completion(.success(()))
-                    } else {
-                        completion(.failure(verificationError ?? NSError(domain: "AuthService", code: 1, userInfo: [NSLocalizedDescriptionKey: "Your email is not verified. Please check your inbox."])))
-                        try? Auth.auth().signOut()
-                    }
-                }
+            if authResult?.user != nil, error == nil {
+                // Email verification is temporarily disabled.
+                // user.reload { verificationError in
+                //     if user.isEmailVerified {
+                //         completion(.success(()))
+                //     } else {
+                //         completion(.failure(verificationError ?? NSError(domain: "AuthService", code: 1, userInfo: [NSLocalizedDescriptionKey: L10n.Auth.emailNotVerified])))
+                //         try? Auth.auth().signOut()
+                //     }
+                // }
+                completion(.success(()))
             } else {
-                completion(.failure(NSError(domain: "AuthService", code: 2, userInfo: [NSLocalizedDescriptionKey: "The user could not be found."])))
+                completion(.failure(NSError(domain: "AuthService", code: 2, userInfo: [NSLocalizedDescriptionKey: L10n.Auth.userNotFound])))
             }
         }
     }

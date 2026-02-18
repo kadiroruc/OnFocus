@@ -131,7 +131,7 @@ extension BottomSheetViewController: UICollectionViewDataSource, UICollectionVie
         let rank = indexPath.item + 4
         let profile: ProfileModel
         if profiles.count == 0{
-            profile = ProfileModel(nickname: "Example User")
+            profile = ProfileModel(nickname: L10n.Leaderboard.exampleUser)
         }else{
             profile = profiles[indexPath.item]
         }
@@ -157,4 +157,3 @@ extension BottomSheetViewController: BottomSheetViewControllerInterface {
 //#Preview("LeaderboardViewController"){
 //    LeaderboardViewController()
 //}
-

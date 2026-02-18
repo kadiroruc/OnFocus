@@ -54,7 +54,7 @@ class ProfileViewController: UIViewController {
     
     private let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Label"
+        label.text = ""
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 17)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -63,7 +63,7 @@ class ProfileViewController: UIViewController {
     
     private let totalWorkTimeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Total Work Hour: "
+        label.text = L10n.Profile.totalWorkHour("")
         label.textColor = .white
         label.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         label.textAlignment = .center
@@ -75,7 +75,7 @@ class ProfileViewController: UIViewController {
     
     private let streakDayLabel: UILabel = {
         let label = UILabel()
-        label.text = "Current Streak Day: "
+        label.text = L10n.Profile.currentStreakDay(0)
         label.textColor = .white
         label.backgroundColor = UIColor(hex: Constants.Colors.softOrange)
         label.textAlignment = .center
@@ -207,17 +207,17 @@ class ProfileViewController: UIViewController {
         }
     }
     @objc private func menuBarButtonItemTapped() {
-        let alert = UIAlertController(title: "Menu", message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: L10n.Profile.menuTitle, message: nil, preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "Change Profile Photo", style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: L10n.Profile.changePhoto, style: .default, handler: { _ in
             self.showPicker()
         }))
 
-        alert.addAction(UIAlertAction(title: "Logout", style: .destructive, handler: { _ in
+        alert.addAction(UIAlertAction(title: L10n.Profile.logout, style: .destructive, handler: { _ in
             self.viewModel.signOut()
         }))
 
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: L10n.Profile.cancel, style: .cancel))
         
         present(alert, animated: true)
     }
@@ -229,20 +229,20 @@ class ProfileViewController: UIViewController {
                 viewModel.addFriendTapped()
                 
             case Constants.Firebase.pending:
-                let alert = UIAlertController(title: "Friend Request Pending", message: "Do you want to cancel the request?", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Cancel Request", style: .destructive, handler: { _ in
+                let alert = UIAlertController(title: L10n.Profile.friendRequestPendingTitle, message: L10n.Profile.friendRequestPendingMessage, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: L10n.Profile.cancelRequest, style: .destructive, handler: { _ in
                     self.viewModel.cancelFriendRequest()
                 }))
-                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                alert.addAction(UIAlertAction(title: L10n.Profile.cancel, style: .cancel))
                 present(alert, animated: true)
                 
                 
             case Constants.Firebase.accepted:
-                let alert = UIAlertController(title: "Do you want to remove your friend?", message: nil, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "Delete Friend", style: .destructive, handler: { _ in
+                let alert = UIAlertController(title: L10n.Profile.removeFriendTitle, message: nil, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: L10n.Profile.deleteFriend, style: .destructive, handler: { _ in
                     self.viewModel.cancelFriendRequest()
                 }))
-                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+                alert.addAction(UIAlertAction(title: L10n.Profile.cancel, style: .cancel))
                 present(alert, animated: true)
                 
             default:
@@ -348,7 +348,7 @@ extension ProfileViewController: ProfileViewInterface {
     }
 
     func updateStreakDayLabel(_ count: Int) {
-        streakDayLabel.text = "Current Streak Day: \(count)"
+        streakDayLabel.text = L10n.Profile.currentStreakDay(count)
     }
 }
 

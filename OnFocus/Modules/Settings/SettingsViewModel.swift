@@ -35,7 +35,7 @@ final class SettingsViewModel{
         return [
             SettingsModel(
                 image: UIImage(systemName: Constants.Icons.deskClock)!,
-                text: "Timekeeper Mode",
+                text: L10n.Settings.timekeeperMode,
                 switchOn: isTimeKeeperModeOn,
                 isSwitchHidden: false
             ),
@@ -43,7 +43,7 @@ final class SettingsViewModel{
                 image: UIImage(
                     systemName: Constants.Icons.xmarkBin
                 )!,
-                text: "Delete Account",
+                text: L10n.Settings.deleteAccount,
                 switchOn: false,
                 isSwitchHidden: true
             ),
@@ -51,7 +51,7 @@ final class SettingsViewModel{
                 image: UIImage(
                     systemName: Constants.Icons.xmarkIcloud
                 )!,
-                text: "Delete Data",
+                text: L10n.Settings.deleteData,
                 switchOn: false,
                 isSwitchHidden: true
             ),
@@ -71,7 +71,7 @@ extension SettingsViewModel: SettingsViewModelInterface{
     func tappedSetting(at: Int) {
         switch at {
         case 1:
-            view?.showMessage("Are you sure you want to delete your account? This action cannot be undone.", type: .warning, isCancelEnabled: true) { [weak self] in
+            view?.showMessage(L10n.Settings.confirmDeleteAccount, type: .warning, isCancelEnabled: true) { [weak self] in
                 guard let self = self else { return }
                 self.view?.showLoading(true)
                 
@@ -80,7 +80,7 @@ extension SettingsViewModel: SettingsViewModelInterface{
                         switch result {
                         case .success:
                             self.view?.showLoading(false)
-                            self.view?.showMessage("Account deleted successfully.", type: .success, isCancelEnabled: false) {
+                            self.view?.showMessage(L10n.Settings.accountDeleted, type: .success, isCancelEnabled: false) {
                                 self.view?.navigateToLogin()
                             }
                         case .failure(let error):
@@ -91,7 +91,7 @@ extension SettingsViewModel: SettingsViewModelInterface{
                 }
             }
             case 2:
-            view?.showMessage("Are you sure you want to delete your data? This action cannot be undone.", type: .warning, isCancelEnabled: true) { [weak self] in
+            view?.showMessage(L10n.Settings.confirmDeleteData, type: .warning, isCancelEnabled: true) { [weak self] in
                 guard let self = self else { return }
                 self.view?.showLoading(true)
                 
@@ -100,7 +100,7 @@ extension SettingsViewModel: SettingsViewModelInterface{
                         switch result {
                         case .success:
                             self.view?.showLoading(false)
-                            self.view?.showMessage("Data deleted successfully.", type: .success, isCancelEnabled: false, nil)
+                            self.view?.showMessage(L10n.Settings.dataDeleted, type: .success, isCancelEnabled: false, nil)
                         case .failure(let error):
                             self.view?.showLoading(false)
                             self.view?.showMessage(error.localizedDescription, type: .error, isCancelEnabled: false, nil)
@@ -136,4 +136,3 @@ extension SettingsViewModel: SettingsViewModelInterface{
     }
     
 }
-

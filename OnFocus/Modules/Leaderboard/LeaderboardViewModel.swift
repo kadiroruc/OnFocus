@@ -70,7 +70,7 @@ extension LeaderboardViewModel: LeaderboardViewModelInterface {
                             self.view?.updateStateRankLabel(String(index + 1))
                             
                             let percentile = self.calculatePercentile(currentUserTime: profile.totalWorkTime ?? 0, others: self.profiles)
-                            self.view?.updateStateLabel(String(percentile))
+                            self.view?.updateStateLabel(percentile)
                         }
                     }
                 }

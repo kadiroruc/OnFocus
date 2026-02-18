@@ -155,7 +155,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
                         self.view?.updateProfileImage(with: url)
                     }
                     if profile.totalWorkTime != nil {
-                        self.view?.updateTotalWorkTime("Total Work Hour: \(profile.totalWorkTimeFormatted)")
+                        self.view?.updateTotalWorkTime(L10n.Profile.totalWorkHour(profile.totalWorkTimeFormatted))
                     }
                     
                     if let streakDays = profile.streakDays{
@@ -266,4 +266,3 @@ extension ProfileViewModel: ProfileViewModelInterface {
     }
 }
     
-

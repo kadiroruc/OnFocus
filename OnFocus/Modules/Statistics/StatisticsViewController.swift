@@ -19,7 +19,7 @@ class StatisticsViewController: UIViewController {
     
     private let oneWeekButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("1W", for: .normal)
+        button.setTitle(L10n.Statistics.rangeOneWeek, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .systemFont(ofSize: 17)
@@ -29,7 +29,7 @@ class StatisticsViewController: UIViewController {
     
     private let oneMonthButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("1M", for: .normal)
+        button.setTitle(L10n.Statistics.rangeOneMonth, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .clear
         button.layer.cornerRadius = 16
@@ -40,7 +40,7 @@ class StatisticsViewController: UIViewController {
     
     private let oneYearButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("1Y", for: .normal)
+        button.setTitle(L10n.Statistics.rangeOneYear, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .clear
         button.layer.cornerRadius = 16
@@ -51,7 +51,7 @@ class StatisticsViewController: UIViewController {
     
     private let fiveYearsButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("5Y", for: .normal)
+        button.setTitle(L10n.Statistics.rangeFiveYears, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .clear
         button.layer.cornerRadius = 16
@@ -204,8 +204,8 @@ class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         
-        averageLabel.text = "Average: "
-        progressLabel.text = "Progress: "
+        averageLabel.text = L10n.Statistics.averageLabel
+        progressLabel.text = L10n.Statistics.progressLabel
         updateButtonStates(selectedButton: oneWeekButton)
         viewModel.loadStatistics(for: .week)
     }
@@ -317,13 +317,13 @@ class StatisticsViewController: UIViewController {
     @objc func toggleButtonTapped(_ sender: UIButton) {
         updateButtonStates(selectedButton: sender)
         switch sender.title(for: .normal) {
-            case "1W":
+            case L10n.Statistics.rangeOneWeek:
                 viewModel.loadStatistics(for: .week)
-            case "1M":
+            case L10n.Statistics.rangeOneMonth:
                 viewModel.loadStatistics(for: .month)
-            case "1Y":
+            case L10n.Statistics.rangeOneYear:
                 viewModel.loadStatistics(for: .year)
-            case "5Y":
+            case L10n.Statistics.rangeFiveYears:
                 viewModel.loadStatistics(for: .fiveYears)
             default:
                 break
@@ -332,17 +332,17 @@ class StatisticsViewController: UIViewController {
     
     @objc private func averageInfoTapped() {
         //TR:"Average, seçili zaman aralığında bugüne kadar kaydedilen toplam çalışma süresinin, aynı aralıkta geçen gün sayısına bölünmesiyle hesaplanır. Bu yüzden dönem ilerledikçe ortalama güncellenir."
-        let message = "Average is calculated by dividing the total recorded working time up to today within the selected time range by the number of days that have elapsed in that same range. Therefore, as the period progresses, the average is continuously updated."
-        let alert = UIAlertController(title: "Average", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let message = L10n.Statistics.averageInfoMessage
+        let alert = UIAlertController(title: L10n.Statistics.averageInfoTitle, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default, handler: nil))
         present(alert, animated: true)
     }
     
     @objc private func progressInfoTapped() {
         //TR:"Progress, seçili zaman aralığındaki ortalamanın bir önceki aynı aralığa göre yüzde değişimini gösterir."
-        let message = "Progress shows the percentage change of the average in the selected time range compared to the previous equivalent period."
-        let alert = UIAlertController(title: "Progress", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let message = L10n.Statistics.progressInfoMessage
+        let alert = UIAlertController(title: L10n.Statistics.progressInfoTitle, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default, handler: nil))
         present(alert, animated: true)
     }
     
@@ -354,7 +354,7 @@ extension StatisticsViewController: StatisticsViewInterface {
         let values = statistics.map { Double($0.totalDuration)/(60*60) }
         let entries = values.enumerated().map { ChartDataEntry(x: Double($0.offset ), y: $0.element) }
 
-        let set = LineChartDataSet(entries: entries, label: "Work Time (Hour)")
+        let set = LineChartDataSet(entries: entries, label: L10n.Statistics.chartLabel)
         set.mode = .linear
         set.drawCirclesEnabled = false
         set.setColor(UIColor(hex: Constants.Colors.mintGreen))

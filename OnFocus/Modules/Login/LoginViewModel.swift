@@ -95,7 +95,7 @@ extension LoginViewModel: LoginViewModelInterface{
                 self.view?.enableLoginButton(true)
                 switch result {
                 case .success:
-                    self.view?.showMessage(message: "Password reset email sent. Please check your inbox and SPAMS.")
+                    self.view?.showMessage(message: L10n.Login.resetEmailSent)
                 case .failure(let error):
                     self.view?.showError(message: error.localizedDescription)
                 }

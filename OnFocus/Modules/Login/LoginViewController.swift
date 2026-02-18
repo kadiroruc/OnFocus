@@ -29,7 +29,7 @@ final class LoginViewController: UIViewController {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Login to your Account"
+        label.text = L10n.Login.title
         label.font = UIFont.systemFont(ofSize: 42, weight: .bold)
         label.numberOfLines = 2
         label.textColor = UIColor(hex: Constants.Colors.darkGray)
@@ -48,7 +48,7 @@ final class LoginViewController: UIViewController {
     private let emailTextField: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.placeholder = "Email"
+        tf.placeholder = L10n.Login.emailPlaceholder
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.textColor = UIColor(hex: Constants.Colors.darkGray)
         tf.backgroundColor = .white
@@ -72,7 +72,7 @@ final class LoginViewController: UIViewController {
     private let passwordTextField: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.placeholder = "Password"
+        tf.placeholder = L10n.Login.passwordPlaceholder
         tf.font = UIFont.systemFont(ofSize: 16)
         tf.textColor = UIColor(hex: Constants.Colors.darkGray)
         tf.backgroundColor = .white
@@ -98,7 +98,7 @@ final class LoginViewController: UIViewController {
     private let signInButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Sign in", for: .normal)
+        btn.setTitle(L10n.Login.signIn, for: .normal)
         btn.setTitleColor(.white, for: .normal)
         btn.backgroundColor = UIColor(hex: Constants.Colors.mintGreen)
         btn.layer.cornerRadius = 13
@@ -109,7 +109,7 @@ final class LoginViewController: UIViewController {
     private let forgotPasswordButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Forgot the password?", for: .normal)
+        btn.setTitle(L10n.Login.forgotPassword, for: .normal)
         btn.setTitleColor(UIColor(hex: Constants.Colors.softOrange), for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         return btn
@@ -118,7 +118,7 @@ final class LoginViewController: UIViewController {
     private let bottomLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "New Here?"
+        label.text = L10n.Login.newHere
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = UIColor(hex: Constants.Colors.darkGray)
         return label
@@ -127,7 +127,7 @@ final class LoginViewController: UIViewController {
     private let signUpButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("Sign Up", for: .normal)
+        btn.setTitle(L10n.Login.signUp, for: .normal)
         btn.setTitleColor(UIColor(hex: Constants.Colors.softOrange), for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         return btn
@@ -277,14 +277,14 @@ extension LoginViewController: LoginViewInterface{
     }
     
     func showError(message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let alert = UIAlertController(title: L10n.Alert.errorTitle, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default))
         present(alert, animated: true)
     }
 
     func showMessage(message: String) {
-        let alert = UIAlertController(title: "Info", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let alert = UIAlertController(title: L10n.Alert.infoTitle, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default))
         present(alert, animated: true)
     }
     

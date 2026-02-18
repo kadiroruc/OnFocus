@@ -20,7 +20,7 @@ class ProfileSearchViewController: UIViewController {
     
     private let searchBar: UISearchBar = {
         let sb = UISearchBar()
-        sb.placeholder = "Search Profiles"
+        sb.placeholder = L10n.Search.placeholder
         sb.searchBarStyle = .minimal
         sb.translatesAutoresizingMaskIntoConstraints = false
         sb.autocapitalizationType = .none
@@ -46,7 +46,7 @@ class ProfileSearchViewController: UIViewController {
     
     private let noResultsLabel: UILabel = {
         let label = UILabel()
-        label.text = "No Results"
+        label.text = L10n.Search.noResults
         label.textColor = .gray
         label.translatesAutoresizingMaskIntoConstraints = false
         label.isHidden = false
@@ -85,7 +85,7 @@ class ProfileSearchViewController: UIViewController {
     
     private func setupUI() {
         view.backgroundColor = UIColor(hex: Constants.Colors.lightPeach)
-        title = "Search Profile"
+        title = L10n.Search.title
         navigationController?.navigationBar.tintColor = UIColor(hex: Constants.Colors.darkGray)
         
         setupSearchBar()

@@ -12,13 +12,13 @@ extension UIViewController {
         let title: String
         switch type {
         case .success:
-            title = "Success"
+            title = L10n.Alert.successTitle
         case .error:
-            title = "Error"
+            title = L10n.Alert.errorTitle
         case .info:
-            title = "Info"
+            title = L10n.Alert.infoTitle
         case .warning:
-            title = "Warning"
+            title = L10n.Alert.warningTitle
         }
 
         let alert = UIAlertController(title: title, message: text, preferredStyle: .alert)
@@ -31,11 +31,11 @@ extension UIViewController {
             }
         }()
 
-        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+        let okAction = UIAlertAction(title: L10n.Alert.ok, style: .default) { _ in
             completion?()
         }
         if let isCancelEnabled = isCancelEnabled, isCancelEnabled {
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            let cancelAction = UIAlertAction(title: L10n.Alert.cancel, style: .cancel, handler: nil)
             alert.addAction(cancelAction)
         }
        
