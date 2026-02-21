@@ -48,10 +48,12 @@ final class ProfileService {
     
     private let db = Firestore.firestore()
     private let networkManager: NetworkManager?
+    private let localStore: OfflineStoreProtocol
     
     //MARK: - Init
-    init(networkManager: NetworkManager) {
+    init(networkManager: NetworkManager, localStore: OfflineStoreProtocol) {
         self.networkManager = networkManager
+        self.localStore = localStore
     }
     
     private func saveToFirestore(userId: String,
@@ -89,47 +91,92 @@ extension ProfileService: ProfileServiceProtocol {
     }
     
     func saveProfile(name: String, nickname: String, image: UIImage?, completion: @escaping (Result<Void, Error>) -> Void) {
-        
+        saveProfileInternal(name: name, nickname: nickname, image: image, shouldEnqueueOnFailure: true, completion: completion)
+    }
+    
+    func saveProfileInternal(name: String, nickname: String, image: UIImage?, shouldEnqueueOnFailure: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
             completion(.failure(NSError(domain: "AuthError",
                                         code: -1,
                                         userInfo: [NSLocalizedDescriptionKey: Constants.ValidationMessages.notLoggedIn])))
             return
         }
-        
+
+        let profile = ProfileModel(id: userId,
+                                   nickname: nickname,
+                                   totalWorkTime: nil,
+                                   currentStreakCount: nil,
+                                   profileImageURL: nil,
+                                   status: nil,
+                                   streakDays: nil)
+        localStore.save(entity: profile, id: userId, type: .profile, markDirty: true)
+
         let userData: [String: Any] = [
             "name": name,
             "nickname": nickname
         ]
-        
+
         if let image = image, let imageData = image.jpegData(compressionQuality: 0.8) {
-            // Resmi API üzerinden yükle
             guard let networkManager = networkManager else { return }
             let baseUserData = userData
-            
+
             Task {
                 do {
                     let endpoint = ImageUploadEndpoint.uploadImage(data: imageData)
-                    
                     let response = try await networkManager.sendRequest(endpoint, responseType: ProfileImageResponse.self)
                     var updatedUserData = baseUserData
                     updatedUserData["profileImageURL"] = response.data.url
-                    saveToFirestore(userId: userId, data: updatedUserData, completion: completion)
-
+                    saveToFirestore(userId: userId, data: updatedUserData) { result in
+                        switch result {
+                        case .success:
+                            if var cached: ProfileModel = self.localStore.fetch(id: userId, type: .profile) {
+                                cached.profileImageURL = response.data.url
+                                self.localStore.save(entity: cached, id: userId, type: .profile, markDirty: false)
+                            }
+                            self.localStore.markClean(id: userId, type: .profile)
+                            completion(.success(()))
+                        case .failure(let error):
+                            if shouldEnqueueOnFailure {
+                                let payload = ProfileUpsertPayload(userId: userId, name: name, nickname: nickname, profileImageBase64: imageData.base64EncodedString())
+                                let payloadData = try? JSONEncoder().encode(payload)
+                                self.localStore.enqueue(operation: .profileUpsert, entityType: .profile, entityId: userId, payload: payloadData)
+                                completion(.success(()))
+                            } else {
+                                completion(.failure(error))
+                            }
+                        }
+                    }
                 } catch {
-                    completion(.failure(NSError(domain: "NetworkError",
-                                        code: -2,
-                                        userInfo: [NSLocalizedDescriptionKey: L10n.Errors.imageUploadFailed])))
+                    if shouldEnqueueOnFailure {
+                        let payload = ProfileUpsertPayload(userId: userId, name: name, nickname: nickname, profileImageBase64: imageData.base64EncodedString())
+                        let payloadData = try? JSONEncoder().encode(payload)
+                        self.localStore.enqueue(operation: .profileUpsert, entityType: .profile, entityId: userId, payload: payloadData)
+                        completion(.success(()))
+                    } else {
+                        completion(.failure(error))
+                    }
                 }
             }
-            
-           
         } else {
-            // Resim yoksa sadece Firestore kaydı yap
-            saveToFirestore(userId: userId, data: userData, completion: completion)
+            saveToFirestore(userId: userId, data: userData) { result in
+                switch result {
+                case .success:
+                    self.localStore.markClean(id: userId, type: .profile)
+                    completion(.success(()))
+                case .failure(let error):
+                    if shouldEnqueueOnFailure {
+                        let payload = ProfileUpsertPayload(userId: userId, name: name, nickname: nickname, profileImageBase64: nil)
+                        let payloadData = try? JSONEncoder().encode(payload)
+                        self.localStore.enqueue(operation: .profileUpsert, entityType: .profile, entityId: userId, payload: payloadData)
+                        completion(.success(()))
+                    } else {
+                        completion(.failure(error))
+                    }
+                }
+            }
         }
     }
-    
+
     func isNicknameAvailable(_ nickname: String, completion: @escaping (Bool) -> Void) {
         db.collection("users")
             .whereField("nickname", isEqualTo: nickname)
@@ -148,23 +195,29 @@ extension ProfileService: ProfileServiceProtocol {
     
     func fetchProfile(userId: String?, completion: @escaping (Result<ProfileModel, Error>) -> Void) {
         guard let userId = userId else { return }
-        
+
         let ref = db.collection("users").document(userId)
-        
+
         ref.getDocument { document, error in
             if let error = error {
-                completion(.failure(error))
+                if let cached: ProfileModel = self.localStore.fetch(id: userId, type: .profile) {
+                    completion(.success(cached))
+                } else {
+                    completion(.failure(error))
+                }
                 return
             }
-            
+
             guard let document = document else {
                 completion(.failure(NSError(domain: "Firestore", code: -1, userInfo: [NSLocalizedDescriptionKey: L10n.Errors.documentNotFound])))
                 return
             }
-            
+
             do {
                 let profile = try document.data(as: ProfileModel.self)
-                
+                if let id = profile.id {
+                    self.localStore.save(entity: profile, id: id, type: .profile, markDirty: false)
+                }
                 completion(.success(profile))
             } catch {
                 completion(.failure(error))
@@ -179,21 +232,24 @@ extension ProfileService: ProfileServiceProtocol {
         }
         
         db.collection("users").document(userId).getDocument { document, error in
-            
             if let error = error {
-                completion(.failure(error))
+                if let cached: ProfileModel = self.localStore.fetch(id: userId, type: .profile) {
+                    completion(.success(cached))
+                } else {
+                    completion(.failure(error))
+                }
                 return
             }
-            
+
             guard let document = document, document.exists else {
                 completion(.failure(NSError(domain: "DataError", code: -1, userInfo: [NSLocalizedDescriptionKey: L10n.Errors.profileDataNotFound])))
                 return
             }
-            
+
             let nickname = document.get("nickname") as? String ?? ""
             let profileImageURL = document.get("profileImageURL") as? String
             let status = document.get("status") as? String
-            
+
             // Diğer alanları boş veya varsayılan bırakarak ProfileModel oluşturuyoruz
             let profileModel = ProfileModel(id: document.documentID,
                                             nickname: nickname,
@@ -201,7 +257,11 @@ extension ProfileService: ProfileServiceProtocol {
                                             currentStreakCount: nil,
                                             profileImageURL: profileImageURL,
                                             status: status)
-            
+
+            if let id = profileModel.id {
+                self.localStore.save(entity: profileModel, id: id, type: .profile, markDirty: false)
+            }
+
             completion(.success(profileModel))
         }
     }
@@ -212,33 +272,41 @@ extension ProfileService: ProfileServiceProtocol {
             .whereField("nickname", isLessThan: query + "\u{f8ff}")
             .getDocuments { snapshot, error in
                 if let error = error {
-                    completion(.failure(error))
+                    let cached: [ProfileModel] = self.localStore.fetchAll(type: .profile)
+                    let filtered = cached.filter { ($0.nickname ?? "").lowercased().hasPrefix(query.lowercased()) }
+                    if !filtered.isEmpty {
+                        completion(.success(filtered))
+                    } else {
+                        completion(.failure(error))
+                    }
                     return
                 }
-                
+
                 guard let documents = snapshot?.documents else {
                     completion(.success([]))
                     return
                 }
-                
 
                 let profiles: [ProfileModel] = documents.compactMap { doc in
                     try? doc.data(as: ProfileModel.self)
                 }
-                
+
+                self.localStore.saveAll(entities: profiles, type: .profile, idProvider: { $0.id ?? UUID().uuidString }, markDirty: false)
                 completion(.success(profiles))
             }
     }
     
     func updateProfileImage(_ image: UIImage, completion: @escaping (Result<Void, Error>) -> Void) {
-        
+        updateProfileImageInternal(image, shouldEnqueueOnFailure: true, completion: completion)
+    }
+    
+    func updateProfileImageInternal(_ image: UIImage, shouldEnqueueOnFailure: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let userId = currentUserId else {
             completion(.failure(NSError(domain: "AuthError",
                                         code: -1,
                                         userInfo: [NSLocalizedDescriptionKey: Constants.ValidationMessages.notLoggedIn])))
             return
         }
-        
 
         guard let imageData = image.jpegData(compressionQuality: 0.8) else {
             completion(.failure(NSError(domain: "ImageError",
@@ -246,49 +314,98 @@ extension ProfileService: ProfileServiceProtocol {
                                         userInfo: [NSLocalizedDescriptionKey: L10n.Errors.invalidImageData])))
             return
         }
-        
+
         guard let networkManager = networkManager else {
-            completion(.failure(NSError(domain: "NetworkError",
-                                        code: -3,
-                                        userInfo: [NSLocalizedDescriptionKey: L10n.Errors.networkManagerUnavailable])))
+            if shouldEnqueueOnFailure {
+                let payload = ProfileImagePayload(userId: userId, imageBase64: imageData.base64EncodedString())
+                let payloadData = try? JSONEncoder().encode(payload)
+                localStore.enqueue(operation: .profileUpdateImage, entityType: .profile, entityId: userId, payload: payloadData)
+                completion(.success(()))
+            } else {
+                completion(.failure(NSError(domain: "NetworkError",
+                                            code: -3,
+                                            userInfo: [NSLocalizedDescriptionKey: L10n.Errors.networkManagerUnavailable])))
+            }
             return
         }
-        
-        
 
-        // Resmi yükle
-        
         Task {
             do {
                 let endpoint = ImageUploadEndpoint.uploadImage(data: imageData)
                 let response = try await networkManager.sendRequest(endpoint, responseType: ProfileImageResponse.self)
-                saveToFirestore(userId: userId, data: ["profileImageURL" : response.data.url], completion: completion)
-
+                let imageURL = response.data.url
+                saveToFirestore(userId: userId, data: ["profileImageURL" : imageURL]) { result in
+                    switch result {
+                    case .success:
+                        if var cached: ProfileModel = self.localStore.fetch(id: userId, type: .profile) {
+                            cached.profileImageURL = imageURL
+                            self.localStore.save(entity: cached, id: userId, type: .profile, markDirty: false)
+                        }
+                        self.localStore.markClean(id: userId, type: .profile)
+                        completion(.success(()))
+                    case .failure(let error):
+                        if shouldEnqueueOnFailure {
+                            let payload = ProfileImagePayload(userId: userId, imageBase64: imageData.base64EncodedString())
+                            let payloadData = try? JSONEncoder().encode(payload)
+                            self.localStore.enqueue(operation: .profileUpdateImage, entityType: .profile, entityId: userId, payload: payloadData)
+                            completion(.success(()))
+                        } else {
+                            completion(.failure(error))
+                        }
+                    }
+                }
             } catch {
-                completion(.failure(error))
+                if shouldEnqueueOnFailure {
+                    let payload = ProfileImagePayload(userId: userId, imageBase64: imageData.base64EncodedString())
+                    let payloadData = try? JSONEncoder().encode(payload)
+                    localStore.enqueue(operation: .profileUpdateImage, entityType: .profile, entityId: userId, payload: payloadData)
+                    completion(.success(()))
+                } else {
+                    completion(.failure(error))
+                }
             }
         }
     }
-    
+
     func updateStreakDay(completion: @escaping (Result<Void, Error>) -> Void) {
+        updateStreakDayInternal(shouldEnqueueOnFailure: true, dayString: nil, completion: completion)
+    }
+
+    func updateStreakDayInternal(shouldEnqueueOnFailure: Bool, dayString: String?, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let userId = currentUserId else {
             let error = NSError(domain: "NoAuth", code: -1, userInfo: [NSLocalizedDescriptionKey: L10n.Errors.userNotAuthenticated])
             completion(.failure(error))
             return
         }
 
-        let userRef = db.collection("users").document(userId)
-
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        let todayString = formatter.string(from: Date())
+        let resolvedDayString = dayString ?? formatter.string(from: Date())
 
+        if var cached: ProfileModel = localStore.fetch(id: userId, type: .profile) {
+            var streakDays = cached.streakDays ?? []
+            if !streakDays.contains(resolvedDayString) {
+                streakDays.append(resolvedDayString)
+            }
+            cached.streakDays = streakDays
+            localStore.save(entity: cached, id: userId, type: .profile, markDirty: true)
+        }
+
+        let userRef = db.collection("users").document(userId)
         userRef.updateData([
-            "streakDays": FieldValue.arrayUnion([todayString])
+            "streakDays": FieldValue.arrayUnion([resolvedDayString])
         ]) { error in
             if let error = error {
-                completion(.failure(error))
+                if shouldEnqueueOnFailure {
+                    let payload = ProfileStreakPayload(userId: userId, dayString: resolvedDayString)
+                    let payloadData = try? JSONEncoder().encode(payload)
+                    self.localStore.enqueue(operation: .profileUpdateStreak, entityType: .profile, entityId: userId, payload: payloadData)
+                    completion(.success(()))
+                } else {
+                    completion(.failure(error))
+                }
             } else {
+                self.localStore.markClean(id: userId, type: .profile)
                 completion(.success(()))
             }
         }
@@ -319,12 +436,18 @@ extension ProfileService: ProfileServiceProtocol {
     }
     
     func deleteProfile(completion: @escaping (Result<Void, Error>) -> Void) {
+        deleteProfileInternal(shouldEnqueueOnFailure: true, completion: completion)
+    }
+
+    func deleteProfileInternal(shouldEnqueueOnFailure: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let userId = currentUserId else {
             completion(.failure(NSError(domain: "AuthError",
                                         code: -1,
                                         userInfo: [NSLocalizedDescriptionKey: Constants.ValidationMessages.notLoggedIn])))
             return
         }
+
+        localStore.markDeleted(id: userId, type: .profile)
 
         let db = Firestore.firestore()
         let userRef = db.collection("users").document(userId)
@@ -343,7 +466,12 @@ extension ProfileService: ProfileServiceProtocol {
         // Perform the query for user1Id
         query1.getDocuments { (snapshot, error) in
             if let error = error {
-                completion(.failure(error))
+                if shouldEnqueueOnFailure {
+                    self.localStore.enqueue(operation: .profileDelete, entityType: .profile, entityId: userId, payload: nil)
+                    completion(.success(()))
+                } else {
+                    completion(.failure(error))
+                }
                 return
             }
             
@@ -357,7 +485,12 @@ extension ProfileService: ProfileServiceProtocol {
             // Perform the query for user2Id
             query2.getDocuments { (snapshot, error) in
                 if let error = error {
-                    completion(.failure(error))
+                    if shouldEnqueueOnFailure {
+                        self.localStore.enqueue(operation: .profileDelete, entityType: .profile, entityId: userId, payload: nil)
+                        completion(.success(()))
+                    } else {
+                        completion(.failure(error))
+                    }
                     return
                 }
                 
@@ -371,16 +504,26 @@ extension ProfileService: ProfileServiceProtocol {
                 // Commit the batch operation after processing all documents
                 batch.commit { error in
                     if let error = error {
-                        completion(.failure(error))
+                        if shouldEnqueueOnFailure {
+                            self.localStore.enqueue(operation: .profileDelete, entityType: .profile, entityId: userId, payload: nil)
+                            completion(.success(()))
+                        } else {
+                            completion(.failure(error))
+                        }
                         return
                     }
 
                     // After successfully deleting from Firestore, now delete from Firebase Authentication
                     Auth.auth().currentUser?.delete { error in
                         if let error = error {
-                            completion(.failure(error)) // If there's an error deleting from Auth, return that error
+                            if shouldEnqueueOnFailure {
+                                self.localStore.enqueue(operation: .profileDelete, entityType: .profile, entityId: userId, payload: nil)
+                                completion(.success(()))
+                            } else {
+                                completion(.failure(error))
+                            }
                         } else {
-                            completion(.success(())) // If everything is successful, complete the process
+                            completion(.success(()))
                         }
                     }
                 }
@@ -391,6 +534,10 @@ extension ProfileService: ProfileServiceProtocol {
 
     
     func deleteStatisticsAndFriendships(completion: @escaping (Result<Void, Error>) -> Void) {
+        deleteStatisticsAndFriendshipsInternal(shouldEnqueueOnFailure: true, completion: completion)
+    }
+
+    func deleteStatisticsAndFriendshipsInternal(shouldEnqueueOnFailure: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let userId = currentUserId else {
             completion(.failure(NSError(domain: "AuthError",
                                         code: -1,
@@ -430,7 +577,12 @@ extension ProfileService: ProfileServiceProtocol {
         // Fetch documents matching user1Id
         query1.getDocuments { (snapshot, error) in
             if let error = error {
-                completion(.failure(error))
+                if shouldEnqueueOnFailure {
+                    self.localStore.enqueue(operation: .profileDeleteStatisticsAndFriendships, entityType: .profile, entityId: userId, payload: nil)
+                    completion(.success(()))
+                } else {
+                    completion(.failure(error))
+                }
                 return
             }
             
@@ -443,7 +595,12 @@ extension ProfileService: ProfileServiceProtocol {
             // Now, fetch documents matching user2Id (after the first query is done)
             query2.getDocuments { (snapshot, error) in
                 if let error = error {
-                    completion(.failure(error))
+                    if shouldEnqueueOnFailure {
+                        self.localStore.enqueue(operation: .profileDeleteStatisticsAndFriendships, entityType: .profile, entityId: userId, payload: nil)
+                        completion(.success(()))
+                    } else {
+                        completion(.failure(error))
+                    }
                     return
                 }
                 
@@ -456,7 +613,12 @@ extension ProfileService: ProfileServiceProtocol {
                 // Commit the batch operation after processing all documents
                 batch.commit { error in
                     if let error = error {
-                        completion(.failure(error))
+                        if shouldEnqueueOnFailure {
+                            self.localStore.enqueue(operation: .profileDeleteStatisticsAndFriendships, entityType: .profile, entityId: userId, payload: nil)
+                            completion(.success(()))
+                        } else {
+                            completion(.failure(error))
+                        }
                     } else {
                         completion(.success(()))
                     }

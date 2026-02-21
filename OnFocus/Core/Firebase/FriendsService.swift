@@ -78,7 +78,11 @@ final class RTDBListenerRegistration: NSObject, ListenerRegistration {
 final class FriendsService  {
     private let db = Firestore.firestore()
     private let rtdb = Database.database().reference()
+    private let localStore: OfflineStoreProtocol
     
+    init(localStore: OfflineStoreProtocol) {
+        self.localStore = localStore
+    }
 }
 
 extension FriendsService: FriendsServiceProtocol {
@@ -119,28 +123,36 @@ extension FriendsService: FriendsServiceProtocol {
     }
     
     func sendFriendRequest(from senderId: String, to receiverId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        sendFriendRequestInternal(from: senderId, to: receiverId, shouldEnqueueOnFailure: true, completion: completion)
+    }
+
+    func sendFriendRequestInternal(from senderId: String, to receiverId: String, shouldEnqueueOnFailure: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         let db = Firestore.firestore()
         let friendshipsRef = db.collection("friendships")
-        
+
         // Aynı kullanıcılar arasında zaten bir kayıt var mı?
         friendshipsRef
             .whereField("user1Id", in: [senderId, receiverId])
             .whereField("user2Id", in: [senderId, receiverId])
             .getDocuments { snapshot, error in
-                
+
                 if let error = error {
-                    completion(.failure(error))
+                    if shouldEnqueueOnFailure {
+                        let payload = FriendRequestPayload(senderId: senderId, receiverId: receiverId)
+                        let payloadData = try? JSONEncoder().encode(payload)
+                        self.localStore.enqueue(operation: .friendRequestSend, entityType: .friendship, entityId: "\(senderId)|\(receiverId)", payload: payloadData)
+                        completion(.success(()))
+                    } else {
+                        completion(.failure(error))
+                    }
                     return
                 }
-                
-                // Eşleşen kayıt varsa
+
                 if let docs = snapshot?.documents, !docs.isEmpty {
-                    // Aynı arkadaşlık veya istek zaten var
                     completion(.success(()))
                     return
                 }
-                
-                // Yeni istek oluştur
+
                 let data: [String: Any] = [
                     "user1Id": senderId,
                     "user2Id": receiverId,
@@ -150,7 +162,14 @@ extension FriendsService: FriendsServiceProtocol {
 
                 friendshipsRef.addDocument(data: data) { error in
                     if let error = error {
-                        completion(.failure(error))
+                        if shouldEnqueueOnFailure {
+                            let payload = FriendRequestPayload(senderId: senderId, receiverId: receiverId)
+                            let payloadData = try? JSONEncoder().encode(payload)
+                            self.localStore.enqueue(operation: .friendRequestSend, entityType: .friendship, entityId: "\(senderId)|\(receiverId)", payload: payloadData)
+                            completion(.success(()))
+                        } else {
+                            completion(.failure(error))
+                        }
                     } else {
                         completion(.success(()))
                     }
@@ -201,14 +220,18 @@ extension FriendsService: FriendsServiceProtocol {
     }
     
     func cancelFriendRequest(from user1Id: String, to user2Id: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        cancelFriendRequestInternal(from: user1Id, to: user2Id, shouldEnqueueOnFailure: true, completion: completion)
+    }
+
+    func cancelFriendRequestInternal(from user1Id: String, to user2Id: String, shouldEnqueueOnFailure: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         let db = Firestore.firestore()
         let friendshipsRef = db.collection("friendships")
-        
+
         let statusFilter = Filter.orFilter([
             Filter.whereField("status", isEqualTo: Constants.Firebase.pending),
             Filter.whereField("status", isEqualTo: Constants.Firebase.accepted)
         ])
-        
+
         let userFilter = Filter.orFilter([
             Filter.andFilter([
                 Filter.whereField("user1Id", isEqualTo: user1Id),
@@ -219,29 +242,43 @@ extension FriendsService: FriendsServiceProtocol {
                 Filter.whereField("user2Id", isEqualTo: user1Id)
             ])
         ])
-        
+
         let combinedFilter = Filter.andFilter([
             statusFilter,
             userFilter
         ])
-        
+
         friendshipsRef
             .whereFilter(combinedFilter)
             .getDocuments { snapshot, error in
-                
+
                 if let error = error {
-                    completion(.failure(error))
+                    if shouldEnqueueOnFailure {
+                        let payload = FriendRequestPayload(senderId: user1Id, receiverId: user2Id)
+                        let payloadData = try? JSONEncoder().encode(payload)
+                        self.localStore.enqueue(operation: .friendRequestCancel, entityType: .friendship, entityId: "\(user1Id)|\(user2Id)", payload: payloadData)
+                        completion(.success(()))
+                    } else {
+                        completion(.failure(error))
+                    }
                     return
                 }
-                
+
                 guard let document = snapshot?.documents.first else {
-                    completion(.success(())) // Zaten yoksa da başarılı kabul edilir
+                    completion(.success(()))
                     return
                 }
-                
+
                 friendshipsRef.document(document.documentID).delete { error in
                     if let error = error {
-                        completion(.failure(error))
+                        if shouldEnqueueOnFailure {
+                            let payload = FriendRequestPayload(senderId: user1Id, receiverId: user2Id)
+                            let payloadData = try? JSONEncoder().encode(payload)
+                            self.localStore.enqueue(operation: .friendRequestCancel, entityType: .friendship, entityId: "\(user1Id)|\(user2Id)", payload: payloadData)
+                            completion(.success(()))
+                        } else {
+                            completion(.failure(error))
+                        }
                     } else {
                         completion(.success(()))
                     }
@@ -252,6 +289,10 @@ extension FriendsService: FriendsServiceProtocol {
 
     
     func acceptFriendRequest(from senderId: String, to receiverId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        acceptFriendRequestInternal(from: senderId, to: receiverId, shouldEnqueueOnFailure: true, completion: completion)
+    }
+
+    func acceptFriendRequestInternal(from senderId: String, to receiverId: String, shouldEnqueueOnFailure: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         let db = Firestore.firestore()
         let friendshipsRef = db.collection("friendships")
         
@@ -262,12 +303,19 @@ extension FriendsService: FriendsServiceProtocol {
             .getDocuments { snapshot, error in
                 
                 if let error = error {
-                    completion(.failure(error))
+                    if shouldEnqueueOnFailure {
+                        let payload = FriendRequestPayload(senderId: senderId, receiverId: receiverId)
+                        let payloadData = try? JSONEncoder().encode(payload)
+                        self.localStore.enqueue(operation: .friendRequestAccept, entityType: .friendship, entityId: "\(senderId)|\(receiverId)", payload: payloadData)
+                        completion(.success(()))
+                    } else {
+                        completion(.failure(error))
+                    }
                     return
                 }
                 
                 guard let document = snapshot?.documents.first else {
-                    completion(.success(())) // Zaten kabul edilmiş olabilir
+                    completion(.success(()))
                     return
                 }
                 
@@ -276,7 +324,14 @@ extension FriendsService: FriendsServiceProtocol {
                     "updatedAt": FieldValue.serverTimestamp()
                 ]) { error in
                     if let error = error {
-                        completion(.failure(error))
+                        if shouldEnqueueOnFailure {
+                            let payload = FriendRequestPayload(senderId: senderId, receiverId: receiverId)
+                            let payloadData = try? JSONEncoder().encode(payload)
+                            self.localStore.enqueue(operation: .friendRequestAccept, entityType: .friendship, entityId: "\(senderId)|\(receiverId)", payload: payloadData)
+                            completion(.success(()))
+                        } else {
+                            completion(.failure(error))
+                        }
                     } else {
                         completion(.success(()))
                     }
@@ -285,6 +340,10 @@ extension FriendsService: FriendsServiceProtocol {
     }
     
     func rejectFriendRequest(from senderId: String, to receiverId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        rejectFriendRequestInternal(from: senderId, to: receiverId, shouldEnqueueOnFailure: true, completion: completion)
+    }
+
+    func rejectFriendRequestInternal(from senderId: String, to receiverId: String, shouldEnqueueOnFailure: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         let db = Firestore.firestore()
         let friendshipsRef = db.collection("friendships")
         
@@ -295,18 +354,32 @@ extension FriendsService: FriendsServiceProtocol {
             .getDocuments { snapshot, error in
                 
                 if let error = error {
-                    completion(.failure(error))
+                    if shouldEnqueueOnFailure {
+                        let payload = FriendRequestPayload(senderId: senderId, receiverId: receiverId)
+                        let payloadData = try? JSONEncoder().encode(payload)
+                        self.localStore.enqueue(operation: .friendRequestReject, entityType: .friendship, entityId: "\(senderId)|\(receiverId)", payload: payloadData)
+                        completion(.success(()))
+                    } else {
+                        completion(.failure(error))
+                    }
                     return
                 }
                 
                 guard let document = snapshot?.documents.first else {
-                    completion(.success(())) // Zaten silinmiş olabilir
+                    completion(.success(()))
                     return
                 }
                 
                 friendshipsRef.document(document.documentID).delete { error in
                     if let error = error {
-                        completion(.failure(error))
+                        if shouldEnqueueOnFailure {
+                            let payload = FriendRequestPayload(senderId: senderId, receiverId: receiverId)
+                            let payloadData = try? JSONEncoder().encode(payload)
+                            self.localStore.enqueue(operation: .friendRequestReject, entityType: .friendship, entityId: "\(senderId)|\(receiverId)", payload: payloadData)
+                            completion(.success(()))
+                        } else {
+                            completion(.failure(error))
+                        }
                     } else {
                         completion(.success(()))
                     }

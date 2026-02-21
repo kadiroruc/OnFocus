@@ -16,6 +16,11 @@ protocol VersionServiceProtocol {
 final class VersionService: VersionServiceProtocol {
     
     private let db = Firestore.firestore()
+    private let localStore: OfflineStoreProtocol
+
+    init(localStore: OfflineStoreProtocol) {
+        self.localStore = localStore
+    }
     
     func checkAppVersion(completion: @escaping (Result<Bool, Error>) -> Void) {
         // Mevcut sürüm
@@ -25,8 +30,12 @@ final class VersionService: VersionServiceProtocol {
         // Firestore'dan sürüm bilgisini al
         db.collection("app_versions").document("version_info").getDocument { (document, error) in
             if let error = error {
-                // Hata oluşursa closure ile hata döndür
-                completion(.failure(error))
+                if let cached: AppVersionCache = self.localStore.fetch(id: "version_info", type: .appVersion),
+                   let currentVersion = currentVersion {
+                    completion(.success(currentVersion < cached.minimumVersion))
+                } else {
+                    completion(.failure(error))
+                }
                 return
             }
             
@@ -35,16 +44,18 @@ final class VersionService: VersionServiceProtocol {
                 let minimumVersion = data?["minimum_version"] as? String
                 let appStoreURL = data?["app_store_url"] as? String
 
+                if let minimumVersion, let appStoreURL {
+                    let cache = AppVersionCache(minimumVersion: minimumVersion, appStoreURL: appStoreURL)
+                    self.localStore.save(entity: cache, id: "version_info", type: .appVersion, markDirty: false)
+                }
+
                 // Mevcut sürüm ile minimum sürümü karşılaştır
                 if let minimumVersion = minimumVersion, let currentVersion = currentVersion, currentVersion < minimumVersion {
-                    // Güncelleme yapılması gerektiğinde closure ile success döndür
-                    
-                    completion(.success(true))  // Zorunlu güncelleme gerektiği için true döndür
+                    completion(.success(true))
                 } else {
-                    completion(.success(false))  // Güncelleme gerekmiyor
+                    completion(.success(false))
                 }
             } else {
-                // Eğer belge bulunamazsa hata döndür
                 let error = NSError(domain: "FirestoreError", code: 404, userInfo: [NSLocalizedDescriptionKey: L10n.Errors.versionInfoNotFound])
                 completion(.failure(error))
             }

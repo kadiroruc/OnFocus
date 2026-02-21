@@ -14,6 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     let container = DIContainer.shared
+    private var offlineSyncManager: OfflineSyncManager?
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -25,6 +26,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         registerServices()
+        offlineSyncManager = container.resolve()
+        offlineSyncManager?.start()
         registerViewModels()
         registerViewControllers()
         
@@ -46,21 +49,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func registerServices() {
         
+        container.register { OfflineStore() as OfflineStoreProtocol }
         container.register { AuthService() as AuthServiceProtocol }
         
         container.register {
-            ProfileService(networkManager: URLSessionNetworkManager.shared) as ProfileServiceProtocol
+            ProfileService(networkManager: URLSessionNetworkManager.shared, localStore: self.container.resolve()) as ProfileServiceProtocol
+        }
+        container.register {
+            ProfileService(networkManager: URLSessionNetworkManager.shared, localStore: self.container.resolve()) as ProfileService
         }
         
         container.register {
             PresenceService(profileService: self.container.resolve()) as PresenceServiceProtocol
         }
         
-        container.register { FriendsService() as FriendsServiceProtocol }
-        container.register { TimerService() as TimerServiceProtocol }
+        container.register { FriendsService(localStore: self.container.resolve()) as FriendsServiceProtocol }
+        container.register { FriendsService(localStore: self.container.resolve()) as FriendsService }
+        container.register { TimerService(localStore: self.container.resolve()) as TimerServiceProtocol }
+        container.register { TimerService(localStore: self.container.resolve()) as TimerService }
         
         container.register {
             LeaderboardService(profileService: self.container.resolve(), friendsService: self.container.resolve(), timerService: self.container.resolve()) as LeaderboardServiceProtocol
+        }
+
+        container.register {
+            VersionService(localStore: self.container.resolve()) as VersionServiceProtocol
+        }
+
+        container.register {
+            OfflineSyncManager(localStore: self.container.resolve(), profileService: self.container.resolve(), friendsService: self.container.resolve(), timerService: self.container.resolve())
         }
     }
     
