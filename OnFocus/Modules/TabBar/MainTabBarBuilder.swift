@@ -40,6 +40,7 @@ struct MainTabBarBuilder {
 
         let notificationsVC: NotificationsViewController = container.resolve()
         notificationsVC.title = L10n.TabBar.notificationsTitle
+        _ = notificationsVC.view
         let notificationsNav = UINavigationController(rootViewController: notificationsVC)
         notificationsNav.tabBarItem = UITabBarItem(
             title: nil,

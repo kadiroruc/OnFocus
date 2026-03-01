@@ -10,12 +10,17 @@
 "validation.friend_request_sent" = "Arkadaşlık isteği başarıyla gönderildi.";
 "validation.friend_request_error" = "Arkadaşlık isteği gönderilirken hata oluştu. Lütfen tekrar deneyin.";
 "validation.logout_error" = "Çıkış yapılırken hata oluştu. Lütfen tekrar deneyin.";
-"validation.friend_request_cancelled" = "Arkadaşlık isteği başarıyla iptal edildi.";
-"validation.friend_request_cancelled_error" = "Arkadaşlık isteği iptal edilirken hata oluştu. Lütfen tekrar deneyin.";
+"validation.friend_request_cancelled" = "Arkadaşlık kaldırıldı.";
+"validation.friend_request_cancelled_error" = "Arkadaşlık kaldırılamadı. Lütfen tekrar deneyin.";
 "validation.profile_image_updated" = "Profil fotoğrafı başarıyla güncellendi.";
 "validation.profile_image_update_error" = "Profil fotoğrafı güncellenirken hata oluştu. Lütfen tekrar deneyin.";
 "validation.reset_timekeeper_confirmation" = "Kronometre iptal edilsin mi?";
 "validation.email_verification_sent" = "Doğrulama e-postası gönderildi. Gelen kutunuzu ve gerekirse spam/önemsiz klasörünü kontrol edin.";
+"validation.session_saved_offline" = "Oturum şu anda kaydedilemedi. İnternet bağlantısı geldiğinde otomatik kaydedilecek.";
+"validation.session_save_failed" = "Oturum kaydedilemedi. Lütfen tekrar deneyin.";
+"validation.session_save_synced" = "Bekleyen oturumlar kaydedildi.";
+"validation.network_offline" = "İnternet bağlantısı yok. Veriler bağlantı gelince senkronlanacak.";
+"validation.timekeeper_auto_saved" = "Önceki kronometre kaydı otomatik olarak kaydedildi.";
 
 /* Login */
 "login.title" = "Hesabına Giriş Yap";
@@ -101,7 +106,7 @@
 "search.no_results" = "Sonuç Yok";
 
 /* Leaderboard */
-"leaderboard.example_user" = "Örnek Kullanıcı";
+"leaderboard.example_user" = "-";
 "leaderboard.zero_time" = "0S 0D";
 "leaderboard.state_label" = "Arkadaşlarının %d%%'ünden öndesin!";
 "leaderboard.rank_label" = "#%@";
@@ -110,7 +115,7 @@
 "statistics.average_label" = "Ortalama: ";
 "statistics.progress_label" = "İlerleme: ";
 "statistics.average_info_title" = "Ortalama";
-"statistics.average_info_message" = "Ortalama, seçili zaman aralığında bugüne kadar kaydedilen toplam çalışma süresinin, aynı aralıkta geçen gün sayısına bölünmesiyle hesaplanır. Bu yüzden dönem ilerledikçe ortalama sürekli güncellenir.";
+"statistics.average_info_message" = "Ortalama, seçili zaman aralığında bugüne kadar kaydedilen toplam çalışma süresinin, o zaman diliminde geçen gün sayısına bölünmesiyle hesaplanır. (Örn: Haftalık istatistikte salı günü ise 2'ye bölünür.)";
 "statistics.progress_info_title" = "İlerleme";
 "statistics.progress_info_message" = "İlerleme, seçili zaman aralığındaki ortalamanın bir önceki eşdeğer döneme göre yüzde değişimini gösterir.";
 "statistics.chart_label" = "Çalışma Süresi (Saat)";

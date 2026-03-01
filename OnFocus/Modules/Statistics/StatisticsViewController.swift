@@ -331,7 +331,6 @@ class StatisticsViewController: UIViewController {
     }
     
     @objc private func averageInfoTapped() {
-        //TR:"Average, seçili zaman aralığında bugüne kadar kaydedilen toplam çalışma süresinin, aynı aralıkta geçen gün sayısına bölünmesiyle hesaplanır. Bu yüzden dönem ilerledikçe ortalama güncellenir."
         let message = L10n.Statistics.averageInfoMessage
         let alert = UIAlertController(title: L10n.Statistics.averageInfoTitle, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default, handler: nil))
@@ -339,7 +338,6 @@ class StatisticsViewController: UIViewController {
     }
     
     @objc private func progressInfoTapped() {
-        //TR:"Progress, seçili zaman aralığındaki ortalamanın bir önceki aynı aralığa göre yüzde değişimini gösterir."
         let message = L10n.Statistics.progressInfoMessage
         let alert = UIAlertController(title: L10n.Statistics.progressInfoTitle, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default, handler: nil))

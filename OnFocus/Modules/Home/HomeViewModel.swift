@@ -48,6 +48,10 @@ final class HomeViewModel {
         
         NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(pendingSessionsSynced(_:)), name: .pendingSessionsSynced, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(networkStatusChanged(_:)), name: .networkStatusChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(timekeeperAutoSaved(_:)), name: .timekeeperAutoSaved, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userDidSignOut(_:)), name: .userDidSignOut, object: nil)
         
         // Request notification permission
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
@@ -82,6 +86,9 @@ final class HomeViewModel {
     private var remainingTimeWhenBackground: TimeInterval?
     private var friendsListener: FriendsListenerToken?
     private var onlineCountListener: ListenerRegistration?
+    private var lastNetworkState: Bool?
+    private var backgroundTaskId: UIBackgroundTaskIdentifier = .invalid
+    private var backgroundTimekeeperTimer: Timer?
 
     
     
@@ -146,6 +153,12 @@ final class HomeViewModel {
                 try await timerService.saveSessionAndUpdateAggregates(session, userId: userId)
                 checkAndUpdateProfileStreak()
             } catch {
+                let stored = timerService.enqueuePendingSession(session, userId: userId)
+                if stored {
+                    view?.showMessage(L10n.Validation.sessionSavedOffline)
+                } else {
+                    view?.showMessage(L10n.Validation.sessionSaveFailed)
+                }
                 print("Error: \(error.localizedDescription)")
             }
         }
@@ -261,6 +274,65 @@ final class HomeViewModel {
         }
     }
     
+    private func setPendingTimekeeperAutoSave(elapsed: TimeInterval) {
+        let defaults = UserDefaults.standard
+        defaults.set(true, forKey: TimekeeperAutoSaveKeys.pendingFlag)
+        defaults.set(elapsed, forKey: TimekeeperAutoSaveKeys.elapsedSeconds)
+        defaults.set(Date().timeIntervalSince1970, forKey: TimekeeperAutoSaveKeys.timestamp)
+    }
+
+    private func clearPendingTimekeeperAutoSave() {
+        let defaults = UserDefaults.standard
+        defaults.set(false, forKey: TimekeeperAutoSaveKeys.pendingFlag)
+        defaults.removeObject(forKey: TimekeeperAutoSaveKeys.elapsedSeconds)
+        defaults.removeObject(forKey: TimekeeperAutoSaveKeys.timestamp)
+    }
+
+    private func setPausedTimekeeperElapsed(_ elapsed: TimeInterval) {
+        UserDefaults.standard.set(elapsed, forKey: TimekeeperAutoSaveKeys.pausedElapsedSeconds)
+    }
+
+    private func clearPausedTimekeeperElapsed() {
+        UserDefaults.standard.removeObject(forKey: TimekeeperAutoSaveKeys.pausedElapsedSeconds)
+    }
+
+    private func restorePausedTimekeeperElapsedIfNeeded() {
+        let elapsed = UserDefaults.standard.double(forKey: TimekeeperAutoSaveKeys.pausedElapsedSeconds)
+        guard elapsed > 0 else { return }
+        timeKeeperElapsedTime = elapsed
+        let totalSeconds = Int(elapsed)
+        let minutes = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        view?.updateCountdownLabel(minutes: minutes, seconds: seconds)
+    }
+
+    private func startBackgroundTimekeeperTracking() {
+        guard backgroundTaskId == .invalid else { return }
+        backgroundTaskId = UIApplication.shared.beginBackgroundTask(withName: "timekeeperBackground") { [weak self] in
+            self?.stopBackgroundTimekeeperTracking()
+        }
+
+        backgroundTimekeeperTimer?.invalidate()
+        backgroundTimekeeperTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            if let start = self.timeKeeperStartDate {
+                self.timeKeeperElapsedTime += Date().timeIntervalSince(start)
+                self.timeKeeperStartDate = Date()
+                self.setPendingTimekeeperAutoSave(elapsed: self.timeKeeperElapsedTime)
+            }
+        }
+        RunLoop.main.add(backgroundTimekeeperTimer!, forMode: .common)
+    }
+
+    private func stopBackgroundTimekeeperTracking() {
+        backgroundTimekeeperTimer?.invalidate()
+        backgroundTimekeeperTimer = nil
+        if backgroundTaskId != .invalid {
+            UIApplication.shared.endBackgroundTask(backgroundTaskId)
+            backgroundTaskId = .invalid
+        }
+    }
+
     private func resetTimeKeeper() {
         timeKeeperTimer?.invalidate()
         isPaused = true
@@ -269,6 +341,9 @@ final class HomeViewModel {
         animationRunning = false
         view?.updateCountdownLabel(minutes: 0, seconds: 0)
         view?.updatePlayButton(isPaused: true)
+        clearPendingTimekeeperAutoSave()
+        clearPausedTimekeeperElapsed()
+        stopBackgroundTimekeeperTracking()
 
     }
     private func scheduleTimerNotification(seconds: TimeInterval) {
@@ -322,6 +397,7 @@ extension HomeViewModel: HomeViewModelInterface{
             
             view?.setCircularAnimation(hidden: true)
             view?.configurePlayAndStopButton(isPomodoroMode: isPomodoroMode)
+            restorePausedTimekeeperElapsedIfNeeded()
         } else {
             countdownTimer?.invalidate()
             isPaused = true
@@ -355,6 +431,7 @@ extension HomeViewModel: HomeViewModelInterface{
         view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
         if !isPomodoroMode{
             didChangeTimerMode(timeKeeperMode: true)
+            restorePausedTimekeeperElapsedIfNeeded()
         }
     }
     
@@ -475,6 +552,7 @@ extension HomeViewModel: HomeViewModelInterface{
     
     
     func startTimeKeeper() {
+        clearPausedTimekeeperElapsed()
         timeKeeperStartDate = Date()
         timeKeeperTimer = Timer.scheduledTimer(
             timeInterval: 0.1,
@@ -491,6 +569,7 @@ extension HomeViewModel: HomeViewModelInterface{
         if let start = timeKeeperStartDate {
             timeKeeperElapsedTime += Date().timeIntervalSince(start)
         }
+        setPausedTimekeeperElapsed(timeKeeperElapsedTime)
         animationRunning = false
     }
 
@@ -511,8 +590,8 @@ extension HomeViewModel: HomeViewModelInterface{
         isBreak = false
         isSessionCompleted = false
 
-        countdownMinutes = 0
-        countdownSeconds = 7
+        countdownMinutes = 25
+        countdownSeconds = 0
         splitSeconds = 59
 
         view?.updateSessionsLabel(text: L10n.Home.sessions(count: sessionCount))
@@ -535,8 +614,12 @@ extension HomeViewModel: HomeViewModelInterface{
                     timeKeeperElapsedTime += Date().timeIntervalSince(start)
                     timeKeeperStartDate = Date()
                 }
+                setPendingTimekeeperAutoSave(elapsed: timeKeeperElapsedTime)
+                startBackgroundTimekeeperTracking()
             }
             backgroundEnteredDate = Date()
+        } else {
+            clearPendingTimekeeperAutoSave()
         }
     }
     // Uygulama tekrar öne gelince çağrılır
@@ -562,6 +645,39 @@ extension HomeViewModel: HomeViewModelInterface{
         }
         backgroundEnteredDate = nil
         remainingTimeWhenBackground = nil
+        clearPendingTimekeeperAutoSave()
+        stopBackgroundTimekeeperTracking()
+    }
+
+    @objc private func pendingSessionsSynced(_ notification: Notification) {
+        guard let count = notification.userInfo?["count"] as? Int, count > 0 else { return }
+        view?.showMessage(L10n.Validation.sessionSaveSynced)
+    }
+
+    @objc private func timekeeperAutoSaved(_ notification: Notification) {
+        view?.showMessage(L10n.Validation.timekeeperAutoSaved)
+    }
+
+    @objc private func userDidSignOut(_ notification: Notification) {
+        stopObservers()
+        friends.removeAll()
+    }
+
+    @objc private func networkStatusChanged(_ notification: Notification) {
+        guard let isConnected = notification.userInfo?["isConnected"] as? Bool else { return }
+        if let lastNetworkState, lastNetworkState == isConnected {
+            return
+        }
+        lastNetworkState = isConnected
+
+        if isConnected {
+            Task { [weak self] in
+                guard let self = self else { return }
+                _ = await self.timerService.retryPendingSessions()
+            }
+        } else {
+            view?.showMessage(L10n.Validation.networkOffline)
+        }
     }
     
 }

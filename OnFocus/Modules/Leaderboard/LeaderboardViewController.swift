@@ -85,7 +85,6 @@ class LeaderboardViewController: UIViewController {
         label.clipsToBounds = true
         label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
-        label.text = L10n.Leaderboard.zeroTime
         return label
     }()
     
@@ -127,7 +126,6 @@ class LeaderboardViewController: UIViewController {
         label.clipsToBounds = true
         label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
-        label.text = L10n.Leaderboard.zeroTime
         return label
     }()
     
@@ -162,7 +160,6 @@ class LeaderboardViewController: UIViewController {
         label.clipsToBounds = true
         label.backgroundColor = UIColor(hex: Constants.Colors.softOrange, alpha: 1)
         label.textColor = .white
-        label.text = L10n.Leaderboard.zeroTime
         return label
     }()
     
@@ -207,6 +204,28 @@ class LeaderboardViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         view.setGradientBackground(colors: [UIColor(hex: Constants.Colors.lightPeach), .white])
+    }
+
+    private func setTimeLabel(_ label: UILabel, totalWorkTime: Int?) {
+        let total = max(0, totalWorkTime ?? 0)
+        let hours = total / 3600
+        let minutes = (total % 3600) / 60
+        let text = "\(hours)h \(minutes)m"
+
+        let baseFont = UIFont.systemFont(ofSize: 15)
+        let smallFont = UIFont.systemFont(ofSize: 11)
+        let attributed = NSMutableAttributedString(string: text, attributes: [.font: baseFont])
+
+        if let hRange = text.range(of: "h") {
+            let nsRange = NSRange(hRange, in: text)
+            attributed.addAttribute(.font, value: smallFont, range: nsRange)
+        }
+        if let mRange = text.range(of: "m") {
+            let nsRange = NSRange(mRange, in: text)
+            attributed.addAttribute(.font, value: smallFont, range: nsRange)
+        }
+
+        label.attributedText = attributed
     }
     
     func setupView(){
@@ -361,7 +380,7 @@ extension LeaderboardViewController: LeaderboardViewInterface {
     func showTopThreeProfiles(_ topProfiles: [ProfileModel]) {
         if topProfiles.indices.contains(0) {
             firstProfileLabel.text = topProfiles[0].nickname
-            firstProfileTimeLabel.text = topProfiles[0].totalWorkTimeFormatted
+            setTimeLabel(firstProfileTimeLabel, totalWorkTime: topProfiles[0].totalWorkTime)
             if let imageUrl = topProfiles[0].profileImageURL {
                 firstProfileImageView.kf.setImage(with: URL(string: imageUrl))
             } else {
@@ -371,7 +390,7 @@ extension LeaderboardViewController: LeaderboardViewInterface {
 
         if topProfiles.indices.contains(1) {
             secondProfileLabel.text = topProfiles[1].nickname
-            secondProfileTimeLabel.text = topProfiles[1].totalWorkTimeFormatted
+            setTimeLabel(secondProfileTimeLabel, totalWorkTime: topProfiles[1].totalWorkTime)
             if let imageUrl = topProfiles[1].profileImageURL {
                 secondProfileImageView.kf.setImage(with: URL(string: imageUrl))
             } else {
@@ -381,7 +400,7 @@ extension LeaderboardViewController: LeaderboardViewInterface {
 
         if topProfiles.indices.contains(2) {
             thirdProfileLabel.text = topProfiles[2].nickname
-            thirdProfileTimeLabel.text = topProfiles[2].totalWorkTimeFormatted
+            setTimeLabel(thirdProfileTimeLabel, totalWorkTime: topProfiles[2].totalWorkTime)
             if let imageUrl = topProfiles[2].profileImageURL {
                 thirdProfileImageView.kf.setImage(with: URL(string: imageUrl))
             } else {

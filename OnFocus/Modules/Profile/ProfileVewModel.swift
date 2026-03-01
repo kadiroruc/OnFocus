@@ -237,6 +237,7 @@ extension ProfileViewModel: ProfileViewModelInterface {
         
         do {
             try Auth.auth().signOut()
+            NotificationCenter.default.post(name: .userDidSignOut, object: nil)
             view?.navigateToLogin()
         } catch {
             view?.showMessage(Constants.ValidationMessages.logoutError, type: .error)

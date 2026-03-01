@@ -38,10 +38,13 @@ final class HomeViewController: UIViewController {
     private let timeLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-        label.font = .systemFont(ofSize: 70, weight: .bold)
+        label.font = .systemFont(ofSize: 92, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.6
+        label.numberOfLines = 1
         return label
     }()
 
@@ -228,8 +231,8 @@ final class HomeViewController: UIViewController {
 
             timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             timeLabel.topAnchor.constraint(equalTo: sessionsLabel.bottomAnchor, constant: 20),
-            timeLabel.widthAnchor.constraint(equalToConstant: 210),
-            timeLabel.heightAnchor.constraint(equalToConstant: 60),
+            timeLabel.widthAnchor.constraint(equalToConstant: 280),
+            timeLabel.heightAnchor.constraint(equalToConstant: 80),
 
             circleContainer.centerXAnchor.constraint(equalTo: timeLabel.centerXAnchor),
             circleContainer.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
@@ -265,8 +268,8 @@ final class HomeViewController: UIViewController {
 
             timeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             timeLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20),
-            timeLabel.widthAnchor.constraint(equalToConstant: 210),
-            timeLabel.heightAnchor.constraint(equalToConstant: 60),
+            timeLabel.widthAnchor.constraint(equalToConstant: 280),
+            timeLabel.heightAnchor.constraint(equalToConstant: 80),
 
             circleContainer.centerXAnchor.constraint(equalTo: timeLabel.centerXAnchor),
             circleContainer.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
@@ -467,9 +470,11 @@ extension HomeViewController: HomeViewInterface {
     }
     
     func showMessage(_ message: String) {
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default, handler: nil))
-        present(alert, animated: true)
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: L10n.Alert.ok, style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
     }
     func showConfirm(_ message: String) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)

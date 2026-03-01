@@ -33,6 +33,7 @@ final class StatisticsViewModel {
         
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(significantTimeChange), name: UIApplication.significantTimeChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(userDidSignOut), name: .userDidSignOut, object: nil)
     }
     
     deinit {
@@ -141,6 +142,14 @@ final class StatisticsViewModel {
     
     @objc private func significantTimeChange() {
         refreshObserversIfNeeded()
+    }
+
+    @objc private func userDidSignOut() {
+        stopObservers()
+        statisticsCache.removeAll()
+        averageCache.removeAll()
+        previousAverageCache.removeAll()
+        currentRangeType = nil
     }
     
     private func refreshObserversIfNeeded() {

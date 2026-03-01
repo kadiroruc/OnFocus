@@ -17,6 +17,10 @@ protocol TimerServiceProtocol {
     
     func saveSessionAndUpdateAggregates(_ session: SessionModel,
                                         userId: String) async throws
+
+    func enqueuePendingSession(_ session: SessionModel, userId: String) -> Bool
+
+    func retryPendingSessions() async -> Int
     
     func fetchStatistics(for rangeType: FetchTimeRangeType,
                          from date: Date,
@@ -41,6 +45,7 @@ protocol TimerServiceProtocol {
 
 final class TimerService {
     private let db = Firestore.firestore()
+    private let pendingStore = PendingSessionStore()
     let calendar = Calendar.current
 }
 
@@ -200,6 +205,33 @@ extension TimerService: TimerServiceProtocol{
             }
             return nil
         }
+    }
+
+    func enqueuePendingSession(_ session: SessionModel, userId: String) -> Bool {
+        let item = PendingSession(session: session, userId: userId, createdAt: Date())
+        return pendingStore.append(item)
+    }
+
+    func retryPendingSessions() async -> Int {
+        let pendingItems = pendingStore.load()
+        guard !pendingItems.isEmpty else { return 0 }
+
+        var succeededIds: Set<String> = []
+        for item in pendingItems {
+            do {
+                try await saveSessionAndUpdateAggregates(item.session, userId: item.userId)
+                succeededIds.insert(item.session.id)
+            } catch {
+                continue
+            }
+        }
+
+        if !succeededIds.isEmpty {
+            _ = pendingStore.remove(sessionIds: succeededIds)
+            NotificationCenter.default.post(name: .pendingSessionsSynced, object: nil, userInfo: ["count": succeededIds.count])
+        }
+
+        return succeededIds.count
     }
     
     func fetchStatistics(for rangeType: FetchTimeRangeType,

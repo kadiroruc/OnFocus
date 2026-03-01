@@ -27,6 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         registerServices()
         registerViewModels()
         registerViewControllers()
+        handlePendingTimekeeperAutoSaveIfNeeded()
         
         
         if Auth.auth().currentUser != nil {
@@ -111,6 +112,39 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         container.register { StatisticsViewController(viewModel: self.container.resolve()) }
     }
     
+    private func handlePendingTimekeeperAutoSaveIfNeeded() {
+        let defaults = UserDefaults.standard
+        guard defaults.bool(forKey: TimekeeperAutoSaveKeys.pendingFlag) else { return }
+
+        let elapsed = defaults.double(forKey: TimekeeperAutoSaveKeys.elapsedSeconds)
+        let timestampValue = defaults.double(forKey: TimekeeperAutoSaveKeys.timestamp)
+        guard elapsed > 0, timestampValue > 0 else { return }
+
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+
+        let session = SessionModel(
+            id: UUID().uuidString,
+            duration: TimeInterval(elapsed),
+            timestamp: Date(timeIntervalSince1970: timestampValue)
+        )
+
+        let timerService: TimerServiceProtocol = DIContainer.shared.resolve()
+        let profileService: ProfileServiceProtocol = DIContainer.shared.resolve()
+
+        Task {
+            do {
+                try await timerService.saveSessionAndUpdateAggregates(session, userId: userId)
+                profileService.updateStreakDay { _ in }
+                NotificationCenter.default.post(name: .timekeeperAutoSaved, object: nil)
+            } catch {
+                _ = timerService.enqueuePendingSession(session, userId: userId)
+            }
+            defaults.set(false, forKey: TimekeeperAutoSaveKeys.pendingFlag)
+            defaults.removeObject(forKey: TimekeeperAutoSaveKeys.elapsedSeconds)
+            defaults.removeObject(forKey: TimekeeperAutoSaveKeys.timestamp)
+        }
+    }
+
     // Firestore ile bağlantı ve sürüm kontrolü
     func checkAppVersion() {
         // Mevcut sürüm
@@ -186,6 +220,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             guard self != nil else { return }
             let presenceService: PresenceServiceProtocol = DIContainer.shared.resolve()
             presenceService.setUserStatus(online: true)
+        }
+
+        Task {
+            let timerService: TimerServiceProtocol = DIContainer.shared.resolve()
+            _ = await timerService.retryPendingSessions()
         }
     }
 

@@ -19,6 +19,11 @@ enum L10n {
         static let profileImageUpdateError = NSLocalizedString("validation.profile_image_update_error", comment: "")
         static let resetTimekeeperConfirmation = NSLocalizedString("validation.reset_timekeeper_confirmation", comment: "")
         static let emailVerificationSent = NSLocalizedString("validation.email_verification_sent", comment: "")
+        static let sessionSavedOffline = NSLocalizedString("validation.session_saved_offline", comment: "")
+        static let sessionSaveFailed = NSLocalizedString("validation.session_save_failed", comment: "")
+        static let sessionSaveSynced = NSLocalizedString("validation.session_save_synced", comment: "")
+        static let networkOffline = NSLocalizedString("validation.network_offline", comment: "")
+        static let timekeeperAutoSaved = NSLocalizedString("validation.timekeeper_auto_saved", comment: "")
     }
 
     enum Login {

@@ -10,12 +10,17 @@
 "validation.friend_request_sent" = "Friend request sent successfully.";
 "validation.friend_request_error" = "Error sending friend request. Please try again.";
 "validation.logout_error" = "Error logging out. Please try again.";
-"validation.friend_request_cancelled" = "Friend request cancelled successfully.";
-"validation.friend_request_cancelled_error" = "Error cancelling friend request. Please try again.";
+"validation.friend_request_cancelled" = "Friend removed successfully.";
+"validation.friend_request_cancelled_error" = "Error removing friend. Please try again.";
 "validation.profile_image_updated" = "Profile image updated successfully.";
 "validation.profile_image_update_error" = "Error updating profile image. Please try again.";
 "validation.reset_timekeeper_confirmation" = "Are you sure you want to cancel the timekeeper?";
 "validation.email_verification_sent" = "We've sent you a verification email. Please check your inbox and also your spam/junk folder if you don't see it.";
+"validation.session_saved_offline" = "Couldn't save the session right now. It will be saved automatically when you're back online.";
+"validation.session_save_failed" = "Session couldn't be saved. Please try again.";
+"validation.session_save_synced" = "Pending sessions have been saved.";
+"validation.network_offline" = "No internet connection. Your data will sync when you're back online.";
+"validation.timekeeper_auto_saved" = "Your previous timekeeper session was saved automatically.";
 
 /* Login */
 "login.title" = "Login to your Account";
@@ -101,7 +106,7 @@
 "search.no_results" = "No Results";
 
 /* Leaderboard */
-"leaderboard.example_user" = "Example User";
+"leaderboard.example_user" = "-";
 "leaderboard.zero_time" = "0H 0M";
 "leaderboard.state_label" = "You are doing better than %d%% of your friends!";
 "leaderboard.rank_label" = "#%@";
@@ -110,7 +115,7 @@
 "statistics.average_label" = "Average: ";
 "statistics.progress_label" = "Progress: ";
 "statistics.average_info_title" = "Average";
-"statistics.average_info_message" = "Average is calculated by dividing the total recorded working time up to today within the selected time range by the number of days that have elapsed in that same range. Therefore, as the period progresses, the average is continuously updated.";
+"statistics.average_info_message" = "The average is calculated by dividing the total recorded working time up to today within the selected time range by the number of days that have passed in that period. (For example, in weekly statistics, if today is Tuesday, it is divided by 2.)";
 "statistics.progress_info_title" = "Progress";
 "statistics.progress_info_message" = "Progress shows the percentage change of the average in the selected time range compared to the previous equivalent period.";
 "statistics.chart_label" = "Work Time (Hour)";
