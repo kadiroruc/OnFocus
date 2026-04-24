@@ -68,34 +68,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func registerViewModels(){
         
         container.register {
-            LoginViewModel(authService: self.container.resolve(), presenceService: self.container.resolve(), profileService: self.container.resolve()) as LoginViewModelInterface
+            LoginViewModel(authService: self.container.resolve(), presenceService: self.container.resolve(), profileService: self.container.resolve()) as LoginViewModelProtocol
         }
         container.register {
-            FillProfileViewModel(profileService: self.container.resolve(), presenceService: self.container.resolve()) as FillProfileViewModelInterface
+            FillProfileViewModel(profileService: self.container.resolve(), presenceService: self.container.resolve()) as FillProfileViewModelProtocol
         }
         container.register {
-            HomeViewModel(timerService: self.container.resolve(), friendsService: self.container.resolve(), profileService: self.container.resolve()) as HomeViewModelInterface
+            HomeViewModel(timerService: self.container.resolve(), friendsService: self.container.resolve(), profileService: self.container.resolve()) as HomeViewModelProtocol
         }
         container.register {
-            LeaderboardViewModel(leaderboardService: self.container.resolve()) as LeaderboardViewModelInterface
+            LeaderboardViewModel(leaderboardService: self.container.resolve()) as LeaderboardViewModelProtocol
         }
         container.register {
-            NotificationsViewModel(friendsService: self.container.resolve(), profileService: self.container.resolve()) as NotificationsViewModelInterface
+            NotificationsViewModel(friendsService: self.container.resolve(), profileService: self.container.resolve()) as NotificationsViewModelProtocol
         }
         container.register {
-            ProfileViewModel(profileService: self.container.resolve(), friendsService: self.container.resolve(), presenceService: self.container.resolve(), userId: nil) as ProfileViewModelInterface
+            ProfileViewModel(profileService: self.container.resolve(), friendsService: self.container.resolve(), presenceService: self.container.resolve(), userId: nil) as ProfileViewModelProtocol
         }
         container.register {
-            ProfileSearchViewModel(profileService: self.container.resolve()) as ProfileSearchViewModelInterface
+            ProfileSearchViewModel(profileService: self.container.resolve()) as ProfileSearchViewModelProtocol
         }
         container.register {
-            SettingsViewModel(profileService: self.container.resolve()) as SettingsViewModelInterface
+            SettingsViewModel(profileService: self.container.resolve()) as SettingsViewModelProtocol
         }
         container.register {
-            SignUpViewModel(authService: self.container.resolve()) as SignUpViewModelInterface
+            SignUpViewModel(authService: self.container.resolve()) as SignUpViewModelProtocol
         }
         container.register {
-            StatisticsViewModel(timerService: self.container.resolve()) as StatisticsViewModelInterface
+            StatisticsViewModel(timerService: self.container.resolve()) as StatisticsViewModelProtocol
         }
     }
     

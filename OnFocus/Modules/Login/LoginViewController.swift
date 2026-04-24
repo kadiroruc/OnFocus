@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol LoginViewInterface: AnyObject {
+protocol LoginViewProtocol: AnyObject {
     // UI güncellemeleri
     func showLoading(_ isLoading: Bool)
     func showError(message: String)
@@ -23,7 +23,7 @@ protocol LoginViewInterface: AnyObject {
 }
 
 final class LoginViewController: UIViewController {
-    private var viewModel : LoginViewModelInterface
+    private var viewModel : LoginViewModelProtocol
     
     // MARK: - UI Components
     private let titleLabel: UILabel = {
@@ -142,7 +142,7 @@ final class LoginViewController: UIViewController {
     }()
     
     //MARK: - Init Functions
-    init(viewModel : LoginViewModelInterface) {
+    init(viewModel : LoginViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.view = self
@@ -265,7 +265,7 @@ final class LoginViewController: UIViewController {
     }
 }
 
-extension LoginViewController: LoginViewInterface{
+extension LoginViewController: LoginViewProtocol{
     func showLoading(_ isLoading: Bool) {
         if isLoading {
             activityIndicator.startAnimating()

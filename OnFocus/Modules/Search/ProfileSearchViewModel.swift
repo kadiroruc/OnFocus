@@ -7,8 +7,8 @@
 
 import Foundation
 
-protocol ProfileSearchViewModelInterface {
-    var view: ProfileSearchViewInterface? { get set }
+protocol ProfileSearchViewModelProtocol {
+    var view: ProfileSearchViewProtocol? { get set }
     
     var filteredProfiles: [ProfileModel] { get }
     func searchBarSearchButtonClicked(_ searchText: String)
@@ -18,7 +18,7 @@ protocol ProfileSearchViewModelInterface {
     
 
 final class ProfileSearchViewModel{
-    weak var view: ProfileSearchViewInterface?
+    weak var view: ProfileSearchViewProtocol?
     
     var filteredProfiles: [ProfileModel] = []
     
@@ -30,7 +30,7 @@ final class ProfileSearchViewModel{
     }
 }
 
-extension ProfileSearchViewModel: ProfileSearchViewModelInterface {
+extension ProfileSearchViewModel: ProfileSearchViewModelProtocol {
     func didSelectItemAt(indexPath: IndexPath) {
         view?.navigateToProfileDetail(profile: filteredProfiles[indexPath.item])
     }

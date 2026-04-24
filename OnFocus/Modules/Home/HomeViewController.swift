@@ -12,7 +12,7 @@
 
 import UIKit
 
-protocol HomeViewInterface: AnyObject {
+protocol HomeViewProtocol: AnyObject {
     func updateCountdownLabel(minutes: Int, seconds: Int)
     func startCircularAnimation(duration: TimeInterval)
     func pauseCircularAnimation()
@@ -32,7 +32,7 @@ protocol HomeViewInterface: AnyObject {
 }
 
 final class HomeViewController: UIViewController {
-    private var viewModel: HomeViewModelInterface
+    private var viewModel: HomeViewModelProtocol
     private var isPomodoroMode: Bool = true
 
     private let timeLabel: UILabel = {
@@ -134,7 +134,7 @@ final class HomeViewController: UIViewController {
     }()
     
     //MARK: - Initialization
-    init(viewModel: HomeViewModelInterface) {
+    init(viewModel: HomeViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.view = self
@@ -387,7 +387,7 @@ final class HomeViewController: UIViewController {
     
 }
 
-extension HomeViewController: HomeViewInterface {
+extension HomeViewController: HomeViewProtocol {
     
     func configurePlayAndStopButton(isPomodoroMode: Bool) {
         self.isPomodoroMode = isPomodoroMode

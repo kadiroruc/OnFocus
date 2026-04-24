@@ -7,15 +7,15 @@
 
 import Foundation
 
-protocol LeaderboardViewModelInterface {
-    var view: LeaderboardViewInterface? { get set }
+protocol LeaderboardViewModelProtocol {
+    var view: LeaderboardViewProtocol? { get set }
     
     func viewDidLoad()
     var profiles: [ProfileModel] { get }
 }
 
 final class LeaderboardViewModel {
-    weak var view: LeaderboardViewInterface?
+    weak var view: LeaderboardViewProtocol?
     private(set) var profiles: [ProfileModel] = []
     
     private let leaderboardService: LeaderboardServiceProtocol
@@ -47,7 +47,7 @@ final class LeaderboardViewModel {
     
 }
 
-extension LeaderboardViewModel: LeaderboardViewModelInterface {
+extension LeaderboardViewModel: LeaderboardViewModelProtocol {
     func viewDidLoad() {
         
         view?.showLoading(true)

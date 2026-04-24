@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol SignUpViewInterface: AnyObject{
+protocol SignUpViewProtocol: AnyObject{
     // UI güncellemeleri
     func showLoading(_ isLoading: Bool)
     func showMessage(text: String, type: MessageType, _ completion: (() -> Void)?)
@@ -20,7 +20,7 @@ protocol SignUpViewInterface: AnyObject{
 }
 
 final class SignUpViewController: UIViewController{
-    private var viewModel : SignUpViewModelInterface
+    private var viewModel : SignUpViewModelProtocol
     
     // MARK: - UI Components
     private let titleLabel: UILabel = {
@@ -158,7 +158,7 @@ final class SignUpViewController: UIViewController{
     }
     
     //MARK: - Init Functions
-    init(viewModel : SignUpViewModelInterface) {
+    init(viewModel : SignUpViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.view = self
@@ -308,7 +308,7 @@ final class SignUpViewController: UIViewController{
     }
 }
 
-extension SignUpViewController: SignUpViewInterface{
+extension SignUpViewController: SignUpViewProtocol{
     
     func showLoading(_ isLoading: Bool) {
         if isLoading {

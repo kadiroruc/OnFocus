@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol FillProfileViewInterface: AnyObject{
+protocol FillProfileViewProtocol: AnyObject{
     func navigateToHome()
     func showError(message: String)
     func setProfileImage(_ image: UIImage)
@@ -17,7 +17,7 @@ protocol FillProfileViewInterface: AnyObject{
 }
 
 final class FillProfileViewController: UIViewController {
-    var viewModel: FillProfileViewModelInterface
+    var viewModel: FillProfileViewModelProtocol
     
     // MARK: - UI Components
     
@@ -113,7 +113,7 @@ final class FillProfileViewController: UIViewController {
     }()
     
     // MARK: - Initializer
-    init(viewModel: FillProfileViewModelInterface) {
+    init(viewModel: FillProfileViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.view = self
@@ -209,7 +209,7 @@ final class FillProfileViewController: UIViewController {
     }
 }
 
-extension FillProfileViewController: FillProfileViewInterface {
+extension FillProfileViewController: FillProfileViewProtocol {
     
     func setNicknameNotAvailable() {
         nicknameTextField.layer.borderColor = UIColor(hex: Constants.Colors.softOrange).cgColor

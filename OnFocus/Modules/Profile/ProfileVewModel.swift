@@ -8,10 +8,10 @@
 import UIKit
 import FirebaseAuth
 
-// MARK: - ProfileViewModelInterface
+// MARK: - ProfileViewModelProtocol
 
-protocol ProfileViewModelInterface {
-    var view: ProfileViewInterface? { get set }
+protocol ProfileViewModelProtocol {
+    var view: ProfileViewProtocol? { get set }
     
     func viewDidLoad()
     func isDatePartOfStreak(_ date: Date) -> Bool
@@ -27,7 +27,7 @@ protocol ProfileViewModelInterface {
 // MARK: - ProfileViewModel
 
 final class ProfileViewModel {
-    weak var view: ProfileViewInterface?
+    weak var view: ProfileViewProtocol?
     var userId: String?
     private let profileService: ProfileServiceProtocol
     private let friendsService: FriendsServiceProtocol
@@ -74,7 +74,7 @@ final class ProfileViewModel {
 
 }
 
-extension ProfileViewModel: ProfileViewModelInterface {
+extension ProfileViewModel: ProfileViewModelProtocol {
     func setSelectedImage(_ image: UIImage) {
         profileService.updateProfileImage(image) { [weak self] result in
             guard let self = self else { return }

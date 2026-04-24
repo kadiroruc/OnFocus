@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol LeaderboardViewInterface: AnyObject{
+protocol LeaderboardViewProtocol: AnyObject{
     func showTopThreeProfiles(_ topProfiles: [ProfileModel])
     func showOtherProfiles(_ otherProfiles: [ProfileModel])
     func showError(message: String)
@@ -18,7 +18,7 @@ protocol LeaderboardViewInterface: AnyObject{
 }
 
 class LeaderboardViewController: UIViewController {
-    private var viewModel: LeaderboardViewModelInterface
+    private var viewModel: LeaderboardViewModelProtocol
     
     private let sheetVC = BottomSheetViewController()
     
@@ -179,7 +179,7 @@ class LeaderboardViewController: UIViewController {
     }()
     
     //MARK: - Init
-    init(viewModel: LeaderboardViewModelInterface) {
+    init(viewModel: LeaderboardViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.view = self
@@ -358,7 +358,7 @@ class LeaderboardViewController: UIViewController {
     }
 }
 
-extension LeaderboardViewController: LeaderboardViewInterface {
+extension LeaderboardViewController: LeaderboardViewProtocol {
     func updateStateLabel(_ percentile: Int) {
         stateLabel.text = L10n.Leaderboard.stateLabel(percentile)
     }

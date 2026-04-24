@@ -9,7 +9,7 @@ import UIKit
 import FSCalendar
 import Kingfisher
 
-protocol ProfileViewInterface: AnyObject {
+protocol ProfileViewProtocol: AnyObject {
     func updateProfileImage(with url: URL)
     func showMessage(_ text: String, type: MessageType)
     func updateStreakCalendar()
@@ -26,7 +26,7 @@ protocol ProfileViewInterface: AnyObject {
 }
 
 class ProfileViewController: UIViewController {
-    private var viewModel: ProfileViewModelInterface
+    private var viewModel: ProfileViewModelProtocol
     private var friendButtonStatus: String?
     
     private let friendBarButtonItem : UIBarButtonItem = {
@@ -110,7 +110,7 @@ class ProfileViewController: UIViewController {
     }()
     
     //MARK: - Initialization
-    init(viewModel: ProfileViewModelInterface) {
+    init(viewModel: ProfileViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.view = self
@@ -264,8 +264,8 @@ class ProfileViewController: UIViewController {
 
 }
 
-// MARK: - ProfileViewInterface
-extension ProfileViewController: ProfileViewInterface {
+// MARK: - ProfileViewProtocol
+extension ProfileViewController: ProfileViewProtocol {
     func reloadStreakCalendar() {
         calendar.reloadData()
     }

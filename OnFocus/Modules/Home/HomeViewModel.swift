@@ -10,8 +10,8 @@ import FirebaseAuth
 import FirebaseFirestore
 import UserNotifications
 
-protocol HomeViewModelInterface {
-    var view: HomeViewInterface? { get set }
+protocol HomeViewModelProtocol {
+    var view: HomeViewProtocol? { get set }
     var animationRunning: Bool { get set}
     var friends: [ProfileModel] { get }
     
@@ -36,7 +36,7 @@ protocol HomeViewModelInterface {
 }
 
 final class HomeViewModel {
-    weak var view: HomeViewInterface?
+    weak var view: HomeViewProtocol?
     private let timerService: TimerServiceProtocol
     private let friendsService: FriendsServiceProtocol
     private let profileService: ProfileServiceProtocol
@@ -367,7 +367,7 @@ final class HomeViewModel {
         
 }
 
-extension HomeViewModel: HomeViewModelInterface{
+extension HomeViewModel: HomeViewModelProtocol{
     func stopButtonTapped() {
         if animationRunning{
             pauseTimeKeeper()

@@ -1,5 +1,5 @@
 //
-//  NotificationsViewModelInterface.swift
+//  NotificationsViewModelProtocol.swift
 //  Test
 //
 //  Created by Abdulkadir Oruç on 6.06.2025.
@@ -8,9 +8,9 @@
 import Foundation
 import FirebaseFirestore
 
-protocol NotificationsViewModelInterface {
+protocol NotificationsViewModelProtocol {
     var notifications: [NotificationModel] { get }
-    var view: NotificationsViewInterface? { get set }
+    var view: NotificationsViewProtocol? { get set }
     
     func viewDidLoad()
     func viewWillAppear()
@@ -24,7 +24,7 @@ protocol NotificationsViewModelInterface {
 
 final class NotificationsViewModel{
     
-    weak var view: NotificationsViewInterface?
+    weak var view: NotificationsViewProtocol?
     
     private(set) var friendshipModels: [FriendshipModel] = []
     private(set) var notifications: [NotificationModel] = []
@@ -84,7 +84,7 @@ final class NotificationsViewModel{
  
 }
 
-extension NotificationsViewModel: NotificationsViewModelInterface{
+extension NotificationsViewModel: NotificationsViewModelProtocol{
     func didTapProfileImage(at indexPath: IndexPath) {
         guard let userId = notifications[indexPath.item].user.id else {return}
         view?.navigateToProfileDetail(userId: userId)

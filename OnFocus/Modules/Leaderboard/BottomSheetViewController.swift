@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol BottomSheetViewControllerInterface: AnyObject {
+protocol BottomSheetViewControllerProtocol: AnyObject {
     func updateWithProfiles(_ profiles: [ProfileModel])
 }
 
@@ -147,7 +147,7 @@ extension BottomSheetViewController: UICollectionViewDataSource, UICollectionVie
 }
 
 
-extension BottomSheetViewController: BottomSheetViewControllerInterface {
+extension BottomSheetViewController: BottomSheetViewControllerProtocol {
     func updateWithProfiles(_ profiles: [ProfileModel]) {
         self.profiles = profiles
         collectionView.reloadData()

@@ -7,14 +7,14 @@
 
 import UIKit
 
-protocol FillProfileViewModelInterface {
-    var view: FillProfileViewInterface? { get set }
+protocol FillProfileViewModelProtocol {
+    var view: FillProfileViewProtocol? { get set }
     func startButtonTapped(name: String?, nickname: String?)
     func setSelectedImage(_ image: UIImage)
 }
 
 final class FillProfileViewModel {
-    weak var view: FillProfileViewInterface?
+    weak var view: FillProfileViewProtocol?
     private let profileService: ProfileServiceProtocol
     private let presenceService: PresenceServiceProtocol
     private var selectedImage: UIImage?
@@ -25,7 +25,7 @@ final class FillProfileViewModel {
     }
 }
 
-extension FillProfileViewModel: FillProfileViewModelInterface{
+extension FillProfileViewModel: FillProfileViewModelProtocol{
     
     func setSelectedImage(_ image: UIImage) {
         selectedImage = image

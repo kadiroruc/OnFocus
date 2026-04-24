@@ -206,4 +206,4 @@ class HomeViewController: UIViewController {
 
 
 
-Bu kodu Home şeklinde mvvm mimarisine uygula. Protokol mantığını kullan (HomeViewModelInterface,HomeViewInterface gibi)
+Bu kodu Home şeklinde mvvm mimarisine uygula. Protokol mantığını kullan (HomeViewModelProtocol,HomeViewProtocol gibi)

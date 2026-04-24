@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol NotificationsViewInterface: AnyObject {
+protocol NotificationsViewProtocol: AnyObject {
     func reloadData()
     func showMessage(_ text: String, type: MessageType)
     func setNoNotificationsLabel(hidden: Bool)
@@ -17,9 +17,9 @@ protocol NotificationsViewInterface: AnyObject {
 
 final class NotificationsViewController: UIViewController {
     
-    private var viewModel: NotificationsViewModelInterface
+    private var viewModel: NotificationsViewModelProtocol
     
-    init(viewModel: NotificationsViewModelInterface) {
+    init(viewModel: NotificationsViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.view = self
@@ -88,7 +88,7 @@ final class NotificationsViewController: UIViewController {
     }
 }
 
-extension NotificationsViewController: NotificationsViewInterface {
+extension NotificationsViewController: NotificationsViewProtocol {
     func setBadgeCount(_ count: Int) {
         let badgeValue = count > 0 ? String(count) : nil
         navigationController?.tabBarItem .badgeValue = badgeValue

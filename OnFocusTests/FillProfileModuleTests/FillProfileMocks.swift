@@ -104,7 +104,7 @@ class MockPresenceService: PresenceServiceProtocol {
 
 // MARK: - Mock Fill Profile View
 
-class MockFillProfileView: FillProfileViewInterface {
+class MockFillProfileView: FillProfileViewProtocol {
     var setProfileImageCalled = false
     var setProfileImageImage: UIImage?
     func setProfileImage(_ image: UIImage) {
@@ -150,8 +150,8 @@ class MockFillProfileView: FillProfileViewInterface {
 
 // MARK: - Mock Fill Profile View Model
 
-class MockFillProfileViewModel: FillProfileViewModelInterface, Equatable {
-    weak var view: FillProfileViewInterface?
+class MockFillProfileViewModel: FillProfileViewModelProtocol, Equatable {
+    weak var view: FillProfileViewProtocol?
     
     var startButtonTappedCalled = false
     var startButtonTappedName: String?

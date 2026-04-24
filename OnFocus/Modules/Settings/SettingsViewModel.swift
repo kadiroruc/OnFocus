@@ -7,8 +7,8 @@
 
 import UIKit
 
-protocol SettingsViewModelInterface{
-    var view: SettingsViewInterface? { get set }
+protocol SettingsViewModelProtocol{
+    var view: SettingsViewProtocol? { get set }
     //func viewDidLoad()
     func getSetting(at index: Int) -> SettingsModel
     func numberOfSettings() -> Int
@@ -18,7 +18,7 @@ protocol SettingsViewModelInterface{
 }
 
 final class SettingsViewModel{
-    weak var view: SettingsViewInterface?
+    weak var view: SettingsViewProtocol?
     
     private let profileService: ProfileServiceProtocol
     
@@ -67,7 +67,7 @@ final class SettingsViewModel{
     
 }
 
-extension SettingsViewModel: SettingsViewModelInterface{
+extension SettingsViewModel: SettingsViewModelProtocol{
     func tappedSetting(at: Int) {
         switch at {
         case 1:

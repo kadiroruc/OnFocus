@@ -6,15 +6,15 @@
 //
 import UIKit
 
-protocol SignUpViewModelInterface {
-    var view: SignUpViewInterface? { get set }
+protocol SignUpViewModelProtocol {
+    var view: SignUpViewProtocol? { get set }
     
     func signUpTapped(email: String, password: String)
     func signInTapped()
 }
 
 final class SignUpViewModel {
-    weak var view: SignUpViewInterface?
+    weak var view: SignUpViewProtocol?
     
     private let authService: AuthServiceProtocol
     
@@ -24,7 +24,7 @@ final class SignUpViewModel {
     
 }
 
-extension SignUpViewModel: SignUpViewModelInterface {
+extension SignUpViewModel: SignUpViewModelProtocol {
     
     func signUpTapped(email: String, password: String) {
         if email == "" || !email.contains("@") {

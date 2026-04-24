@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol SettingsViewInterface: AnyObject {
+protocol SettingsViewProtocol: AnyObject {
     func changeTimerMode(timeKeeperMode: Bool)
     func showMessage(_ text: String, type: MessageType, isCancelEnabled:Bool,  _ completion: (() -> Void)?)
     func navigateToLogin()
@@ -20,11 +20,11 @@ protocol SettingsCoordinatorDelegate: AnyObject {
 
 class SettingsViewController: UIViewController {
     
-    private var viewModel: SettingsViewModelInterface
+    private var viewModel: SettingsViewModelProtocol
     
     weak var delegate: SettingsCoordinatorDelegate?
     
-    init(viewModel: SettingsViewModelInterface) {
+    init(viewModel: SettingsViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.view = self
@@ -117,7 +117,7 @@ extension SettingsViewController: UICollectionViewDelegate, UICollectionViewData
     
 }
 
-extension SettingsViewController: SettingsViewInterface{
+extension SettingsViewController: SettingsViewProtocol{
     func showLoading(_ isLoading: Bool) {
         if isLoading {
             activityIndicator.startAnimating()

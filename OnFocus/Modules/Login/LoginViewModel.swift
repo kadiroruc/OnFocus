@@ -7,8 +7,8 @@
 
 import UIKit
 
-protocol LoginViewModelInterface {
-    var view: LoginViewInterface? { get set }
+protocol LoginViewModelProtocol {
+    var view: LoginViewProtocol? { get set }
     
     func loginButtonTapped(email: String, password: String)
     func signUpTapped()
@@ -17,7 +17,7 @@ protocol LoginViewModelInterface {
 }
 
 final class LoginViewModel{
-    weak var view: LoginViewInterface?
+    weak var view: LoginViewProtocol?
     private let authService: AuthServiceProtocol
     private let presenceService: PresenceServiceProtocol
     private let profileService: ProfileServiceProtocol
@@ -32,7 +32,7 @@ final class LoginViewModel{
     
 }
 
-extension LoginViewModel: LoginViewModelInterface{
+extension LoginViewModel: LoginViewModelProtocol{
     func loginButtonTapped(email: String, password: String) {
         if email == "" || !email.contains("@") {
             view?.showError(message: Constants.ValidationMessages.invalidEmail)

@@ -115,7 +115,7 @@ final class FillProfileViewControllerTests: XCTestCase {
         }
     }
     
-    // MARK: - FillProfileViewInterface Tests
+    // MARK: - FillProfileViewProtocol Tests
     
     func test_setNicknameNotAvailable_shouldUpdateNicknameTextField() {
         // Given

@@ -8,8 +8,8 @@ import Foundation
 import FirebaseFirestore
 import UIKit
 
-protocol StatisticsViewModelInterface {
-    var view: StatisticsViewInterface? { get set }
+protocol StatisticsViewModelProtocol {
+    var view: StatisticsViewProtocol? { get set }
     func loadStatistics(for type: FetchTimeRangeType)
     func generateXLabels(from statistics: [StatisticModel]) -> [String]
     func viewWillAppear()
@@ -18,7 +18,7 @@ protocol StatisticsViewModelInterface {
 }
 
 final class StatisticsViewModel {
-    weak var view: StatisticsViewInterface?
+    weak var view: StatisticsViewProtocol?
     private let timerService: TimerServiceProtocol
     
     private var statisticsCache: [FetchTimeRangeType: [StatisticModel]] = [:]
@@ -158,7 +158,7 @@ final class StatisticsViewModel {
     }
 }
     
-extension StatisticsViewModel: StatisticsViewModelInterface {
+extension StatisticsViewModel: StatisticsViewModelProtocol {
     func loadStatistics(for type: FetchTimeRangeType) {
         if currentRangeType == type, statisticsListener != nil {
             return

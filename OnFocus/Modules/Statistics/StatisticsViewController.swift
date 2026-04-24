@@ -8,14 +8,14 @@
 import UIKit
 import DGCharts
 
-protocol StatisticsViewInterface: AnyObject {
+protocol StatisticsViewProtocol: AnyObject {
     func updateChart(with statistics: [StatisticModel])
     func updateAverageLabel(with average: String)
     func updateProgressLabel(with progress: String)
 }
 
 class StatisticsViewController: UIViewController {
-    private var viewModel: StatisticsViewModelInterface
+    private var viewModel: StatisticsViewModelProtocol
     
     private let oneWeekButton: UIButton = {
         let button = UIButton(type: .system)
@@ -190,7 +190,7 @@ class StatisticsViewController: UIViewController {
         return label
     }()
     
-    init(viewModel: StatisticsViewModelInterface) {
+    init(viewModel: StatisticsViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.view = self
@@ -346,7 +346,7 @@ class StatisticsViewController: UIViewController {
     
 }
 
-extension StatisticsViewController: StatisticsViewInterface {
+extension StatisticsViewController: StatisticsViewProtocol {
     func updateChart(with statistics: [StatisticModel]) {
         
         let values = statistics.map { Double($0.totalDuration)/(60*60) }

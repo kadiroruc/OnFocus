@@ -6,7 +6,7 @@
 //
 import UIKit
 
-protocol ProfileSearchViewInterface: AnyObject {
+protocol ProfileSearchViewProtocol: AnyObject {
     func setNoResultsHidden(_ hidden: Bool)
     func reloadData()
     func showLoading(_ isLoading: Bool)
@@ -15,7 +15,7 @@ protocol ProfileSearchViewInterface: AnyObject {
 
 class ProfileSearchViewController: UIViewController {
     
-    private var viewModel: ProfileSearchViewModelInterface
+    private var viewModel: ProfileSearchViewModelProtocol
     private var searchDebounceTimer: Timer?
     
     private let searchBar: UISearchBar = {
@@ -61,7 +61,7 @@ class ProfileSearchViewController: UIViewController {
         return indicator
     }()
     
-    init(viewModel: ProfileSearchViewModelInterface) {
+    init(viewModel: ProfileSearchViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         self.viewModel.view = self
@@ -178,7 +178,7 @@ extension ProfileSearchViewController: UISearchBarDelegate {
     }
 }
 
-extension ProfileSearchViewController: ProfileSearchViewInterface{
+extension ProfileSearchViewController: ProfileSearchViewProtocol{
     func navigateToProfileDetail(profile: ProfileModel) {
         
         navigationController?.pushViewController(ProfileViewController(viewModel: ProfileViewModel(profileService: DIContainer.shared.resolve(), friendsService: DIContainer.shared.resolve(), presenceService: DIContainer.shared.resolve(), userId: profile.id)), animated: true)
