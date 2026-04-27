@@ -131,9 +131,9 @@ class StatisticsViewController: UIViewController {
     
     private let averageLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 20)
+        label.font = .systemFont(ofSize: 18, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.textColor = UIColor(hex: Constants.Colors.darkGray, alpha: 1)
         return label
     }()
@@ -150,7 +150,7 @@ class StatisticsViewController: UIViewController {
     
     private let averageTimeLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18)
+        label.font = .systemFont(ofSize: 24, weight: .bold)
         label.layer.cornerRadius = 20
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -162,9 +162,9 @@ class StatisticsViewController: UIViewController {
     
     private let progressLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 20)
+        label.font = .systemFont(ofSize: 18, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
+        label.textAlignment = .left
         return label
     }()
     
@@ -180,7 +180,7 @@ class StatisticsViewController: UIViewController {
     
     private let progressPercentageLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18)
+        label.font = .systemFont(ofSize: 24, weight: .bold)
         label.layer.cornerRadius = 20
         label.clipsToBounds = true
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -188,6 +188,44 @@ class StatisticsViewController: UIViewController {
         label.backgroundColor = UIColor(hex: Constants.Colors.mintGreen, alpha: 1)
         label.textColor = .white
         return label
+    }()
+
+    private let averageHeaderStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.alignment = .center
+        stack.spacing = 8
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+
+    private let averageContentStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.spacing = 12
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+
+    private let progressHeaderStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.alignment = .center
+        stack.spacing = 8
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
+    }()
+
+    private let progressContentStack: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.spacing = 12
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        return stack
     }()
     
     init(viewModel: StatisticsViewModelProtocol) {
@@ -235,13 +273,18 @@ class StatisticsViewController: UIViewController {
         view.addSubview(chartView)
         view.addSubview(statisticsContainerView)
         statisticsContainerView.addArrangedSubview(averageView)
-        averageView.addSubview(averageLabel)
-        averageView.addSubview(averageInfoButton)
-        averageView.addSubview(averageTimeLabel)
+        averageView.addSubview(averageContentStack)
+        averageHeaderStack.addArrangedSubview(averageInfoButton)
+        averageHeaderStack.addArrangedSubview(averageLabel)
+        averageContentStack.addArrangedSubview(averageHeaderStack)
+        averageContentStack.addArrangedSubview(averageTimeLabel)
+
         statisticsContainerView.addArrangedSubview(progressView)
-        progressView.addSubview(progressLabel)
-        progressView.addSubview(progressInfoButton)
-        progressView.addSubview(progressPercentageLabel)
+        progressView.addSubview(progressContentStack)
+        progressHeaderStack.addArrangedSubview(progressInfoButton)
+        progressHeaderStack.addArrangedSubview(progressLabel)
+        progressContentStack.addArrangedSubview(progressHeaderStack)
+        progressContentStack.addArrangedSubview(progressPercentageLabel)
         
         
         NSLayoutConstraint.activate([
@@ -261,39 +304,35 @@ class StatisticsViewController: UIViewController {
             statisticsContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             statisticsContainerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            averageInfoButton.centerYAnchor.constraint(equalTo: averageView.centerYAnchor),
-            averageInfoButton.leadingAnchor.constraint(equalTo: averageView.leadingAnchor, constant:10),
+            averageContentStack.topAnchor.constraint(equalTo: averageView.topAnchor, constant: 14),
+            averageContentStack.leadingAnchor.constraint(equalTo: averageView.leadingAnchor, constant: 14),
+            averageContentStack.trailingAnchor.constraint(equalTo: averageView.trailingAnchor, constant: -14),
+            averageContentStack.bottomAnchor.constraint(equalTo: averageView.bottomAnchor, constant: -14),
+
             averageInfoButton.widthAnchor.constraint(equalToConstant: 20),
             averageInfoButton.heightAnchor.constraint(equalToConstant: 20),
-
-            
-            averageLabel.centerYAnchor.constraint(equalTo: averageView.centerYAnchor),
-            averageLabel.leadingAnchor.constraint(equalTo: averageInfoButton.trailingAnchor),
-            averageLabel.widthAnchor.constraint(equalToConstant: 100),
-            
-            
-            averageTimeLabel.centerYAnchor.constraint(equalTo: averageView.centerYAnchor),
-            averageTimeLabel.trailingAnchor.constraint(equalTo: averageView.trailingAnchor, constant: -30),
-            averageTimeLabel.widthAnchor.constraint(equalToConstant: 100),
+            averageTimeLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 140),
             averageTimeLabel.heightAnchor.constraint(equalToConstant: 50),
             
-            progressInfoButton.centerYAnchor.constraint(equalTo: progressView.centerYAnchor),
-            progressInfoButton.leadingAnchor.constraint(equalTo: progressView.leadingAnchor, constant:10),
+            progressContentStack.topAnchor.constraint(equalTo: progressView.topAnchor, constant: 14),
+            progressContentStack.leadingAnchor.constraint(equalTo: progressView.leadingAnchor, constant: 14),
+            progressContentStack.trailingAnchor.constraint(equalTo: progressView.trailingAnchor, constant: -14),
+            progressContentStack.bottomAnchor.constraint(equalTo: progressView.bottomAnchor, constant: -14),
+
             progressInfoButton.widthAnchor.constraint(equalToConstant: 20),
             progressInfoButton.heightAnchor.constraint(equalToConstant: 20),
-            
-            progressLabel.centerYAnchor.constraint(equalTo: progressView.centerYAnchor),
-            progressLabel.leadingAnchor.constraint(equalTo: progressInfoButton.trailingAnchor),
-            progressLabel.widthAnchor.constraint(equalToConstant: 100),
-            
-            
-            progressPercentageLabel.centerYAnchor.constraint(equalTo: progressView.centerYAnchor),
-            progressPercentageLabel.trailingAnchor.constraint(equalTo: progressView.trailingAnchor, constant: -30),
-            progressPercentageLabel.widthAnchor.constraint(equalToConstant: 100),
+            progressPercentageLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 140),
             progressPercentageLabel.heightAnchor.constraint(equalToConstant: 50),
-            
-            
         ])
+
+        averageLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        progressLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        averageTimeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        progressPercentageLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        averageTimeLabel.setContentHuggingPriority(.required, for: .horizontal)
+        progressPercentageLabel.setContentHuggingPriority(.required, for: .horizontal)
+        averageTimeLabel.setContentHuggingPriority(.required, for: .vertical)
+        progressPercentageLabel.setContentHuggingPriority(.required, for: .vertical)
         
         averageInfoButton.addTarget(self, action: #selector(averageInfoTapped), for: .touchUpInside)
         progressInfoButton.addTarget(self, action: #selector(progressInfoTapped), for: .touchUpInside)

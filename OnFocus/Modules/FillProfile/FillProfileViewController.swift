@@ -217,10 +217,15 @@ extension FillProfileViewController: FillProfileViewProtocol {
     }
     
     func navigateToHome() {
-        // Ana ekran ViewController'ını göster
-        let tabBar = MainTabBarBuilder.makeTabBar(using: DIContainer.shared)
-        tabBar.modalPresentationStyle = .fullScreen
-        present(tabBar, animated: true)
+        guard let scene = view.window?.windowScene,
+              let delegate = scene.delegate as? SceneDelegate else {
+            let tabBar = MainTabBarBuilder.makeTabBar(using: DIContainer.shared)
+            tabBar.modalPresentationStyle = .fullScreen
+            present(tabBar, animated: true)
+            return
+        }
+
+        delegate.showHomeAsRoot()
     }
     
     func showError(message: String) {

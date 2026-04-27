@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E90100012F70000100A00001 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8E72DD5ED4D00928DEB /* FirebaseAuth */; };
+		E90100022F70000100A00001 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8E92DD5ED4D00928DEB /* FirebaseCore */; };
+		E90100032F70000100A00001 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E950A8EB2DD5ED4D00928DEB /* FirebaseFirestore */; };
+		E90100042F70000100A00001 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = E93EF57B2F4605F900AF352F /* FirebaseDatabase */; };
+		E90100052F72000100A00001 /* OnFocusMenuBar.app in Embed Helper Apps */ = {isa = PBXBuildFile; fileRef = E90200112F71000100A00001 /* OnFocusMenuBar.app */; };
+		E90200012F71000100A00001 /* OnFocusMenuBarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90200122F71000100A00001 /* OnFocusMenuBarApp.swift */; };
+		E90200022F71000100A00001 /* MenuBarTimerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90200132F71000100A00001 /* MenuBarTimerController.swift */; };
+		E90200032F71000100A00001 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90200142F71000100A00001 /* MenuBarContentView.swift */; };
+		E90200042F71000100A00001 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = E93EF5D12F49CDAD00AF352F /* Notifications.swift */; };
 		E90741702D7DA49800E7599C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E907416F2D7DA49800E7599C /* LoginViewController.swift */; };
 		E90741722D7DA5D400E7599C /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741712D7DA5D400E7599C /* LoginViewModel.swift */; };
 		E90741742D7DA9A200E7599C /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90741732D7DA9A200E7599C /* UITextFieldExtension.swift */; };
@@ -64,12 +73,7 @@
 		E96ACACE2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACACD2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift */; };
 		E96ACAD22DFDAEEB00E1C191 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACAD12DFDAEEB00E1C191 /* DateExtension.swift */; };
 		E96ACAD42DFF261900E1C191 /* Timestamp Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96ACAD32DFF261900E1C191 /* Timestamp Extension.swift */; };
-		E96BE0462E100D8500CE0651 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96BE0452E100D8500CE0651 /* AppDelegate.swift */; };
-		E96BE0482E100D8500CE0651 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E96BE0472E100D8500CE0651 /* ViewController.swift */; };
-		E96BE04A2E100D8700CE0651 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E96BE0492E100D8700CE0651 /* Assets.xcassets */; };
-		E96BE04D2E100D8700CE0651 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = E96BE04C2E100D8700CE0651 /* Base */; };
 		E96BE0552E100EAC00CE0651 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E96BE0542E100EAC00CE0651 /* GoogleService-Info.plist */; };
-		E96BE0562E100EAC00CE0651 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E96BE0542E100EAC00CE0651 /* GoogleService-Info.plist */; };
 		E98B6B5E2D53C807005012AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5D2D53C807005012AB /* AppDelegate.swift */; };
 		E98B6B602D53C807005012AB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B5F2D53C807005012AB /* SceneDelegate.swift */; };
 		E98B6B622D53C807005012AB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98B6B612D53C807005012AB /* HomeViewController.swift */; };
@@ -100,6 +104,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		E90100062F72000100A00001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E98B6B522D53C807005012AB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E90200412F71000100A00001;
+			remoteInfo = OnFocusMenuBar;
+		};
 		E9B3E1B42E28560A0026F85B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E98B6B522D53C807005012AB /* Project object */;
@@ -109,6 +120,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		E90100072F72000100A00001 /* Embed Helper Apps */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Library/LoginItems";
+			dstSubfolderSpec = 16;
+			files = (
+				E90100052F72000100A00001 /* OnFocusMenuBar.app in Embed Helper Apps */,
+			);
+			name = "Embed Helper Apps";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		E907416F2D7DA49800E7599C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E90741712D7DA5D400E7599C /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -116,6 +141,12 @@
 		E90741752D7DB60700E7599C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		E90741772D7DBCA700E7599C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E90741792D7DE4FF00E7599C /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		E90200112F71000100A00001 /* OnFocusMenuBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnFocusMenuBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E90200122F71000100A00001 /* OnFocusMenuBarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnFocusMenuBarApp.swift; sourceTree = "<group>"; };
+		E90200132F71000100A00001 /* MenuBarTimerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarTimerController.swift; sourceTree = "<group>"; };
+		E90200142F71000100A00001 /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
+		E90200152F71000100A00001 /* OnFocusMenuBar-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OnFocusMenuBar-Info.plist"; sourceTree = "<group>"; };
+		E90200162F71000100A00001 /* OnFocusMenuBar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OnFocusMenuBar.entitlements; sourceTree = "<group>"; };
 		E911B0252F45E2BD00A694A8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizable.strings; sourceTree = "<group>"; };
 		E911B0282F45E2C600A694A8 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = Localizable.strings; sourceTree = "<group>"; };
 		E911B02B2F45E2DE00A694A8 /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
@@ -159,12 +190,6 @@
 		E96ACACD2DFCBA4B00E1C191 /* LeaderboardBottomSheetCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardBottomSheetCollectionViewCell.swift; sourceTree = "<group>"; };
 		E96ACAD12DFDAEEB00E1C191 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		E96ACAD32DFF261900E1C191 /* Timestamp Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Timestamp Extension.swift"; sourceTree = "<group>"; };
-		E96BE0432E100D8500CE0651 /* OnFocusMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnFocusMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E96BE0452E100D8500CE0651 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E96BE0472E100D8500CE0651 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		E96BE0492E100D8700CE0651 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		E96BE04C2E100D8700CE0651 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E96BE04E2E100D8700CE0651 /* OnFocus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OnFocus.entitlements; sourceTree = "<group>"; };
 		E96BE0542E100EAC00CE0651 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E98B6B5A2D53C807005012AB /* OnFocus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnFocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E98B6B5D2D53C807005012AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -203,13 +228,6 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		E96BE0402E100D8500CE0651 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E98B6B572D53C807005012AB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -222,6 +240,13 @@
 				E90F83D62E030AAA00BE05C0 /* DGCharts in Frameworks */,
 				E93EF57C2F4605F900AF352F /* FirebaseDatabase in Frameworks */,
 				E950A8EC2DD5ED4D00928DEB /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E90200322F71000100A00001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -455,23 +480,10 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		E96BE0442E100D8500CE0651 /* OnFocus */ = {
-			isa = PBXGroup;
-			children = (
-				E96BE0452E100D8500CE0651 /* AppDelegate.swift */,
-				E96BE0472E100D8500CE0651 /* ViewController.swift */,
-				E96BE0492E100D8700CE0651 /* Assets.xcassets */,
-				E96BE04B2E100D8700CE0651 /* Main.storyboard */,
-				E96BE04E2E100D8700CE0651 /* OnFocus.entitlements */,
-			);
-			path = OnFocus;
-			sourceTree = "<group>";
-		};
 		E98B6B512D53C807005012AB = {
 			isa = PBXGroup;
 			children = (
 				E98B6B5C2D53C807005012AB /* OnFocus */,
-				E96BE0442E100D8500CE0651 /* OnFocus */,
 				E9B3E1B12E28560A0026F85B /* OnFocusTests */,
 				E93EF57A2F4605F900AF352F /* Frameworks */,
 				E98B6B5B2D53C807005012AB /* Products */,
@@ -482,7 +494,7 @@
 			isa = PBXGroup;
 			children = (
 				E98B6B5A2D53C807005012AB /* OnFocus.app */,
-				E96BE0432E100D8500CE0651 /* OnFocusMac.app */,
+				E90200112F71000100A00001 /* OnFocusMenuBar.app */,
 				E9B3E1B02E28560A0026F85B /* OnFocusTests.xctest */,
 			);
 			name = Products;
@@ -492,6 +504,7 @@
 			isa = PBXGroup;
 			children = (
 				E950A9082DD73ADC00928DEB /* App */,
+				E90200212F71000100A00001 /* MenuBar */,
 				E96518252E02D06600865163 /* Core */,
 				E96518282E02D13200865163 /* Config */,
 				E950A9122DD73EEB00928DEB /* Models */,
@@ -501,6 +514,18 @@
 				E96BE0542E100EAC00CE0651 /* GoogleService-Info.plist */,
 			);
 			path = OnFocus;
+			sourceTree = "<group>";
+		};
+		E90200212F71000100A00001 /* MenuBar */ = {
+			isa = PBXGroup;
+			children = (
+				E90200122F71000100A00001 /* OnFocusMenuBarApp.swift */,
+				E90200132F71000100A00001 /* MenuBarTimerController.swift */,
+				E90200142F71000100A00001 /* MenuBarContentView.swift */,
+				E90200152F71000100A00001 /* OnFocusMenuBar-Info.plist */,
+				E90200162F71000100A00001 /* OnFocusMenuBar.entitlements */,
+			);
+			path = MenuBar;
 			sourceTree = "<group>";
 		};
 		E9CBD3F72DBA641200DF9A09 /* Search */ = {
@@ -587,23 +612,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E96BE0422E100D8500CE0651 /* OnFocusMac */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E96BE0512E100D8700CE0651 /* Build configuration list for PBXNativeTarget "OnFocusMac" */;
-			buildPhases = (
-				E96BE03F2E100D8500CE0651 /* Sources */,
-				E96BE0402E100D8500CE0651 /* Frameworks */,
-				E96BE0412E100D8500CE0651 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = OnFocusMac;
-			productName = OnFocus;
-			productReference = E96BE0432E100D8500CE0651 /* OnFocusMac.app */;
-			productType = "com.apple.product-type.application";
-		};
 		E98B6B592D53C807005012AB /* OnFocus */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E98B6B6E2D53C80A005012AB /* Build configuration list for PBXNativeTarget "OnFocus" */;
@@ -611,10 +619,12 @@
 				E98B6B562D53C807005012AB /* Sources */,
 				E98B6B572D53C807005012AB /* Frameworks */,
 				E98B6B582D53C807005012AB /* Resources */,
+				E90100072F72000100A00001 /* Embed Helper Apps */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E90100082F72000100A00001 /* PBXTargetDependency */,
 			);
 			name = OnFocus;
 			packageProductDependencies = (
@@ -629,6 +639,25 @@
 			);
 			productName = Test;
 			productReference = E98B6B5A2D53C807005012AB /* OnFocus.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E90200412F71000100A00001 /* OnFocusMenuBar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E90200612F71000100A00001 /* Build configuration list for PBXNativeTarget "OnFocusMenuBar" */;
+			buildPhases = (
+				E90200312F71000100A00001 /* Sources */,
+				E90200322F71000100A00001 /* Frameworks */,
+				E90200332F71000100A00001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OnFocusMenuBar;
+			packageProductDependencies = (
+			);
+			productName = OnFocusMenuBar;
+			productReference = E90200112F71000100A00001 /* OnFocusMenuBar.app */;
 			productType = "com.apple.product-type.application";
 		};
 		E9B3E1AF2E28560A0026F85B /* OnFocusTests */ = {
@@ -664,11 +693,11 @@
 				LastSwiftUpdateCheck = 1640;
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
-					E96BE0422E100D8500CE0651 = {
-						CreatedOnToolsVersion = 15.3;
-					};
 					E98B6B592D53C807005012AB = {
 						CreatedOnToolsVersion = 15.3;
+					};
+					E90200412F71000100A00001 = {
+						CreatedOnToolsVersion = 17.0;
 					};
 					E9B3E1AF2E28560A0026F85B = {
 						CreatedOnToolsVersion = 16.4;
@@ -697,23 +726,13 @@
 			projectRoot = "";
 			targets = (
 				E98B6B592D53C807005012AB /* OnFocus */,
-				E96BE0422E100D8500CE0651 /* OnFocusMac */,
+				E90200412F71000100A00001 /* OnFocusMenuBar */,
 				E9B3E1AF2E28560A0026F85B /* OnFocusTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		E96BE0412E100D8500CE0651 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E96BE04A2E100D8700CE0651 /* Assets.xcassets in Resources */,
-				E96BE04D2E100D8700CE0651 /* Base in Resources */,
-				E96BE0562E100EAC00CE0651 /* GoogleService-Info.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E98B6B582D53C807005012AB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -729,6 +748,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E90200332F71000100A00001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E9B3E1AE2E28560A0026F85B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -739,15 +765,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		E96BE03F2E100D8500CE0651 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E96BE0482E100D8500CE0651 /* ViewController.swift in Sources */,
-				E96BE0462E100D8500CE0651 /* AppDelegate.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		E98B6B562D53C807005012AB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -824,6 +841,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E90200312F71000100A00001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E90200032F71000100A00001 /* MenuBarContentView.swift in Sources */,
+				E90200022F71000100A00001 /* MenuBarTimerController.swift in Sources */,
+				E90200042F71000100A00001 /* Notifications.swift in Sources */,
+				E90200012F71000100A00001 /* OnFocusMenuBarApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E9B3E1AC2E28560A0026F85B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -834,6 +862,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		E90100082F72000100A00001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E90200412F71000100A00001 /* OnFocusMenuBar */;
+			targetProxy = E90100062F72000100A00001 /* PBXContainerItemProxy */;
+		};
 		E9B3E1B52E28560A0026F85B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E98B6B592D53C807005012AB /* OnFocus */;
@@ -858,14 +891,6 @@
 			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
-		E96BE04B2E100D8700CE0651 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E96BE04C2E100D8700CE0651 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		E98B6B682D53C80A005012AB /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -877,64 +902,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		E96BE04F2E100D8700CE0651 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = OnFocus/OnFocus.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
-				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocus;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		E96BE0502E100D8700CE0651 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = OnFocus/OnFocus.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
-				ENABLE_HARDENED_RUNTIME = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMainStoryboardFile = Main;
-				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 14.4;
-				MARKETING_VERSION = 1.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocus;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 		E98B6B6C2D53C80A005012AB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1059,6 +1026,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OnFocus/OnFocusiOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
@@ -1078,8 +1046,9 @@
 				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1092,6 +1061,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OnFocus/OnFocusiOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
@@ -1111,12 +1081,65 @@
 				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = YES;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E90200512F71000100A00001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OnFocus/MenuBar/OnFocusMenuBar.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OnFocus/MenuBar/OnFocusMenuBar-Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocusMenuBar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				SUPPORTS_MACCATALYST = NO;
+			};
+			name = Debug;
+		};
+		E90200522F71000100A00001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OnFocus/MenuBar/OnFocusMenuBar.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9W5Z8G2RNJ;
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = OnFocus/MenuBar/OnFocusMenuBar-Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.abdulkadiroruc.OnFocusMenuBar;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				SUPPORTS_MACCATALYST = NO;
 			};
 			name = Release;
 		};
@@ -1162,15 +1185,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E96BE0512E100D8700CE0651 /* Build configuration list for PBXNativeTarget "OnFocusMac" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E96BE04F2E100D8700CE0651 /* Debug */,
-				E96BE0502E100D8700CE0651 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		E98B6B552D53C807005012AB /* Build configuration list for PBXProject "OnFocus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1185,6 +1199,15 @@
 			buildConfigurations = (
 				E98B6B6F2D53C80A005012AB /* Debug */,
 				E98B6B702D53C80A005012AB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E90200612F71000100A00001 /* Build configuration list for PBXNativeTarget "OnFocusMenuBar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E90200512F71000100A00001 /* Debug */,
+				E90200522F71000100A00001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

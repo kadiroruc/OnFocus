@@ -44,6 +44,36 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         checkAppVersion()
     }
+
+    func showHomeAsRoot(animated: Bool = true) {
+        guard let window else { return }
+
+        let tabBar = MainTabBarBuilder.makeTabBar(using: container)
+        let transition: UIView.AnimationOptions = animated ? .transitionCrossDissolve : []
+
+        UIView.transition(with: window, duration: animated ? 0.25 : 0.0, options: transition) {
+            window.rootViewController = tabBar
+        }
+    }
+
+    func focusTimerTab() {
+        guard Auth.auth().currentUser != nil else {
+            window?.makeKeyAndVisible()
+            return
+        }
+
+        if let tabSelectable = window?.rootViewController as? TimerTabSelectable {
+            tabSelectable.selectTimerTab()
+            window?.makeKeyAndVisible()
+            return
+        }
+
+        showHomeAsRoot(animated: false)
+        if let tabSelectable = window?.rootViewController as? TimerTabSelectable {
+            tabSelectable.selectTimerTab()
+        }
+        window?.makeKeyAndVisible()
+    }
     
     func registerServices() {
         
@@ -206,6 +236,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+        #if targetEnvironment(macCatalyst)
+        UIMenuSystem.main.setNeedsRebuild()
+        #endif
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -237,6 +270,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         presenceService.setUserStatus(online: false)
     }
 
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let url = URLContexts.first?.url,
+              url.scheme == "onfocus" else {
+            return
+        }
+
+        focusTimerTab()
+    }
+
 
 }
-

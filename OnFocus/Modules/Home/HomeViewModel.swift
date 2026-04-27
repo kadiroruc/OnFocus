@@ -52,6 +52,7 @@ final class HomeViewModel {
         NotificationCenter.default.addObserver(self, selector: #selector(networkStatusChanged(_:)), name: .networkStatusChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(timekeeperAutoSaved(_:)), name: .timekeeperAutoSaved, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(userDidSignOut(_:)), name: .userDidSignOut, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(menuBarCommandRequested(_:)), name: .appTimerMenuCommandRequested, object: nil)
         
         // Request notification permission
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { granted, error in
@@ -89,6 +90,7 @@ final class HomeViewModel {
     private var lastNetworkState: Bool?
     private var backgroundTaskId: UIBackgroundTaskIdentifier = .invalid
     private var backgroundTimekeeperTimer: Timer?
+    private var lastPublishedMenuState: AppTimerMenuState?
 
     
     
@@ -96,6 +98,7 @@ final class HomeViewModel {
         countdownTimer?.invalidate()
         isPaused = true
         animationRunning = false
+        lastPublishedMenuState = nil
         view?.updatePlayButton(isPaused: true)
         view?.resetCircularAnimationToStart(isSessionCompleted)
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["timer_expired"])
@@ -131,6 +134,7 @@ final class HomeViewModel {
         }
 
         view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
+        publishMenuBarState()
     }
     
     func saveTimeToDatabase(if session:Bool) {
@@ -339,11 +343,13 @@ final class HomeViewModel {
         timeKeeperStartDate = nil
         timeKeeperElapsedTime = 0
         animationRunning = false
+        lastPublishedMenuState = nil
         view?.updateCountdownLabel(minutes: 0, seconds: 0)
         view?.updatePlayButton(isPaused: true)
         clearPendingTimekeeperAutoSave()
         clearPausedTimekeeperElapsed()
         stopBackgroundTimekeeperTracking()
+        publishMenuBarState()
 
     }
     private func scheduleTimerNotification(seconds: TimeInterval) {
@@ -374,6 +380,7 @@ extension HomeViewModel: HomeViewModelProtocol{
         }
         if !isPomodoroMode && timeKeeperElapsedTime == 0{
             self.view?.showMessage(Constants.ValidationMessages.pleaseStartTimer)
+            publishMenuBarState()
             return
         }
 
@@ -417,6 +424,7 @@ extension HomeViewModel: HomeViewModelProtocol{
         }
         
         self.isPomodoroMode = !timeKeeperMode
+        publishMenuBarState()
     }
     
     func didSelectFriend(at index: Int) {
@@ -433,6 +441,7 @@ extension HomeViewModel: HomeViewModelProtocol{
             didChangeTimerMode(timeKeeperMode: true)
             restorePausedTimekeeperElapsedIfNeeded()
         }
+        publishMenuBarState()
     }
     
     func viewWillAppear() {
@@ -466,6 +475,7 @@ extension HomeViewModel: HomeViewModelProtocol{
 
         isPaused.toggle()
         view?.updatePlayButton(isPaused: isPaused)
+        publishMenuBarState()
     }
     
     func startCountdown() {
@@ -474,6 +484,7 @@ extension HomeViewModel: HomeViewModelProtocol{
         view?.startCircularAnimation(duration: TimeInterval(countdownMinutes * 60 + countdownSeconds))
         
         scheduleTimerNotification(seconds: TimeInterval(countdownMinutes * 60 + countdownSeconds))
+        publishMenuBarState()
         
     }
     
@@ -482,6 +493,7 @@ extension HomeViewModel: HomeViewModelProtocol{
         view?.pauseCircularAnimation()
         
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["timer_expired"])
+        publishMenuBarState()
     }
     
     func resumeCountdown() {
@@ -490,6 +502,7 @@ extension HomeViewModel: HomeViewModelProtocol{
         
         let totalSeconds = countdownMinutes * 60 + countdownSeconds + splitSeconds / 60
         scheduleTimerNotification(seconds: TimeInterval(totalSeconds))
+        publishMenuBarState()
     }
     
     @objc func updateCountdown() {
@@ -511,6 +524,7 @@ extension HomeViewModel: HomeViewModelProtocol{
                 splitSeconds -= 1
             }
             view?.updateCountdownLabel(minutes: countdownMinutes, seconds: countdownSeconds)
+            publishMenuBarState()
         } else {
             saveTimeToDatabase(if: isSessionCompleted)
             resetTimer()
@@ -562,6 +576,7 @@ extension HomeViewModel: HomeViewModelProtocol{
             repeats: true
         )
         animationRunning = true
+        publishMenuBarState()
     }
 
     func pauseTimeKeeper() {
@@ -569,8 +584,10 @@ extension HomeViewModel: HomeViewModelProtocol{
         if let start = timeKeeperStartDate {
             timeKeeperElapsedTime += Date().timeIntervalSince(start)
         }
+        timeKeeperStartDate = nil
         setPausedTimekeeperElapsed(timeKeeperElapsedTime)
         animationRunning = false
+        publishMenuBarState()
     }
 
     @objc func updateTimeKeeper() {
@@ -581,6 +598,7 @@ extension HomeViewModel: HomeViewModelProtocol{
         let seconds = totalSeconds % 60
         
         view?.updateCountdownLabel(minutes: minutes, seconds: seconds)
+        publishMenuBarState()
     }
 
     private func resetPomodoroWithoutAdvancing() {
@@ -599,6 +617,7 @@ extension HomeViewModel: HomeViewModelProtocol{
         view?.updatePlayButton(isPaused: true)
         view?.resetCircularAnimationToStart(isSessionCompleted)
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["timer_expired"])
+        publishMenuBarState()
     }
     
     @objc private func appWillResignActive() {
@@ -621,6 +640,7 @@ extension HomeViewModel: HomeViewModelProtocol{
         } else {
             clearPendingTimekeeperAutoSave()
         }
+        publishMenuBarState()
     }
     // Uygulama tekrar öne gelince çağrılır
     @objc private func appDidBecomeActive() {
@@ -647,6 +667,7 @@ extension HomeViewModel: HomeViewModelProtocol{
         remainingTimeWhenBackground = nil
         clearPendingTimekeeperAutoSave()
         stopBackgroundTimekeeperTracking()
+        publishMenuBarState()
     }
 
     @objc private func pendingSessionsSynced(_ notification: Notification) {
@@ -678,6 +699,106 @@ extension HomeViewModel: HomeViewModelProtocol{
         } else {
             view?.showMessage(L10n.Validation.networkOffline)
         }
+    }
+
+    @objc private func menuBarCommandRequested(_ notification: Notification) {
+        guard let rawValue = notification.userInfo?["command"] as? String,
+              let command = AppTimerMenuCommand(rawValue: rawValue) else {
+            return
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+
+            switch command {
+            case .togglePrimaryAction:
+                self.toggleCountdown()
+            case .saveSession:
+                guard !self.isPomodoroMode else { return }
+                self.stopButtonTapped()
+            case .cancelSession:
+                if self.isPomodoroMode {
+                    if self.animationRunning || self.isBreak {
+                        self.cancelConfirmButtonTapped()
+                    }
+                } else {
+                    self.resetTimeKeeper()
+                }
+            case .showMainWindow:
+                break
+            }
+        }
+    }
+
+    private func publishMenuBarState() {
+        let state = buildMenuBarState()
+        guard state != lastPublishedMenuState else { return }
+        lastPublishedMenuState = state
+        AppTimerMenuBridge.shared.update(state: state)
+    }
+
+    private func buildMenuBarState() -> AppTimerMenuState {
+        if isPomodoroMode {
+            let displayTime = String(format: "%02d:%02d", countdownMinutes, countdownSeconds)
+            let isDefaultFocusState = countdownMinutes == 25 && countdownSeconds == 0 && splitSeconds == 59
+            let hasProgress = animationRunning || !isDefaultFocusState || isBreak
+            let compactTitle = isBreak ? L10n.Home.breakLabel : "Focus"
+            let detailText = isBreak ? L10n.Home.breakLabel : L10n.Home.sessions(count: sessionCount)
+            let primaryActionTitle: String
+
+            if animationRunning {
+                primaryActionTitle = "Pause"
+            } else if hasProgress {
+                primaryActionTitle = "Resume"
+            } else {
+                primaryActionTitle = "Start"
+            }
+
+            return AppTimerMenuState(
+                mode: .pomodoro,
+                compactTitle: compactTitle,
+                displayTime: displayTime,
+                detailText: detailText,
+                primaryActionTitle: primaryActionTitle,
+                isRunning: animationRunning,
+                canSave: false,
+                canCancel: hasProgress
+            )
+        }
+
+        let elapsed = currentTimekeeperElapsed()
+        let totalSeconds = Int(elapsed.rounded())
+        let minutes = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        let displayTime = String(format: "%02d:%02d", minutes, seconds)
+        let primaryActionTitle: String
+
+        if animationRunning {
+            primaryActionTitle = "Pause"
+        } else if totalSeconds > 0 {
+            primaryActionTitle = "Resume"
+        } else {
+            primaryActionTitle = "Start"
+        }
+
+        return AppTimerMenuState(
+            mode: .timekeeper,
+            compactTitle: "Timer",
+            displayTime: displayTime,
+            detailText: "Timekeeper Mode",
+            primaryActionTitle: primaryActionTitle,
+            isRunning: animationRunning,
+            canSave: totalSeconds > 0,
+            canCancel: animationRunning || totalSeconds > 0
+        )
+    }
+
+    private func currentTimekeeperElapsed() -> TimeInterval {
+        guard animationRunning, let start = timeKeeperStartDate else {
+            return timeKeeperElapsedTime
+        }
+
+        return timeKeeperElapsedTime + Date().timeIntervalSince(start)
     }
     
 }
